@@ -163,6 +163,7 @@ public class WndRptGeneralVentas extends WndBase implements Serializable {
 		Integer tipoConsulta = 0;
 
 		limpiarArrays();
+		Util.limpiarListbox(lsbxVentas);
 
 		if(cmbAgencias.getSelectedItem().getValue() instanceof Agencia)
 			idAgencia=((Agencia)cmbAgencias.getSelectedItem().getValue()).getId();

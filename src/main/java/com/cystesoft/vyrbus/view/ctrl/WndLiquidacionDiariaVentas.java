@@ -1411,7 +1411,7 @@ public class WndLiquidacionDiariaVentas extends WndBase implements Serializable 
 				return;
 			}
 
-			//Validaci�n para la anulaci�n de un Reecibo de caja
+			//Validacion para la anulacion de un Recibo de caja
 			if (ventaOriginal.getTipoComprobante().getId().intValue()==Constantes.ID_TIPCOM_RECIBO_CAJA){
 				VentaPasaje ultimoRegistro=ServiceLocator.getVentaPasajesManager().buscarUltimoRegistro(ventaOriginal.getVentaOriginal());
 				//Valida si RC esta reimpreso y no esta anulado para continuar con la anulaci�n.
@@ -1660,7 +1660,7 @@ public class WndLiquidacionDiariaVentas extends WndBase implements Serializable 
 		if(notaCredito!=null){
 			//Actualiza el correlativo - 22/01/2024 - jabanto
 			ServiceLocator.getVentaPasajesManager().actualizarCorrelativoComprobante(notaCredito, true);
-			
+			//Coemntado por MAOE 05/02/2024
 			WSFE.sendNota(notaCredito);
 		}
 		result=Constantes.CORRECT;

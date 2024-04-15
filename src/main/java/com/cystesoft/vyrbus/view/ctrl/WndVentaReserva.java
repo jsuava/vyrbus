@@ -5419,7 +5419,8 @@ public class WndVentaReserva extends WndBase {
 										List<VentaPasaje>listVentaPasaje= new ArrayList<>();
 										listVentaPasaje.add(ventaPasaje);
 
-										//Comentado temporalmente por MAOE para pruebasc con Transmar
+										//Venta para el pool de cruz del Sur
+										//Comentado temporalmente por MAOE para pruebas con Antezana 05/02/2024
 										WSFE.sendVenta(listVentaPasaje, wndVentaReserva, true,null, Constantes.NUMERO_COPIAS_COMPROBANTE_PASAJES);
 
 										//Limpia los controles
@@ -5456,6 +5457,8 @@ public class WndVentaReserva extends WndBase {
 										/**Envia el comprobante a sunat*/
 										List<VentaPasaje>listVentaPasaje= new ArrayList<>();
 										listVentaPasaje.add(ventaPasaje);
+										//ventas de pool de Civa
+										//Comentado por MAOE 05/02/2024
 										WSFE.sendVenta(listVentaPasaje, wndVentaReserva, true, null, Constantes.NUMERO_COPIAS_COMPROBANTE_PASAJES);
 
 										//Limpia los controles
@@ -6366,6 +6369,8 @@ public class WndVentaReserva extends WndBase {
 //							if(!chkVentaRemota.isChecked()){
 //								if(!chkBoletoPrepagado.isChecked()){
 								ventaPasaje = ServiceLocator.getVentaPasajesManager().buscarVentaById(ventaPasaje.getId());
+								//Insertar el track de venta
+								
 								if(getAgencia().getTipoAgencia().getId().intValue()==Constantes.ID_TIPAGE_TEPSA){
 									/**Solo Boletas y facturas*/
 									if(ventaPasaje.getTipoComprobante().getId().intValue()==Constantes.ID_TIPCOM_BOLETA_VENTA ||
@@ -6376,9 +6381,9 @@ public class WndVentaReserva extends WndBase {
 										List<VentaPasaje> listVentaPasajes= new ArrayList<>();
 										listVentaPasajes.add(ventaPasaje);
 
-										//Aqui se envia el comprobante al servidor de Facturaciï¿½n Electrï¿½nica
-										//Comentado temporalmente por MAOE
-										//23/06/2023
+										//Aqui se envia el comprobante al servidor de Facturación Electrónica
+										//Comentado temporalmente por MAOE, venta de ida
+										//05/02/2024
 										WSFE.sendVenta(listVentaPasajes,wndVentaReserva,printComprobante,null, Constantes.NUMERO_COPIAS_COMPROBANTE_PASAJES);
 									}
 
@@ -6413,6 +6418,7 @@ public class WndVentaReserva extends WndBase {
 									if(ventaPasaje.getTipoComprobante().getId().intValue()==Constantes.ID_TIPCOM_VOUCHER_AGENCIA_VIAJES){
 										List<VentaPasaje> listVentaPasajes= new ArrayList<>();
 										listVentaPasajes.add(ventaPasaje);
+										//Comentado por MAOE 05/02/2024
 										WSFE.printVouchers(listVentaPasajes,wndVentaReserva, Constantes.NUMERO_COPIAS_COMPROBANTE_PASAJES);
 									}
 
@@ -6557,6 +6563,8 @@ public class WndVentaReserva extends WndBase {
 								if(lstVentas.size()>0){
 									VentaPasaje ventaPasajeIDA=ServiceLocator.getVentaPasajesManager().buscarVentaById(lstVentas.get(0).getId());
 									VentaPasaje ventaPasajeRETORNO=ServiceLocator.getVentaPasajesManager().buscarVentaById(lstVentas.get(1).getId());
+									
+									//Guardar el trackin de venta
 
 									/*Begin 24/10/2016 - jabanto*/
 									List<VentaPasaje> ventasIdaRetorno= new ArrayList<>();
@@ -6564,7 +6572,7 @@ public class WndVentaReserva extends WndBase {
 									ventasIdaRetorno.add(ventaPasajeRETORNO);
 
 									//Comentado temporalmente por MAOE
-									//23/06/2023
+									//05/02/2024
 									WSFE.sendVenta(ventasIdaRetorno, wndVentaReserva, true,null, Constantes.NUMERO_COPIAS_COMPROBANTE_PASAJES);
 
 									/*End Begin 24/10/2016 - jabanto*/
@@ -6616,6 +6624,7 @@ public class WndVentaReserva extends WndBase {
 									List<VentaPasaje> ventasIdaRetorno= new ArrayList<>();
 									ventasIdaRetorno.add(ventaPasajeIDA);
 									ventasIdaRetorno.add(ventaPasajeRETORNO);
+									//Coentado 05/02/2024 MAOE
 									WSFE.printVouchers(ventasIdaRetorno, wndVentaReserva, Constantes.NUMERO_COPIAS_COMPROBANTE_PASAJES);
 
 
