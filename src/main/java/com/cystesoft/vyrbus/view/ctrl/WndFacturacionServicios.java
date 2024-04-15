@@ -196,6 +196,13 @@ public class WndFacturacionServicios extends WndBase {
 	 */
 	public void onNew() {
 		try {
+			if(fechaLiquidacion == null) {
+				DlgMessage.information(Messages.getString("WndVentaReserva.information.noLiquidacion"));
+				return;
+			}else if(fechaLiquidacion.getTime() != Constantes.FORMAT_DATE.parse(Constantes.FORMAT_DATE.format(new Date())).getTime()) {
+				DlgMessage.information(Messages.getString("WndVentaReserva.information.fechaLiquidacionDiferente"));
+				return;
+			}			
 			wndRegistrar = onCreateWindowNewFactura();
 			this.appendChild(wndRegistrar);
 			wndRegistrar.setMode("modal");
@@ -351,7 +358,7 @@ public class WndFacturacionServicios extends WndBase {
 			else if(txtGlosa.getText().trim().equals(""))
 				throw new DenominacionNullException();
 
-			Messagebox.show("Se va registrar la Venta, ï¿½Desea continuar?", DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_YESNO, Messagebox.QUESTION, new EventListener<Event>() {
+			Messagebox.show("Se va registrar la Venta, ¿Desea continuar?", DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_YESNO, Messagebox.QUESTION, new EventListener<Event>() {
 				@Override
 				public void onEvent(Event e) {
 					try {
@@ -632,7 +639,7 @@ public class WndFacturacionServicios extends WndBase {
 		label = new Label();
 		row.appendChild(label);
 
-		label = new Label("Nï¿½ COMPROBANTE :");
+		label = new Label("No COMPROBANTE :");
 		label.setStyle("color:blue; font-weight: bold;");
 		row.appendChild(label);
 

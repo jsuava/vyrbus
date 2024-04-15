@@ -2814,10 +2814,11 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 		if(object instanceof VentaPasaje) {
 			VentaPasaje ventaPasaje = (VentaPasaje)object;
 			/* Valida si no es un servicio especial*/
-			if(!(ventaPasaje.getServicioEspecialFactura())){
+//			if(!(ventaPasaje.getServicioEspecialFactura())){
 				if(ventaPasaje.getTipoTransaccion().equals(Constantes.TIPO_OPERACION_VENTA) ||
 						ventaPasaje.getTipoTransaccion().equals(Constantes.TIPO_OPERACION_VENTA_POOL) ||
-						ventaPasaje.getTipoTransaccion().equals(Constantes.TIPO_OPERACION_EXCESO)){
+						ventaPasaje.getTipoTransaccion().equals(Constantes.TIPO_OPERACION_EXCESO) ||
+						ventaPasaje.getTipoTransaccion().equals(Constantes.TIPO_OPERACION_VENTA_ESPECIAL) ){
 					ControlEspecieValorada controlEspecieValorada = null;
 					if(ventaPasaje.getTipoComprobante().getId().intValue()!=Constantes.ID_TIPCOM_BOLETO_VIAJE){
 						
@@ -2845,7 +2846,7 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 					}
 				}else
 					ventaPasaje.setNumeroBoleto(null);
-			}
+//			}
 		}
 		return null;
 	}
