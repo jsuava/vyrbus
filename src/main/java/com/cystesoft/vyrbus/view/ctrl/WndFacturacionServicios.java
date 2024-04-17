@@ -226,6 +226,13 @@ public class WndFacturacionServicios extends WndBase {
 	 */
 	public void onNew() {
 		try {
+			if(fechaLiquidacion == null) {
+				DlgMessage.information(Messages.getString("WndVentaReserva.information.noLiquidacion"));
+				return;
+			}else if(fechaLiquidacion.getTime() != Constantes.FORMAT_DATE.parse(Constantes.FORMAT_DATE.format(new Date())).getTime()) {
+				DlgMessage.information(Messages.getString("WndVentaReserva.information.fechaLiquidacionDiferente"));
+				return;
+			}			
 			wndRegistrar = onCreateWindowNewFactura();
 			this.appendChild(wndRegistrar);
 			wndRegistrar.setMode("modal");
@@ -688,7 +695,8 @@ public class WndFacturacionServicios extends WndBase {
 		label = new Label();
 		row.appendChild(label);
 
-		label = new Label("Nro COMPROBANTE :");
+		label = new Label("No COMPROBANTE :");
+
 		label.setStyle("color:blue; font-weight: bold;");
 		row.appendChild(label);
 

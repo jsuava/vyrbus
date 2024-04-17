@@ -682,6 +682,7 @@ public interface VentaPasajesManager {
 	 * @return
 	 */
 	public List<VentaPasaje> buscarVentasByNumeroOrden(String numorden);
+
 	/*
 	 * Realiza la actualizacion del correlativo al comprobante de venta
 	 * @param VentaPasaje: Instancia del comprobante que se va a actualizar.
@@ -690,6 +691,7 @@ public interface VentaPasajesManager {
 	 * @throws Exception
 	 */
 	public Object actualizarCorrelativoComprobante(Object object, Boolean ejecutarSeqByCorrelativo) throws Exception;
+
 	
 	/**
 	 * Busca las ventas para el Registro de Ventas
