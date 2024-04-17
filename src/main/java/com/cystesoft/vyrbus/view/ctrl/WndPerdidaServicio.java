@@ -8,6 +8,7 @@
  */
 package com.cystesoft.vyrbus.view.ctrl;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -35,6 +36,7 @@ import org.zkoss.zul.Textbox;
 import org.zkoss.zul.Window;
 
 import com.cystesoft.vyrbus.model.bean.Agencia;
+import com.cystesoft.vyrbus.model.bean.MovimientoPasajes;
 import com.cystesoft.vyrbus.model.bean.VentaPasaje;
 import com.cystesoft.vyrbus.service.exceptions.LiquidacionNullException;
 import com.cystesoft.vyrbus.service.exceptions.ManifiestoImpresoException;
@@ -453,6 +455,26 @@ public class WndPerdidaServicio extends WndBase {
 						venta.setObservaciones(txtMotivo.getText().trim().toUpperCase());
 						UtilData.auditarRegistro(venta, true, getUsuario(), Executions.getCurrent());
 						ServiceLocator.getVentaPasajesManager().guardarPerdidaServicio(venta);
+						
+						//Guardar el tracking de venta 19/02/2024
+						MovimientoPasajes trackingIda = new MovimientoPasajes();
+						
+						trackingIda.setVentaPasaje(venta);
+						trackingIda.setOperacion("INHABILITADO POR PERDIDA DE SERVICIO");
+						trackingIda.setFechaOperacion(Util.DatetoString(new Date(), "dd/MM/yyyy"));
+						trackingIda.setServicio(venta.getServicio());
+						trackingIda.setRuta(venta.getRuta());
+						trackingIda.setAgenciaEmbarque(venta.getAgenciaPartida());
+						trackingIda.setFechaEmbarque(Util.DatetoString(venta.getFechaPartida(), "dd/MM/yyyy"));
+						trackingIda.setHoraEmbarque( UtilData.obtenerHoraEmbarque( venta.getItinerario().getId(), venta.getAgenciaPartida().getId()));
+						trackingIda.setNumeroPiso(venta.getNumeroPiso());
+						trackingIda.setNumeroAsiento(venta.getNumeroAsiento());
+						trackingIda.setImportePagado(venta.getImportePagado());
+						trackingIda.setTipoFormaPago(venta.getTipoFormaPago());
+						trackingIda.setEstadoRegistro(Constantes.VALUE_ACTIVO);
+						UtilData.auditarRegistro(trackingIda, getUsuario(), Executions.getCurrent());
+						ServiceLocator.getMovimientoPasajesManager().guardar(trackingIda);
+						
 					}
 					DlgMessage.information(Messages.getString("WndPerdidaServicio.information.exitoPerdidaServicio")+" "+venta.getNumeroControl());
 					wndPerdidaServicio.onClose();

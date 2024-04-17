@@ -1648,13 +1648,15 @@ public class WndLiquidacionDiariaVentas extends WndBase implements Serializable 
 		trackingIda.setVentaPasaje(ventaOriginal);
 		trackingIda.setOperacion("ANULACION REGULAR");
 		trackingIda.setFechaOperacion(Util.DatetoString(new Date(), "dd/MM/yyyy"));
-		trackingIda.setRuta(ventaOriginal.getRuta().getOrigen()+"-"+ventaOriginal.getRuta().getDestino());
+		trackingIda.setServicio(ventaOriginal.getServicio());
+		trackingIda.setRuta(ventaOriginal.getRuta());
+		trackingIda.setAgenciaEmbarque(ventaOriginal.getAgenciaPartida());
 		trackingIda.setFechaEmbarque(Util.DatetoString(ventaOriginal.getFechaPartida(), "dd/MM/yyyy"));
 		trackingIda.setHoraEmbarque(UtilData.obtenerHoraEmbarque( ventaOriginal.getItinerario().getId(), ventaOriginal.getAgenciaPartida().getId()));
 		trackingIda.setNumeroPiso(ventaOriginal.getNumeroPiso());
 		trackingIda.setNumeroAsiento(ventaOriginal.getNumeroAsiento());
 		trackingIda.setImportePagado(ventaOriginal.getImportePagado());
-		trackingIda.setMedioPago(ventaOriginal.getTipoFormaPago().getDenominacion());
+		trackingIda.setTipoFormaPago(ventaOriginal.getTipoFormaPago());
 		trackingIda.setEstadoRegistro(Constantes.VALUE_ACTIVO);
 		UtilData.auditarRegistro(trackingIda, getUsuario(), Executions.getCurrent());
 		
@@ -1678,7 +1680,7 @@ public class WndLiquidacionDiariaVentas extends WndBase implements Serializable 
 			//Actualiza el correlativo - 22/01/2024 - jabanto
 			ServiceLocator.getVentaPasajesManager().actualizarCorrelativoComprobante(notaCredito, true);
 			//Comentado por MAOE 05/02/2024
-//			WSFE.sendNota(notaCredito);
+			WSFE.sendNota(notaCredito);
 		}
 		
 		result=Constantes.CORRECT;

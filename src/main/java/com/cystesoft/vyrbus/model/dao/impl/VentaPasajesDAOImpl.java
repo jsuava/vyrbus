@@ -52,6 +52,7 @@ import com.cystesoft.vyrbus.model.bean.VentaPasaje;
 import com.cystesoft.vyrbus.model.bean.report.RptVentaUsuario;
 import com.cystesoft.vyrbus.model.dao.VentaPasajesDAO;
 import com.cystesoft.vyrbus.service.locator.ServiceLocator;
+import com.cystesoft.vyrbus.service.mappers.GpsComprobante;
 import com.cystesoft.vyrbus.service.mappers.ResumenAnulacionPostergacion;
 import com.cystesoft.vyrbus.service.mappers.ResumenVentas;
 import com.cystesoft.vyrbus.service.mappers.SecuenciaTramo;
@@ -80,7 +81,7 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 				"			 p.c_numdoc, p.c_fecnac, vp.c_numcontrol, vp.canven_id, vp.d_fecpar, vp.c_horpar, " +
 				"			 ap.c_nomcor as nombreCorto, p.tipdoc_id tipoDocPax, vp.forpag_id, vp.tipforpag_id, vp.c_rucclicre, vp.n_imppag, " +//34
 				"			 vp.tipmov_id, av.c_denominacion AGVENTA, u.c_login USUARIO, al.c_denominacion AGLLEGADA, vp.audfecins FECVENTA, p.c_telefono, "+
-				"            ap.agencia_id as agencia_idpartida, td.c_denominacion pax_tipoDocumento  "+ //41
+				"            ap.agencia_id as agencia_idpartida, td.c_denominacion pax_tipoDocumento    "+ //42
 				"FROM vrtvenpas vp " +
 				"	  INNER JOIN (SELECT MAX(venpas_id)venpas_id, c_numcontrol " +
 				"				  FROM vrtvenpas WHERE itinerario_id="+idItinerario+" GROUP BY c_numcontrol) max_venta " +
@@ -4179,13 +4180,26 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 	 */
 	@Override
 	public List<TransactionOpenpay> buscarVentaWeb(String fInicio, String fFin, String estado, String contacto)throws Exception {
-		String sql = "SELECT codigo, estado, descripcion, error, contacto, telefono, importe, orden "
-				+ "FROM ("
-				+ "SELECT T.C_CODE_TRANSACTION AS codigo, T.C_STATUS AS estado, C_DESCRIPTION AS descripcion , C_ERROR_MESSAGE AS error, "
-				+ "C_CUSTOMER_NAME || ' ' || C_CUSTOMER_LAST_NAME AS contacto, C_CUSTOMER_PHONE_NUMBER telefono, N_AMOUNT importe, C_ORDER_ID orden "
-				+ "FROM VRTTRANSACTION T "
-				+ "WHERE D_CREATION_DATE BETWEEN to_date('"+fInicio+"', 'dd/MM/yyyy') AND to_date('" + fFin +"', 'dd/MM/yyyy')) T0 "
-				+ "WHERE estado LIKE '%" + estado + "%' AND contacto LIKE '%" + contacto + "%'";
+		String sql = "SELECT \r\n" + 
+				"       codigo, estado, descripcion, error, contacto, telefono, importe, orden \r\n" + 
+				"FROM \r\n" + 
+				"       (SELECT T.C_CODE_TRANSACTION AS codigo, T.C_STATUS AS estado, C_DESCRIPTION AS descripcion , \r\n" + 
+				"               C_ERROR_MESSAGE AS error, C_CUSTOMER_NAME || ' ' || C_CUSTOMER_LAST_NAME AS contacto, \r\n" + 
+				"               C_CUSTOMER_PHONE_NUMBER telefono, N_AMOUNT importe, C_ORDER_ID orden \r\n" + 
+				"        FROM \r\n" + 
+				"               VRTTRANSACTION T \r\n" + 
+				"        WHERE \r\n" + 
+				"               trunc(T.D_CREATION_DATE) BETWEEN to_date('"+fInicio+"', 'dd/MM/yyyy') \r\n" + 
+				"               AND to_date('"+fFin+"', 'dd/MM/yyyy')) T0 \r\n" + 
+				"WHERE estado LIKE '%"+estado+"%' AND contacto LIKE '%"+contacto.toUpperCase()+"%'";
+		
+//		String sql = "SELECT codigo, estado, descripcion, error, contacto, telefono, importe, orden "
+//				+ "FROM ("
+//				+ "SELECT T.C_CODE_TRANSACTION AS codigo, T.C_STATUS AS estado, C_DESCRIPTION AS descripcion , C_ERROR_MESSAGE AS error, "
+//				+ "C_CUSTOMER_NAME || ' ' || C_CUSTOMER_LAST_NAME AS contacto, C_CUSTOMER_PHONE_NUMBER telefono, N_AMOUNT importe, C_ORDER_ID orden "
+//				+ "FROM VRTTRANSACTION T "
+//				+ "WHERE D_CREATION_DATE BETWEEN to_date('"+fInicio+"', 'dd/MM/yyyy') AND to_date('" + fFin +"', 'dd/MM/yyyy')) T0 "
+//				+ "WHERE estado LIKE '%" + estado + "%' AND contacto LIKE '%" + contacto + "%'";		
 		
 		List<?> result = getSession().createSQLQuery(sql).list();
 
@@ -4247,6 +4261,61 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 			lstVentas.add(ventaPasaje);			
 		}
 		return lstVentas;
+	}
+
+	/* (non-Javadoc)
+	 * @see com.cystesoft.vyrbus.model.dao.VentaPasajesDAO#buscarGpsComprobante(java.lang.Integer)
+	 */
+	@Override
+	public List<GpsComprobante> buscarGpsComprobante(Long idVentaPasaje) {
+		// TODO Auto-generated method stub
+		String sql="SELECT \r\n" + 
+				"       mp.movpas_id ID, vp.venpas_id IDVENPAS, vp.d_fecliq FECEMI, tfp.c_denominacion TIPOPAGO, \r\n" + 
+				"       vp.c_numboleto COMPROBANTE, mp.n_imppag IMPORTE, s.c_denominacion SERVICIO, \r\n" + 
+				"       r.c_origen||'-'||r.c_destino RUTA, a.c_denominacion AGEEMB, mp.c_fecemb FECHAVIAJE, \r\n" + 
+				"       mp.c_horemb HORAVIAJE, mp.n_numpis+1 PISO, mp.n_numasi ASIENTO, p.c_nomape PASAJERO, \r\n" + 
+				"       p.c_numdoc DOCIDE, mp.audfecins FECOPE, mp.audusuins USUARIO, mp.c_desope ESTADO\r\n" + 
+				"FROM \r\n" + 
+				"       vrtmovpas mp \r\n" + 
+				"       INNER JOIN vrtvenpas vp ON (mp.venpas_id = vp.venpas_id)\r\n" + 
+				"       INNER JOIN vrmpasajero p ON (vp.pasajero_id = p.pasajero_id)\r\n" + 
+				"       INNER JOIN vrmruta r ON (mp.ruta_id = r.ruta_id)\r\n" + 
+				"       LEFT JOIN vrmagencia a ON (mp.agencia_idembarque = a.agencia_id)       \r\n" + 
+				"       INNER JOIN vrmservicio s ON (mp.servicio_id = s.servicio_id)\r\n" + 
+				"       INNER JOIN vrmtipforpag tfp ON (mp.tipforpag_id = tfp.tipforpag_id)\r\n" + 
+				"WHERE vp.venpas_idoriginal =  "+idVentaPasaje +
+				"ORDER BY 1";
+		
+		List<?> result = getSession().createSQLQuery(sql).list();
+
+		List<GpsComprobante> lstMovimientos = new ArrayList<>();
+		
+		for(int i = 0; i<result.size(); i++){
+			Object[] obj = (Object[]) result.get(i);
+			GpsComprobante gps = new GpsComprobante();
+			
+			gps.setId(((BigDecimal)obj[0]).longValue());
+			gps.setIdVentaPasaje(((BigDecimal)obj[1]).longValue());
+			gps.setFechaEmision((Date)obj[2]);
+			gps.setTipoPago(obj[3].toString());
+			gps.setNumComprobante(obj[4].toString());
+			gps.setImporte(((BigDecimal)obj[5]).doubleValue());
+			gps.setServicio(obj[6].toString());
+			gps.setRuta(obj[7].toString());
+			gps.setAgenciaEmbarque(obj[8]==null ? null : obj[8].toString());
+			gps.setFechaViaje(obj[9]==null ? null : obj[9].toString());
+			gps.setHoraViaje(obj[10]==null ? null : obj[10].toString());
+			gps.setPiso(obj[11]==null ? null : ((BigDecimal)obj[11]).intValue());
+			gps.setAsiento(obj[12]==null ? null : ((BigDecimal)obj[12]).intValue());
+			gps.setPasajero(obj[13].toString());
+			gps.setDocIdentidad(obj[14].toString());
+			gps.setFechaOperacion((Date)obj[15]);
+			gps.setUsuario(obj[16].toString());
+			gps.setEstado(obj[17].toString());
+			
+			lstMovimientos.add(gps);			
+		}
+		return lstMovimientos;
 	}
 }
 

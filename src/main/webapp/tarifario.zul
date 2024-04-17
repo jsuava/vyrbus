@@ -78,7 +78,6 @@
 								</row>
 								<row spans="4, 2, 2">
 								<hbox>
- 									<separator/>											
 									<radiogroup>
 										<radio id="rdAmbos"
 											selected="true"
@@ -92,6 +91,7 @@
 									</radiogroup>
 								</hbox>
 								<hbox>
+									<label/>
 									<checkbox id="chkTarifaFA" 
 										label="Buscar Tarifa Abierta"  
 										onClick="wndTarifario.onSelectBuscarTarifaFechaAbierta()"/>
@@ -104,8 +104,13 @@
 										onClick="wndTarifario.buscar()" 
 										sclass="btnCommandM" 
 										 />
-									<label/>
-
+									<button id="btnHistorial1"  
+										autodisable="self"
+										width="30px"
+										image="/resources/mp_information.png" 
+										onClick="wndTarifario.buscarHistorial()" 
+										sclass="btnCommandM" 
+										 />	 
 								</row>
 							</rows>
 						</grid>
@@ -117,6 +122,7 @@
  						<tabs>
  							<tab id="tabTarifa" label="Lista Tarifas" />
  							<tab id="tabTarifaFA" label="Lista Tarifas Fecha Abierta" />
+ 							<tab id="tabHistorial" label="Historial Tarifa" />
 						</tabs>
 						<tabpanels>
 							<tabpanel>
@@ -147,6 +153,24 @@
 									</listhead>
 								</listbox>
 							</tabpanel>
+							<tabpanel>
+								<listbox id="lsbxHistorialTarifa" height="320px"  class="z-listbox-header-bg"  mold="paging" pageSize="10">
+									<listhead class="z-listbox-header-bg" sizable="true">
+										<listheader label="TARIFA" id="lstheadHistorial" width="60px" style="color: #ffffff;"/>
+										<listheader label="CANAL" width="80px"  style="color: #ffffff;"/>
+										<listheader label="SERVICIO" width="110px"  style="color: #ffffff;"/>
+							 			<listheader label="RUTA" width="180px"  style="color: #ffffff;"/>
+							 			<listheader label="PISO" width="40px"  style="color: #ffffff;"/>
+							 			<listheader label="FECHA" width="80px" style="color: #ffffff;"/>
+							 			<listheader label="HORA" width="50px"  style="color: #ffffff;"/>
+							 			<listheader label="TARIFA" align="right" width="50px" style="color: #ffffff;"/>
+							 			<listheader label="F. CREACION"  width="100px" style="color: #ffffff;"/>
+							 			<listheader label="USU.CREA."   width="90px" style="color: #ffffff;"/>
+							 			<listheader label="FEC. OPE"   width="100px" style="color: #ffffff;"/>
+							 			<listheader label="USU. MOD"  width="90px"  style="color: #ffffff;"/>
+									</listhead>
+								</listbox>
+							</tabpanel>							
 						</tabpanels>
 					</tabbox>				
 				</row>

@@ -28,6 +28,7 @@ import com.cystesoft.vyrbus.model.bean.Itinerario;
 import com.cystesoft.vyrbus.model.bean.LineaCreditoCliente;
 import com.cystesoft.vyrbus.model.bean.Liquidacion;
 import com.cystesoft.vyrbus.model.bean.Manifiesto;
+import com.cystesoft.vyrbus.model.bean.MovimientoPasajes;
 import com.cystesoft.vyrbus.model.bean.PasajeroFrecuente;
 import com.cystesoft.vyrbus.model.bean.PuntosPasajeroFrecuente;
 import com.cystesoft.vyrbus.model.bean.Ruta;
@@ -61,6 +62,7 @@ import com.cystesoft.vyrbus.service.exceptions.NumeroBoletoDuplicadoException;
 import com.cystesoft.vyrbus.service.exceptions.TiempoExpiracionBloqueoException;
 import com.cystesoft.vyrbus.service.fe.Result;
 import com.cystesoft.vyrbus.service.locator.ServiceLocator;
+import com.cystesoft.vyrbus.service.mappers.GpsComprobante;
 import com.cystesoft.vyrbus.service.mappers.ResumenAnulacionPostergacion;
 import com.cystesoft.vyrbus.service.mappers.ResumenVentas;
 import com.cystesoft.vyrbus.service.mappers.VentasPiloto;
@@ -319,7 +321,7 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 
 			/*	Guardando la instancia de la venta de pasajes	*/
 			getVentaPasajesDAO().save(ventaPasaje);
-
+			
 			/*	Solo si se necesita generar numero de control	*/
 			if(generaControl){
 				String nControl = Util.generateControlNumber(Util.decimalToHexadecimal(ventaPasaje.getId()));
@@ -824,8 +826,8 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 				//Primero anula en el WSFE
 				//Comentado temporalmente por MAOE para pruebas sin Fact Electronica
 				//MAOE 19/02/2024
-//				Result result=WSFE.anularComprobante(movimiento);
-//				if(result.isIsCorrect()) {
+				Result result=WSFE.anularComprobante(movimiento);
+				if(result.isIsCorrect()) {
 					getVentaPasajesDAO().update(movimiento);
 				
 					/*Activa el comprobante asociado a la nota de credito o debito*/
@@ -833,11 +835,11 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 //							movimiento.getTipoComprobante().getId().intValue()==Constantes.ID_TIPCOM_NOTA_DEBITO){
 //					}
 				
-//				}
+				}
 			
 			//MAOE 19/02/2024
-//				else
-//					throw new Exception("No se pudo realizar la anulacion, por favor vuelva a intentarlo. (F.E.)");
+				else
+					throw new Exception("No se pudo realizar la anulacion, por favor vuelva a intentarlo. (F.E.)");
 			}else{
 				/*Este debe ser anulado, pero con una nota de credito*/
 				TipoNota tipoNota=ServiceLocator.getTipoNotaManager().buscarPorId((long)Constantes.ID_TIPNOTA_ANULACION);
@@ -1038,6 +1040,8 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 //		int result = Constantes.FAILURE;
 		VentaPasaje notaCredito=null;
 		boolean isNewComprobante = (ventaPasaje.getId()==null);
+		MovimientoPasajes trackingIda;
+		
 		try{
 			/*	Validando que no se haya cambiado el tipo de Bus durante la venta	*/
 			boolean excedeCapacidad = false;
@@ -1076,13 +1080,12 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 //			if(ventaPasaje.getImportePagado() > 0.0 && tipoNotaCredito!=null){
 			
 			//Valida si debo o no emitir un nuevo comprobante
+			String comprobanteAnterior="";
 			if(isNewComprobante) {
 				/*Anular el boleto F.A. con nota de credito y emitir uno nuevo con la nueva tarifa*/
 //			 	notaCredito = generarNotaCredito(ventaPasaje.getVentaPasaje(), tipoNotaCredito,true, false);
 				
-				
-				
-				/*Genera una devoluciï¿½n del boleto original - jabanto - 26/09/2022 */				
+				/*Genera una devolucion del boleto original - jabanto - 26/09/2022 */				
 				VentaPasaje ventaOriginal = getVentaPasajesDAO().buscarPorId(ventaPasaje.getVentaPasaje().getId());
 				VentaPasaje ventaDevolucion = (VentaPasaje)ventaOriginal.clone();
 				ventaDevolucion.setId(null);
@@ -1094,6 +1097,25 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 				ventaDevolucion.setObservaciones(ventaPasaje.getVentaPasaje().getObservaciones()!=null?ventaPasaje.getVentaPasaje().getObservaciones():null);
 				UtilData.auditarRegistro(ventaDevolucion, ventaPasaje.getUsuario(), Executions.getCurrent());
 				getVentaPasajesDAO().save(ventaDevolucion);
+				
+				comprobanteAnterior = ventaDevolucion.getNumeroBoleto();
+				//Tracking de la inhabilitacion
+				trackingIda = new MovimientoPasajes();
+				trackingIda.setVentaPasaje(ventaDevolucion);
+				trackingIda.setOperacion("INHABILITADO POR CONF. F.A NUEVO COMP.:"+ventaPasaje.getNumeroBoleto());
+				trackingIda.setFechaOperacion(Util.DatetoString(new Date(), "dd/MM/yyyy"));
+				trackingIda.setServicio(ventaDevolucion.getServicio());
+				trackingIda.setRuta(ventaDevolucion.getRuta());
+				trackingIda.setAgenciaEmbarque(ventaDevolucion.getAgenciaPartida());
+				trackingIda.setFechaEmbarque(ventaDevolucion.getFechaPartida()==null ? null: Util.DatetoString(ventaDevolucion.getFechaPartida(), "dd/MM/yyyy"));
+				trackingIda.setHoraEmbarque( ventaDevolucion.getFechaPartida()==null ? null : UtilData.obtenerHoraEmbarque( ventaDevolucion.getItinerario().getId(), ventaDevolucion.getAgenciaPartida().getId()));
+				trackingIda.setNumeroPiso(ventaDevolucion.getFechaPartida()==null ? null : ventaDevolucion.getNumeroPiso());
+				trackingIda.setNumeroAsiento(ventaDevolucion.getFechaPartida()==null ? null : ventaDevolucion.getNumeroAsiento());
+				trackingIda.setImportePagado(ventaDevolucion.getImportePagado());
+				trackingIda.setTipoFormaPago(ventaDevolucion.getTipoFormaPago());
+				trackingIda.setEstadoRegistro(Constantes.VALUE_ACTIVO);
+				UtilData.auditarRegistro(trackingIda, ventaPasaje.getUsuario(), Executions.getCurrent());
+				ServiceLocator.getMovimientoPasajesManager().guardar(trackingIda);				
 
 				/**Begin 25/10/2016 - jabanto**/
 				/*Vuelve a realizar la busqueda del correlativo y lo actualiza, a exception de los boletos, ya que no son necesarios pues son manuales*/
@@ -1130,9 +1152,28 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 
 			/*	Guardando la instancia de la venta de pasajes	*/
 			ventaPasaje.setAcuenta(0.0);
-			if(isNewComprobante)
+			if(isNewComprobante) {
 				getVentaPasajesDAO().save(ventaPasaje);
+				trackingIda = new MovimientoPasajes();
+				
+				trackingIda.setVentaPasaje(ventaPasaje);
+				trackingIda.setOperacion("CONF. F.A. COMP. ANT.: "+comprobanteAnterior);
+				trackingIda.setFechaOperacion(Util.DatetoString(new Date(), "dd/MM/yyyy"));
+				trackingIda.setServicio(ventaPasaje.getServicio());
+				trackingIda.setRuta(ventaPasaje.getRuta());
+				trackingIda.setAgenciaEmbarque(ventaPasaje.getAgenciaPartida());
+				trackingIda.setFechaEmbarque(Util.DatetoString(ventaPasaje.getFechaPartida(), "dd/MM/yyyy"));
+				trackingIda.setHoraEmbarque( UtilData.obtenerHoraEmbarque( ventaPasaje.getItinerario().getId(), ventaPasaje.getAgenciaPartida().getId()));
+				trackingIda.setNumeroPiso(ventaPasaje.getNumeroPiso());
+				trackingIda.setNumeroAsiento(ventaPasaje.getNumeroAsiento());
+				trackingIda.setImportePagado(ventaPasaje.getImportePagado());
+				trackingIda.setTipoFormaPago(ventaPasaje.getTipoFormaPago());
+				trackingIda.setEstadoRegistro(Constantes.VALUE_ACTIVO);
+				UtilData.auditarRegistro(trackingIda, ventaPasaje.getUsuario(), Executions.getCurrent());
+				ServiceLocator.getMovimientoPasajesManager().guardar(trackingIda);
+			}
 			else {
+				Usuario usuarioOpe = ventaPasaje.getUsuario();
 				VentaPasaje ventaPasajeOrg = buscarPorId(ventaPasaje.getId());
 				ventaPasaje.setId(ventaPasajeOrg.getId());
 				ventaPasaje.setFechaInsercion(ventaPasajeOrg.getFechaInsercion()!=null?ventaPasajeOrg.getFechaInsercion():new Date());
@@ -1153,6 +1194,24 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 				ventaPasaje.setTarjetaCredito(ventaPasajeOrg.getTarjetaCredito()!=null?ventaPasajeOrg.getTarjetaCredito():null);
 				
 				getVentaPasajesDAO().update(ventaPasaje);
+				
+				//Tracking de la confirmacion de FA
+				trackingIda = new MovimientoPasajes();
+				trackingIda.setVentaPasaje(ventaPasaje);
+				trackingIda.setOperacion("CONF. F.A.");
+				trackingIda.setFechaOperacion(Util.DatetoString(new Date(), "dd/MM/yyyy"));
+				trackingIda.setServicio(ventaPasaje.getServicio());
+				trackingIda.setRuta(ventaPasaje.getRuta());
+				trackingIda.setAgenciaEmbarque(ventaPasaje.getAgenciaPartida());
+				trackingIda.setFechaEmbarque(Util.DatetoString(ventaPasaje.getFechaPartida(), "dd/MM/yyyy"));
+				trackingIda.setHoraEmbarque( UtilData.obtenerHoraEmbarque( ventaPasaje.getItinerario().getId(), ventaPasaje.getAgenciaPartida().getId()));
+				trackingIda.setNumeroPiso(ventaPasaje.getNumeroPiso());
+				trackingIda.setNumeroAsiento(ventaPasaje.getNumeroAsiento());
+				trackingIda.setImportePagado(ventaPasaje.getImportePagado());
+				trackingIda.setTipoFormaPago(ventaPasaje.getTipoFormaPago());
+				trackingIda.setEstadoRegistro(Constantes.VALUE_ACTIVO);
+				UtilData.auditarRegistro(trackingIda, usuarioOpe, Executions.getCurrent());
+				ServiceLocator.getMovimientoPasajesManager().guardar(trackingIda);				
 			}
 			/*Valida si debe generar un nuevo numero de control*/
 //			if(ventaPasaje.getImportePagado()>0.00){
@@ -1257,6 +1316,36 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 
 			/**Clonamos el boleto original - 10/11/2016 - jabanto*/
 			VentaPasaje boletoOriginal = (VentaPasaje)boletoPostergar.getVentaPasaje().clone();
+			
+			//Identificar el motivo de la postergacion
+			String motivoMovimiento="POSTERGACION";
+			if(boletoPostergar.getObservaciones().contains("POSTERGACION F.A."))
+				motivoMovimiento="POSTERGACION F.A.";
+			else if(boletoPostergar.getObservaciones().contains("CAMBIO DE NOMBRE"))
+				motivoMovimiento="CAMBIO DE NOMBRE";
+			else if(boletoPostergar.getObservaciones().contains("CAMBIO SERVICIO"))
+				motivoMovimiento="CAMBIO SERVICIO";
+			else if(boletoPostergar.getObservaciones().contains("POSTERGACION"))
+				motivoMovimiento="POSTERGACION";
+			
+			//Completar la informacion para el tracking
+			MovimientoPasajes trackingIda = new MovimientoPasajes();
+			
+			trackingIda.setVentaPasaje(boletoPostergar);
+			trackingIda.setOperacion(boletoPostergar.getFechaPartida()==null ? motivoMovimiento : motivoMovimiento+" COMP. ANT.: "+boletoOriginal.getNumeroBoleto());
+			trackingIda.setFechaOperacion(Util.DatetoString(new Date(), "dd/MM/yyyy"));
+			trackingIda.setServicio(boletoPostergar.getServicio());
+			trackingIda.setRuta(boletoPostergar.getRuta());
+			trackingIda.setAgenciaEmbarque(boletoPostergar.getAgenciaPartida());
+			trackingIda.setFechaEmbarque(boletoPostergar.getFechaPartida()==null ? null : Util.DatetoString(boletoPostergar.getFechaPartida(), "dd/MM/yyyy"));
+			trackingIda.setHoraEmbarque( boletoPostergar.getFechaPartida()==null ? null : UtilData.obtenerHoraEmbarque( boletoPostergar.getItinerario().getId(), boletoPostergar.getAgenciaPartida().getId()));
+			trackingIda.setNumeroPiso(boletoPostergar.getFechaPartida()==null ? null : boletoPostergar.getNumeroPiso());
+			trackingIda.setNumeroAsiento(boletoPostergar.getFechaPartida()==null ? null : boletoPostergar.getNumeroAsiento());
+			trackingIda.setImportePagado(boletoPostergar.getImportePagado());
+			trackingIda.setTipoFormaPago(boletoPostergar.getTipoFormaPago());
+			trackingIda.setEstadoRegistro(Constantes.VALUE_ACTIVO);
+			UtilData.auditarRegistro(trackingIda, boletoPostergar.getUsuario(), Executions.getCurrent());
+			
 			if(boletoOriginal.getCliente()!=null)
 				boletoOriginal.setCliente(ServiceLocator.getClienteManager().buscarPorId(boletoOriginal.getCliente().getId()));
 			
@@ -1268,16 +1357,21 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 				isNewComprobante = true;
 				Double direfenciaImporte = boletoPostergar.getImportePagado(); //(boletoPostergar.getImportePagado() - boletoOriginal.getImportePagado());
 				boletoPostergar.setImportePagado(direfenciaImporte);
-			}else if (boletoOriginal.getTipoComprobante().getId().intValue() != boletoPostergar.getTipoComprobante().getId().intValue() || // cuando es un cambio de comprobante
-					 (boletoOriginal.getCliente()!=null && boletoPostergar.getCliente()!=null && boletoOriginal.getCliente().getId().longValue()!=boletoPostergar.getCliente().getId()) || // Cambio de ruc
-					 (boletoOriginal.getCliente()!=null && boletoPostergar.getCliente()!=null && !(boletoOriginal.getCliente().getRazonSocial().equals(boletoPostergar.getCliente().getRazonSocial()))) || // Cambio de razon social
-					 (boletoOriginal.getCliente()!=null && boletoPostergar.getCliente()!=null && !(boletoOriginal.getCliente().getDireccion().equals(boletoPostergar.getCliente().getDireccion()))) ) // Cambio de direccion fiscal					
+			}else if (	// cuando es un cambio de comprobante
+						boletoOriginal.getTipoComprobante().getId().intValue() != boletoPostergar.getTipoComprobante().getId().intValue() ||
+						// Cambio de ruc
+						(boletoOriginal.getCliente()!=null && boletoPostergar.getCliente()!=null && boletoOriginal.getCliente().getId().longValue()!=boletoPostergar.getCliente().getId()) || 
+						// Cambio de razon social
+						(boletoOriginal.getCliente()!=null && boletoPostergar.getCliente()!=null && !(boletoOriginal.getCliente().getRazonSocial().equals(boletoPostergar.getCliente().getRazonSocial()))) || 
+						// Cambio de direccion fiscal
+						(boletoOriginal.getCliente()!=null && boletoPostergar.getCliente()!=null && !(boletoOriginal.getCliente().getDireccion().equals(boletoPostergar.getCliente().getDireccion()))) ) 					
 			{
 				//Cuando es cambio de tipo de comprobante y/o cambio de datos del cliente(si es factura)
 				isNewComprobante = true;
 				isCambioComprobante = true;
 			}
 			boolean emitirNotaCredito=false;
+			MovimientoPasajes trackingInah = new MovimientoPasajes();
 			
 			if(isNewComprobante) {
 				boletoOriginal.setId(null);
@@ -1311,10 +1405,29 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 					boletoOriginal.setUsuarioModificacion(boletoPostergar.getUsuarioModificacion());
 					boletoOriginal.setIpModificacion(boletoPostergar.getIpModificacion());
 					
+					
+					//Tracking de inahabilitacion de comprobante
+					trackingInah.setVentaPasaje(boletoOriginal);
+					trackingInah.setOperacion("INHABILITADO POR "+motivoMovimiento+" NUEVO COMP: "+boletoPostergar.getNumeroBoleto());
+					trackingInah.setFechaOperacion(Util.DatetoString(new Date(), "dd/MM/yyyy"));
+					trackingInah.setServicio(boletoOriginal.getServicio());
+					trackingInah.setRuta(boletoOriginal.getRuta());
+					trackingInah.setAgenciaEmbarque(boletoOriginal.getAgenciaPartida());
+					trackingInah.setFechaEmbarque(Util.DatetoString(boletoOriginal.getFechaPartida(), "dd/MM/yyyy"));
+					trackingInah.setHoraEmbarque( UtilData.obtenerHoraEmbarque( boletoOriginal.getItinerario().getId(), boletoOriginal.getAgenciaPartida().getId()));
+					trackingInah.setNumeroPiso(boletoOriginal.getNumeroPiso());
+					trackingInah.setNumeroAsiento(boletoOriginal.getNumeroAsiento());
+					trackingInah.setImportePagado(boletoOriginal.getImportePagado());
+					trackingInah.setTipoFormaPago(boletoPostergar.getTipoFormaPago());
+					trackingInah.setEstadoRegistro(Constantes.VALUE_ACTIVO);
+					UtilData.auditarRegistro(trackingInah, boletoPostergar.getUsuario(), Executions.getCurrent());
+					
 //					emitirNotaCredito=true;
 				}
 				/* Anulando/devuleve el movimiento anterior	*/
 				getVentaPasajesDAO().save(boletoOriginal);
+				//Tracking d ela inhabilitacion del comprobante anterior
+				ServiceLocator.getMovimientoPasajesManager().guardar(trackingInah);
 			}
 
 			/*Generando la Nota de credito si el boleto original no es boleto de viaje - 04/11/2016 - jabanto*/
@@ -1350,13 +1463,16 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 					getControlEspecieValoradaDAO().update(controlEspecieValorada);
 					/*END 15/06/2021 - javalos - Correlativo by caja*/
 				}
-			}			
+			}
 			
+			// Completar información del tracking MAOE 19/02/2024
 			
 			/*	Generando el nuevo boleto	*/
 			boletoPostergar.setTipoNota(null);
 			if(isNewComprobante) {
 				getVentaPasajesDAO().save(boletoPostergar);
+				//Guardar tracking MAOE 19/02/2024
+				ServiceLocator.getMovimientoPasajesManager().guardar(trackingIda);
 			}else {
 				//Realiza una copia del registro al historial
 				copyHistoryVentaPasaje(boletoOriginal.getId());
@@ -1386,6 +1502,11 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 				boletoPostergar.setDescuento(oVentaPasaje.getDescuento());
 				
 				getVentaPasajesDAO().update(boletoPostergar);
+				//Guardar tracking MAOE 19/02/2024
+				trackingIda.setOperacion(motivoMovimiento);
+				trackingIda.setImportePagado(oVentaPasaje.getImportePagado());
+				trackingIda.setTipoFormaPago(oVentaPasaje.getTipoFormaPago());
+				ServiceLocator.getMovimientoPasajesManager().guardar(trackingIda);
 			}
 			
 			//BEGIN javalos Comentado para Transmar no usan los gastos administrativos.
@@ -2330,9 +2451,32 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 					Date dateStartLimit= new Date(ventaPasaje.getFechaLiquidacion().getTime()+Constantes.MILISEGUNDOS_X_DIA);
 					long horasTrans= (new Date().getTime()-dateStartLimit.getTime())/Constantes.MILISEGUNDOS_X_HORA;
 					if(horasTrans<=horas_maximo){
-						Result result=WSFE.anularComprobante(ventaPasaje); //Primero anula en el WSFE
+						//MAOE 19/02/2024
+						//Primero anula en el WSFE
+						Result result=WSFE.anularComprobante(ventaPasaje);
+						//Comentar estas dos lineas para producción, solo sirve para pruebas
+//						Result result = new Result();
+//						result.setIsCorrect(true);
 						if(result.isIsCorrect()){
 							VentaPasaje anulacion=buscarPorId(ventaPasaje.getId());
+							//Inserta el tracking de anulación aqui
+							MovimientoPasajes trackingIda = new MovimientoPasajes();
+							
+							trackingIda.setVentaPasaje(anulacion);
+							trackingIda.setOperacion("ANULACION ADMINISTRATIVA");
+							trackingIda.setFechaOperacion(Util.DatetoString(new Date(), "dd/MM/yyyy"));
+							trackingIda.setServicio(anulacion.getServicio());
+							trackingIda.setRuta(anulacion.getRuta());
+							trackingIda.setAgenciaEmbarque(anulacion.getAgenciaPartida());
+							trackingIda.setFechaEmbarque(Util.DatetoString(anulacion.getFechaPartida(), "dd/MM/yyyy"));
+							trackingIda.setHoraEmbarque( UtilData.obtenerHoraEmbarque( anulacion.getItinerario().getId(), anulacion.getAgenciaPartida().getId()));
+							trackingIda.setNumeroPiso(anulacion.getNumeroPiso());
+							trackingIda.setNumeroAsiento(anulacion.getNumeroAsiento());
+							trackingIda.setImportePagado(anulacion.getImportePagado());
+							trackingIda.setTipoFormaPago(anulacion.getTipoFormaPago());
+							trackingIda.setEstadoRegistro(Constantes.VALUE_ACTIVO);
+							UtilData.auditarRegistro(trackingIda, ventaPasaje.getUsuarioAnulacion(), Executions.getCurrent());
+							
 							anulacion.setObservaciones(ventaPasaje.getObservaciones());
 							anulacion.setFechaAnulacion(ventaPasaje.getFechaAnulacion()!=null?ventaPasaje.getFechaAnulacion(): new Date());
 							anulacion.setUsuarioAnulacion(ventaPasaje.getUsuarioAnulacion()!=null?ventaPasaje.getUsuarioAnulacion():null);
@@ -2380,10 +2524,11 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 							UtilData.auditarRegistro(anulacion, true,(Usuario)Executions.getCurrent().getDesktop().getSession().getAttribute(Constantes.ATRIBUTO_USUARIO), Executions.getCurrent());
 							getVentaPasajesDAO().update(anulacion);
 							
-							//Agregar tracking del comprobante
+							//Agregar tracking del comprobante maoe 19/02/2024
+							ServiceLocator.getMovimientoPasajesManager().guardar(trackingIda);
 							
 						}else
-							throw new Exception("No se puedo continuar con la anulaciï¿½n, el comprobante Nï¿½ "+ventaPasaje.getNumeroBoleto()+" No existe en el S.F.E.");
+							throw new Exception("No se puedo continuar con la anulación, el comprobante Nro "+ventaPasaje.getNumeroBoleto()+" No existe en el S.F.E.");
 					}else
 						aplicarNotaCredito=true;
 					break;
@@ -2805,6 +2950,11 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 	@Override
 	public List<VentaPasaje> buscarVentasByNumeroOrden(String numorden) {
 		return getVentaPasajesDAO().buscarVentasByNumeroOrden(numorden);
+	}
+	
+	@Override
+	public List<GpsComprobante> buscarGpsComprobante(Long idVentaPasaje) throws Exception{
+		return getVentaPasajesDAO().buscarGpsComprobante(idVentaPasaje);
 	}
 
 	/*

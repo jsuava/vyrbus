@@ -54,8 +54,10 @@ import com.cystesoft.vyrbus.model.bean.Liquidacion;
 import com.cystesoft.vyrbus.model.bean.Pasajero;
 import com.cystesoft.vyrbus.model.bean.Ruta;
 import com.cystesoft.vyrbus.model.bean.Servicio;
+import com.cystesoft.vyrbus.model.bean.Sexo;
 import com.cystesoft.vyrbus.model.bean.TipoCobranza;
 import com.cystesoft.vyrbus.model.bean.TipoComprobante;
+import com.cystesoft.vyrbus.model.bean.TipoDocumento;
 import com.cystesoft.vyrbus.model.bean.TipoFormaPago;
 import com.cystesoft.vyrbus.model.bean.TipoMoneda;
 import com.cystesoft.vyrbus.model.bean.TipoMovimiento;
@@ -129,6 +131,7 @@ public class WndFacturacionServicios extends WndBase {
 	public static final int SEARCH_BY_RAZON = 3;
 
 	private VentaPasaje servicioEspecial;
+	private Pasajero oPasajero;
 
 
 	/* (non-Javadoc)
@@ -172,6 +175,7 @@ public class WndFacturacionServicios extends WndBase {
 		dbxIGVResumen.setValue(0.00);
 		dbxTotalResumen.setValue(0.00);
 		onLoadEspecieValorada();
+//		oPasajero = null;
 	}
 
 //	public void verificarClienteSunat()throws WrongValueException, Exception{
@@ -191,6 +195,32 @@ public class WndFacturacionServicios extends WndBase {
 		}
 	}
 
+	public void verificarPasajeroReniec()throws Exception{
+		if(!(txtDocumento.getText().trim().isEmpty())){
+			String nroDocumento=txtDocumento.getText().trim();
+			//Consulta RUC EN sunat
+			List<String> dni = RESTCiva.getDatosDni(nroDocumento);
+
+			if(dni!=null){
+				txtDocumento.setValue(dni.get(0));
+				txtCliente.setValue(dni.get(1)+" "+dni.get(2)+" "+dni.get(3));
+				
+				oPasajero = new Pasajero();
+				TipoDocumento tipoDocumento = new TipoDocumento();
+				tipoDocumento.setId(Constantes.ID_TIPDOC_DNI);
+				oPasajero.setApellidoPaterno(dni.get(2));
+				oPasajero.setApellidoMaterno(dni.get(3)!=null?dni.get(3):"");
+				oPasajero.setNombre(dni.get(1));
+				oPasajero.setNumeroDocumento(dni.get(0));
+				oPasajero.setTipoDocumento(tipoDocumento);
+//				txtDireccion.setValue(ruc.get(2));
+			}else{
+				onCleanControls();
+			}
+		}
+	}	
+	
+	
 	/**
 	 * Limpia los controles para un nuevo documento
 	 */
@@ -334,8 +364,10 @@ public class WndFacturacionServicios extends WndBase {
 			else*/ 
 			if(txtCliente.getText().trim().equals(""))
 				throw new RazonSocialNullException();
-			else if(txtDireccion.getText().trim().equals(""))
-				throw new DireccionFacturacionNullException();
+			else if(((TipoComprobante)cmbTipoComprobante.getSelectedItem().getValue()).getId() == Constantes.ID_TIPCOM_FACTURA ) {
+				if(txtDireccion.getText().trim().equals(""))
+					throw new DireccionFacturacionNullException();
+			}
 			else if(!(cmbFormaPago.getSelectedItem().getValue() instanceof FormaPago))
 				throw new FormaPagoNullException();
 			else if(cmbFormaPago.getSelectedItem().getValue() instanceof FormaPago
@@ -351,7 +383,7 @@ public class WndFacturacionServicios extends WndBase {
 			else if(txtGlosa.getText().trim().equals(""))
 				throw new DenominacionNullException();
 
-			Messagebox.show("Se va registrar la Venta, ï¿½Desea continuar?", DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_YESNO, Messagebox.QUESTION, new EventListener<Event>() {
+			Messagebox.show("Se va registrar la Venta, ¿Desea continuar?", DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_YESNO, Messagebox.QUESTION, new EventListener<Event>() {
 				@Override
 				public void onEvent(Event e) {
 					try {
@@ -360,15 +392,17 @@ public class WndFacturacionServicios extends WndBase {
 
 							servicioEspecial.setItinerario(new Itinerario(new Long(1)));
 							servicioEspecial.setRuta(new Ruta(1));
+							
+							Ubigeo oUbigeo = new Ubigeo();
+							//No sera obligatorio para Transmar  MAOE - 02/08/2022
+							oUbigeo.setId(getAgencia().getUbigeo().getId());
+							
 							if(((TipoComprobante)cmbTipoComprobante.getSelectedItem().getValue()).getId() == Constantes.ID_TIPCOM_FACTURA) {
 								//Validar si el cliente es nuevo o ya esta en la BD
 								//Si es nuevo primero lo guardamos
 								if(txtIdCliente.getText().trim().equals("")) {
 									Cliente oCliente = new Cliente();
-									Ubigeo oUbigeo = new Ubigeo();
-									//No sera obligatorio para Transmar  MAOE - 02/08/2022
-									oUbigeo.setId(getAgencia().getUbigeo().getId());
-
+									
 									oCliente.setNumeroDocumento(txtDocumento.getValue().toString());
 									oCliente.setRazonSocial(txtCliente.getText().toUpperCase());
 //									oCliente.setContacto(txtContactoCliente.getText().toUpperCase());
@@ -390,10 +424,30 @@ public class WndFacturacionServicios extends WndBase {
 									servicioEspecial.setCliente(oCliente);
 								}else
 									servicioEspecial.setCliente(new Cliente(Long.valueOf(txtIdCliente.getText())));
+								
 								servicioEspecial.setPasajero(new Pasajero(Long.valueOf(1)));
 							}else {
 								servicioEspecial.setCliente(null);
-								servicioEspecial.setPasajero(new Pasajero(Long.valueOf(txtIdCliente.getText())));
+								
+								//Si es un nuevo Pasajero lo guardamos primero MAOE 13/04/2024
+								if(txtIdCliente.getText().trim().equals("")){
+									oPasajero.setUbigeo(oUbigeo);
+									oPasajero.setAgencia(getAgencia());
+									oPasajero.setKilometros(0.00);
+									Sexo oSexo = new Sexo();
+									oSexo.setId(Constantes.ID_SEXO_MASCULINO);
+									oPasajero.setSexo(oSexo);
+									oPasajero.setNombresApellidos(oPasajero.getNombre()+" "+oPasajero.getApellidoPaterno()+" "+oPasajero.getApellidoMaterno());
+									oPasajero.setIndeseable(0);
+									UtilData.auditarRegistro(oPasajero, false,  getUsuario(), Executions.getCurrent());
+									oPasajero.setEstadoRegistro(Constantes.VALUE_ACTIVO);
+									
+									ServiceLocator.getPasajeroManager().guardar(oPasajero);
+									
+									servicioEspecial.setPasajero(oPasajero);
+								}else 
+									servicioEspecial.setPasajero(new Pasajero(Long.valueOf(txtIdCliente.getText())));
+								
 							}
 
 							servicioEspecial.setFormaPago((FormaPago)cmbFormaPago.getSelectedItem().getValue());
@@ -464,6 +518,7 @@ public class WndFacturacionServicios extends WndBase {
 
 							if(result == Constantes.CORRECT) {
 								DlgMessage.information("La venta se registro correctamente");
+								oPasajero=null;
 								onCleanControls();
 								win.onClose();
 							}
@@ -623,7 +678,8 @@ public class WndFacturacionServicios extends WndBase {
 			}
 		});
 		cmbTipoComprobante.setWidth("110px");
-		cmbTipoComprobante.setDisabled(true);
+		//Habilitado para que cambie de tipo de comprobante entre Boleta/Factura MAOE 11/04/2024
+		cmbTipoComprobante.setDisabled(false);
 		row.appendChild(cmbTipoComprobante);
 
 		label = new Label();
@@ -632,7 +688,7 @@ public class WndFacturacionServicios extends WndBase {
 		label = new Label();
 		row.appendChild(label);
 
-		label = new Label("Nï¿½ COMPROBANTE :");
+		label = new Label("Nro COMPROBANTE :");
 		label.setStyle("color:blue; font-weight: bold;");
 		row.appendChild(label);
 
@@ -1060,13 +1116,14 @@ public class WndFacturacionServicios extends WndBase {
 					criteriosOrdenar.add("numeroDocumento");
 					lstClientes = ServiceLocator.getClienteManager().buscarPorX(criterioBusqueda, criteriosOrdenar);
 					listarCliente(lstClientes);
-//				}else if(((TipoComprobante) cmbTipoComprobante.getSelectedItem().getValue()).getId() == Constantes.ID_TIPCOM_BOLETA_VENTA) {
-//					ArrayList<Pasajero> lstPasajeros = null;
-//					criterioBusqueda.put("numeroDocumento", txtDocumento.getText().toUpperCase()+"%");
-//					List<String> criteriosOrdenar = new ArrayList<String>();
-//					criteriosOrdenar.add("numeroDocumento");
-//					lstPasajeros = ServiceLocator.getPasajeroManager().buscarPorX(criterioBusqueda, criteriosOrdenar);
-//					listarPasajero(lstPasajeros);
+					//Se descomenta este bloque para la boleta MAOE 13/04/2024
+				}else if(((TipoComprobante) cmbTipoComprobante.getSelectedItem().getValue()).getId() == Constantes.ID_TIPCOM_BOLETA_VENTA) {
+					ArrayList<Pasajero> lstPasajeros = null;
+					criterioBusqueda.put("numeroDocumento", txtDocumento.getText().toUpperCase()+"%");
+					List<String> criteriosOrdenar = new ArrayList<String>();
+					criteriosOrdenar.add("numeroDocumento");
+					lstPasajeros = ServiceLocator.getPasajeroManager().buscarPorX(criterioBusqueda, criteriosOrdenar);
+					listarPasajero(lstPasajeros);
 				}
 			}else {
 
@@ -1101,6 +1158,23 @@ public class WndFacturacionServicios extends WndBase {
 		}
 	}
 
+	private void listarPasajero(ArrayList<Pasajero> lstRegistros)throws Exception{
+
+		if(lstRegistros.size()==1){
+			Pasajero pasajero = lstRegistros.get(0);
+			txtCliente.setText(pasajero.getNombresApellidos());
+			cmbFormaPago.setFocus(true);
+			txtIdCliente.setText(pasajero.getId().toString());
+		}else{
+//			DlgMessage.information(Messages.getString("WndFacturacionServicios.information.noClienteEncontrado"));
+			String nroDni = txtDocumento.getValue();
+			onCleanControls();
+			txtDocumento.setValue(nroDni);
+			txtDocumento.select();
+			verificarPasajeroReniec();
+		}
+	}	
+	
 	public void calcularPagos() {
 		if(dbxImporte.getValue() != null) {
 			if(chkIGV.isChecked()) {

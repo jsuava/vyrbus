@@ -25,6 +25,7 @@ import com.cystesoft.vyrbus.model.bean.Ruta;
 import com.cystesoft.vyrbus.model.bean.Servicio;
 import com.cystesoft.vyrbus.model.bean.TipoComprobante;
 import com.cystesoft.vyrbus.model.bean.TipoDocumento;
+import com.cystesoft.vyrbus.model.bean.TipoFormaPago;
 import com.cystesoft.vyrbus.model.bean.TipoItinerario;
 import com.cystesoft.vyrbus.model.bean.VentaPasaje;
 import com.cystesoft.vyrbus.model.dao.ManifiestoDAO;
@@ -199,7 +200,8 @@ public class ManisfiestoDAOImpl extends GenericDAOImpl implements ManifiestoDAO 
 							"td.c_Denominacion TipDocto, v.venpas_id, "+ //13-14
 							"ap.c_nomcor as NombreCorto, v.n_numpiso, tc.tipcom_id, tc.c_Denominacion," + //15-18
 							"p.pasajero_id, fp.forpag_id, fp.c_denominacion formaPago,cv.c_nomcor canalVenta, c.c_razsoc clienteCredito, av.c_nomcor agenciaVenta, "+// 19-24
-							"r.ruta_id, td.c_nomcor nomCorTipoDocumento, ad.c_denominacion agDestino, p.c_telefono "+//25-28
+							"r.ruta_id, td.c_nomcor nomCorTipoDocumento, ad.c_denominacion agDestino, p.c_telefono, "+//25-28
+							"v.servicio_id, v.agencia_idpartida, v.itinerario_id, v.tipforpag_id, v.d_fecpar  " + //29-33
 					"FROM vrtvenpas v "+
 						"INNER JOIN (SELECT MAX(venpas_id)venpas_id, c_numcontrol " +
 									"FROM vrtvenpas WHERE itinerario_id="+idItinerario+" GROUP BY c_numcontrol) max_venta " +
@@ -251,6 +253,7 @@ public class ManisfiestoDAOImpl extends GenericDAOImpl implements ManifiestoDAO 
 			preferenciaAlimentaria.setDenominacion(obj[10]!=null?obj[10].toString():"");
 
 			Agencia agenciaPartida = new Agencia();
+			agenciaPartida.setId(((BigDecimal)obj[30]).intValue());
 			agenciaPartida.setDenominacion(obj[11].toString());
 			agenciaPartida.setNombreCorto(obj[15].toString());
 			
@@ -264,6 +267,15 @@ public class ManisfiestoDAOImpl extends GenericDAOImpl implements ManifiestoDAO 
 			FormaPago formaPago=new FormaPago();
 			formaPago.setId(((BigDecimal)obj[20]).intValue());
 			formaPago.setDenominacion(obj[21].toString());
+			
+			TipoFormaPago tipoFormaPago = new TipoFormaPago();
+			tipoFormaPago.setId(((BigDecimal)obj[32]).intValue());
+			
+			Servicio servicio = new Servicio();
+			servicio.setId(((BigDecimal)obj[29]).intValue());
+			
+			Itinerario itinerario = new Itinerario();
+			itinerario.setId(((BigDecimal)obj[31]).longValue());
 
 			CanalVenta canalVenta=new CanalVenta();
 			canalVenta.setNombreCorto(obj[22].toString());
@@ -287,6 +299,7 @@ public class ManisfiestoDAOImpl extends GenericDAOImpl implements ManifiestoDAO 
 			ventaPasaje.setRuta(ruta);
 			ventaPasaje.setPreferenciaAlimentaria(preferenciaAlimentaria);
 			ventaPasaje.setAgenciaPartida(agenciaPartida);
+			ventaPasaje.setFechaPartida(((Date)obj[33]));
 			ventaPasaje.setAgenciaLlegada(agenciaDestino);
 			ventaPasaje.setNumeroPiso(((BigDecimal)obj[16]).intValue());
 			ventaPasaje.setTipoComprobante(tipoComprobante);
@@ -294,6 +307,10 @@ public class ManisfiestoDAOImpl extends GenericDAOImpl implements ManifiestoDAO 
 			ventaPasaje.setCanalVenta(canalVenta);
 			ventaPasaje.setCliente(clienteCredito);
 			ventaPasaje.setAgencia(agenciaVenta);
+			ventaPasaje.setAgenciaPartida(agenciaPartida);
+			ventaPasaje.setServicio(servicio);
+			ventaPasaje.setItinerario(itinerario);
+			ventaPasaje.setTipoFormaPago(tipoFormaPago);
 
 			lstResult.add(ventaPasaje);
 

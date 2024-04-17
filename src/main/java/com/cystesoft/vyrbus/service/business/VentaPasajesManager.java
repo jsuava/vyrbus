@@ -14,6 +14,7 @@ import com.cystesoft.vyrbus.model.bean.TipoNota;
 import com.cystesoft.vyrbus.model.bean.TransactionOpenpay;
 import com.cystesoft.vyrbus.model.bean.Usuario;
 import com.cystesoft.vyrbus.model.bean.VentaPasaje;
+import com.cystesoft.vyrbus.service.mappers.GpsComprobante;
 import com.cystesoft.vyrbus.service.mappers.ResumenAnulacionPostergacion;
 import com.cystesoft.vyrbus.service.mappers.ResumenVentas;
 import com.cystesoft.vyrbus.service.mappers.VentasPiloto;
@@ -689,5 +690,14 @@ public interface VentaPasajesManager {
 	 * @throws Exception
 	 */
 	public Object actualizarCorrelativoComprobante(Object object, Boolean ejecutarSeqByCorrelativo) throws Exception;
+	
+	/**
+	 * Busca las ventas para el Registro de Ventas
+	 * @param fInicio	: Fecha de inicio de busqueda
+	 * @param fFin		: Fecha fin de busqueda
+	 * @return
+	 * @throws Exception
+	 */
+	public List<GpsComprobante> buscarGpsComprobante(Long idVentaPasaje) throws Exception;
 
 }

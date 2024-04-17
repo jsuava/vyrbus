@@ -59,7 +59,21 @@
                 <comment>Precio de la tarifa.</comment>
             </column>
         </property>
-        
+        <property name="fechaCreacion" type="java.util.Date">
+            <column name="D_FECCRE" length="7">
+                <comment>Fecha de creacion de la tarifa.</comment>
+            </column>
+        </property>
+        <property name="usuarioCreacion" type="java.lang.String">
+            <column name="C_USUCRE" length="30">
+                <comment>usuario que creo la tarifa.</comment>
+            </column>
+        </property>
+        <property name="ipCreacion" type="java.lang.String">
+            <column name="C_IPCREA" length="20">
+                <comment>Direccion de IP desde donde se creó la tarifa.</comment>
+            </column>
+        </property>
         
         
         <!-- 		BEGIN CAMPOS DE AUDITORIA	 	-->

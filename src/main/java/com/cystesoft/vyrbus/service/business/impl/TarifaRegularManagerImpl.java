@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.cystesoft.vyrbus.model.bean.TarifaRegular;
 import com.cystesoft.vyrbus.model.dao.TarifaRegularDAO;
 import com.cystesoft.vyrbus.service.business.TarifaRegularManager;
+import com.cystesoft.vyrbus.service.mappers.HistorialTarifa;
 import com.cystesoft.vyrbus.service.util.Constantes;
 
 /**
@@ -125,6 +126,16 @@ public class TarifaRegularManagerImpl implements TarifaRegularManager{
 		// TODO Auto-generated method stub
 		return getTarifaRegularDAO().buscarTarifasAReemplazar(canalVentaID, servicioID, origenID, destinoID,
 									piso, zona, fechaInicio, fechaFin, horaPartida, PorServicio);
+	}
+
+	/* (non-Javadoc)
+	 * @see com.cystesoft.vyrbus.service.business.TarifaRegularManager#buscarHistorialTarifa(java.lang.Integer, java.lang.Integer, java.lang.String, java.lang.String)
+	 */
+	@Override
+	public List<HistorialTarifa> buscarHistorialTarifa(Integer canalVentaID, Long tarifaID, String fechaTarifa,
+			String horaPartida) throws Exception {
+		// TODO Auto-generated method stub
+		return getTarifaRegularDAO().buscarHistorialTarifa(canalVentaID, tarifaID, fechaTarifa, horaPartida);
 	}
 
 

@@ -1542,9 +1542,9 @@ public class WndPostergacion extends WndBase implements Serializable {
 			if(!(txtItinerarioPostergado.getText().isEmpty()) && !(txtItinerarioPostergado.getText().equals(txtItinerarioActual.getText())))
 				observaciones+=(observaciones.length()>0?";POSTERGACION":"POSTERGACION");
 			if(chkCambioDestino.isChecked())
-				observaciones+=(observaciones.length()>0?";CAMBIO DESTINO":"CAMBIO DESTINO");
+				observaciones+=(observaciones.length()>0?";CAMBIO SERVICIO":"CAMBIO SERVICIO");
 			if(chkCambioServicio.isChecked())
-				observaciones+=(observaciones.length()>0?";CAMBIO SERVICIO":"CAMBIO DE SERVICIO");
+				observaciones+=(observaciones.length()>0?";CAMBIO SERVICIO":"CAMBIO SERVICIO");
 			if(chkCambioNombre.isChecked())
 				observaciones+=(observaciones.length()>0?";CAMBIO DE NOMBRE":"CAMBIO DE NOMBRE");
 			if(chkCambioRuc.isChecked())
@@ -1558,7 +1558,7 @@ public class WndPostergacion extends WndBase implements Serializable {
 			if(chkCambioFacturaBoleta.isChecked())
 				observaciones+=(observaciones.length()>0?";CAMBIO DE FACTURA A BOLETA":"CAMBIO DE FACTURA A BOLETA");
 			/*##End Begin 04/11/2016 - jabanto*/
-			//Coloca como observaciones una glosa si es un cambio de nombre o raz�n social
+			//Coloca como observaciones una glosa si es un cambio de nombre o razon social
 //			if(chkCambioNombre.isChecked())
 //				postergacion.setObservaciones("CAMBIO DE NOMBRE");
 //			if(rdCambioRuc.isChecked()){

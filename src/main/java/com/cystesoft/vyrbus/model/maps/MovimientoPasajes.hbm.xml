@@ -17,6 +17,30 @@
         <comment>Identificador unico de la entidad, tamanio de la clave primaria 18.</comment>
      </column>
   </many-to-one>  
+  
+  <many-to-one name="servicio" class="com.cystesoft.vyrbus.model.bean.Servicio">
+     <column name="SERVICIO_ID" precision="2" scale="0" not-null="true">
+        <comment>Identificador unico de la entidad, tamanio de la clave primaria 18.</comment>
+     </column>
+  </many-to-one>
+  
+    <many-to-one name="ruta" class="com.cystesoft.vyrbus.model.bean.Ruta">
+     <column name="RUTA_ID" precision="5" scale="0" not-null="true">
+        <comment>Identificador unico de la entidad, tamanio de la clave primaria 18.</comment>
+     </column>
+  </many-to-one>
+  
+    <many-to-one name="tipoFormaPago" class="com.cystesoft.vyrbus.model.bean.TipoFormaPago">
+     <column name="TIPFORPAG_ID" precision="2" scale="0" not-null="true">
+        <comment>Identificador unico de la entidad, tamanio de la clave primaria 18.</comment>
+     </column>
+  </many-to-one>  
+  
+  <many-to-one name="agenciaEmbarque" class="com.cystesoft.vyrbus.model.bean.Agencia">
+     <column name="AGENCIA_IDEMBARQUE" precision="5" scale="0" not-null="false">
+        <comment>Identificador unico de la entidad, tamanio de la clave primaria 18.</comment>
+     </column>
+  </many-to-one>
 
   <property name="operacion" type="java.lang.String">
      <column name="C_DESOPE" length="100">
@@ -26,11 +50,6 @@
   <property name="fechaOperacion" type="java.lang.String">
      <column name="C_FECOPE" length="20">
         <comment>Fecha de la operacion.</comment>
-     </column>
-  </property>
-  <property name="ruta" type="java.lang.String">
-     <column name="C_RUTA" length="60">
-        <comment>Ruta del movimiento en formato ORIGEN-DESTINO.</comment>
      </column>
   </property>
   <property name="fechaEmbarque" type="java.lang.String">
@@ -58,12 +77,7 @@
         <comment>Importe pagado por el pasaje.</comment>
      </column>
   </property>  
-  <property name="medioPago" type="java.lang.String">
-     <column name="C_MEDPAG" length="30">
-        <comment>Hora de embarque del movimiento.</comment>
-     </column>
-  </property>
-  
+    
   <!-- 		BEGIN CAMPOS DE AUDITORIA	 	-->
   <property generated="never" lazy="false" name="estadoRegistro" type="java.lang.String">
    <column length="1" name="C_ESTREG" not-null="true">

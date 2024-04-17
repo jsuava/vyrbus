@@ -292,7 +292,8 @@ public class WSFE implements Serializable{
 					notaCredito=null;
 				}else{
 					/*Envia la venta a nuestro ws*/
-					result= getSoap().setVenta(TOKEN, oventa); //comentado temporalmento - 09/09/2021 - jabanto
+					//comentado temporalmento - 05/04/2024 - maoe
+//					result= getSoap().setVenta(TOKEN, oventa); 
 				}
 				
 				/*Agrega a la lista para la impresion - 06/12/2016 - jabanto*/

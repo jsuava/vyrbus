@@ -50,6 +50,7 @@ import com.cystesoft.vyrbus.model.bean.ItinerarioAgenciaLlegada;
 import com.cystesoft.vyrbus.model.bean.ItinerarioAgenciaPartida;
 import com.cystesoft.vyrbus.model.bean.LineaCreditoCliente;
 import com.cystesoft.vyrbus.model.bean.Liquidacion;
+import com.cystesoft.vyrbus.model.bean.MovimientoPasajes;
 import com.cystesoft.vyrbus.model.bean.Nacionalidad;
 import com.cystesoft.vyrbus.model.bean.OperadorTarjetaCredito;
 import com.cystesoft.vyrbus.model.bean.Pasajero;
@@ -3074,11 +3075,30 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 										validarBloqueo = true;
 									result = ServiceLocator.getVentaPasajesManager().guardarVenta(ventaPasaje,false, false, validarBloqueo,true, false);
 									
+									MovimientoPasajes trackingIda = new MovimientoPasajes();
+									
+									trackingIda.setVentaPasaje(ventaPasaje);
+									trackingIda.setOperacion("VENTA X CONF. DE RESERVA" );
+									trackingIda.setFechaOperacion(Util.DatetoString(new Date(), "dd/MM/yyyy"));
+									trackingIda.setServicio(ventaPasaje.getServicio());
+									trackingIda.setRuta(ventaPasaje.getRuta());
+									trackingIda.setAgenciaEmbarque(ventaPasaje.getAgenciaPartida());
+									trackingIda.setFechaEmbarque(ventaPasaje.getFechaPartida()==null ? null : Util.DatetoString(ventaPasaje.getFechaPartida(), "dd/MM/yyyy"));
+									trackingIda.setHoraEmbarque( ventaPasaje.getFechaPartida()==null ? null : UtilData.obtenerHoraEmbarque( ventaPasaje.getItinerario().getId(), ventaPasaje.getAgenciaPartida().getId()));
+									trackingIda.setNumeroPiso(ventaPasaje.getFechaPartida()==null ? null : ventaPasaje.getNumeroPiso());
+									trackingIda.setNumeroAsiento(ventaPasaje.getFechaPartida()==null ? null : ventaPasaje.getNumeroAsiento());
+									trackingIda.setImportePagado(ventaPasaje.getImportePagado());
+									trackingIda.setTipoFormaPago(ventaPasaje.getTipoFormaPago());
+									trackingIda.setEstadoRegistro(Constantes.VALUE_ACTIVO);
+									UtilData.auditarRegistro(trackingIda, ventaPasaje.getUsuario(), Executions.getCurrent());
+									ServiceLocator.getMovimientoPasajesManager().guardar(trackingIda);
+									
 									//Actualiza el correlativo - jabanto - 22/01/2024
 									ServiceLocator.getVentaPasajesManager().actualizarCorrelativoComprobante(ventaPasaje, true);
 								}else{
 									//Confirmacion de F.A.
 									TipoNota tipoNotaCredito=null;
+									final Long ventaPasaje_id = (ventaPasaje.getId()!=null?ventaPasaje.getId(): null);
 //									tipoNotaCredito=ServiceLocator.getTipoNotaManager().buscarPorId((long)Constantes.ID_TIPNOTA_CREDITO_DIFERENCIA_TARIFA_FA);
 
 
@@ -3091,11 +3111,14 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 //									}
 									notaCredito = ServiceLocator.getVentaPasajesManager().confirmarFechaAbierta(ventaPasaje, tipoNotaCredito, false);
 									
-									//Actualiza el correlativo - jabanto - 22/01/2024
-									ServiceLocator.getVentaPasajesManager().actualizarCorrelativoComprobante(ventaPasaje, true);
+									if(ventaPasaje_id==null)
+										//Actualiza el correlativo - jabanto - 22/01/2024
+										ServiceLocator.getVentaPasajesManager().actualizarCorrelativoComprobante(ventaPasaje, true);
+
+									System.out.println("Los IDs son: "+(ventaPasaje_id!=null?ventaPasaje_id:"null ")+", "+ventaPasaje.getId()+", "+ventaPasaje.getVentaOriginal());
 									
 									//Actualiza el correlativo - jabanto - 22/01/2024
-									if(notaCredito !=null)
+									if(notaCredito!=null)
 										ServiceLocator.getVentaPasajesManager().actualizarCorrelativoComprobante(notaCredito, true);
 									
 									result = Constantes.CORRECT;
@@ -3113,7 +3136,7 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 											/*Begin 25/10/2016 - jabanto*/
 											List<VentaPasaje>listVentaPasaje= new ArrayList<>();
 											listVentaPasaje.add(ventaPasaje);
-											//Comentado por MAOE 05/02/2024
+											//Comentado por MAOE 05/03/2024
 											WSFE.sendVenta(listVentaPasaje, wndConfirmacion, true, notaCredito, Constantes.NUMERO_COPIAS_COMPROBANTE_PASAJES);
 						
 						

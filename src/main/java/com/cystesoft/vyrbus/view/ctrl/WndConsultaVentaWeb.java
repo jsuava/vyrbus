@@ -82,6 +82,7 @@ public class WndConsultaVentaWeb extends WndBase {
 	
 	public void onSearch() throws Exception {
 		try {
+			Util.limpiarListbox(listboxLista);
 			Listitem item=null;
 			Listcell cell=null;
 			int x=1;

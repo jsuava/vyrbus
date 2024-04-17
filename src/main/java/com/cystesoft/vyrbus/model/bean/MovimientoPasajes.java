@@ -20,15 +20,17 @@ public class MovimientoPasajes extends GenericBean implements java.io.Serializab
 	
 	private Long id;
 	  private VentaPasaje ventaPasaje;
+	  private Servicio servicio;
+	  private Ruta ruta;
+	  private TipoFormaPago tipoFormaPago;
+	  private Agencia agenciaEmbarque;
 	  private String operacion;
 	  private String fechaOperacion;
-	  private String ruta;
 	  private String fechaEmbarque;
 	  private String horaEmbarque;
-	  private int numeroPiso;
-	  private int numeroAsiento;
+	  private Integer numeroPiso;
+	  private Integer numeroAsiento;
 	  private Double importePagado;
-	  private String medioPago;
 	  
 	public Long getId() {
 		return id;
@@ -54,10 +56,10 @@ public class MovimientoPasajes extends GenericBean implements java.io.Serializab
 	public void setFechaOperacion(String fechaOperacion) {
 		this.fechaOperacion = fechaOperacion;
 	}
-	public String getRuta() {
+	public Ruta getRuta() {
 		return ruta;
 	}
-	public void setRuta(String ruta) {
+	public void setRuta(Ruta ruta) {
 		this.ruta = ruta;
 	}
 	public String getFechaEmbarque() {
@@ -72,16 +74,16 @@ public class MovimientoPasajes extends GenericBean implements java.io.Serializab
 	public void setHoraEmbarque(String horaEmbarque) {
 		this.horaEmbarque = horaEmbarque;
 	}
-	public int getNumeroPiso() {
+	public Integer getNumeroPiso() {
 		return numeroPiso;
 	}
-	public void setNumeroPiso(int piso) {
+	public void setNumeroPiso(Integer piso) {
 		this.numeroPiso = piso;
 	}
-	public int getNumeroAsiento() {
+	public Integer getNumeroAsiento() {
 		return numeroAsiento;
 	}
-	public void setNumeroAsiento(int asiento) {
+	public void setNumeroAsiento(Integer asiento) {
 		this.numeroAsiento = asiento;
 	}
 	public Double getImportePagado() {
@@ -90,13 +92,25 @@ public class MovimientoPasajes extends GenericBean implements java.io.Serializab
 	public void setImportePagado(Double importePagado) {
 		this.importePagado = importePagado;
 	}
-	public String getMedioPago() {
-		return medioPago;
+	public TipoFormaPago getTipoFormaPago() {
+		return tipoFormaPago;
 	}
-	public void setMedioPago(String medioPago) {
-		this.medioPago = medioPago;
+	public void setTipoFormaPago(TipoFormaPago medioPago) {
+		this.tipoFormaPago = medioPago;
+	}
+	public Servicio getServicio() {
+		return servicio;
+	}
+	public void setServicio(Servicio servicio) {
+		this.servicio = servicio;
+	}
+	public Agencia getAgenciaEmbarque() {
+		return agenciaEmbarque;
+	}
+	public void setAgenciaEmbarque(Agencia agenciaEmbarque) {
+		this.agenciaEmbarque = agenciaEmbarque;
 	}
 	  
-	  
+	
 
 }

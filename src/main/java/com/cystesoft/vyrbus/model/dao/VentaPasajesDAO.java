@@ -20,6 +20,7 @@ import com.cystesoft.vyrbus.model.bean.Ruta;
 import com.cystesoft.vyrbus.model.bean.TransactionOpenpay;
 import com.cystesoft.vyrbus.model.bean.Usuario;
 import com.cystesoft.vyrbus.model.bean.VentaPasaje;
+import com.cystesoft.vyrbus.service.mappers.GpsComprobante;
 import com.cystesoft.vyrbus.service.mappers.ResumenAnulacionPostergacion;
 import com.cystesoft.vyrbus.service.mappers.ResumenVentas;
 import com.cystesoft.vyrbus.service.mappers.VentasPiloto;
@@ -572,4 +573,11 @@ public interface VentaPasajesDAO extends GenericDAO {
 	 * @return
 	 */
 	public List<VentaPasaje> buscarVentasByNumeroOrden(String numorden);
+	
+	/**
+	 * Busca el GPS de un comprobante
+	 * @param idVentaPasaje	: ID de la venta de pasaje
+	 * @return
+	 */
+	public List<GpsComprobante> buscarGpsComprobante(Long idVentaPasaje);
 }

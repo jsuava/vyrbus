@@ -407,7 +407,7 @@ public class WndAnulacionDocumentos extends WndBase{
 				DlgMessage.information("Debe de seleccionar el comprobante que desea Anular");
 				return;
 			}else if (ltbxAnulacionComprobantes.getSelectedItems().size()>20){
-				DlgMessage.information("El modo Anulaciï¿½n Masiva solamente se puede aplicar a un mï¿½ximo de 20 Comprobantes");
+				DlgMessage.information("El modo Anulación Masiva solamente se puede aplicar a un máximo de 20 Comprobantes");
 				return;
 			}else if(((VentaPasaje)ltbxAnulacionComprobantes.getSelectedItem().getValue()).getTipoTransaccion().equals(Constantes.TIPO_OPERACION_PERDIDA_SERVICIO)) {
 				DlgMessage.information("No se puede anular un comprobante marcado como Perdida de Servicio.");
@@ -691,7 +691,7 @@ public class WndAnulacionDocumentos extends WndBase{
 		}else
 			buscarComprobantesByFechas();
 
-		DlgMessage.information("El Proceso de anulaciï¿½n termino correctamente");
+		DlgMessage.information("El Proceso de anulación termino correctamente");
 
 		window.onClose();
 	}

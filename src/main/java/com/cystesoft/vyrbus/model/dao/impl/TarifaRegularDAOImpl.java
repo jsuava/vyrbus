@@ -21,6 +21,7 @@ import com.cystesoft.vyrbus.model.bean.Servicio;
 import com.cystesoft.vyrbus.model.bean.Tarifa;
 import com.cystesoft.vyrbus.model.bean.TarifaRegular;
 import com.cystesoft.vyrbus.model.dao.TarifaRegularDAO;
+import com.cystesoft.vyrbus.service.mappers.HistorialTarifa;
 
 /**
  * @author Marco
@@ -168,7 +169,7 @@ public class TarifaRegularDAOImpl extends GenericDAOImpl implements TarifaRegula
 		String strSql;
 		strSql = "SELECT  " +
 			       "tr.tarreg_id, t.tarifa_id, t.canven_id, t.servicio_id, t.ruta_id, t.n_pisbus, " +
-			       "t.n_zonbus, tr.d_fectar, tr.c_horpar, tr.itinerario_id,  tr.n_monto  " +
+			       "t.n_zonbus, tr.d_fectar, tr.c_horpar, tr.itinerario_id,  tr.n_monto, tr.audfecins, tr.audusuins, tr.audipinse  " +
 					"FROM vrttarifa t " +
 					"INNER JOIN  vrttarreg tr ON (t.tarifa_id = tr.tarifa_id) " +
 					"INNER JOIN vrmruta r ON (t.ruta_id = r.ruta_id)" +
@@ -215,7 +216,9 @@ public class TarifaRegularDAOImpl extends GenericDAOImpl implements TarifaRegula
 			tarifaRegular.setHoraPartida(obj[8]!=null?obj[8].toString():null);
 //			tarifaRegular.setItinerario(obj[9]!=null? new Itinerario(((BigDecimal)obj[9]).longValue()):null);
 			tarifaRegular.setMonto(((BigDecimal)obj[10]).doubleValue());
-
+			tarifaRegular.setFechaInsercion((Date)obj[11]);
+			tarifaRegular.setUsuarioInsercion(obj[12]!=null?obj[12].toString():null);
+			tarifaRegular.setIpInsercion(obj[13]!=null?obj[13].toString():null);
 
 			lstTarifaRegular.add(tarifaRegular);
 		}
@@ -376,6 +379,65 @@ public class TarifaRegularDAOImpl extends GenericDAOImpl implements TarifaRegula
 		}
 
 		return lstTarifaRegular;
+	}
+
+	/* (non-Javadoc)
+	 * @see com.cystesoft.vyrbus.model.dao.TarifaRegularDAO#buscarHistorialTarifa(java.lang.Integer, java.lang.Integer, java.lang.String, java.lang.String, java.lang.Integer)
+	 */
+	@Override
+	public List<HistorialTarifa> buscarHistorialTarifa(Integer canalVentaID, Long tarifaID, String fechaTarifa,
+			String horaPartida) throws Exception {
+		String sql="SELECT * FROM (\r\n" + 
+				"SELECT \r\n" + 
+				"       ra.tarreg_id, decode(ra.canven_id, 1, 'COUNTER', 'WEB ONLINE') CANAL,  s.c_denominacion SERVICIO, ra.n_pisbus+1 PISO, \r\n" + 
+				"       ra.d_fectar, r.c_origen||'-'||r.c_destino RUTA, ra.c_horpar, ra.n_monto, ra.d_feccre, ra.c_usucre, ra.c_ipcrea,\r\n" + 
+				"       ra.audfecins FECHAOPE, ra.audusuins USUMOD, ra.audipinse IPMOD \r\n" + 
+				"FROM \r\n" + 
+				"       vrttarregaud ra \r\n" + 
+				"       INNER JOIN vrmservicio s on (ra.servicio_id = s.servicio_id)\r\n" + 
+				"       INNER JOIN vrmruta r on (ra.ruta_id = r.ruta_id )\r\n" + 
+				"WHERE \r\n" + 
+				"       ra.d_fectar=TO_DATE('"+fechaTarifa+"','dd/mm/yyyy')  and ra.c_horpar='"+horaPartida+"' and ra.tarifa_id = "+tarifaID+" and ra.canven_id="+canalVentaID+" \r\n" + 
+				"UNION ALL \r\n" + 
+				"SELECT \r\n" + 
+				"      tr.tarreg_id, decode(t.canven_id, 1, 'COUNTER', 'WEB ONLINE') CANAL,  s.c_denominacion SERVICIO, t.n_pisbus+1 PISO, \r\n" + 
+				"      tr.d_fectar, r.c_origen||'-'||r.c_destino RUTA, tr.c_horpar, tr.n_monto, tr.audfecins FECCRE, \r\n" + 
+				"      tr.Audusuins USUCRE, tr.audipinse IPINSE, tr.audfecins FECHAOPE, tr.audusuins USUMOD, tr.audipinse IPMOD \r\n" + 
+				"FROM \r\n" + 
+				"      vrttarreg tr INNER JOIN vrttarifa t on (tr.tarifa_id = t.tarifa_id)\r\n" + 
+				"      INNER JOIN vrmservicio s on (t.servicio_id = s.servicio_id)\r\n" + 
+				"      INNER JOIN vrmruta r on (t.ruta_id = r.ruta_id )\r\n" + 
+				"WHERE \r\n" + 
+				"      tr.d_fectar=TO_DATE('"+fechaTarifa+"','dd/mm/yyyy') and tr.c_horpar='"+horaPartida+"' and tr.tarifa_id = "+tarifaID+" and t.canven_id= "+canalVentaID+" ) TAR\r\n" + 
+				"ORDER BY \r\n" + 
+				"      TAR.tarreg_id ";
+		
+		log.info(sql);
+		List<?>result =getSession().createSQLQuery(sql).list();
+		List<HistorialTarifa> lstHistorialTarifa = new ArrayList<>();
+		HistorialTarifa historialTarifa=null;
+		for(int i=0;i<result.size();i++){
+			
+			Object[] obj = (Object[]) result.get(i);
+			historialTarifa=new HistorialTarifa();
+			historialTarifa.setId(((BigDecimal)obj[0]).longValue());
+			historialTarifa.setCanal(obj[1]!=null?obj[1].toString():null);
+			historialTarifa.setServicio(obj[2]!=null?obj[2].toString():null);
+			historialTarifa.setNumeroPiso(obj[3]!=null ? ((BigDecimal)obj[3]).intValue() : null);
+			historialTarifa.setFechaTarifa((Date)obj[4]);
+			historialTarifa.setRuta(obj[5]!=null?obj[5].toString():null);
+			historialTarifa.setHoraPartida(obj[6]!=null?obj[6].toString():null);
+			historialTarifa.setImporte(((BigDecimal)obj[7]).doubleValue());
+			historialTarifa.setFechaCreacion((Date)obj[8]);
+			historialTarifa.setUsuarioCreacion(obj[9]!=null?obj[9].toString():null);
+			historialTarifa.setIpCreacion(obj[10]!=null?obj[10].toString():null);
+			historialTarifa.setFechaOperacion((Date)obj[11]);
+			historialTarifa.setUsuarioModificacion(obj[12]!=null?obj[12].toString():null);
+			historialTarifa.setIpModificacion(obj[13]!=null?obj[13].toString():null);
+			
+			lstHistorialTarifa.add(historialTarifa);
+		}
+		return lstHistorialTarifa;
 	}
 
 }

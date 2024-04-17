@@ -45,6 +45,7 @@ import com.cystesoft.vyrbus.model.bean.TarifaRegular;
 import com.cystesoft.vyrbus.model.bean.TarifaRegularAud;
 import com.cystesoft.vyrbus.model.bean.TipoItinerario;
 import com.cystesoft.vyrbus.service.locator.ServiceLocator;
+import com.cystesoft.vyrbus.service.mappers.HistorialTarifa;
 import com.cystesoft.vyrbus.service.util.Constantes;
 import com.cystesoft.vyrbus.service.util.Messages;
 import com.cystesoft.vyrbus.service.util.Util;
@@ -72,6 +73,7 @@ public class WndTarifario extends WndBase implements Serializable {
 	private Combobox cmbTipoItinerario;
 	private Listbox lsbxRutas;
 	private Listbox lsbxTarifaFA;
+	private Listbox lsbxHistorialTarifa;
 //
 	private Combobox cmbCanal;
 	private Combobox cmbServicio;
@@ -89,6 +91,7 @@ public class WndTarifario extends WndBase implements Serializable {
 
 	private Tab tabTarifa;
 	private Tab tabTarifaFA;
+	private Tab tabHistorial;
 //	private Button btnAplicar;
 
 	private Doublebox dlbxTarifaP1;
@@ -130,6 +133,7 @@ public class WndTarifario extends WndBase implements Serializable {
 		// TODO Auto-generated method stub
 		tabTarifa = (Tab)this.getFellow("tabTarifa");
 		tabTarifaFA = (Tab)this.getFellow("tabTarifaFA");
+		tabHistorial = (Tab)this.getFellow("tabHistorial");
 
 		cmbCanalBus=(Combobox)this.getFellow("cmbCanalBus");
 		cmbServicioBus=(Combobox)this.getFellow("cmbServicioBus");
@@ -146,6 +150,7 @@ public class WndTarifario extends WndBase implements Serializable {
 		dtbxFecFinal=(Datebox)this.getFellow("dtbxFecFinal");
 		lsbxRutas=(Listbox)this.getFellow("lsbxRutas");
 		lsbxTarifaFA = (Listbox)this.getFellow("lsbxTarifaFA");
+		lsbxHistorialTarifa = (Listbox)this.getFellow("lsbxHistorialTarifa");
 		rdAmbos = (Radio)this.getFellow("rdAmbos");
 		rdSinTarifa = (Radio)this.getFellow("rdSinTarifa");
 		rdConTarifa = (Radio)this.getFellow("rdConTarifa");
@@ -499,6 +504,7 @@ public class WndTarifario extends WndBase implements Serializable {
 		onClick_btnCancelar();
 		if(chkTarifaFA.isChecked()){
 			tabTarifa.setVisible(false);
+			tabHistorial.setVisible(false);
 			tabTarifaFA.setVisible(true);
 			tabTarifa.setSelected(false);
 			tabTarifaFA.setSelected(true);
@@ -506,6 +512,7 @@ public class WndTarifario extends WndBase implements Serializable {
 		else{
 			tabTarifa.setVisible(true);
 			tabTarifaFA.setVisible(false);
+			tabHistorial.setVisible(false);
 			tabTarifa.setSelected(true);
 			tabTarifaFA.setSelected(false);
 
@@ -513,6 +520,7 @@ public class WndTarifario extends WndBase implements Serializable {
 		}
 		Util.limpiarListbox(lsbxRutas);
 		Util.limpiarListbox(lsbxTarifaFA);
+		Util.limpiarListbox(lsbxHistorialTarifa);
 	}
 
 	public void habilitarPisoUno(boolean estado){
@@ -573,6 +581,7 @@ public class WndTarifario extends WndBase implements Serializable {
 		dlbxTarifaFa.setVisible(false);
 
 		tabTarifaFA.setVisible(false);
+		tabHistorial.setVisible(false);
 
 //		cmbTipoServicio.setSelectedIndex(0);
 	}
@@ -714,6 +723,11 @@ public class WndTarifario extends WndBase implements Serializable {
 	public void buscar() throws Exception{
 		if(!chkTarifaFA.isChecked()){
 			Util.limpiarListbox(lsbxRutas);
+			Util.limpiarListbox(lsbxHistorialTarifa);
+			tabHistorial.setVisible(false);
+			tabTarifa.setSelected(true);
+			
+			
 			Integer idCanalVenta=null;
 			Integer idOrigen=null;
 			Integer idDestino=null;
@@ -723,6 +737,7 @@ public class WndTarifario extends WndBase implements Serializable {
 			String horaPartida=null;
 			Integer con_o_sin_tarifa=null;
 
+			
 
 			strFechaInicioBus = Constantes.FORMAT_DATE.format(dtbxFecInicioBus.getValue());
 			strFechaFinBus = Constantes.FORMAT_DATE.format(dtbxFecFinBus.getValue());
@@ -1149,6 +1164,9 @@ public class WndTarifario extends WndBase implements Serializable {
 															tarifaRegularAud.setPisoBus(otarifaRegular.getTarifa().getPisoBus());
 															tarifaRegularAud.setZonaBus(otarifaRegular.getTarifa().getZonaBus());
 															tarifaRegularAud.setMonto(otarifaRegular.getMonto());
+															tarifaRegularAud.setFechaCreacion(otarifaRegular.getFechaInsercion());
+															tarifaRegularAud.setUsuarioCreacion(otarifaRegular.getUsuarioInsercion());
+															tarifaRegularAud.setIpCreacion(otarifaRegular.getIpInsercion());
 															tarifaRegularAud.setEstadoRegistro(Constantes.VALUE_ACTIVO);
 															UtilData.auditarRegistro(tarifaRegularAud, getUsuario(), Executions.getCurrent());
 															ServiceLocator.getTarifaRegularAudManager().guardar(tarifaRegularAud);
@@ -1343,6 +1361,9 @@ public class WndTarifario extends WndBase implements Serializable {
 															tarifaRegularAud.setPisoBus(otarifaRegular.getTarifa().getPisoBus());
 															tarifaRegularAud.setZonaBus(otarifaRegular.getTarifa().getZonaBus());
 															tarifaRegularAud.setMonto(otarifaRegular.getMonto());
+															tarifaRegularAud.setFechaCreacion(otarifaRegular.getFechaInsercion());
+															tarifaRegularAud.setUsuarioCreacion(otarifaRegular.getUsuarioInsercion());
+															tarifaRegularAud.setIpCreacion(otarifaRegular.getIpInsercion());
 															tarifaRegularAud.setEstadoRegistro(Constantes.VALUE_ACTIVO);
 															UtilData.auditarRegistro(tarifaRegularAud, getUsuario(), Executions.getCurrent());
 															ServiceLocator.getTarifaRegularAudManager().guardar(tarifaRegularAud);
@@ -1610,7 +1631,114 @@ public class WndTarifario extends WndBase implements Serializable {
 //		 dlbxTarifa.setFocus(true);
 
 	}
+	public void buscarHistorial() throws Exception{
+		
+		//El boton Buscar Tarifa, oculta el tab del historial y limpia la lista del historial
+		
+		
+		if(!chkTarifaFA.isChecked()){
+			//Validar que haya algo en la lista
+			if(lsbxRutas.getItemCount()>0){
+				
+				TarifaRegular tarifaRegular = null;
+//				CanalVenta canalVenta = null;
+				try {
+					//canalVenta = ((TarifaRegular)lsbxRutas.getSelectedItem().getValue()).getTarifa().getCanalVenta();
+					tarifaRegular = ((TarifaRegular)lsbxRutas.getSelectedItem().getValue());
+//					canalVenta = tarifaRegular.getTarifa().getCanalVenta();
+					
+				} catch (Exception e) {
+					System.out.println(tarifaRegular);
+				}
+				
+				//Validar que se haya seleccionado alguna tarifa
+				if (tarifaRegular!=null){
+					//Valida que lo seleccionado tenga tarifa creada
+					if(tarifaRegular.getMonto()>0) {
+						
+						//Busca el historial de la tarifa y muestra el tab del historial 
+						List<HistorialTarifa> lstHistorialTarifa = ServiceLocator.getTarifaRegularManager().buscarHistorialTarifa(
+																							tarifaRegular.getTarifa().getCanalVenta().getId(), 
+																							tarifaRegular.getTarifa().getId(), 
+																							Util.DatetoString(tarifaRegular.getFechaTarifa(), Constantes.DATE_FORMAT), 
+																							tarifaRegular.getHoraPartida());
+						
+						Listitem item=null;
+						Listcell cell=null;
+						
+						for(HistorialTarifa historialTarifa:lstHistorialTarifa) {
+							
+							item = new Listitem();
+							cell= new Listcell(historialTarifa.getId().toString());
+							item.appendChild(cell);
+							
+							cell = new Listcell(historialTarifa.getCanal());
+							item.appendChild(cell);
+							
+							cell = new Listcell(historialTarifa.getServicio());
+							item.appendChild(cell);
+							
+							cell = new Listcell(historialTarifa.getRuta());
+							item.appendChild(cell);
+							
+							cell = new Listcell(historialTarifa.getNumeroPiso().toString());
+							item.appendChild(cell);
+							
+							cell = new Listcell(Util.DatetoString(historialTarifa.getFechaTarifa(), Constantes.DATE_FORMAT));
+							item.appendChild(cell);
+							
+							cell = new Listcell(historialTarifa.getHoraPartida());
+							item.appendChild(cell);
+							
+							cell = new Listcell(Util.toNumberFormat(historialTarifa.getImporte(), 2));
+							item.appendChild(cell);
+							
+							cell = new Listcell(historialTarifa.getFechaCreacion()==null ? "" : Util.DatetoString(historialTarifa.getFechaCreacion(), Constantes.DATE_TIME_SHORT_FORMAT));
+							item.appendChild(cell);
+							
+							cell = new Listcell(historialTarifa.getUsuarioCreacion());
+							item.appendChild(cell);
+							
+//							cell = new Listcell(historialTarifa.getIpCreacion());
+//							item.appendChild(cell);
+							
+							cell = new Listcell(Util.DatetoString(historialTarifa.getFechaOperacion(), Constantes.DATE_TIME_SHORT_FORMAT));
+							item.appendChild(cell);
+							
+							cell = new Listcell(historialTarifa.getUsuarioModificacion());
+							item.appendChild(cell);
+							
+//							cell = new Listcell(historialTarifa.getIpModificacion());
+//							item.appendChild(cell);
+							
+							item.setValue(historialTarifa);
+							lsbxHistorialTarifa.appendChild(item);
+							
+						}
+						
+						//Seleccionar el tab y mostrarlo
+						tabHistorial.setVisible(true);
+						tabHistorial.setSelected(true);
+						
+//						System.out.println(tarifaRegular);
+					}else {
+						DlgMessage.information("El elemento seleccionado no tiene tarifa creada.");
+					}
+				}else{
+					DlgMessage.information("Debe seleccionar un elemento de la lista.");
+				}
+			}else{
+				DlgMessage.information("La lista de tarifas esta vacía.");
+			}
+			
+		}
+		
+		
+		
 
+		
+	}
+	
 
 
 }

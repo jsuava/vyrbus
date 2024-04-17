@@ -11,6 +11,7 @@ package com.cystesoft.vyrbus.model.dao;
 import java.util.List;
 
 import com.cystesoft.vyrbus.model.bean.TarifaRegular;
+import com.cystesoft.vyrbus.service.mappers.HistorialTarifa;
 
 /**
  * @author Marco
@@ -60,5 +61,11 @@ public interface TarifaRegularDAO extends GenericDAO {
 			String fechaFin,
 			String horaPartida,
 			Integer PorServicio)throws Exception;
+	
+	public List<HistorialTarifa> buscarHistorialTarifa(Integer canalVentaID,
+			Long tarifaID,
+			String fechaTarifa,
+			String horaPartida)throws Exception;
+
 
 }

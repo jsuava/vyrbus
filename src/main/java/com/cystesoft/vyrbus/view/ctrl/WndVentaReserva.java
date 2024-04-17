@@ -6377,13 +6377,15 @@ public class WndVentaReserva extends WndBase {
 								trackingIda.setVentaPasaje(ventaPasaje);
 								trackingIda.setOperacion("VENTA");
 								trackingIda.setFechaOperacion( Util.DatetoString(new Date(), "dd/MM/yyyy") );
-								trackingIda.setRuta( ventaPasaje.getRuta().getOrigen()+"-"+ventaPasaje.getRuta().getDestino() );
+								trackingIda.setServicio(ventaPasaje.getServicio());
+								trackingIda.setRuta( ventaPasaje.getRuta() );
+								trackingIda.setAgenciaEmbarque(ventaPasaje.getAgenciaPartida());
 								trackingIda.setFechaEmbarque( Util.DatetoString(ventaPasaje.getFechaPartida(), "dd/MM/yyyy") );
 								trackingIda.setHoraEmbarque( UtilData.obtenerHoraEmbarque( ventaPasaje.getItinerario().getId(), ventaPasaje.getAgenciaPartida().getId()) );
 								trackingIda.setNumeroPiso(ventaPasaje.getNumeroPiso());
 								trackingIda.setNumeroAsiento(ventaPasaje.getNumeroAsiento());
 								trackingIda.setImportePagado(ventaPasaje.getImportePagado());
-								trackingIda.setMedioPago(ventaPasaje.getTipoFormaPago().getDenominacion());
+								trackingIda.setTipoFormaPago(ventaPasaje.getTipoFormaPago());
 								trackingIda.setEstadoRegistro(Constantes.VALUE_ACTIVO);
 								UtilData.auditarRegistro(trackingIda, getUsuario(), Executions.getCurrent());
 								ServiceLocator.getMovimientoPasajesManager().guardar(trackingIda);								
@@ -6401,7 +6403,7 @@ public class WndVentaReserva extends WndBase {
 										//Aqui se envia el comprobante al servidor de Facturación Electrónica
 										//Comentado temporalmente por MAOE, venta de ida
 										//05/02/2024
-//										WSFE.sendVenta(listVentaPasajes,wndVentaReserva,printComprobante,null, Constantes.NUMERO_COPIAS_COMPROBANTE_PASAJES);
+										WSFE.sendVenta(listVentaPasajes,wndVentaReserva,printComprobante,null, Constantes.NUMERO_COPIAS_COMPROBANTE_PASAJES);
 									}
 
 
@@ -6588,13 +6590,15 @@ public class WndVentaReserva extends WndBase {
 									trackingIda.setVentaPasaje(ventaPasajeIDA);
 									trackingIda.setOperacion("VENTA");
 									trackingIda.setFechaOperacion(Util.DatetoString(new Date(), "dd/MM/yyyy"));
-									trackingIda.setRuta(ventaPasajeIDA.getRuta().getOrigen()+"-"+ventaPasajeIDA.getRuta().getDestino());
+									trackingIda.setServicio(ventaPasajeIDA.getServicio());
+									trackingIda.setRuta(ventaPasajeIDA.getRuta());
+									trackingIda.setAgenciaEmbarque(ventaPasajeIDA.getAgenciaPartida());
 									trackingIda.setFechaEmbarque(Util.DatetoString(ventaPasajeIDA.getFechaPartida(), "dd/MM/yyyy"));
 									trackingIda.setHoraEmbarque( UtilData.obtenerHoraEmbarque( ventaPasajeIDA.getItinerario().getId(), ventaPasajeIDA.getAgenciaPartida().getId()));
 									trackingIda.setNumeroPiso(ventaPasajeIDA.getNumeroPiso());
 									trackingIda.setNumeroAsiento(ventaPasajeIDA.getNumeroAsiento());
 									trackingIda.setImportePagado(ventaPasajeIDA.getImportePagado());
-									trackingIda.setMedioPago(ventaPasajeIDA.getTipoFormaPago().getDenominacion());
+									trackingIda.setTipoFormaPago(ventaPasajeIDA.getTipoFormaPago());
 									trackingIda.setEstadoRegistro(Constantes.VALUE_ACTIVO);
 									UtilData.auditarRegistro(trackingIda, getUsuario(), Executions.getCurrent());
 									ServiceLocator.getMovimientoPasajesManager().guardar(trackingIda);
@@ -6602,13 +6606,15 @@ public class WndVentaReserva extends WndBase {
 									trackingRet.setVentaPasaje(ventaPasajeRETORNO);
 									trackingRet.setOperacion("VENTA");
 									trackingRet.setFechaOperacion(Util.DatetoString(new Date(), "dd/MM/yyyy"));
-									trackingRet.setRuta(ventaPasajeRETORNO.getRuta().getOrigen()+"-"+ventaPasajeRETORNO.getRuta().getDestino());
+									trackingRet.setServicio(ventaPasajeRETORNO.getServicio());
+									trackingRet.setRuta(ventaPasajeRETORNO.getRuta());
+									trackingRet.setAgenciaEmbarque(ventaPasajeRETORNO.getAgenciaPartida());
 									trackingRet.setFechaEmbarque(Util.DatetoString(ventaPasajeRETORNO.getFechaPartida(), "dd/MM/yyyy"));
 									trackingRet.setHoraEmbarque( UtilData.obtenerHoraEmbarque( ventaPasajeRETORNO.getItinerario().getId(), ventaPasajeRETORNO.getAgenciaPartida().getId()));
 									trackingRet.setNumeroPiso(ventaPasajeRETORNO.getNumeroPiso());
 									trackingRet.setNumeroAsiento(ventaPasajeRETORNO.getNumeroAsiento());
 									trackingRet.setImportePagado(ventaPasajeRETORNO.getImportePagado());
-									trackingRet.setMedioPago(ventaPasajeRETORNO.getTipoFormaPago().getDenominacion());
+									trackingRet.setTipoFormaPago(ventaPasajeRETORNO.getTipoFormaPago());
 									trackingRet.setEstadoRegistro(Constantes.VALUE_ACTIVO);
 									UtilData.auditarRegistro(trackingRet, getUsuario(), Executions.getCurrent());
 									ServiceLocator.getMovimientoPasajesManager().guardar(trackingRet);
@@ -6620,7 +6626,7 @@ public class WndVentaReserva extends WndBase {
 
 									//Comentado temporalmente por MAOE
 									//19/02/2024
-//									WSFE.sendVenta(ventasIdaRetorno, wndVentaReserva, true,null, Constantes.NUMERO_COPIAS_COMPROBANTE_PASAJES);
+									WSFE.sendVenta(ventasIdaRetorno, wndVentaReserva, true,null, Constantes.NUMERO_COPIAS_COMPROBANTE_PASAJES);
 
 									/*End Begin 24/10/2016 - jabanto*/
 //									/*Implementacion para el nueno formato 01/02/2016 - jabanto */
