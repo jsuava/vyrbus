@@ -71,7 +71,7 @@ public interface VentaPasajesDAO extends GenericDAO {
 	 * @return Lista de reservas
 	 * @throws Exception
 	 */
-	public List<VentaPasaje> buscarReservasPorConfirmar(Integer idOrigen, Integer idDestino, String[] pasajero, String numeroDocumento, String numeroBoleto, String fechaPartida, Integer idAgencia)throws Exception;
+	public List<VentaPasaje> buscarReservasPorConfirmar(Integer idOrigen, Integer idDestino, String[] pasajero, String numeroDocumento, String numeroBoleto, String fechaPartida, Integer idAgencia, Long ventaPasajeId)throws Exception;
 	/**
 	 * Busca la venta por su ID.
 	 * @param idVenta	: Identificador de la venta.

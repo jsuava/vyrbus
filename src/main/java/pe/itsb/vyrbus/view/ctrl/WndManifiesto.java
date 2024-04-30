@@ -2217,12 +2217,12 @@ public class WndManifiesto extends WndBase {
 		Row row = new Row();
 		Radiogroup radiogroup = new Radiogroup();
 		radiogroup.setOrient("vertical");
-		final Radio rdPrintLasert = new Radio("Impresi�n Laser");
+		final Radio rdPrintLasert = new Radio("Impresión Laser");
 //		rdPrintLasert.setDisabled(configuracionImpresora==null);
 		radiogroup.appendChild(rdPrintLasert);
 		Separator separator = new Separator("horizontal");
 		radiogroup.appendChild(separator);
-		final Radio rdPrintMatricial = new Radio("Impresi�n Matricial");
+		final Radio rdPrintMatricial = new Radio("Impresión Matricial");
 		rdPrintMatricial.setChecked(rdPrintLasert.isDisabled());
 		radiogroup.appendChild(rdPrintMatricial);
 		separator = new Separator("horizontal");

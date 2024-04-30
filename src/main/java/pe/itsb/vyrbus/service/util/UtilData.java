@@ -13,6 +13,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.TreeMap;
 
+import org.springframework.transaction.annotation.Transactional;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Execution;
 import org.zkoss.zk.ui.Executions;

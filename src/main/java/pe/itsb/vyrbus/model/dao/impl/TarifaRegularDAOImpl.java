@@ -39,19 +39,19 @@ public class TarifaRegularDAOImpl extends GenericDAOImpl implements TarifaRegula
 	 * @see pe.itsb.vyrbus.model.dao.TarifaRegularDao#buscarPorServicio(java.lang.Integer, java.lang.Integer, java.lang.Integer, java.util.Date)
 	 */
 	@Override
-	public List<TarifaRegular> buscarTarifaPorServicio(Integer canalVentaID, Integer servicioID, Integer rutaID, String fechaTarifa, String horaPartida, Integer piso, Integer zona) throws Exception {
-		return buscarTarifa(canalVentaID, servicioID, rutaID, fechaTarifa, horaPartida, piso, zona);
+	public List<TarifaRegular> buscarTarifaPorServicio(Integer canalVentaID, Integer servicioID, Integer rutaID, String fechaTarifa, String horaPartida, Integer piso, Integer zona, Integer empresaID) throws Exception {
+		return buscarTarifa(canalVentaID, servicioID, rutaID, fechaTarifa, horaPartida, piso, zona, empresaID);
 	}
 
-	private List<TarifaRegular> buscarTarifa(Integer canalVentaID, Integer servicioID, Integer rutaID, String fechaTarifa, String horaPartida, Integer piso, Integer zona){
+	private List<TarifaRegular> buscarTarifa(Integer canalVentaID, Integer servicioID, Integer rutaID, String fechaTarifa, String horaPartida, Integer piso, Integer zona, Integer empresaID){
 		String sql = "SELECT "
 					+ "tr.tarreg_id, ta.tarifa_id, ta.canven_id, ta.servicio_id, ta.ruta_id, ta.n_pisbus, "
 					+ "ta.n_zonbus, tr.d_fectar, tr.c_horpar, tr.itinerario_id,  tr.n_monto "
 					+ "FROM vrttarifa ta inner join vrttarreg tr on (ta.tarifa_id = tr.tarifa_id) "
 					+ "WHERE ta.canven_id= " + canalVentaID + " AND ta.servicio_id = " + servicioID + " AND ta.ruta_id= " + rutaID + " "
 					+ "AND tr.d_fectar = to_date('" + fechaTarifa + "', 'dd/mm/yyyy') "
-					+ "AND tr.c_horpar = '" + horaPartida + "' " ;
-
+					+ "AND tr.c_horpar = '" + horaPartida + "' "
+					+ "AND ta.empresa_id="+ empresaID + " ";
 		if(piso!=null && zona!=null)
 			sql += "AND ta.n_pisbus=" + piso + " AND ta.n_zonbus=" + zona + " ";
 		sql += "AND ta.c_estreg='A' AND tr.c_estreg='A'";

@@ -44,7 +44,7 @@ public interface VentaPasajesManager {
 	 * @return
 	 * @throws Exception
 	 */
-	public int guardarVenta(List<VentaPasaje> lstVentas) throws Exception;
+	public int guardarVenta(List<VentaPasaje> lstVentas, Boolean ejecutarSeqByCorrelativo) throws Exception;
 	
 	/**
 	 * Realiza la busqueda de las ventas para el armado del mapa del bus.
@@ -82,7 +82,7 @@ public interface VentaPasajesManager {
 	 * @return Lista de reservas
 	 * @throws Exception
 	 */
-	public List<VentaPasaje> buscarReservasPorConfirmar(Integer idOrigen, Integer idDestino, String[] pasajero, String numeroDocumento, String numeroBoleto, String fechaPartida, Integer idAgencia)throws Exception;
+	public List<VentaPasaje> buscarReservasPorConfirmar(Integer idOrigen, Integer idDestino, String[] pasajero, String numeroDocumento, String numeroBoleto, String fechaPartida, Integer idAgencia, Long ventaPasajeId)throws Exception;
 	/**
 	 * Realiza la busqueda de las ventas a Fecha Abierta.
 	 * @param idOrigen		: Identificador del origen.
@@ -137,7 +137,7 @@ public interface VentaPasajesManager {
 	 * @return	: -1=Fallo, 1=Exito.
 	 * @throws Exception
 	 */
-	public VentaPasaje confirmarFechaAbierta(VentaPasaje ventaPasaje, TipoNota tipoNotaCredito )throws Exception;
+	public VentaPasaje confirmarFechaAbierta(VentaPasaje ventaPasaje, TipoNota tipoNotaCredito, Boolean ejecutarSeqByCorrelativo)throws Exception;
 	/**
 	 * Realiza la busqueda de las ventas.
 	 * @param idOrigen			: Identificador del Origen.
@@ -165,7 +165,7 @@ public interface VentaPasajesManager {
 	 * @return
 	 * @throws Exception
 	 */
-	public List<VentaPasaje> postergarBoleto(List<VentaPasaje> boletosPostergar,Boolean validaBloqueo)throws Exception;
+	public List<VentaPasaje> postergarBoleto(List<VentaPasaje> boletosPostergar,Boolean validaBloqueo, Boolean ejecutarSeqByCorrelativo)throws Exception;
 	/**
 	 * Realiza la reimpresion de un boleto por perdida o deterioro
 	 * @param ventaOriginal		: Venta original sin ninguna modificaci�n mas que el Tipo de Movimiento.
@@ -681,5 +681,12 @@ public interface VentaPasajesManager {
 	 * @param motivo	: Motivo de la postergacion.
 	 * @param usuario 	: Usuario que realiza la postergacion.
 	 */
-	public Integer postergarFAMasivo(List<VentaPasaje> lstVentas, String motivo, String usuario) throws Exception;
+	public Integer postergarFAMasivo(List<VentaPasaje> lstVentas, String motivo, String usuario) throws Exception;/* Realiza la actualizaciÃ³n del correlativo al comprobante de venta
+	 
+	 * @param VentaPasaje: Instancia del comprobante que se va a actualizar.
+	 * @return Indca si la actualización fue o no exitosa.
+	 * @param ejecutarSeqByCorrelativo : Indica si debe  no ejecutar el sequenciador para generar el correlativo
+	 * @throws Exception
+	 */
+	public void actualizarCorrelativoComprobante(Object object, Boolean ejecutarSeqByCorrelativo) throws Exception;
 }

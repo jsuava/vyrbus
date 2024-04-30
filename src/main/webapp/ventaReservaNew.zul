@@ -5,69 +5,135 @@
 	  height: 46vh;
       overflow: auto;
     }   
-   </style>
+</style>
 <window id="wndVentaReservaNew" title="" border="none" width="970px" use="pe.itsb.vyrbus.view.ctrl.WndVentaReservaNew">
 	<div id="divPaso_1">	
 		<groupbox mold="3d" closable="false" style="overflow:auto">
 			<caption label="RUTA" style="color: #ffffff;"/>
-			<grid style="border:none">
-				<columns>
-					<column width="335px"/>
-					<column width="10px" align="center"/> 
-					<column width="240px"/>					
-					<column width="240px"/>
-					<column width="130px" align="center"/>
-					<column/>			
-				</columns>
-				<rows>
-					<row>
-						<hbox align="center">
-							<vbox align="center">
+			<hbox align="top">
+				<grid width="190px" style="border-left:none;border-top:none;border-bottom:none;margin-top:-4px;">
+					<rows>		
+						<row>
+							<separator height="1px" />
+						</row>			
+						<row>
+							<vbox align="start">
 								<hbox align="center">
 									<textbox id="txtBusqBy" onFocus="self.select();" style="font-size:13px !important" width="135px" placeholder="DNI/COMPROBANTE" />
 									<button id="btnBusqBy" autodisable="self" image="/resources/mp_buscarEnabled.png" style="margin-left:2px" />
-								</hbox>								
+								</hbox>
+								<separator width="100%" height="1px" style="border-top:1px solid" />				
 								<grid width="180px">
-									<columns><column/></columns>
-									<auxhead >
-										<auxheader label="TIPO OPERACIÓN"/>
-									</auxhead>
+									<columns><column label="TIPO OPERACION"/></columns>
 									<rows>
 										<row style="padding: 10px">
-											<radiogroup> 
-												<radio id="rdBusqIda" label="IDA" checked="true" />
+											<radiogroup>												 
+												<radio id="rdBusqIda" label="IDA" checked="true" style="color:blue"/>
 												<separator orient="vertical" width="15px"/>
-												<radio id="rdBusqIdaVuelta" label="IDA Y VUELTA" />
+												<radio id="rdBusqIdaVuelta" label="IDA Y VUELTA" style="color:blue"/>
+												<separator/>
+												<checkbox id="chbxBusqConfirmaconFA" label="CONFIRMACION F.A." disabled="true"/>
 											</radiogroup>		
 										</row>
 									</rows>
-								</grid>								
-								<separator height="7px"/>
-								<combobox id="cmbBusqOrigen" placeholder="ORIGEN" width="99%"  autocomplete="true" autodrop="true" tooltiptext="Origen"/>						
+								</grid>																
+								<separator height="2px"/>
+								<combobox id="cmbBusqOrigen" style="font-size:13px !important;font-weight:bold" placeholder="ORIGEN" width="92%" onFocus="self.select();"  autocomplete="true" autodrop="true" tooltiptext="Origen"/>						
 							</vbox>
-							<separator/>
-							<listbox id="ltbxBusqDestinos" height="140px" width="140px" tooltiptext="Destino"/>							
-						</hbox>	
-						<separator orient="vertical" />					
-						<vbox>
-							<label value="FECHA DE IDA" sclass="label-size11" />
-							<calendar id="clrBusqIda"/>
-						</vbox>
-						<vbox id="vboxCalendarVuelta">
-							<label value="FECHA DE VUELTA" sclass="label-size11" />
-							<calendar id="clrBusqIdaVuelta"/>
-						</vbox>
-						<vbox align="center">
-							<button id="btnBuscar" sclass="btnCommandM" width="120px" height="32px" autodisable="self" label="Buscar" image="/resources/mp_buscarEnabled.png" />
-							<separator height="1px"/>
-							<button id="btnBusqCancelar" sclass="btnCommandM" width="120px" height="32px" autodisable="self" label="Cancelar" image="resources/mp_cancelarEnabled.png" />
-							<separator height="1px"/>
-							<button id="btnBusqCerrar" onClick="wndVentaReservaNew.closeTabWindow();" sclass="btnCommandM" width="120px" height="32px" autodisable="self" label="Cerrar" image="resources/mp_cerrar.png" />
-						</vbox>
-						<separator/>
-					</row>
-				</rows>
-			</grid>
+						</row>					
+					</rows>				
+				</grid>
+				<grid width="149px" style="border-left:none;border-top:none;border-bottom:none;margin-top:-4px;">
+					<rows>
+						<row>
+							<listbox id="ltbxBusqDestinos" height="151px" width="140px" tooltiptext="Destino"/>
+						</row>
+					</rows>
+				</grid>
+				<grid width="478px" style="border-left:none;border-top:none;border-bottom:none;margin-top:-4px;">
+					<rows>
+						<row>
+							<vbox>
+								<label value="FECHA DE IDA" sclass="label-size11" />
+								<calendar id="clrBusqIda" height="133px"/>
+							</vbox>
+							<vbox id="vboxCalendarVuelta">
+								<label value="FECHA DE VUELTA" sclass="label-size11" />
+								<calendar id="clrBusqIdaVuelta" height="133px"/>
+							</vbox>
+						</row>
+					</rows>
+				</grid>
+				<grid style="border:none;;margin-top:-4px;">
+					<rows>
+						<row>
+							<vbox align="center" style="padding-top:22px">
+								<button id="btnBuscar" sclass="btnCommandM" width="120px" height="32px" autodisable="self" label="Buscar" image="/resources/mp_buscarEnabled.png" />
+								<separator height="1px"/>
+								<button id="btnBusqCancelar" sclass="btnCommandM" width="120px" height="32px" autodisable="self" label="Cancelar" image="resources/mp_cancelarEnabled.png" />
+								<separator height="1px"/>
+								<button id="btnBusqCerrar" onClick="wndVentaReservaNew.closeTabWindow();" sclass="btnCommandM" width="120px" height="32px" autodisable="self" label="Cerrar" image="resources/mp_cerrar.png" />
+							</vbox>
+						</row>
+					</rows>
+				</grid>
+			</hbox>
+<!-- 			<grid style="border:none"> -->
+<!-- 				<columns> -->
+<!-- 					<column width="335px"/> -->
+<!-- 					<column width="10px" align="center"/>  -->
+<!-- 					<column width="240px"/>					 -->
+<!-- 					<column width="240px"/> -->
+<!-- 					<column width="130px" align="center"/> -->
+<!-- 					<column/>			 -->
+<!-- 				</columns> -->
+<!-- 				<rows> -->
+<!-- 					<row> -->
+<!-- 						<hbox align="center"> -->
+<!-- 							<vbox align="center"> -->
+<!-- 								<hbox align="center"> -->
+<!-- 									<textbox id="txtBusqBy" onFocus="self.select();" style="font-size:13px !important" width="135px" placeholder="DNI/COMPROBANTE" /> -->
+<!-- 									<button id="btnBusqBy" autodisable="self" image="/resources/mp_buscarEnabled.png" style="margin-left:2px" /> -->
+<!-- 								</hbox>								 -->
+<!-- 								<grid width="180px"> -->
+<!-- 									<columns><column label="TIPO OPERACION"/></columns> -->
+<!-- 									<rows> -->
+<!-- 										<row style="padding: 10px"> -->
+<!-- 											<radiogroup>  -->
+<!-- 												<radio id="rdBusqIda" label="IDA" checked="true" /> -->
+<!-- 												<separator orient="vertical" width="15px"/> -->
+<!-- 												<radio id="rdBusqIdaVuelta" label="IDA Y VUELTA" /> -->
+<!-- 											</radiogroup>		 -->
+<!-- 										</row> -->
+<!-- 									</rows> -->
+<!-- 								</grid>								 -->
+<!-- 								<separator height="7px"/> -->
+<!-- 								<combobox id="cmbBusqOrigen" placeholder="ORIGEN" width="99%"  autocomplete="true" autodrop="true" tooltiptext="Origen"/>						 -->
+<!-- 							</vbox> -->
+<!-- 							<separator width="2px"/> -->
+<!-- 							<separator style="border-left:1px solid; " height="140px" width="2px" orient="vertical"/> -->
+<!-- 							<listbox id="ltbxBusqDestinos" height="140px" width="140px" tooltiptext="Destino"/>							 -->
+<!-- 						</hbox>	 -->
+<!-- 						<separator orient="vertical" />					 -->
+<!-- 						<vbox> -->
+<!-- 							<label value="FECHA DE IDA" sclass="label-size11" /> -->
+<!-- 							<calendar id="clrBusqIda"/> -->
+<!-- 						</vbox> -->
+<!-- 						<vbox id="vboxCalendarVuelta"> -->
+<!-- 							<label value="FECHA DE VUELTA" sclass="label-size11" /> -->
+<!-- 							<calendar id="clrBusqIdaVuelta"/> -->
+<!-- 						</vbox> -->
+<!-- 						<vbox align="center"> -->
+<!-- 							<button id="btnBuscar" sclass="btnCommandM" width="120px" height="32px" autodisable="self" label="Buscar" image="/resources/mp_buscarEnabled.png" /> -->
+<!-- 							<separator height="1px"/> -->
+<!-- 							<button id="btnBusqCancelar" sclass="btnCommandM" width="120px" height="32px" autodisable="self" label="Cancelar" image="resources/mp_cancelarEnabled.png" /> -->
+<!-- 							<separator height="1px"/> -->
+<!-- 							<button id="btnBusqCerrar" onClick="wndVentaReservaNew.closeTabWindow();" sclass="btnCommandM" width="120px" height="32px" autodisable="self" label="Cerrar" image="resources/mp_cerrar.png" /> -->
+<!-- 						</vbox> -->
+<!-- 						<separator/> -->
+<!-- 					</row> -->
+<!-- 				</rows> -->
+<!-- 			</grid> -->
 		</groupbox>
 		<tabbox>
 			<tabs>
@@ -193,7 +259,7 @@
 									<radiogroup>
 										<radio id="rdVtaVenta" label="VENTA" style="padding:10px;font-weight:bold;"/>
 										<radio id="rdVtaReserva" label="RESERVA" style="padding:10px;font-weight:bold"/>
-<!-- 										<radio id="rdVtaPostergacion" label="POSTERGACION" style="padding:10px;font-weight:bold"/> -->
+										<radio id="rdVtaConfirmacionFA" label="CONFIRMACION F.A." style="padding:10px;font-weight:bold"/>
 										<radio id="rdVtaPostergacionFA" label="POSTERGACION F.A." style="padding:10px;font-weight:bold"/>
 										<radio id="rdVtaCambioNombre" label="CAMBIO DE NOMBRE" style="padding:10px;font-weight:bold"/>							
 									</radiogroup>
@@ -224,7 +290,7 @@
 															<combobox id="cmbVtaIdaEmbarque_hora" onFocus="self.select();"  onOK="cmbVtaIdaDesembarque_hora.setFocus(true);" readonly="true" width="99%" tooltiptext="Punto de Embarque del viaje de Ida" placeholder="EMBARQUE" style="font-size:10px !important;font-weight: bold;"/>										
 															<separator width="30px"/>
 															<label value="DESEMB. :"/>
-															<combobox id="cmbVtaIdaDesembarque_hora" onFocus="self.select();" onOK="if(gridVtaInfoViajeVuelta.isVisible()){ cmbVtaVueltaEmbarque_hora.setFocus(true);} else txtVtaPaxBusqueda.setFocus(true);" readonly="true" width="160px" tooltiptext="Punto de Desembarque del viaje de Ida" placeholder="DESEMBARQUE" style="font-size:10px !important;font-weight: bold;"/>
+															<combobox id="cmbVtaIdaDesembarque_hora" onFocus="self.select();" readonly="true" width="160px" tooltiptext="Punto de Desembarque del viaje de Ida" placeholder="DESEMBARQUE" style="font-size:10px !important;font-weight: bold;"/>
 															<separator width="15px"/>
 															<label value="ASIENTO :"/>
 															<label id="lblVtaIdaAsiento" sclass="label-size11-bold" style="font-size:18px !important;color:black" />
@@ -298,12 +364,12 @@
 							</grid>
 							<tabbox width="460px" >
 								<tabs>
-									<tab label="Datos del Pasajero" />
+									<tab label="DATOS DEL PASAJERO"/>
 									<tab label="Datos del Infante" disabled="true"/>
 								</tabs>
 								<tabpanels>
 									<tabpanel>
-										<grid width="100%" style="border:none;">
+										<grid width="100%" style="border:none;font-weight: bold;">
 											<columns>
 												<column width="250px" />
 												<column/>
@@ -311,12 +377,15 @@
 											<rows>
 												<row spans="2">
 													<hbox align="center">
-														<label value="BUSCAR PASAJERO : " style="color:blue" />
-														<textbox id="txtVtaPaxBusqueda" onFocus="self.select();" width="328px" placeholder="POR DOCUMENTO, APELLIDOS Y/O NOMBRES/RAZÓN SOCIAL"/>
+														<label value="BUSCAR PASAJERO" sclass="label-size11-bold-blue" style="font-sezi:12px !important"/>
+														<separator width="5px"/>
+<!-- 														<textbox id="txtVtaPaxBusqueda" onFocus="self.select();" width="300px" placeholder="POR DOCUMENTO, APELLIDOS Y/O NOMBRES/RAZÓN SOCIAL"/> -->
+														<textbox id="txtVtaPaxBusqueda" onFocus="self.select();" width="300px" style="font-weight: bold;font-size:12px !important"/>
 													</hbox>													
 												</row>
 												<row spans="2">
-													<div style="background:#929697" height="1px"/>
+<!-- 													<div style="background:#929697" height="2px"/> -->
+													<div style="background:blue; font-weight: bold" height="1.1px"/>
 												</row>
 												<row>
 													<hbox align="center">

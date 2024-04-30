@@ -3056,7 +3056,7 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 			/*END 16/06/2021 - javalos - Correlativo by caja*/
 
 			final boolean isNewComprobante = (ventaPasaje.getId()==null);
-
+			
 			if(isNewComprobante)
 				UtilData.auditarRegistro(ventaPasaje, false, usuario, Executions.getCurrent());
 			else
@@ -3090,7 +3090,7 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 //										ventaPasaje.setEnviadoSFE(objetoConfirmar.getEnviadoSFE()!=null?objetoConfirmar.getEnviadoSFE():null);
 //										ventaPasaje.setFechaEnvioSFE(objetoConfirmar.getFechaEnvioSFE()!=null?objetoConfirmar.getFechaEnvioSFE():null);
 //									}
-									notaCredito = ServiceLocator.getVentaPasajesManager().confirmarFechaAbierta(ventaPasaje,tipoNotaCredito);
+									notaCredito = ServiceLocator.getVentaPasajesManager().confirmarFechaAbierta(ventaPasaje,tipoNotaCredito, true);
 									result = Constantes.CORRECT;
 								}
 //								ventaPasaje.setImportePagadoTarjeta(0.00);

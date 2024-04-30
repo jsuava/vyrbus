@@ -61,8 +61,8 @@ public class TarifaRegularManagerImpl implements TarifaRegularManager{
 	 * @see pe.itsb.vyrbus.service.business.TarifaRegularManager#buscarTarifaPorServicio(java.lang.Integer, java.lang.Integer, java.lang.Integer, java.lang.String, java.lang.Integer, java.lang.Integer)
 	 */
 	@Override
-	public List<TarifaRegular> buscarTarifaPorServicio(Integer canalVentaID, Integer servicioID, Integer rutaID, String fechaTarifa, String horaPartida, Integer piso, Integer zona) throws Exception {
-		return getTarifaRegularDAO().buscarTarifaPorServicio(canalVentaID, servicioID, rutaID, fechaTarifa, horaPartida, piso, zona);
+	public List<TarifaRegular> buscarTarifaPorServicio(Integer canalVentaID, Integer servicioID, Integer rutaID, String fechaTarifa, String horaPartida, Integer piso, Integer zona, Integer empresaID) throws Exception {
+		return getTarifaRegularDAO().buscarTarifaPorServicio(canalVentaID, servicioID, rutaID, fechaTarifa, horaPartida, piso, zona, empresaID);
 	}
 
 	@Override
