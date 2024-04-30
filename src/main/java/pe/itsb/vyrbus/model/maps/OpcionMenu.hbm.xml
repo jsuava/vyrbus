@@ -3,7 +3,7 @@
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <!-- Generated 24/05/2012 11:51:01 AM by Hibernate Tools 3.4.0.CR1 -->
 <hibernate-mapping>
-    <class name="pe.itsb.vyrbus.model.bean.OpcionMenu" table="VRMOPCMEN" schema="VYRBUSME">
+    <class name="pe.itsb.vyrbus.model.bean.OpcionMenu" table="VRMOPCMEN" schema="VYRBUSAMZ">
         <comment>Entidad que almacena las opciones de los distintos menus del sistema, pudiendo ser incluso ser un objeto de la pantalla del sistema</comment>
         <id name="id" type="java.lang.Integer">
             <column name="OPCMEN_ID" precision="5" scale="0" />

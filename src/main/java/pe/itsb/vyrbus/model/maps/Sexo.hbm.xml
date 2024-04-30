@@ -3,7 +3,7 @@
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <!-- Generated 22/12/2009 05:34:14 PM by Hibernate Tools 3.2.4.GA -->
 <hibernate-mapping>
-    <class name="pe.itsb.vyrbus.model.bean.Sexo" table="VRMSEXO" schema="VYRBUSME">
+    <class name="pe.itsb.vyrbus.model.bean.Sexo" table="VRMSEXO" schema="VYRBUSAMZ">
         <id name="id" type="java.lang.Integer">
             <column name="SEXO_ID" precision="2" scale="0" />
             <generator class="sequence">

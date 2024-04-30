@@ -3,7 +3,7 @@
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <!-- Generated 24/05/2012 11:51:01 AM by Hibernate Tools 3.4.0.CR1 -->
 <hibernate-mapping>
-    <class name="pe.itsb.vyrbus.model.bean.ItinerarioAgenciaLlegada" table="VRTITIAGELLE" schema="VYRBUSME">
+    <class name="pe.itsb.vyrbus.model.bean.ItinerarioAgenciaLlegada" table="VRTITIAGELLE" schema="VYRBUSAMZ">
         <comment>Agencias de llegada o puntos de desembarque del itinerario.</comment>
         <composite-id name="itinerarioAgenciaLlegadaID" class="pe.itsb.vyrbus.model.bean.ItinerarioAgenciaLlegadaID">
         	<key-property name="idItinerario" type="java.lang.Long" column="ITINERARIO_ID"/>

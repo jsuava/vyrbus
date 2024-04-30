@@ -3,7 +3,7 @@
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <!-- Generated 24/05/2012 11:51:01 AM by Hibernate Tools 3.4.0.CR1 -->
 <hibernate-mapping>
-    <class name="pe.itsb.vyrbus.model.bean.UsuarioHardware" table="VRTUSUHARD" schema="VYRBUSME">
+    <class name="pe.itsb.vyrbus.model.bean.UsuarioHardware" table="VRTUSUHARD" schema="VYRBUSAMZ">
         <comment>Entidad que almacena los equipos de una agencia u oficina.</comment>
         <id name="id" type="java.lang.Integer">
             <column name="USUHARD_ID" precision="5" scale="0" />

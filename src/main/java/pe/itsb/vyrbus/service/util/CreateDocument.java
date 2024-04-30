@@ -2851,7 +2851,9 @@ public class CreateDocument implements Serializable {
 			 *
 			 */
 
-			int numeroAseintos= itinerario.getServicio().getNumeroAsientosPiso1() + itinerario.getServicio().getNumeroAsientosPiso2();
+
+			int numeroAseintos= (itinerario.getServicio().getNumeroAsientosPiso1()!=null ? itinerario.getServicio().getNumeroAsientosPiso1() : 0) + 
+								(itinerario.getServicio().getNumeroAsientosPiso2()!=null ? itinerario.getServicio().getNumeroAsientosPiso2() : 0);
 //			for(int x=0; x<itinerario.getServicio().getNumeroPisos(); x++){
 //				if(x==0)
 //					numeroAseintos=itinerario.getServicio().getNumeroAsientosPiso1();
