@@ -359,7 +359,7 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 	 * @see com.tepsa.sisvyr.model.dao.VentaPasajesDAO#buscarReservasPorConfirmar(java.lang.Integer, java.lang.Integer, java.lang.String[], java.lang.String, java.lang.String, java.lang.String, java.lang.Integer)
 	 */
 	@Override
-	public List<VentaPasaje> buscarReservasPorConfirmar(Integer idOrigen, Integer idDestino, String[] pasajero, String numeroDocumento, String numeroBoleto, String fechaPartida, Integer idAgencia)throws Exception{
+	public List<VentaPasaje> buscarReservasPorConfirmar(Integer idOrigen, Integer idDestino, String[] pasajero, String numeroDocumento, String numeroBoleto, String fechaPartida, Integer idAgencia, Long ventaPasajeId)throws Exception{
 		String pax = "";
 		if(pasajero!=null)
 			pax = Util.obtenerFullTextPasajero(pasajero);
@@ -371,6 +371,7 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 		criterio = criterio + (numeroBoleto==null?"":(" AND VP.c_numBoleto='" + numeroBoleto.toUpperCase() +"' "));
 		criterio = criterio + (fechaPartida==null?"":" AND VP.d_fecpar=to_date('"+fechaPartida+"','"+Constantes.DATE_FORMAT+"') ");
 		criterio = criterio + (idAgencia==null?"":" AND a.agencia_id=" + idAgencia + " ");
+		criterio = criterio + (ventaPasajeId==null?"":" AND vp.id=" + ventaPasajeId + " ");
 		String sql = "SELECT VP.* FROM vrtvenpas VP " +
 				"INNER JOIN (SELECT MAX(venpas_id)venpas_id, c_numcontrol FROM vrtvenpas GROUP BY c_numcontrol) max_vta " +
 				"ON max_vta.venpas_id=VP.venpas_id " +
@@ -2749,27 +2750,51 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 	 */
 	@Override
 	public List<VentaPasaje> buscarVentasByPasajero(Long idPasajero, String numeroBoleto, Boolean incluirReservas){
-		String hql = "SELECT vp "
-				   + "FROM VentaPasaje AS vp JOIN vp.pasajero AS p "
-                   + "WHERE vp.tipoComprobante.id IN ("+ Constantes.ID_TIPCOM_BOLETA_VENTA+","+ Constantes.ID_TIPCOM_FACTURA+") ";
-		if(incluirReservas!=null && incluirReservas)
-			hql += "AND vp.tipoTransaccion IN ('1','2') AND vp.tipoMovimiento.id NOT IN (5,13)";
-		else
-			hql += "AND vp.tipoTransaccion IN ('1') AND vp.tipoMovimiento.id NOT IN (5,11,13)";
-		if(idPasajero!=null)
-			hql +="AND vp.pasajero.id="+ idPasajero +" ";
-		if(numeroBoleto!=null)
-			hql +="AND vp.numeroBoleto='"+numeroBoleto+"' ";
-		hql += "ORDER BY vp.fechaPartida desc ";
+//		String hql = "SELECT vp "
+//				   + "FROM VentaPasaje AS vp JOIN vp.pasajero AS p "
+//                   + "WHERE vp.tipoComprobante.id IN ("+ Constantes.ID_TIPCOM_BOLETA_VENTA+","+ Constantes.ID_TIPCOM_FACTURA+") ";
+//		if(incluirReservas!=null && incluirReservas)
+//			hql += "AND vp.tipoTransaccion IN ('1','2') AND vp.tipoMovimiento.id NOT IN (5,13)";
+//		else
+//			hql += "AND vp.tipoTransaccion IN ('1') AND vp.tipoMovimiento.id NOT IN (5,11,13)";
+//		if(idPasajero!=null)
+//			hql +="AND vp.pasajero.id="+ idPasajero +" ";
+//		if(numeroBoleto!=null)
+//			hql +="AND vp.numeroBoleto='"+numeroBoleto+"' ";
+//		hql += "ORDER BY vp.fechaPartida desc ";
 				
+		
+		
+		String sql = "SELECT {VP.*} FROM vrtvenpas {VP} " +
+					"INNER JOIN (SELECT MAX(venpas_id)venpas_id, c_numcontrol FROM vrtvenpas GROUP BY c_numcontrol) max_vta " +
+					"ON max_vta.venpas_id={VP}.venpas_id " +
+					"INNER JOIN vrmpasajero p ON p.pasajero_id={VP}.pasajero_id ";
+		
+		if(incluirReservas!=null && incluirReservas)
+			sql += "AND {VP}.c_tiptra IN ('1','2') AND {VP}.tipmov_id NOT IN (5,13)";
+		else
+			sql += "AND {VP}.c_tiptra IN ('1') AND {VP}.tipmov_id NOT IN (5,11,13)";
+		if(idPasajero!=null)
+			sql +="AND {VP}.pasajero_id="+ idPasajero +" ";
+		if(numeroBoleto!=null)
+			sql +="AND {VP}.c_numBoleto='"+numeroBoleto+"' ";
+		sql += "ORDER BY {VP}.d_fecpar desc, {VP}.c_horpar desc ";
+		
+//				"WHERE {VP}.c_tiptra in('"+Constantes.TIPO_OPERACION_VENTA+"','"+Constantes.TIPO_OPERACION_VENTA_POOL+"','"+Constantes.TIPO_OPERACION_PERDIDA_SERVICIO+"') AND {VP}.c_estreg='"+Constantes.VALUE_ACTIVO+"' "
+//			  + "AND {VP}.tipcom_id IN ("+Constantes.ID_TIPCOM_BOLETO_VIAJE+","+Constantes.ID_TIPCOM_BOLETA_VENTA+", "+Constantes.ID_TIPCOM_FACTURA+")" ;
+//		sql = sql + "ORDER BY {VP}.c_numboleto, {VP}.d_fecpar, {VP}.c_horpar ";
+
+		log.info(sql);
+		List<?> result = getSession().createSQLQuery(sql).addEntity("VP",VentaPasaje.class).list();
+		
 //                   	  +"AND vp.tipoMovimiento.id NOT IN (5,11,13) "
 //					  +(incluirReservas!=null && incluirReservas?"AND vp.tipoTransaccion in ('1','2') ":"AND vp.tipoTransaccion in ('1') ")
 //                   	  +(idPasajero!=null?" AND vp.pasajero.id="+idPasajero+" ":"")
 //                   	  +(numeroBoleto!=null?" AND vp.numeroBoleto='"+numeroBoleto+"' ":"")
 //				   + "ORDER BY vp.fechaPartida desc ";
 
-		log.info("buscarVentasByPasajero:"+ hql);
-		List<?> result = getSession().createQuery(hql).list();
+//		log.info("buscarVentasByPasajero:"+ hql);
+		//List<?> result = getSession().createQuery(hql).list();
 		List<VentaPasaje>lstResult = new ArrayList<>();
 		for(int i=0; i<result.size(); i++){
 			VentaPasaje ventaPasaje = (VentaPasaje)result.get(i);

@@ -21,7 +21,7 @@ public interface TarifaRegularDAO extends GenericDAO {
 //	public List<TarifaRegular> buscarTarifaPorServicio(Integer canalVentaID, Integer servicioID,
 //													   Integer rutaID, String fechaTarifa) throws Exception;
 
-	public List<TarifaRegular> buscarTarifaPorServicio(Integer canalVentaID, Integer servicioID, Integer rutaID, String fechaTarifa, String horaPartida, Integer piso, Integer zona) throws Exception;
+	public List<TarifaRegular> buscarTarifaPorServicio(Integer canalVentaID, Integer servicioID, Integer rutaID, String fechaTarifa, String horaPartida, Integer piso, Integer zona, Integer empresaID) throws Exception;
 
 
 	public List<TarifaRegular>listarTarifasPorServicios(Integer empresaID, Integer canalVentaID, Integer servicioID, Integer origenID, Integer destinoID, Integer tipoItinerarioID, String fechaInicio, String fechaFin, String horaPartida, Integer con_o_sin_tarifa) throws Exception;

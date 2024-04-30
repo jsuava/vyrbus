@@ -1510,7 +1510,7 @@ public class WndVentaReserva extends WndBase {
 								List<TarifaRegular> lstTarifaRegular = ServiceLocator.getTarifaRegularManager().buscarTarifaPorServicio(1,
 										detalleItinerario.getItinerario().getServicio().getId(),
 										detalleItinerario.getRuta().getId(), fechaPartida,
-										detalleItinerario.getHoraPartida(), null, null);
+										detalleItinerario.getHoraPartida(), null, null, detalleItinerario.getItinerario().getEmpresa().getId());
 								String strTarifas="";
 								if(lstTarifaRegular.size()>0){
 									for(TarifaRegular tarifa: lstTarifaRegular){
@@ -1711,7 +1711,7 @@ public class WndVentaReserva extends WndBase {
 							List<TarifaRegular> lstTarifaRegular = ServiceLocator.getTarifaRegularManager().buscarTarifaPorServicio(1,
 									detalleItinerario.getItinerario().getServicio().getId(),
 									detalleItinerario.getRuta().getId(), fechaRetorno,
-									detalleItinerario.getHoraPartida(), null, null);
+									detalleItinerario.getHoraPartida(), null, null, detalleItinerario.getItinerario().getEmpresa().getId());
 							String strTarifas="";
 							if(lstTarifaRegular.size()>0){
 								for(TarifaRegular tarifa: lstTarifaRegular){
@@ -2783,7 +2783,7 @@ public class WndVentaReserva extends WndBase {
 								Util.DatetoString(asientoSeleccionado.getDetalleItinerario().getFechaPartida(), Constantes.DATE_FORMAT),
 								asientoSeleccionado.getDetalleItinerario().getHoraPartida(),
 								asientoSeleccionado.getPiso(),
-								asientoSeleccionado.getNumeroZona());
+								asientoSeleccionado.getNumeroZona(), asientoSeleccionado.getDetalleItinerario().getItinerario().getEmpresa().getId());
 						if(lstTarifaRegular.size()>0)
 							asientoSeleccionado.getDetalleItinerario().setTarifa(lstTarifaRegular.get(0).getMonto()!=null?lstTarifaRegular.get(0).getMonto():0.00);
 						else

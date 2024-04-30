@@ -19,6 +19,7 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
@@ -28,7 +29,9 @@ import java.util.Map;
 import java.util.TreeMap;
 import java.util.stream.Collectors;
 import java.util.Map.Entry;
-
+import java.util.TimerTask;
+import org.zkoss.zk.au.AuResponse;
+import org.zkoss.zk.au.out.AuInvoke;
 import org.hibernate.mapping.Collection;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.zkoss.zk.ui.Component;
@@ -36,7 +39,9 @@ import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
+import org.zkoss.zk.ui.util.Clients;
 import org.zkoss.zul.A;
+import org.zkoss.zul.Bandbox;
 import org.zkoss.zul.Button;
 import org.zkoss.zul.Calendar;
 import org.zkoss.zul.Caption;
@@ -70,6 +75,7 @@ import org.zkoss.zul.Rows;
 import org.zkoss.zul.Separator;
 import org.zkoss.zul.Tab;
 import org.zkoss.zul.Textbox;
+import org.zkoss.zul.Timebox;
 import org.zkoss.zul.Timer;
 import org.zkoss.zul.Vbox;
 import org.zkoss.zul.Window;
@@ -99,6 +105,7 @@ import pe.itsb.vyrbus.model.bean.Pasajero;
 import pe.itsb.vyrbus.model.bean.Personal;
 import pe.itsb.vyrbus.model.bean.PreferenciaAlimentaria;
 import pe.itsb.vyrbus.model.bean.ProgramacionServicio;
+import pe.itsb.vyrbus.model.bean.Promocion;
 import pe.itsb.vyrbus.model.bean.Servicio;
 import pe.itsb.vyrbus.model.bean.Sexo;
 import pe.itsb.vyrbus.model.bean.TarifaRegular;
@@ -111,6 +118,7 @@ import pe.itsb.vyrbus.model.bean.TipoNota;
 import pe.itsb.vyrbus.model.bean.TmpOcupacionAsientos;
 import pe.itsb.vyrbus.model.bean.TmpOcupacionAsientosID;
 import pe.itsb.vyrbus.model.bean.Ubigeo;
+import pe.itsb.vyrbus.model.bean.UsuarioHardware;
 import pe.itsb.vyrbus.model.bean.VentaPasaje;
 import pe.itsb.vyrbus.model.bean.VentaTramo;
 import pe.itsb.vyrbus.service.exceptions.CapacityExceedsException;
@@ -167,6 +175,7 @@ public class WndVentaReservaNew  extends WndBase {
 	private Button btnBusqBy;
 	private Radio rdBusqIda;	
 	private Radio rdBusqIdaVuelta;
+	private Checkbox chbxBusqConfirmaconFA;
 	private Combobox cmbBusqOrigen;
 	private Listbox ltbxBusqDestinos;
 	private Vbox vboxCalendarVuelta;
@@ -204,6 +213,7 @@ public class WndVentaReservaNew  extends WndBase {
 	private Button btnVtaLeyendaAsientos;
 	private Radio rdVtaVenta;
 	private Radio rdVtaReserva;
+	private Radio rdVtaConfirmacionFA;
 //	private Radio rdVtaPostergacion;
 	private Radio rdVtaPostergacionFA;
 	private Radio rdVtaCambioNombre;
@@ -289,7 +299,8 @@ public class WndVentaReservaNew  extends WndBase {
 	private Pasajero pasajero = null;
 	private Cliente cliente = null;
 	private CanalVenta canalVenta = null;
-	private VentaPasaje ventaPasaje = null;
+	private VentaPasaje ventaPasaje_x = null;
+	
 	
 	//Historial compras pasajero
 	private Radio rdHpTodos;
@@ -441,6 +452,7 @@ public class WndVentaReservaNew  extends WndBase {
 			btnBusqBy = (Button)this.getFellow("btnBusqBy");
 			rdBusqIda = (Radio)this.getFellow("rdBusqIda");
 			rdBusqIdaVuelta = (Radio)this.getFellow("rdBusqIdaVuelta");
+			chbxBusqConfirmaconFA = (Checkbox)this.getFellow("chbxBusqConfirmaconFA");
 			cmbBusqOrigen = (Combobox)this.getFellow("cmbBusqOrigen");
 			ltbxBusqDestinos = (Listbox)this.getFellow("ltbxBusqDestinos");
 			vboxCalendarVuelta = (Vbox)this.getFellow("vboxCalendarVuelta");
@@ -477,6 +489,7 @@ public class WndVentaReservaNew  extends WndBase {
 			btnVtaLeyendaAsientos = (Button)this.getFellow("btnVtaLeyendaAsientos");
 			rdVtaVenta = (Radio)this.getFellow("rdVtaVenta");
 			rdVtaReserva = (Radio)this.getFellow("rdVtaReserva");
+			rdVtaConfirmacionFA = (Radio)this.getFellow("rdVtaConfirmacionFA");
 //			rdVtaPostergacion = (Radio)this.getFellow("rdVtaPostergacion");
 			rdVtaPostergacionFA = (Radio)this.getFellow("rdVtaPostergacionFA");
 			rdVtaCambioNombre = (Radio)this.getFellow("rdVtaCambioNombre");
@@ -571,6 +584,13 @@ public class WndVentaReservaNew  extends WndBase {
 						log.error(ex);
 						DlgMessage.error(this.getClass().getName() + " "+ex.getMessage());
 					}
+				}
+			});
+			chbxBusqConfirmaconFA.addEventListener(Events.ON_CHECK, new EventListener<Event>() {
+				@Override
+				public void onEvent(Event event) throws Exception {
+					// TODO Auto-generated method stub
+					onCheck_chbxBusqConfirmaconFA();
 				}
 			});
 			cmbBusqOrigen.addEventListener(Events.ON_CHANGE, new EventListener<Event>() {
@@ -738,6 +758,13 @@ public class WndVentaReservaNew  extends WndBase {
 						log.error(ex);
 						DlgMessage.error(this.getClass().getName() + " "+ex.getMessage());
 					}
+				}
+			});
+			cmbVtaIdaDesembarque_hora.addEventListener(Events.ON_OK, new EventListener<Event>() {
+				@Override
+				public void onEvent(Event event) throws Exception {
+					// TODO Auto-generated method stub
+					focusCursorByTipoOperacion(event);
 				}
 			});
 			rdVtaVenta.addEventListener(Events.ON_CHECK, new EventListener<Event>() {
@@ -1226,7 +1253,7 @@ public class WndVentaReservaNew  extends WndBase {
 			
 			List<VentaPasaje> resultVentasPax = ServiceLocator.getVentaPasajesManager().buscarVentasByPasajero(pasajeroId, numeroComprobante, true);
 			if(resultVentasPax.size()==0) {
-				DlgMessage.information(Messages.getString("WndVouchers.information.noRegistros"), txtBusqBy);
+				DlgMessage.information(Messages.getString("WndVouchers.information.noRegistros"), txtBusqBy);				
 				return;
 			}
 			
@@ -1344,7 +1371,11 @@ public class WndVentaReservaNew  extends WndBase {
 			listheader = new Listheader("COMPROBANTE", null, "100px");
 			listheader.setAlign("center");
 			listheader.setSort("auto");
-			listhead.appendChild(listheader);			
+			listhead.appendChild(listheader);
+			listheader = new Listheader("IMPORTE", null, "100px");
+			listheader.setAlign("center");
+			listheader.setSort("auto");
+			listhead.appendChild(listheader);
 			listheader = new Listheader("F.CADUCIDAD", null, "130px");
 			listheader.setAlign("center");			
 			listheader.setTooltiptext("Fecha/hora de caducidad");
@@ -1382,6 +1413,7 @@ public class WndVentaReservaNew  extends WndBase {
 			hbox.appendChild(btnHpReimprimir);
 			
 			btnHpEditar = new Button();
+			btnHpEditar.setId("btnHpEditar");
 			btnHpEditar.setLabel("Editar");			
 			btnHpEditar.setSclass("btnCommandL");
 			btnHpEditar.setAutodisable("self");
@@ -1422,6 +1454,7 @@ public class WndVentaReservaNew  extends WndBase {
 				public void onEvent(Event event) throws Exception {
 					// TODO Auto-generated method stub
 					btnHpEditar.setFocus(btnHpEditar.isVisible());
+//					habilitarOperacionHp();
 				}
 			});
 			ltbxHp.addEventListener(Events.ON_CANCEL, new EventListener<Event>() {
@@ -1485,6 +1518,68 @@ public class WndVentaReservaNew  extends WndBase {
 								}
 							}
 						});
+					} catch (Exception ex) {
+						ex.printStackTrace();
+						log.error(ex);
+						DlgMessage.error(this.getClass().getName() + " "+ex.getMessage());
+					}
+				}
+			});
+			btnHpEditar.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+				@Override
+				public void onEvent(Event event) throws Exception {
+					// TODO Auto-generated method stub
+					try {
+						String valorBusqHp = txtBusqBy.getText().trim().toUpperCase(); //Backu del valor ingresado para la busqueda
+						cleanBusquedaSeleccionHp();
+						if(ltbxHp.getSelectedCount()>0) {							
+							if(rdBusqIdaVuelta.isChecked()) {
+								rdBusqIda.setChecked(true);
+								onCheck_rdBusqIda();	
+							}			
+							txtBusqBy.setText(valorBusqHp); //Recupera el valor
+							rdBusqIdaVuelta.setDisabled(true);
+							ventaPasaje_x = ltbxHp.getSelectedItem().getValue();
+							String messageQuestionUser = "";
+							int tipoMovimientoId = ventaPasaje_x.getTipoMovimiento().getId();
+							boolean isConfirmaFA = (tipoMovimientoId==Constantes.ID_TIPMOV_POSTERGACION_FA || tipoMovimientoId==Constantes.ID_TIPMOV_FECHA_ABIERTA);
+							boolean isConfirmaReserva = (!isConfirmaFA && ventaPasaje_x.getTipoTransaccion().equals(Constantes.TIPO_OPERACION_RESERVA));
+							if(isConfirmaFA)
+								messageQuestionUser = Messages.getString("WndVentaReservaNew.question.HistoricoPasajero.confirmacionFA");
+							else if(isConfirmaReserva)
+								messageQuestionUser = Messages.getString("WndVentaReservaNew.question.HistoricoPasajero.confirmacionReserva");
+							else
+								messageQuestionUser = Messages.getString("WndVentaReservaNew.question.HistoricoPasajero.edicionVenta");
+							
+							Messagebox.show(messageQuestionUser, DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_YESNO, Messagebox.QUESTION, DlgMessage.BTN_DEFAULT_YES, new EventListener<Event>() {
+								@Override
+								public void onEvent(Event e){
+									try {
+										if(e.getName().equals("onYes")) {
+											if(isConfirmaFA) {
+												chbxBusqConfirmaconFA.setChecked(true);
+												chbxBusqConfirmaconFA.setDisabled(false);
+												chbxBusqConfirmaconFA.setStyle("color:red;font-weight: bold");
+												if(ltbxBusqIda.getItemCount()>0) {
+													ltbxBusqIda.setSelectedIndex(0);
+													ltbxBusqIda.setFocus(true);
+												}else if(ltbxBusqDestinos.getSelectedCount()==0) {
+													ltbxBusqDestinos.setSelectedIndex(0);
+													ltbxBusqDestinos.setFocus(true);	
+												}else
+													btnBusqBy.setFocus(true);
+											}else
+												onClick_btnSeleccionItinerario(event);
+											
+											win.onClose();
+										}
+									} catch (Exception e2) {
+										e2.printStackTrace();
+										DlgMessage.error(e2.getMessage());
+									}								
+								}								
+							});
+						}						
 					} catch (Exception ex) {
 						ex.printStackTrace();
 						log.error(ex);
@@ -1620,7 +1715,10 @@ public class WndVentaReservaNew  extends WndBase {
 			item.appendChild(cell);
 			cell = new Listcell(ventaPasaje.getNumeroBoleto()!=null?ventaPasaje.getNumeroBoleto():"");
 			cell.setStyle("font-size:12px !important");
-			item.appendChild(cell);								
+			item.appendChild(cell);	
+			cell = new Listcell(Util.toNumberFormat(ventaPasaje.getImportePagado(), 2));
+			cell.setStyle("font-size:12px !important;text-align:right");
+			item.appendChild(cell);
 			cell = new Listcell("-");
 			if(ventaPasaje.getFechaExpiracionReserva()!=null)
 				cell.setLabel(Constantes.FORMAT_DATE_TIME_24H.format(ventaPasaje.getFechaExpiracionReserva()));
@@ -1660,6 +1758,8 @@ public class WndVentaReservaNew  extends WndBase {
 		lblBusqTitleSelectViajeIda.setValue("SELECCION DEL VIAJE :::: ");
 		enabledControlsVueltaBusqItienrario();
 		cleanBusquedaItienrarios();
+		txtBusqBy.setDisabled(false);
+		btnBusqBy.setDisabled(false);
 	}
 	
 	/**
@@ -1671,7 +1771,27 @@ public class WndVentaReservaNew  extends WndBase {
 		lblBusqTitleSelectViajeIda.setValue("SELECCION DEL VIAJE DE IDA :::: ");
 		cleanBusquedaItienrarios();
 		enabledControlsVueltaBusqItienrario();
+		txtBusqBy.setDisabled(false);
+		btnBusqBy.setDisabled(false);
+	}
+	
+	private void onCheck_chbxBusqConfirmaconFA()throws Exception{
 		
+		cleanBusquedaSeleccionHp();
+	}
+	
+	/**
+	 * Limpia de la seleccion del pasaje desde el Historico de compras del pasajero
+	 * @throws Exception
+	 */
+	private void cleanBusquedaSeleccionHp()throws Exception{
+		ventaPasaje_x = null;
+		txtBusqBy.setText("");
+		chbxBusqConfirmaconFA.setChecked(false);
+		chbxBusqConfirmaconFA.setDisabled(true);
+		chbxBusqConfirmaconFA.setStyle(null);
+		rdBusqIdaVuelta.setDisabled(false);
+		rdVtaConfirmacionFA.setChecked(false);
 	}
 	
 	/**
@@ -1689,9 +1809,10 @@ public class WndVentaReservaNew  extends WndBase {
 	 * @throws Exception
 	 */
 	private void onClick_btnBusqCancelar()throws Exception{
+		rdBusqIdaVuelta.setDisabled(false);
 		rdBusqIda.setChecked(true);
 		onCheck_rdBusqIda();
-		
+		cleanBusquedaSeleccionHp();
 		
 	}
 	
@@ -1798,12 +1919,11 @@ public class WndVentaReservaNew  extends WndBase {
 	 * 
 	 * @throws Exception
 	 */
-	private void cleanBusquedaItienrarios() throws Exception{
+	private void cleanBusquedaItienrarios() throws Exception{		
 		Util.limpiarListbox(ltbxBusqIda);
 		Util.limpiarListbox(ltbxBusqVuelta);
 		lblBusqInfoViajeIda.setValue("");
-		lblBusqInfoViajeVuelta.setValue("");
-		
+		lblBusqInfoViajeVuelta.setValue("");			
 	}
 	
 	/**
@@ -1876,7 +1996,7 @@ public class WndVentaReservaNew  extends WndBase {
 			List<TarifaRegular> lstTarifaRegular = ServiceLocator.getTarifaRegularManager().buscarTarifaPorServicio(1,
 					detalleItinerario.getItinerario().getServicio().getId(),
 					detalleItinerario.getRuta().getId(), fechaViaje,
-					detalleItinerario.getHoraPartida(), null, null);
+					detalleItinerario.getHoraPartida(), null, null, detalleItinerario.getItinerario().getEmpresa().getId());
 			String strTarifas="";
 			if(lstTarifaRegular.size()>0){
 				for(TarifaRegular tarifa: lstTarifaRegular){
@@ -2140,7 +2260,7 @@ public class WndVentaReservaNew  extends WndBase {
 		Listitem item = null;
 		if(event.getTarget() instanceof Listitem)
 			item = (Listitem)event.getTarget();
-		else if(event.getTarget() instanceof Button)
+		else if(event.getTarget() instanceof Button && !((Button)event.getTarget()).getId().equals("btnHpEditar"))
 			item = (Listitem) ((Button)event.getTarget()).getParent().getParent();
 		
 		if(item!=null) {
@@ -2292,6 +2412,31 @@ public class WndVentaReservaNew  extends WndBase {
 			chbxVtaUpdateMapAuto.setDisabled(false);
 		}
 		//**********************************************************************
+		
+		
+		//*********************************************************************************
+		//Caga datos de la venta del pasajero seleccionado desde el historial de compras.
+		//*********************************************************************************
+		if(ventaPasaje_x!=null) {
+			ventaPasaje_x = ServiceLocator.getVentaPasajesManager().buscarPorId(ventaPasaje_x.getId());
+			Pasajero pasajero = ServiceLocator.getPasajeroManager().buscarPorId(ventaPasaje_x.getPasajero().getId());
+			boolean isConfirmaFA = (ventaPasaje_x.getTipoMovimiento().getId()==Constantes.ID_TIPMOV_FECHA_ABIERTA || ventaPasaje_x.getTipoMovimiento().getId()==Constantes.ID_TIPMOV_POSTERGACION_FA);
+			boolean isConfirmaReserva = (!isConfirmaFA && ventaPasaje_x.getTipoTransaccion().equals(Constantes.TIPO_OPERACION_RESERVA));
+			boolean isEdicionVenta = (!isConfirmaFA && isConfirmaReserva);
+			
+			if(isConfirmaFA || isEdicionVenta) {
+				lblVtaNumeroComprobante.setValue(ventaPasaje_x.getNumeroBoleto());
+				lblVtaTipoComprobante.setValue(ventaPasaje_x.getTipoComprobante().getDenominacion());
+				if(isConfirmaFA) {
+					lblVtaInfoTipoOperacion.setValue("CONFIRMACION F.A.");
+					rdVtaConfirmacionFA.setChecked(true);
+					disabledControlsPasajero(true);
+				}
+			}			
+			
+			loadDatosPasajero(pasajero);			
+		}
+		
 	}
 	
 	/**
@@ -2578,16 +2723,18 @@ public class WndVentaReservaNew  extends WndBase {
 	 * @throws Exception
 	 */
 	private void onSelect_ltbxVtaAsientosSeleccionados(Event event)throws Exception{
-		cleanDatosInfoComprobante();
+		if(!rdVtaConfirmacionFA.isChecked())
+			cleanDatosInfoComprobante();
 		lblVtaIdaAsiento.setValue("-");
 		dbxVtaIdaTarifa.setValue(.00);
 		lblVtaVueltaAsiento.setValue("-");
 		dbxVtaVueltaTarifa.setValue(.00);
-		cleanDatosPasajero(true);
+		if(!rdVtaConfirmacionFA.isChecked())
+			cleanDatosPasajero(true);
 		cleanDatosInfante();
 		cleanDatosPago(event);
 		if(ltbxVtaAsientosSeleccionados.getItemCount()==0)
-			resertOperacionAsiento();			
+			resertOperacionAsiento();
 		cleanDatosViaje();
 		disabled_btnGuardar(btnVtaGuardar, true);
 		disabledAllButtonsOptinsByAsiento();
@@ -2604,7 +2751,13 @@ public class WndVentaReservaNew  extends WndBase {
 				lblVtaIdaAsiento.setValue(detalleItinerarioIda.getAsiento());
 				dbxVtaIdaTarifa.setValue(detalleItinerarioIda.getTarifa());
 				
-				habilitarOperacionAsiento(detalleItinerarioIda.getObjAsiento());
+				//Valida si es una confirmacion de FA
+				if(rdVtaConfirmacionFA.isChecked()) {
+					disabledControlsInfoViaje(false);							
+//					disabledControlsPago(false);
+				}else
+					habilitarOperacionAsiento(detalleItinerarioIda.getObjAsiento());
+				
 			}
 			
 			if(detalleItinerarioVuelta!=null) {		
@@ -2618,8 +2771,10 @@ public class WndVentaReservaNew  extends WndBase {
 			else if(!isVtaIdaVuelta && detalleItinerarioIda!=null && detalleItinerarioIda.getObjAsiento().getEstadoAsiento().intValue()==Constantes.ASIENTO_BLOQUEADO)
 				disabled_btnGuardar(btnVtaGuardar, false);
 			
-			Util.seleccionarValorItemCombo(TipoDocumento.class, cmbVtaPaxTipoDocumento, Constantes.ID_TIPDOC_DNI);
-			Util.seleccionarValorItemCombo(TipoDocumento.class, cmbVtaInfTipoDocumento, Constantes.ID_TIPDOC_DNI);
+			if(!rdVtaConfirmacionFA.isChecked()) {
+				Util.seleccionarValorItemCombo(TipoDocumento.class, cmbVtaPaxTipoDocumento, Constantes.ID_TIPDOC_DNI);
+				Util.seleccionarValorItemCombo(TipoDocumento.class, cmbVtaInfTipoDocumento, Constantes.ID_TIPDOC_DNI);	
+			}			
 			focusCursorByTipoOperacion(null);
 		}
 		
@@ -2628,7 +2783,18 @@ public class WndVentaReservaNew  extends WndBase {
 		if(rdVtaPostergacionFA.isChecked())
 			loadDatosPostergacionFA();
 		else if(rdVtaCambioNombre.isChecked())
-			loadDatosCambioNombre();				
+			loadDatosCambioNombre();	
+		
+		//Habilita los datos del pago si es total a pagar es mayo que cero
+		if(dbxVtaTotalPagar.getValue()!=null && dbxVtaTotalPagar.getValue()>.00) {
+			disabledControlsPago(false);
+			
+			//cuando es una confirmacion FA, deshabilita el ingreso de descuentos.
+			if(rdVtaConfirmacionFA.isChecked()) {
+				cmbVtaAutorizaDescuento.setDisabled(true);
+				txtVtaAutorizaDescuentoCodigo.setDisabled(true);
+			}
+		}
 	}
 	
 	/**
@@ -3166,13 +3332,15 @@ public class WndVentaReservaNew  extends WndBase {
 		divPaso_1.setVisible(true);		
 		tabBusqIda.setSelected(true);
 		txtBusqBy.setText("");
+		cleanBusquedaSeleccionHp();
 		onClick_btnBuscar();
 	}
 	
 	
 	private void onClick_btnVtaGuargar()throws Exception{		
 //		if(!rdVtaVenta.isChecked() && !rdVtaReserva.isChecked() && !rdVtaPostergacion.isChecked() && !rdVtaPostergacionFA.isChecked() && !rdVtaCambioNombre.isChecked()) {
-		if(!rdVtaVenta.isChecked() && !rdVtaReserva.isChecked() && !rdVtaPostergacionFA.isChecked() && !rdVtaCambioNombre.isChecked()) {
+		if(!rdVtaVenta.isChecked() && !rdVtaReserva.isChecked() && !rdVtaPostergacionFA.isChecked() && 
+				!rdVtaCambioNombre.isChecked() && !rdVtaConfirmacionFA.isChecked()) {
 			DlgMessage.information(Messages.getString("WndVentaReserva.information.noTipoOperacion"));
 			return;
 		}
@@ -3181,6 +3349,7 @@ public class WndVentaReservaNew  extends WndBase {
 		boolean isVenta = rdVtaVenta.isChecked();
 		boolean isPostergacionFA = rdVtaPostergacionFA.isChecked();
 		boolean isCambioNombre = rdVtaCambioNombre.isChecked();
+		boolean isConfirmacionFA = rdVtaConfirmacionFA.isChecked();
 		
 		boolean emiteComprobantePago = (gridVtaDatosPago.isVisible() && dbxVtaTotalPagar.getValue()!=null && dbxVtaTotalPagar.getValue()>.00);
 		
@@ -3370,7 +3539,6 @@ public class WndVentaReservaNew  extends WndBase {
 			if(descuento==null)
 				return;
 		}
-		
 
 		//Seate los dados del Pasajero
 		if(pasajero ==null)
@@ -3469,7 +3637,7 @@ public class WndVentaReservaNew  extends WndBase {
 				VentaPasaje ventaPasajeRef = null;
 				if(detalleItinerario.getObjAsiento().getVentaPasaje()!=null)
 					ventaPasajeRef = detalleItinerario.getObjAsiento().getVentaPasaje();
-				ventaPasaje = new VentaPasaje();			
+				ventaPasaje_x = new VentaPasaje();			
 				
 				if(detalleItinerario.getEsIda()) {
 					itinerarioAgenciaPartida = cmbVtaIdaEmbarque_hora.getSelectedItem().getValue();
@@ -3480,14 +3648,14 @@ public class WndVentaReservaNew  extends WndBase {
 				}
 				
 				if(isReserva) {
-					ventaPasaje.setFechaLiquidacion(new Date());
-					ventaPasaje.setImportePagado(.00);
-					ventaPasaje.setTipoMovimiento(new TipoMovimiento(Constantes.ID_TIPMOV_RESERVA));
-					ventaPasaje.setTipoTransaccion(Constantes.TIPO_OPERACION_RESERVA);
+					ventaPasaje_x.setFechaLiquidacion(new Date());
+					ventaPasaje_x.setImportePagado(.00);
+					ventaPasaje_x.setTipoMovimiento(new TipoMovimiento(Constantes.ID_TIPMOV_RESERVA));
+					ventaPasaje_x.setTipoTransaccion(Constantes.TIPO_OPERACION_RESERVA);
 					if(detalleItinerario.getEsIda())
-						ventaPasaje.setFechaExpiracionReserva(dtbxVtaIdaExpiraReserva.getValue());
+						ventaPasaje_x.setFechaExpiracionReserva(dtbxVtaIdaExpiraReserva.getValue());
 					else
-						ventaPasaje.setFechaExpiracionReserva(dtbxVtaVueltaExpiraReserva.getValue());
+						ventaPasaje_x.setFechaExpiracionReserva(dtbxVtaVueltaExpiraReserva.getValue());
 				}else {
 					//Cuando es una confimación de reserva, valida que esta aún este disponible.
 					if(ventaPasajeRef!=null && ventaPasajeRef.getTipoTransaccion().equals(Constantes.TIPO_OPERACION_RESERVA)) {
@@ -3500,77 +3668,77 @@ public class WndVentaReservaNew  extends WndBase {
 						}
 					}
 					
-					ventaPasaje.setFechaLiquidacion(fechaLiquidacion);
-					ventaPasaje.setTipoMovimiento(new TipoMovimiento(Constantes.ID_TIPMOV_EFECTIVO));
-					ventaPasaje.setTipoTransaccion(Constantes.TIPO_OPERACION_VENTA);
+					ventaPasaje_x.setFechaLiquidacion(fechaLiquidacion);
+					ventaPasaje_x.setTipoMovimiento(new TipoMovimiento(Constantes.ID_TIPMOV_EFECTIVO));
+					ventaPasaje_x.setTipoTransaccion(Constantes.TIPO_OPERACION_VENTA);
 					if(detalleItinerario.getEsIda())
-						ventaPasaje.setImportePagado(dbxVtaIdaTarifa.getValue());
+						ventaPasaje_x.setImportePagado(dbxVtaIdaTarifa.getValue());
 					else
-						ventaPasaje.setImportePagado(dbxVtaVueltaTarifa.getValue());
+						ventaPasaje_x.setImportePagado(dbxVtaVueltaTarifa.getValue());
 				}
-				ventaPasaje.setVentaOriginal(ventaPasajeRef!=null?ventaPasajeRef.getId():null);
-				ventaPasaje.setVentaPasaje(ventaPasajeRef);
-				ventaPasaje.setEsFechaAbierta(Constantes.FALSE_VALUE);
-				ventaPasaje.setIdaRetorno(isVtaIdaVuelta?Constantes.TRUE_VALUE:Constantes.FALSE_VALUE);
-				ventaPasaje.setItinerario(detalleItinerario.getItinerario());			
-				ventaPasaje.setEmpresa(detalleItinerario.getItinerario().getEmpresa());
-				ventaPasaje.setRuta(detalleItinerario.getRuta());
-				ventaPasaje.setPasajero(pasajero);
-				ventaPasaje.setCliente(cliente);
-				ventaPasaje.setFormaPago(new FormaPago(Constantes.ID_FORPAG_CONTADO)); //almenos por ahora siempre será contado
-				ventaPasaje.setServicio(detalleItinerario.getItinerario().getServicio());
-				ventaPasaje.setTipoComprobante(new TipoComprobante(cliente!=null?Constantes.ID_TIPCOM_FACTURA:Constantes.ID_TIPCOM_BOLETA_VENTA));
-				ventaPasaje.setTipoFormaPago(cmbVtaTipoFormaPago.getSelectedIndex()>=0?cmbVtaTipoFormaPago.getSelectedItem().getValue():null);
+				ventaPasaje_x.setVentaOriginal(ventaPasajeRef!=null?ventaPasajeRef.getId():null);
+				ventaPasaje_x.setVentaPasaje(ventaPasajeRef);
+				ventaPasaje_x.setEsFechaAbierta(Constantes.FALSE_VALUE);
+				ventaPasaje_x.setIdaRetorno(isVtaIdaVuelta?Constantes.TRUE_VALUE:Constantes.FALSE_VALUE);
+				ventaPasaje_x.setItinerario(detalleItinerario.getItinerario());			
+				ventaPasaje_x.setEmpresa(detalleItinerario.getItinerario().getEmpresa());
+				ventaPasaje_x.setRuta(detalleItinerario.getRuta());
+				ventaPasaje_x.setPasajero(pasajero);
+				ventaPasaje_x.setCliente(cliente);
+				ventaPasaje_x.setFormaPago(new FormaPago(Constantes.ID_FORPAG_CONTADO)); //almenos por ahora siempre será contado
+				ventaPasaje_x.setServicio(detalleItinerario.getItinerario().getServicio());
+				ventaPasaje_x.setTipoComprobante(new TipoComprobante(cliente!=null?Constantes.ID_TIPCOM_FACTURA:Constantes.ID_TIPCOM_BOLETA_VENTA));
+				ventaPasaje_x.setTipoFormaPago(cmbVtaTipoFormaPago.getSelectedIndex()>=0?cmbVtaTipoFormaPago.getSelectedItem().getValue():null);
 				if(cmbVtaTarjeta.getSelectedIndex()>=0 && cmbVtaTarjeta.getSelectedItem().getValue() instanceof TarjetaCredito)
-					ventaPasaje.setTarjetaCredito(cmbVtaTarjeta.getSelectedItem().getValue());
-				ventaPasaje.setNumeroOperacionBancaria(txtVtaNumeroOperacion.getText().equals("")?null:txtVtaNumeroOperacion.getText());
-				ventaPasaje.setNumeroBoleto(!lblVtaNumeroComprobante.getValue().trim().isEmpty()? lblVtaNumeroComprobante.getValue().trim().toUpperCase():null);
+					ventaPasaje_x.setTarjetaCredito(cmbVtaTarjeta.getSelectedItem().getValue());
+				ventaPasaje_x.setNumeroOperacionBancaria(txtVtaNumeroOperacion.getText().equals("")?null:txtVtaNumeroOperacion.getText());
+				ventaPasaje_x.setNumeroBoleto(!lblVtaNumeroComprobante.getValue().trim().isEmpty()? lblVtaNumeroComprobante.getValue().trim().toUpperCase():null);
 //				else if(rdVtaPostergacion.isChecked())
 //					ventaPasaje.setTipoMovimiento(new TipoMovimiento(Constantes.ID_TIPMOV_POSTERGACION));
 //				else if(rdVtaPostergacionFA.isChecked())
 //					ventaPasaje.setTipoMovimiento(new TipoMovimiento(Constantes.ID_TIPMOV_POSTERGACION_FA));
 //				else if(rdVtaCambioNombre.isChecked())
 //					ventaPasaje.setTipoMovimiento(new TipoMovimiento(Constantes.ID_TIPMOV_EFECTIVO));
-				ventaPasaje.setNumeroAsiento(Integer.valueOf(detalleItinerario.getAsiento()));
-				ventaPasaje.setNumeroPiso(Integer.valueOf(detalleItinerario.getPiso()));
-				ventaPasaje.setAgenciaPartida(itinerarioAgenciaPartida.getAgencia());
-				ventaPasaje.setFechaPartida(detalleItinerario.getFechaPartida());
-				ventaPasaje.setHoraPartida(detalleItinerario.getHoraPartida());
-				ventaPasaje.setHoraEmbarque(itinerarioAgenciaPartida.getHoraPartida());
-				ventaPasaje.setAgenciaLlegada(itinerarioAgenciaLlegada.getAgencia());
-				ventaPasaje.setFechaLlegada(detalleItinerario.getFechaLlegada());
-				ventaPasaje.setHoraLllegada(detalleItinerario.getHoraLlegada());
-				ventaPasaje.setHoraDesembarque(itinerarioAgenciaLlegada.getHoraLlegada());
-				ventaPasaje.setPreferenciaAlimentaria(new PreferenciaAlimentaria(Constantes.ID_PREALIM_MENU_DEL_DIA)); //Volor por defecto
+				ventaPasaje_x.setNumeroAsiento(Integer.valueOf(detalleItinerario.getAsiento()));
+				ventaPasaje_x.setNumeroPiso(Integer.valueOf(detalleItinerario.getPiso()));
+				ventaPasaje_x.setAgenciaPartida(itinerarioAgenciaPartida.getAgencia());
+				ventaPasaje_x.setFechaPartida(detalleItinerario.getFechaPartida());
+				ventaPasaje_x.setHoraPartida(detalleItinerario.getHoraPartida());
+				ventaPasaje_x.setHoraEmbarque(itinerarioAgenciaPartida.getHoraPartida());
+				ventaPasaje_x.setAgenciaLlegada(itinerarioAgenciaLlegada.getAgencia());
+				ventaPasaje_x.setFechaLlegada(detalleItinerario.getFechaLlegada());
+				ventaPasaje_x.setHoraLllegada(detalleItinerario.getHoraLlegada());
+				ventaPasaje_x.setHoraDesembarque(itinerarioAgenciaLlegada.getHoraLlegada());
+				ventaPasaje_x.setPreferenciaAlimentaria(new PreferenciaAlimentaria(Constantes.ID_PREALIM_MENU_DEL_DIA)); //Volor por defecto
 				//*******************************************
-				ventaPasaje.setSecuencial(0);
+				ventaPasaje_x.setSecuencial(0);
 				//*******************************************
-				ventaPasaje.setCodigoDescuento(txtVtaAutorizaDescuentoCodigo.getText().trim().toUpperCase());
-				ventaPasaje.setTarifa(detalleItinerario.getTarifa());
-				ventaPasaje.setRecargo(.00);
-				ventaPasaje.setDescuento(.00);
-				if(ventaPasaje.getCodigoDescuento()!=null)
-					ventaPasaje.setDescuento(ventaPasaje.getTarifa()-ventaPasaje.getImportePagado());
-				ventaPasaje.setPenalidad(.00);
-				ventaPasaje.setAcuenta(.00);
-				ventaPasaje.setImportePagadoByDiferencia(.00);
-				ventaPasaje.setImportePagadoEfectivo(.00);
-				ventaPasaje.setImportePagadoTarjeta(.00);				
-				String fechaCaducidad=Constantes.FORMAT_DATE.format(ventaPasaje.getFechaPartida())+ " "+ventaPasaje.getHoraPartida();
+				ventaPasaje_x.setCodigoDescuento(txtVtaAutorizaDescuentoCodigo.getText().trim().toUpperCase());
+				ventaPasaje_x.setTarifa(detalleItinerario.getTarifa());
+				ventaPasaje_x.setRecargo(.00);
+				ventaPasaje_x.setDescuento(.00);
+				if(ventaPasaje_x.getCodigoDescuento()!=null)
+					ventaPasaje_x.setDescuento(ventaPasaje_x.getTarifa()-ventaPasaje_x.getImportePagado());
+				ventaPasaje_x.setPenalidad(.00);
+				ventaPasaje_x.setAcuenta(.00);
+				ventaPasaje_x.setImportePagadoByDiferencia(.00);
+				ventaPasaje_x.setImportePagadoEfectivo(.00);
+				ventaPasaje_x.setImportePagadoTarjeta(.00);				
+				String fechaCaducidad=Constantes.FORMAT_DATE.format(ventaPasaje_x.getFechaPartida())+ " "+ventaPasaje_x.getHoraPartida();
 				Date dateCaducidad=Constantes.FORMAT_LONG.parse(fechaCaducidad);
-				ventaPasaje.setFechaCaducidad(dateCaducidad);
-				ventaPasaje.setAgencia(getAgencia());
-				ventaPasaje.setUsuario(getUsuario());
-				ventaPasaje.setCanalVenta(canalVenta);
-				ventaPasaje.setUsuarioHardware(getUsuarioHardware());
-				ventaPasaje.setEsRemoto(false);			
-				ventaPasaje.setEstadoRegistro(Constantes.VALUE_ACTIVO);
-				ventaPasaje.setLiquidacion(null);
-				ventaPasaje.setEstadoDocumento(Constantes.ESTADO_DOCUMENTO_PAGADO);
-				ventaPasaje.setNumeroControl("T00000");
-				UtilData.auditarRegistro(ventaPasaje, false, getUsuario(), Executions.getCurrent());
+				ventaPasaje_x.setFechaCaducidad(dateCaducidad);
+				ventaPasaje_x.setAgencia(getAgencia());
+				ventaPasaje_x.setUsuario(getUsuario());
+				ventaPasaje_x.setCanalVenta(canalVenta);
+				ventaPasaje_x.setUsuarioHardware(getUsuarioHardware());
+				ventaPasaje_x.setEsRemoto(false);			
+				ventaPasaje_x.setEstadoRegistro(Constantes.VALUE_ACTIVO);
+				ventaPasaje_x.setLiquidacion(null);
+				ventaPasaje_x.setEstadoDocumento(Constantes.ESTADO_DOCUMENTO_PAGADO);
+				ventaPasaje_x.setNumeroControl("T00000");
+				UtilData.auditarRegistro(ventaPasaje_x, false, getUsuario(), Executions.getCurrent());
 
-				listVentas.add(ventaPasaje);
+				listVentas.add(ventaPasaje_x);
 			}
 			if(isVenta)
 				messageConfirmationUser = "WndVentaReserva.information.confirmacionGuardarVenta";
@@ -3631,6 +3799,96 @@ public class WndVentaReservaNew  extends WndBase {
 				listVentas.add(ventaPasajeCambioNombre);
 			}
 			messageConfirmationUser = "WndVentaReserva.question.cambioNombre";
+			
+		}else if(isConfirmacionFA) {
+			for(DetalleItinerario detalleItinerario: listDetalleItienrario) {
+				VentaPasaje confirmacionFA = new VentaPasaje();
+				confirmacionFA.setItinerario(detalleItinerario.getItinerario());
+				confirmacionFA.setEmpresa(detalleItinerario.getItinerario().getEmpresa());			
+				confirmacionFA.setRuta(detalleItinerario.getRuta());
+				confirmacionFA.setCliente(ventaPasaje_x.getCliente()!=null?ventaPasaje_x.getCliente():null);
+				confirmacionFA.setPasajero(ventaPasaje_x.getPasajero());			
+				confirmacionFA.setFormaPago(new FormaPago(Constantes.ID_FORPAG_CONTADO));
+				confirmacionFA.setServicio(detalleItinerario.getItinerario().getServicio());
+				confirmacionFA.setTipoComprobante(new TipoComprobante(confirmacionFA.getCliente()!=null?Constantes.ID_TIPCOM_FACTURA:Constantes.ID_TIPCOM_BOLETA_VENTA));
+				confirmacionFA.setTipoMovimiento(new TipoMovimiento(Constantes.ID_TIPMOV_CONFIRMACION_FA));
+				confirmacionFA.setNumeroBoletoAnterior(ventaPasaje_x.getNumeroBoleto());
+				/*Valida si la diferencia a es a favor de tepsa*/
+				if(dbxVtaTotalPagar.getValue()>.00)
+					confirmacionFA.setImportePagadoByDiferencia(dbxVtaTotalPagar.getValue());
+				else
+					confirmacionFA.setImportePagadoByDiferencia(0.00);
+				confirmacionFA.setNumeroBoleto(!lblVtaNumeroComprobante.getValue().trim().isEmpty()? lblVtaNumeroComprobante.getValue().trim().toUpperCase():null);			
+				confirmacionFA.setVentaOriginal(ventaPasaje_x.getVentaOriginal());			
+				confirmacionFA.setTipoFormaPago(cmbVtaTipoFormaPago.getSelectedIndex()>=0?cmbVtaTipoFormaPago.getSelectedItem().getValue():null);
+				if(cmbVtaTarjeta.getSelectedIndex()>=0 && cmbVtaTarjeta.getSelectedItem().getValue() instanceof TarjetaCredito)
+					confirmacionFA.setTarjetaCredito(cmbVtaTarjeta.getSelectedItem().getValue());
+				confirmacionFA.setNumeroOperacionBancaria(txtVtaNumeroOperacion.getText().equals("")?null:txtVtaNumeroOperacion.getText());
+				confirmacionFA.setNumeroAsiento(Integer.valueOf(detalleItinerario.getAsiento()));
+				confirmacionFA.setNumeroPiso(Integer.valueOf(detalleItinerario.getPiso()));
+				ItinerarioAgenciaPartida itinerarioAgenciaPartida = (ItinerarioAgenciaPartida) cmbVtaIdaEmbarque_hora.getSelectedItem().getValue();
+				confirmacionFA.setAgenciaPartida(itinerarioAgenciaPartida.getAgencia());
+				confirmacionFA.setFechaPartida(detalleItinerario.getFechaPartida());
+				confirmacionFA.setHoraPartida(detalleItinerario.getHoraPartida());
+				ItinerarioAgenciaLlegada itinerarioAgenciaLlegada = (ItinerarioAgenciaLlegada) cmbVtaIdaDesembarque_hora.getSelectedItem().getValue();
+				confirmacionFA.setAgenciaLlegada(itinerarioAgenciaLlegada.getAgencia());
+				confirmacionFA.setFechaLlegada(detalleItinerario.getFechaLlegada());
+				confirmacionFA.setHoraLllegada(detalleItinerario.getHoraLlegada());
+				confirmacionFA.setPreferenciaAlimentaria(new PreferenciaAlimentaria(Constantes.ID_PREALIM_MENU_DEL_DIA)); //Valor por default
+				confirmacionFA.setSecuencial(ventaPasaje_x.getSecuencial());
+				confirmacionFA.setTarifa(dbxVtaIdaTarifa.getValue());
+				confirmacionFA.setRecargo(.00);
+				confirmacionFA.setDescuento(.00);
+				confirmacionFA.setPenalidad(0.0);
+				confirmacionFA.setAcuenta(ventaPasaje_x.getImportePagado());
+				confirmacionFA.setImportePagadoEfectivo(.00);
+				confirmacionFA.setImportePagadoTarjeta(.00);
+				String fechaCaducidad=Constantes.FORMAT_DATE.format(confirmacionFA.getFechaPartida())+" "+confirmacionFA.getHoraPartida();
+				Date dateCaducidad=Constantes.FORMAT_LONG.parse(fechaCaducidad);
+				confirmacionFA.setFechaCaducidad(dateCaducidad);				
+				confirmacionFA.setImportePagado(dbxVtaTotalPagar.getValue());
+				confirmacionFA.setTipoTransaccion(Constantes.TIPO_OPERACION_VENTA);
+				confirmacionFA.setAgencia(getAgencia());
+				confirmacionFA.setUsuario(getUsuario());
+				confirmacionFA.setCanalVenta(canalVenta);
+				confirmacionFA.setVentaPasaje(ventaPasaje_x);
+				confirmacionFA.setLiquidacion(null);
+				confirmacionFA.setFechaTransferencia(null);
+				confirmacionFA.setFechaLiquidacion(fechaLiquidacion);
+				confirmacionFA.setIdaRetorno(ventaPasaje_x.getIdaRetorno());
+				confirmacionFA.setEsFechaAbierta(Constantes.FALSE_VALUE);
+				confirmacionFA.setEsRemoto(false);
+//				//Para el caso de las cortesias que tienen descuento del 100%
+//				if(confirmacionFA.getFormaPago().getId().intValue()!=Constantes.ID_FORPAG_CONTADO && dblImporte.getValue()==0.00){
+//					confirmacionFA.setDescuento(0.00);
+//					confirmacionFA.setImportePagado(confirmacionFA.getTarifa());
+//				}
+				
+				if(confirmacionFA.getImportePagado()==.00) {
+					//No emite un nuevo comprobante
+					confirmacionFA.setId(ventaPasaje_x.getId());
+					confirmacionFA.setTarifa(ventaPasaje_x.getTarifa());
+					confirmacionFA.setDescuento(ventaPasaje_x.getDescuento());
+					confirmacionFA.setImportePagado(ventaPasaje_x.getImportePagado());
+					confirmacionFA.setFormaPago(ventaPasaje_x.getFormaPago());	
+				}
+				
+				confirmacionFA.setEstadoDocumento(Constantes.ESTADO_DOCUMENTO_PAGADO);
+				confirmacionFA.setEstadoRegistro(Constantes.VALUE_ACTIVO);
+				confirmacionFA.setPromocion(null);
+				confirmacionFA.setObservaciones(ventaPasaje_x.getObservaciones());
+				confirmacionFA.setNumeroControl(ventaPasaje_x.getNumeroControl());
+				confirmacionFA.setUsuarioHardware(getUsuarioHardware());
+				final boolean isNewComprobante = (confirmacionFA.getId()==null);
+				if(isNewComprobante)
+					UtilData.auditarRegistro(confirmacionFA, false, getUsuario(), Executions.getCurrent());
+				else
+					UtilData.auditarRegistro(confirmacionFA, true, getUsuario(), Executions.getCurrent());	
+				
+				listVentas.add(confirmacionFA);
+			}
+			
+			messageConfirmationUser = "WndVentaReserva.information.confirmacionGuardarVenta";
 		}
 		Messagebox.show(Messages.getString(messageConfirmationUser), DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_YESNO, Messagebox.QUESTION, new EventListener<Event>() {
 			@Override
@@ -3638,18 +3896,19 @@ public class WndVentaReservaNew  extends WndBase {
 				try {
 					if(e.getName().equals("onYes")){
 						if(isVenta || isReserva) {
-							ServiceLocator.getVentaPasajesManager().guardarVenta(listVentas);						
-							ventaPasaje = ServiceLocator.getVentaPasajesManager().buscarVentaById(ventaPasaje.getId());
-							if(isVenta){
-								/*Realiza el envio del boleto y realiza la impresion*/
-								boolean printComprobante = true;
-
-								List<VentaPasaje> listVentaPasajes= new ArrayList<>();
-								listVentaPasajes.add(ventaPasaje);
-									
-								//Aqui se envia el comprobante al servidor de Facturación Electrónica
-								WSFE.sendVenta(listVentaPasajes, wndVentaReservaNew, printComprobante, null, Constantes.NUMERO_COPIAS_COMPROBANTE_PASAJES);
+							ServiceLocator.getVentaPasajesManager().guardarVenta(listVentas, false);						
 							
+							if(isVenta){						
+								//actualiza el correlativo								
+								ServiceLocator.getVentaPasajesManager().actualizarCorrelativoComprobante(ventaPasaje_x, true);
+							
+								//Busca la Venta
+								ventaPasaje_x = ServiceLocator.getVentaPasajesManager().buscarVentaById(ventaPasaje_x.getId());	
+								
+								//envia el comprobante al servidor de Facturación Electrónica
+								WSFE.sendVenta(Arrays.asList(ventaPasaje_x), wndVentaReservaNew, true, null, Constantes.NUMERO_COPIAS_COMPROBANTE_PASAJES);
+								
+								//Elimina el asiento de la lista 
 								ltbxVtaAsientosSeleccionados.removeItemAt(ltbxVtaAsientosSeleccionados.getSelectedIndex());
 								if(ltbxVtaAsientosSeleccionados.getItemCount()>0)
 									DlgMessage.information(Messages.getString("WndVentaReserva.information.exitoGuardarVenta"),txtVtaPaxBusqueda);
@@ -3663,14 +3922,19 @@ public class WndVentaReservaNew  extends WndBase {
 								habilitarOpcionVenta(true);
 							}
 						}else if(isPostergacionFA || isCambioNombre) {
-							List<VentaPasaje> listNotasCredito = ServiceLocator.getVentaPasajesManager().postergarBoleto(listVentas,false);							
+							List<VentaPasaje> listNotasCredito = ServiceLocator.getVentaPasajesManager().postergarBoleto(listVentas,false, false);							
 							if(emiteComprobantePago) {
-								//Envio los comprobantes a FE
 								List<VentaPasaje> listVentasEnvioFE = new ArrayList<VentaPasaje>();
 								for(VentaPasaje ventaPasaje: listVentas) {
+									//Actualiza el correlativo
+									ServiceLocator.getVentaPasajesManager().actualizarCorrelativoComprobante(ventaPasaje, true);
+									
+									//Busca la venta
 									VentaPasaje postergacionFA = ServiceLocator.getVentaPasajesManager().buscarVentaById(ventaPasaje.getId());
 									listVentasEnvioFE.add(postergacionFA);
 								}
+								
+								//Envia los nuevos comprobantes al Servidor de Facturación Electrónica
 								WSFE.sendVenta(listVentasEnvioFE, wndVentaReservaNew, true, null, Constantes.NUMERO_COPIAS_COMPROBANTE_PASAJES);
 							}
 							
@@ -3689,7 +3953,31 @@ public class WndVentaReservaNew  extends WndBase {
 								else
 									DlgMessage.information(Messages.getString("WndVentaReserva.information.exitoCambioNombre"));
 							}
+						}else if(isConfirmacionFA) {
+							VentaPasaje vtaPasajeConfirmaFA = listVentas.get(0);	
+							TipoNota tipoNotaCredito=null;
+							VentaPasaje notaCredito = ServiceLocator.getVentaPasajesManager().confirmarFechaAbierta(vtaPasajeConfirmaFA, tipoNotaCredito, false);
+
+							Util.limpiarListbox(ltbxVtaAsientosSeleccionados);					
+							rdVtaConfirmacionFA.setChecked(false);
+							
+							//Valida si ha emitido un nuevo comprobante
+							if (vtaPasajeConfirmaFA.getId().longValue()!=ventaPasaje_x.getId().longValue() && vtaPasajeConfirmaFA.getImportePagado() > .00) {
+								//Actualiza el correlativo
+								ServiceLocator.getVentaPasajesManager().actualizarCorrelativoComprobante(vtaPasajeConfirmaFA, true);
+								
+								//Busca la venta
+								Servicio servicio=ServiceLocator.getServicioManager().buscarPorId(vtaPasajeConfirmaFA.getServicio().getId().longValue());
+								vtaPasajeConfirmaFA.setServicio(servicio);
+								vtaPasajeConfirmaFA = ServiceLocator.getVentaPasajesManager().buscarPorId(vtaPasajeConfirmaFA.getId());
+					
+								//Envia el comprobante al Servidor de Facturación Electrónica
+								WSFE.sendVenta(Arrays.asList(vtaPasajeConfirmaFA), wndVentaReservaNew, true, notaCredito, Constantes.NUMERO_COPIAS_COMPROBANTE_PASAJES);
+								
+								DlgMessage.information(Messages.getString("WndVentaReserva.information.exitoGuardarVenta"));
+							}
 						}
+						
 						Double totalPago = (dbxVtaTotalPagar.getValue()!=null && dbxVtaTotalPagar.getValue()>0?dbxVtaTotalPagar.getValue():.00);						
 						cleanDatosInfoComprobante();
 						if(cmbVtaAutorizaDescuento.getSelectedIndex()>=0)
@@ -3724,7 +4012,6 @@ public class WndVentaReservaNew  extends WndBase {
 			}				
 		});
 	}
-	
 	
 	/**
 	 * Obtine los subconjuntos de un registro de venta, tmpocupacion o de la ruta que estamos buscando.
@@ -3833,8 +4120,8 @@ public class WndVentaReservaNew  extends WndBase {
 		
 		cleanDatosInfoComprobante();
 		resertOperacionAsiento();		
-		cleanDatosInfoviaje(true, true);		
-		cleanDatosInfoviaje(false, true);				
+		cleanDatosInfoViaje(true, true);		
+		cleanDatosInfoViaje(false, true);				
 		cleanDatosPasajero(true);
 		enabledControlsFactura(false);
 		cleanDatosInfante();
@@ -3858,7 +4145,7 @@ public class WndVentaReservaNew  extends WndBase {
 	 * @param cleanPuntoEmbarque: (True) para limpiar los controles de embarque y deseambarque; (False) solamente resetea la selección del embarque y deseambarque. 
 	 * @throws Exception
 	 */
-	private void cleanDatosInfoviaje(boolean isIda, boolean cleanPuntoEmbarque)throws Exception{
+	private void cleanDatosInfoViaje(boolean isIda, boolean cleanPuntoEmbarque)throws Exception{
 		
 		if(isIda) {			
 			if(cleanPuntoEmbarque) {
@@ -4344,17 +4631,17 @@ public class WndVentaReservaNew  extends WndBase {
 	private void resertOperacionAsiento() {
 		rdVtaVenta.setChecked(false);
 		rdVtaReserva.setChecked(false);
-//		rdVtaPostergacion.setChecked(false);
 		rdVtaPostergacionFA.setChecked(false);
 		rdVtaCambioNombre.setChecked(false);
 		
 		rdVtaVenta.setDisabled(true);
 		rdVtaReserva.setDisabled(true);
-//		rdVtaPostergacion.setDisabled(true);
+		rdVtaConfirmacionFA.setDisabled(true);
 		rdVtaPostergacionFA.setDisabled(true);
 		rdVtaCambioNombre.setDisabled(true);
-		lblVtaInfoTipoOperacion.setValue("-");
-		
+
+		if(!rdVtaConfirmacionFA.isChecked())
+			lblVtaInfoTipoOperacion.setValue("-");
 	}
 	
 	
@@ -4382,7 +4669,7 @@ public class WndVentaReservaNew  extends WndBase {
 			cmbVtaVueltaEmbarque_hora.setDisabled(disabled);
 			cmbVtaVueltaDesembarque_hora.setDisabled(disabled);
 			dbxVtaVueltaTarifa.setDisabled(disabled);
-		}
+		}	
 	}
 	
 	/**
@@ -4486,22 +4773,41 @@ public class WndVentaReservaNew  extends WndBase {
 	 */
 	private void onClickAsiento(Event e, DetalleItinerario detalleItinerario, Map<String, Asiento> mapaAsientos, boolean esIda){
 		try{
+			Asiento asientoSeleccionado = (Asiento)e.getTarget();
+			key = asientoSeleccionado.getKey();
+			
+			//Valida que cuando es una confirmacion de FA no se seleccione mas de un asiento
+			if(rdVtaConfirmacionFA.isChecked() && ltbxVtaAsientosSeleccionados.getItemCount()==1) {				
+				String _piso = key.split("\\-")[1];
+				String _asiento = key.split("\\-")[0];
+				
+				//Valida si se trata del mismo asiento y piso. ocurre al bloquear y desbloquear un mismo asiento
+				List<Listitem> result = ltbxVtaAsientosSeleccionados.getItems().stream()
+						.filter(_item -> (((VentaIdaRetorno)_item.getValue()).getDetalleItinerarioIDA().getPiso().equals(_piso) &&
+										  ((VentaIdaRetorno)_item.getValue()).getDetalleItinerarioIDA().getAsiento().equals(_asiento)))
+						.collect(Collectors.toList());
+				
+				if(result.size()==0) {
+					DlgMessage.information(Messages.getString("WndVentaReservaNew.information.confirmaFA.noSelectVariosAsientos"));
+					return;
+				}				
+			}
+			
 			txtVtaPaxBusqueda.setText("");
-			disabled_btnGuardar(btnVtaGuardar, true);
+			disabled_btnGuardar(btnVtaGuardar, true);			
 			resertOperacionAsiento();
-			cleanDatosInfoviaje(true, false);
+			cleanDatosInfoViaje(true, false);
 			if(gridVtaInfoViajeVuelta.isVisible())
-				cleanDatosInfoviaje(false, false);
+				cleanDatosInfoViaje(false, false);					
 			disabledControlsInfoViaje(true);
-			disabledControlsPasajero(true);
-			disabledControlsCliente(true);
 			disabledControlsPago(true);
 			disabledAllButtonsOptinsByAsiento();
-			
-			Asiento asientoSeleccionado = (Asiento)e.getTarget();
-			key = asientoSeleccionado.getKey();			
-			
-			
+			if(!rdVtaConfirmacionFA.isChecked()) {				
+				disabledControlsPasajero(true);
+				disabledControlsCliente(true);
+			}			
+//			Asiento asientoSeleccionado = (Asiento)e.getTarget();
+//			key = asientoSeleccionado.getKey();			
 			/*	Elimina el asiento de la lista de asientos seleccionados y desbloquea el asiento*/
 			if(removerAsientoSeleccionado(key, mapaAsientos, asientoSeleccionado.getDetalleItinerario(),ltbxVtaAsientosSeleccionados)) {
 				onSelect_ltbxVtaAsientosSeleccionados(e);
@@ -4512,10 +4818,10 @@ public class WndVentaReservaNew  extends WndBase {
 			if(ltbxVtaAsientosSeleccionados.getItemCount()<=Constantes.MAX_SEAT_SELECTED){
 				/*	Si el asiento se encuentra bloqueado mostrar mensaje de no disponibilidad	*/
 				if(consultaAsientoBloqueado(key, mapaAsientos)){					
-					if(isVtaIdaVuelta || asientoSeleccionado.getEstadoAsiento().intValue()==Constantes.ASIENTO_BLOQUEADO)
+					if(isVtaIdaVuelta || asientoSeleccionado.getEstadoAsiento().intValue()==Constantes.ASIENTO_BLOQUEADO || rdVtaConfirmacionFA.isChecked())
 						DlgMessage.information(Messages.getString("WndVentaReserva.information.asientoNoDisponible"));
 					else {
-						//Las operaciones con asientos no disponibles, solamente están disponibles para el tipo de operación SOLO IDA
+						//Las operaciones con asientos ocupados, solamente están disponibles para el tipo de operación SOLO IDA
 						//Obtener la tarifa regular del asiento y almacenarlo en DetalleItinerario del asientoSeleccionado
 						List<TarifaRegular> lstTarifaRegular = buscarTarifa(
 								asientoSeleccionado.getDetalleItinerario().getItinerario().getServicio().getId(),
@@ -4523,7 +4829,8 @@ public class WndVentaReservaNew  extends WndBase {
 								Util.DatetoString(asientoSeleccionado.getDetalleItinerario().getFechaPartida(), Constantes.DATE_FORMAT),
 								asientoSeleccionado.getDetalleItinerario().getHoraPartida(),
 								asientoSeleccionado.getPiso(),
-								asientoSeleccionado.getNumeroZona());
+								asientoSeleccionado.getNumeroZona(),
+								asientoSeleccionado.getDetalleItinerario().getItinerario().getEmpresa().getId());
 						if(lstTarifaRegular.size()>0) {
 							Double montoTarifa = .00;
 							for(TarifaRegular tarifaRegular: lstTarifaRegular) {
@@ -4607,7 +4914,8 @@ public class WndVentaReservaNew  extends WndBase {
 								Util.DatetoString(asientoSeleccionado.getDetalleItinerario().getFechaPartida(), Constantes.DATE_FORMAT),
 								asientoSeleccionado.getDetalleItinerario().getHoraPartida(),
 								asientoSeleccionado.getPiso(),
-								asientoSeleccionado.getNumeroZona());
+								asientoSeleccionado.getNumeroZona(),
+								asientoSeleccionado.getDetalleItinerario().getItinerario().getEmpresa().getId());
 						if(lstTarifaRegular.size()>0) {
 							Double montoTarifa = .00;
 							for(TarifaRegular tarifaRegular: lstTarifaRegular) {
@@ -4664,10 +4972,10 @@ public class WndVentaReservaNew  extends WndBase {
 	 * @return
 	 * @throws Exception
 	 */
-	private List<TarifaRegular> buscarTarifa(Integer servicioId, Integer rutaId, String fechaPartida, String horaPartida, Integer piso, Integer numeroZona)throws Exception{
+	private List<TarifaRegular> buscarTarifa(Integer servicioId, Integer rutaId, String fechaPartida, String horaPartida, Integer piso, Integer numeroZona, Integer empresaID)throws Exception{
 		
 		List<TarifaRegular> lstTarifaRegular = ServiceLocator.getTarifaRegularManager().buscarTarifaPorServicio(
-				Constantes.ID_CANVEN_COUNTER, servicioId, rutaId, fechaPartida, horaPartida, piso, numeroZona);
+				Constantes.ID_CANVEN_COUNTER, servicioId, rutaId, fechaPartida, horaPartida, piso, numeroZona, empresaID);
 		
 		
 		return lstTarifaRegular;
@@ -4961,9 +5269,9 @@ public class WndVentaReservaNew  extends WndBase {
 	 */
 	private void calcularTotalPago()throws Exception{
 		Double totalPago = .00;
-		if(rdVtaVenta.isSelected()) {
+		if(rdVtaVenta.isChecked() || rdVtaConfirmacionFA.isChecked()) {
 			for(Listitem item: ltbxVtaAsientosSeleccionados.getItems()) {
-				if(!item.isSelected()) {
+				if(!item.isSelected() || rdVtaConfirmacionFA.isChecked()) {
 					VentaIdaRetorno venta = item.getValue();
 					if(venta.getDetalleItinerarioIDA()!=null)
 						totalPago += (venta.getDetalleItinerarioIDA().getTarifa()!=null?venta.getDetalleItinerarioIDA().getTarifa():.00);			
@@ -4972,9 +5280,20 @@ public class WndVentaReservaNew  extends WndBase {
 				}				
 			}
 		
-			totalPago += dbxVtaIdaTarifa.getValue();
-			if(gridVtaInfoViajeVuelta.isVisible())
-				totalPago += dbxVtaVueltaTarifa.getValue();
+			if(rdVtaVenta.isChecked()) {
+				totalPago += dbxVtaIdaTarifa.getValue();
+				if(gridVtaInfoViajeVuelta.isVisible())
+					totalPago += dbxVtaVueltaTarifa.getValue();	
+			}else if(rdVtaConfirmacionFA.isChecked()){
+				Double tarifaVtaFA = ventaPasaje_x.getTarifa();
+				Double importePagoVtaFA = ventaPasaje_x.getImportePagado();
+				Double importeValida = (importePagoVtaFA>=tarifaVtaFA? importePagoVtaFA: tarifaVtaFA);
+				
+				if(importeValida < totalPago)
+					totalPago += - importeValida;
+				else
+					totalPago = .00;
+			}			
 		}		
 		
 		dbxVtaTotalPagar.setValue(totalPago);
@@ -5524,7 +5843,7 @@ public class WndVentaReservaNew  extends WndBase {
 		}else if(event!=null && event.getTarget().getId().equals(rdVtaVenta.getId())) {				
 			if(!txtVtaPaxNumeroDocumento.isDisabled() && txtVtaPaxNumeroDocumento.getText().trim().isEmpty()) {
 				txtVtaPaxBusqueda.setFocus(true);
-			}else if(!cmbVtaTipoFormaPago.isDisabled() && cmbVtaTipoFormaPago.getSelectedIndex()<0 && !cmbVtaTipoFormaPago.isDisabled()) {
+			}else if(!cmbVtaTipoFormaPago.isDisabled() && cmbVtaTipoFormaPago.getSelectedIndex()<0) {
 				cmbVtaTipoFormaPago.open();
 				cmbVtaTipoFormaPago.setFocus(true);				
 			}else
@@ -5536,6 +5855,16 @@ public class WndVentaReservaNew  extends WndBase {
 				itbxVtaIdaTiempoReserva.setFocus(true);
 				itbxVtaIdaTiempoReserva.select();
 			}
+		}else if(rdVtaConfirmacionFA.isChecked()) {
+			if(gridVtaInfoViajeVuelta.isVisible()) 
+		  		cmbVtaVueltaEmbarque_hora.setFocus(true);
+		  	else if(!txtVtaPaxBusqueda.isReadonly()) 
+		  		txtVtaPaxBusqueda.setFocus(true); 
+		  	else if(!cmbVtaTipoFormaPago.isDisabled() && cmbVtaTipoFormaPago.getSelectedIndex()<0) {
+		  		cmbVtaTipoFormaPago.setSelectedIndex(0);
+		  		cmbVtaTipoFormaPago.open();
+		  	}else
+		  		btnVtaGuardar.setFocus(true);
 		}else if(pasajero==null)
 			txtVtaPaxBusqueda.setFocus(true);
 	}
@@ -6723,12 +7052,16 @@ public class WndVentaReservaNew  extends WndBase {
 
 						List<VentaPasaje> listVentas = new ArrayList<VentaPasaje>();
 						listVentas.add(postergacion);
-						List<VentaPasaje> listNotasCredito = ServiceLocator.getVentaPasajesManager().postergarBoleto(listVentas, true);
+						List<VentaPasaje> listNotasCredito = ServiceLocator.getVentaPasajesManager().postergarBoleto(listVentas, true, false);
 						
 						//Valida si debe o no enviar el comprobante a FE
 						if(emitirComprobante) {
 							List<VentaPasaje> listVentasEnvioFE = new ArrayList<VentaPasaje>();
 							for(VentaPasaje _ventaPasaje: listVentas) {
+								//Actualiza el correlativo
+								ServiceLocator.getVentaPasajesManager().actualizarCorrelativoComprobante(_ventaPasaje, true);
+								
+								//Busca la venta
 								VentaPasaje _postergacion = ServiceLocator.getVentaPasajesManager().buscarVentaById(_ventaPasaje.getId());
 								listVentasEnvioFE.add(_postergacion);
 							}
@@ -6823,7 +7156,7 @@ public class WndVentaReservaNew  extends WndBase {
 			List<TarifaRegular> lstTarifaRegular = ServiceLocator.getTarifaRegularManager().buscarTarifaPorServicio(1,
 					detalleItinerario.getItinerario().getServicio().getId(),
 					detalleItinerario.getRuta().getId(), fechaIda,
-					detalleItinerario.getHoraPartida(), null, null);
+					detalleItinerario.getHoraPartida(), null, null, detalleItinerario.getItinerario().getEmpresa().getId());
 			String strTarifas="";
 			if(lstTarifaRegular.size()>0){
 				for(TarifaRegular tarifa: lstTarifaRegular){
@@ -6989,7 +7322,6 @@ public class WndVentaReservaNew  extends WndBase {
 			key = asientoSeleccionado.getKey();						
 			
 			/*============================================================*/
-			//Para evitar la seleccion de mas de un asiento
 			boolean liberarAsientos = true;
 			for(Listitem item: ltbxPostAsientoSeleccionado.getItems()) {
 				VentaIdaRetorno venta = item.getValue();
@@ -7059,7 +7391,8 @@ public class WndVentaReservaNew  extends WndBase {
 								Util.DatetoString(asientoSeleccionado.getDetalleItinerario().getFechaPartida(), Constantes.DATE_FORMAT),
 								asientoSeleccionado.getDetalleItinerario().getHoraPartida(),
 								asientoSeleccionado.getPiso(),
-								asientoSeleccionado.getNumeroZona());
+								asientoSeleccionado.getNumeroZona(),
+								asientoSeleccionado.getDetalleItinerario().getItinerario().getEmpresa().getId());
 						if(lstTarifaRegular.size()>0) {
 							Double montoTarifa = .00;
 							for(TarifaRegular tarifaRegular: lstTarifaRegular) {
@@ -7874,7 +8207,7 @@ public class WndVentaReservaNew  extends WndBase {
 			else
 				titleWin += "::EMITIDO";	
 		}else {
-			titleWin = "CARPETA DE DESPACHO";
+			titleWin = "CARPETA DE DESPACHO::VISTA PRELIMINAR";
 			imageTitleWin = "resources/buttons/mp_carpeta-despacho.png";
 		}
 		

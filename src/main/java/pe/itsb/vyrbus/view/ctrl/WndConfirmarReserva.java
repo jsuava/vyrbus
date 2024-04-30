@@ -1,8 +1,8 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	:
- * Autor		: José Avalos
+ * Descripciï¿½n	:
+ * Autor		: Josï¿½ Avalos
  * Fecha		: 02/11/2012
  */
 package pe.itsb.vyrbus.view.ctrl;
@@ -77,7 +77,7 @@ public class WndConfirmarReserva extends WndBase {
 	@Override
 	public void onCreate() throws Exception {
 		try{
-			/*Valida si el usuario tiene una liquidación aperturada*/
+			/*Valida si el usuario tiene una liquidaciï¿½n aperturada*/
 			if(getDesktop().getSession().getAttribute(Constantes.ATRIBUTO_FECHA_LIQUIDACION)==null)
 				throw new LiquidacionNullException();
 
@@ -191,7 +191,7 @@ public class WndConfirmarReserva extends WndBase {
 				return;
 			}
 
-			List<VentaPasaje> lstReservas = ServiceLocator.getVentaPasajesManager().buscarReservasPorConfirmar(idOrigen, idDestino, pasajero, numeroDocumento, null, fechaPartida, idAgencia);
+			List<VentaPasaje> lstReservas = ServiceLocator.getVentaPasajesManager().buscarReservasPorConfirmar(idOrigen, idDestino, pasajero, numeroDocumento, null, fechaPartida, idAgencia, null);
 			if(lstReservas.size()>0){
 				lbxReservas.getItems().clear();
 				Listitem item = null;
