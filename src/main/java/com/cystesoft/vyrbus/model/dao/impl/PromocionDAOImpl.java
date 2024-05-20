@@ -89,7 +89,8 @@ public class PromocionDAOImpl extends GenericDAOImpl implements PromocionDAO {
 				"d_fecfin, c_estreg, to_char(audfecins, 'dd/MM/yyyy hh24:mi:ss'), audusuins, audipinse " +
 				"FROM vrmpromocion " +
 				"WHERE c_cliente='*' AND c_paxfre='*' AND c_estreg='"+estadoRegistro+"' " +
-						"AND to_date('"+fechaPartida+"','dd/mm/yyyy') BETWEEN d_fecini AND d_fecfin AND n_esTarifa="+Constantes.FALSE_VALUE ;
+						"AND to_date('"+fechaPartida+"','dd/mm/yyyy') BETWEEN d_fecini AND d_fecfin " ;
+//		"AND to_date('"+fechaPartida+"','dd/mm/yyyy') BETWEEN d_fecini AND d_fecfin AND n_esTarifa="+Constantes.FALSE_VALUE ;
 		if(idCliente!=null)
 			sql = sql + " UNION ALL " +
 					"SELECT promocion_id, c_denominacion, c_rutas, c_servicios, c_punven, c_canven, c_pasnue, c_canviapas, c_asientos, " +

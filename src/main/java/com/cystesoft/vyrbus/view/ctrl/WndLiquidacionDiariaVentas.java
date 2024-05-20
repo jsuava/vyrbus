@@ -1651,10 +1651,10 @@ public class WndLiquidacionDiariaVentas extends WndBase implements Serializable 
 		trackingIda.setServicio(ventaOriginal.getServicio());
 		trackingIda.setRuta(ventaOriginal.getRuta());
 		trackingIda.setAgenciaEmbarque(ventaOriginal.getAgenciaPartida());
-		trackingIda.setFechaEmbarque(Util.DatetoString(ventaOriginal.getFechaPartida(), "dd/MM/yyyy"));
-		trackingIda.setHoraEmbarque(UtilData.obtenerHoraEmbarque( ventaOriginal.getItinerario().getId(), ventaOriginal.getAgenciaPartida().getId()));
-		trackingIda.setNumeroPiso(ventaOriginal.getNumeroPiso());
-		trackingIda.setNumeroAsiento(ventaOriginal.getNumeroAsiento());
+		trackingIda.setFechaEmbarque(ventaOriginal.getFechaPartida()==null ? null : Util.DatetoString(ventaOriginal.getFechaPartida(), "dd/MM/yyyy"));
+		trackingIda.setHoraEmbarque(ventaOriginal.getFechaPartida()==null ? null : UtilData.obtenerHoraEmbarque( ventaOriginal.getItinerario().getId(), ventaOriginal.getAgenciaPartida().getId()));
+		trackingIda.setNumeroPiso(ventaOriginal.getFechaPartida()==null ? null : ventaOriginal.getNumeroPiso());
+		trackingIda.setNumeroAsiento(ventaOriginal.getFechaPartida()==null ? null : ventaOriginal.getNumeroAsiento());
 		trackingIda.setImportePagado(ventaOriginal.getImportePagado());
 		trackingIda.setTipoFormaPago(ventaOriginal.getTipoFormaPago());
 		trackingIda.setEstadoRegistro(Constantes.VALUE_ACTIVO);

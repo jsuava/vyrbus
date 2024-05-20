@@ -465,10 +465,10 @@ public class WndPerdidaServicio extends WndBase {
 						trackingIda.setServicio(venta.getServicio());
 						trackingIda.setRuta(venta.getRuta());
 						trackingIda.setAgenciaEmbarque(venta.getAgenciaPartida());
-						trackingIda.setFechaEmbarque(Util.DatetoString(venta.getFechaPartida(), "dd/MM/yyyy"));
-						trackingIda.setHoraEmbarque( UtilData.obtenerHoraEmbarque( venta.getItinerario().getId(), venta.getAgenciaPartida().getId()));
-						trackingIda.setNumeroPiso(venta.getNumeroPiso());
-						trackingIda.setNumeroAsiento(venta.getNumeroAsiento());
+						trackingIda.setFechaEmbarque(venta.getFechaPartida()==null ? null : Util.DatetoString(venta.getFechaPartida(), "dd/MM/yyyy"));
+						trackingIda.setHoraEmbarque( venta.getFechaPartida()==null ? null : UtilData.obtenerHoraEmbarque( venta.getItinerario().getId(), venta.getAgenciaPartida().getId()));
+						trackingIda.setNumeroPiso(venta.getFechaPartida()==null ? null : venta.getNumeroPiso());
+						trackingIda.setNumeroAsiento(venta.getFechaPartida()==null ? null : venta.getNumeroAsiento());
 						trackingIda.setImportePagado(venta.getImportePagado());
 						trackingIda.setTipoFormaPago(venta.getTipoFormaPago());
 						trackingIda.setEstadoRegistro(Constantes.VALUE_ACTIVO);

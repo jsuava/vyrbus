@@ -4191,7 +4191,8 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 				"        WHERE \r\n" + 
 				"               trunc(T.D_CREATION_DATE) BETWEEN to_date('"+fInicio+"', 'dd/MM/yyyy') \r\n" + 
 				"               AND to_date('"+fFin+"', 'dd/MM/yyyy')) T0 \r\n" + 
-				"WHERE estado LIKE '%"+estado+"%' AND contacto LIKE '%"+contacto.toUpperCase()+"%'";
+				"WHERE estado LIKE '%"+estado+"%' AND contacto LIKE '%"+contacto.toUpperCase()+"%' "+
+				"ORDER BY orden";
 		
 //		String sql = "SELECT codigo, estado, descripcion, error, contacto, telefono, importe, orden "
 //				+ "FROM ("

@@ -7266,15 +7266,16 @@ public class WndVentaReserva extends WndBase {
 	private void imgPromocion_loadPromociones(){
 		try{
 			boolean paxfre = false;
-			if(oPasajero==null){
-				DlgMessage.information(Messages.getString("WndVentaReserva.information.noPasajeroPromocion"), txtDocumentoPax);
-				tabPasajero.setSelected(true);
-				return;
-			}
+			//MAOE 22/04/2024 no sería necesario validar si el pasajero es nulo
+//			if(oPasajero==null){
+//				DlgMessage.information(Messages.getString("WndVentaReserva.information.noPasajeroPromocion"), txtDocumentoPax);
+//				tabPasajero.setSelected(true);
+//				return;
+//			}
 
 
-			if(oPasajero.getPasajeroFrecuente()!=null && oPasajero.getPasajeroFrecuente().getEstado().intValue()==Constantes.TRUE_VALUE)
-				paxfre=true;
+//			if(oPasajero.getPasajeroFrecuente()!=null && oPasajero.getPasajeroFrecuente().getEstado().intValue()==Constantes.TRUE_VALUE)
+//				paxfre=true;
 
 //			if(oPasajero.isPaxFree())
 //				paxfre=true;

@@ -402,88 +402,90 @@ public class WndEstadoVentaReservaVerVenta extends WndBase {
 		
 		//GPS DEL COMPROBANTE MAOE 07/03/2024
 		Util.limpiarListbox(lbxGps);
-		List<GpsComprobante> lstGps = ServiceLocator.getVentaPasajesManager().buscarGpsComprobante(ventaPasaje.getVentaOriginal());
-		if(lstGps.size()>0) {
-			int i=0;
-			for(GpsComprobante gps:lstGps) {
-				Listitem item=new Listitem();
-				i++;
-				
-				Listcell cell=new Listcell();
-				cell=new Listcell(String.valueOf(i));
-				item.appendChild(cell);
-				
-				//ID
-				cell=new Listcell(gps.getId().toString());
-				item.appendChild(cell);
-				
-				//IDVENTA
-				cell=new Listcell(gps.getIdVentaPasaje().toString());
-				item.appendChild(cell);
-				
-				//FECHA EMISION
-				cell=new Listcell(Util.DatetoString(gps.getFechaEmision(), Constantes.DATE_FORMAT));
-				item.appendChild(cell);
-				
-				//TIPO PAGO
-				cell=new Listcell(gps.getTipoPago().toString());
-				item.appendChild(cell);
-				
-				//COMPROBANTE
-				cell=new Listcell(gps.getNumComprobante().toString());
-				item.appendChild(cell);
-				
-				//IMPORTE
-				cell=new Listcell(Util.toNumberFormat(gps.getImporte(), 2));
-				item.appendChild(cell);
-				
-				//SERVICIO
-				cell=new Listcell(gps.getServicio());
-				item.appendChild(cell);
-				
-				//RUTA
-				cell=new Listcell(gps.getRuta());
-				item.appendChild(cell);
-				
-				//AG EMBARQUE
-				cell=new Listcell(gps.getAgenciaEmbarque()==null ? "" : gps.getAgenciaEmbarque());
-				item.appendChild(cell);
-				
-				//FECHA VIAJE
-				cell=new Listcell(gps.getFechaViaje()==null ? "" : gps.getFechaViaje().toString());
-				item.appendChild(cell);
-				
-				//HORA EMBARQUE
-				cell=new Listcell(gps.getHoraViaje()==null ? "" : gps.getHoraViaje().toString());
-				item.appendChild(cell);
-				
-				//ASIENTO
-				cell=new Listcell(gps.getAsiento()==null ? "" : gps.getAsiento().toString());
-				item.appendChild(cell);
-				
-				//PASAJERO
-				cell=new Listcell(gps.getPasajero());
-				item.appendChild(cell);
-				
-				//DOC. IDENTIDAD
-				cell=new Listcell(gps.getDocIdentidad());
-				item.appendChild(cell);
-				
-				//FECHA OPERACION
-				cell=new Listcell(Util.DatetoString(gps.getFechaOperacion(), Constantes.DATE_TIME_SHORT_FORMAT));
-				item.appendChild(cell);
-				
-				//USUARIO
-				cell=new Listcell(gps.getUsuario());
-				item.appendChild(cell);
-				
-				//ESTADO
-				cell=new Listcell(gps.getEstado());
-				item.appendChild(cell);
-				
-				item.setValue(gps);
-				
-				lbxGps.appendChild(item);
+		if(!ventaPasaje.getTipoTransaccion().equals("2")) {
+			List<GpsComprobante> lstGps = ServiceLocator.getVentaPasajesManager().buscarGpsComprobante(ventaPasaje.getVentaOriginal());
+			if(lstGps.size()>0) {
+				int i=0;
+				for(GpsComprobante gps:lstGps) {
+					Listitem item=new Listitem();
+					i++;
+					
+					Listcell cell=new Listcell();
+					cell=new Listcell(String.valueOf(i));
+					item.appendChild(cell);
+					
+					//ID
+					cell=new Listcell(gps.getId().toString());
+					item.appendChild(cell);
+					
+					//IDVENTA
+					cell=new Listcell(gps.getIdVentaPasaje().toString());
+					item.appendChild(cell);
+					
+					//FECHA EMISION
+					cell=new Listcell(Util.DatetoString(gps.getFechaEmision(), Constantes.DATE_FORMAT));
+					item.appendChild(cell);
+					
+					//TIPO PAGO
+					cell=new Listcell(gps.getTipoPago().toString());
+					item.appendChild(cell);
+					
+					//COMPROBANTE
+					cell=new Listcell(gps.getNumComprobante().toString());
+					item.appendChild(cell);
+					
+					//IMPORTE
+					cell=new Listcell(Util.toNumberFormat(gps.getImporte(), 2));
+					item.appendChild(cell);
+					
+					//SERVICIO
+					cell=new Listcell(gps.getServicio());
+					item.appendChild(cell);
+					
+					//RUTA
+					cell=new Listcell(gps.getRuta());
+					item.appendChild(cell);
+					
+					//AG EMBARQUE
+					cell=new Listcell(gps.getAgenciaEmbarque()==null ? "" : gps.getAgenciaEmbarque());
+					item.appendChild(cell);
+					
+					//FECHA VIAJE
+					cell=new Listcell(gps.getFechaViaje()==null ? "" : gps.getFechaViaje().toString());
+					item.appendChild(cell);
+					
+					//HORA EMBARQUE
+					cell=new Listcell(gps.getHoraViaje()==null ? "" : gps.getHoraViaje().toString());
+					item.appendChild(cell);
+					
+					//ASIENTO
+					cell=new Listcell(gps.getAsiento()==null ? "" : gps.getAsiento().toString());
+					item.appendChild(cell);
+					
+					//PASAJERO
+					cell=new Listcell(gps.getPasajero());
+					item.appendChild(cell);
+					
+					//DOC. IDENTIDAD
+					cell=new Listcell(gps.getDocIdentidad());
+					item.appendChild(cell);
+					
+					//FECHA OPERACION
+					cell=new Listcell(Util.DatetoString(gps.getFechaOperacion(), Constantes.DATE_TIME_SHORT_FORMAT));
+					item.appendChild(cell);
+					
+					//USUARIO
+					cell=new Listcell(gps.getUsuario());
+					item.appendChild(cell);
+					
+					//ESTADO
+					cell=new Listcell(gps.getEstado());
+					item.appendChild(cell);
+					
+					item.setValue(gps);
+					
+					lbxGps.appendChild(item);
+				}
 			}
 		}
 				

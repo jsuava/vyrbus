@@ -7,6 +7,7 @@
  */
 package com.cystesoft.vyrbus.view.ctrl;
 
+import java.util.Date;
 import java.util.List;
 import java.util.TreeMap;
 
@@ -22,6 +23,7 @@ import org.zkoss.zul.Textbox;
 import org.zkoss.zul.Toolbarbutton;
 
 import com.cystesoft.vyrbus.model.bean.DetalleManifiesto;
+import com.cystesoft.vyrbus.model.bean.MovimientoPasajes;
 import com.cystesoft.vyrbus.model.bean.VentaPasaje;
 import com.cystesoft.vyrbus.service.locator.ServiceLocator;
 import com.cystesoft.vyrbus.service.util.Constantes;
@@ -115,7 +117,9 @@ public class WndLiberaBoletoManifiesto extends WndBase {
 
 
 	private void liberarBoletoManifiesto(final Long idVenta) throws Exception{
-		Messagebox.show(Messages.getString("WndLiberarBoletoMAnifiesto.question.confirmLiberarcion"), DlgMessage.NOMBREAPLICACION+" CONSIMACIÓN", DlgMessage.BTN_YESNO, Messagebox.QUESTION, Messagebox.NO, new EventListener<Event>() {
+		//Buscamos información de la venta MAOE 20/04/2024
+		VentaPasaje ventaPasaje = ServiceLocator.getVentaPasajesManager().buscarVentaById(idVenta);
+		Messagebox.show(Messages.getString("WndLiberarBoletoMAnifiesto.question.confirmLiberarcion"), DlgMessage.NOMBREAPLICACION+" CONFIRMACIÓN", DlgMessage.BTN_YESNO, Messagebox.QUESTION, Messagebox.NO, new EventListener<Event>() {
 			@Override
 			public void onEvent(Event e) throws Exception{
 				if(e.getName().equals(Messagebox.ON_YES)){
@@ -131,6 +135,26 @@ public class WndLiberaBoletoManifiesto extends WndBase {
 							detalleManifiesto.setEstadoRegistro(Constantes.VALUE_INACTIVO);
 							UtilData.auditarRegistro(detalleManifiesto,true, getUsuario(), Executions.getCurrent());
 							ServiceLocator.getDetalleManifiestoManager().actualizar(detalleManifiesto);
+							
+							//Insertar informacion del tracking
+							MovimientoPasajes trackingIda = new MovimientoPasajes();
+							
+							trackingIda.setVentaPasaje(ventaPasaje);
+							trackingIda.setOperacion("RETIRO DE EMBARQUE");
+							trackingIda.setFechaOperacion(Util.DatetoString(new Date(), "dd/MM/yyyy"));
+							trackingIda.setServicio(ventaPasaje.getServicio());
+							trackingIda.setRuta(ventaPasaje.getRuta());
+							trackingIda.setAgenciaEmbarque(ventaPasaje.getAgenciaPartida());
+							trackingIda.setFechaEmbarque(ventaPasaje.getFechaPartida()==null ? null : Util.DatetoString(ventaPasaje.getFechaPartida(), "dd/MM/yyyy"));
+							trackingIda.setHoraEmbarque( ventaPasaje.getFechaPartida()==null ? null : UtilData.obtenerHoraEmbarque( ventaPasaje.getItinerario().getId(), ventaPasaje.getAgenciaPartida().getId()));
+							trackingIda.setNumeroPiso(ventaPasaje.getFechaPartida()==null ? null : ventaPasaje.getNumeroPiso());
+							trackingIda.setNumeroAsiento(ventaPasaje.getFechaPartida()==null ? null : ventaPasaje.getNumeroAsiento());
+							trackingIda.setImportePagado(ventaPasaje.getImportePagado());
+							trackingIda.setTipoFormaPago(ventaPasaje.getTipoFormaPago());
+							trackingIda.setEstadoRegistro(Constantes.VALUE_ACTIVO);
+							UtilData.auditarRegistro(trackingIda, getUsuario(), Executions.getCurrent());
+							//Guardar tracking MAOE 19/02/2024
+							ServiceLocator.getMovimientoPasajesManager().guardar(trackingIda);
 
 							Util.limpiarListbox(lsbxPasajeros);
 							DlgMessage.information(Messages.getString("WndLiberarBoletoMAnifiesto.onformation.confirmLiberarcion"),txtNroBoleto);

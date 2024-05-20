@@ -1,8 +1,8 @@
 /**
  * Proyecto		: VYRBUS
  * Sistema		: Sistema de Ventas y Reservas
- * Descripciï¿½n	:
- * Autor		: Josï¿½ Avalos
+ * Descripción	:
+ * Autor		: José Avalos
  * Fecha		: 24 jun. 2021
  * Hora			: 20:41:09
  */
@@ -338,7 +338,7 @@ public class WndFacturacionServicios extends WndBase {
 			Image imgAnular = new Image();
 			imgAnular.setId(ventaPasaje.getId().toString());
 			imgAnular.setSrc("/resources/mp_anular.png");
-			imgAnular.setTooltiptext("Anular documento electrï¿½nico");
+			imgAnular.setTooltiptext("Anular documento electrónico");
 			imgAnular.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
 				@Override
 				public void onEvent(Event e) {
@@ -518,7 +518,7 @@ public class WndFacturacionServicios extends WndBase {
 
 								List<VentaPasaje> listVentaPasajes= new ArrayList<>();
 								listVentaPasajes.add(servicioEspecial);
-								//Aqui se envia el comprobante al servidor de Facturaciï¿½n Electrï¿½nica
+								//Aqui se envia el comprobante al servidor de Facturación Electrónica
 								/*Comentado para lanzar a pruebas Transmar*/
 								WSFE.sendVenta(listVentaPasajes, wndFacturacionServicios, printComprobante, null, Constantes.NUMERO_COPIAS_COMPROBANTE_PASAJES);
 							}
@@ -709,7 +709,7 @@ public class WndFacturacionServicios extends WndBase {
 		rows.appendChild(row);
 
 		row = new Row();
-		label = new Label("RUC :");
+		label = new Label("DOC. IDE :");
 		row.appendChild(label);
 
 		Hlayout hlayout = new Hlayout();
@@ -1315,7 +1315,7 @@ public class WndFacturacionServicios extends WndBase {
 
 		row=new Row();
 		row.setSpans("1,4");
-		label = new Label("MOTIVO ANULACIï¿½N (*) :");
+		label = new Label("MOTIVO ANULACION (*) :");
 		row.appendChild(label);
 		final Textbox txtMotivoAnulacion = new Textbox();
 		txtMotivoAnulacion.setWidth("314px");
@@ -1438,7 +1438,7 @@ public class WndFacturacionServicios extends WndBase {
 //			WSFE.sendNota(notaCredito);
 //		}
 		
-		DlgMessage.information("El Proceso de anulaciï¿½n termino correctamente");
+		DlgMessage.information("El Proceso de anulación termino correctamente");
 		onSearch();
 		window.onClose();
 	}
@@ -1524,7 +1524,7 @@ public class WndFacturacionServicios extends WndBase {
 		label = new Label();
 		row.appendChild(label);
 
-		label = new Label("Nï¿½ COMPROBANTE :");
+		label = new Label("No COMPROBANTE :");
 		row.appendChild(label);
 
 		label = new Label();
@@ -1535,11 +1535,11 @@ public class WndFacturacionServicios extends WndBase {
 		rows.appendChild(row);
 
 		row = new Row();
-		label = new Label("RUC :");
+		label = new Label("DOC. IDE :");
 		row.appendChild(label);
 
 		label = new Label();
-		label.setValue(venta.getCliente().getNumeroDocumento());
+		label.setValue(venta.getTipoComprobante().getId()==Constantes.ID_TIPCOM_BOLETA_VENTA?venta.getPasajero().getNumeroDocumento():venta.getCliente().getNumeroDocumento());
 		label.setStyle(style);
 		row.appendChild(label);
 
@@ -1564,7 +1564,7 @@ public class WndFacturacionServicios extends WndBase {
 		row.appendChild(label);
 
 		label = new Label();
-		label.setValue(venta.getCliente().getRazonSocial());
+		label.setValue(venta.getTipoComprobante().getId()==Constantes.ID_TIPCOM_BOLETA_VENTA?venta.getPasajero().getNombresApellidos():venta.getCliente().getRazonSocial());
 		label.setStyle(style);
 		row.appendChild(label);
 
@@ -1577,7 +1577,7 @@ public class WndFacturacionServicios extends WndBase {
 		row.appendChild(label);
 
 		label = new Label();
-		label.setValue(venta.getCliente().getDireccion());
+		label.setValue(venta.getTipoComprobante().getId()==Constantes.ID_TIPCOM_BOLETA_VENTA?"":venta.getCliente().getDireccion());
 		label.setStyle(style);
 		row.appendChild(label);
 

@@ -1377,10 +1377,11 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 				boletoOriginal.setId(null);
 				int canalVanetaId=boletoOriginal.getCanalVenta().getId();
 				
-				/*Realiza una devolucion si es una Boleto de Viaje o si este fue emitido por un canal de Agencia de Viajes o Web - 15/12/2016 - jabanto*/
+				//Realiza una devolucion si es una Boleto de Viaje o si este fue emitido por un canal de Agencia de Viajes o Web - 15/12/2016 - jabanto
+				//Se retiro la venta web, para Transmar no aplica y no se hace devolución MAOE 30/04/2024
 				if(boletoOriginal.getTipoComprobante().getId().intValue()==Constantes.ID_TIPCOM_BOLETO_VIAJE
 						|| canalVanetaId==Constantes.ID_CANVEN_AGENCIA_VIAJES
-						|| canalVanetaId==Constantes.ID_CANVEN_WEB
+//						|| canalVanetaId==Constantes.ID_CANVEN_WEB
 						|| isCambioComprobante ){
 					boletoOriginal.setPenalidad(0.00);
 					boletoOriginal.setImportePagadoEfectivo(0.0);
@@ -1405,7 +1406,6 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 					boletoOriginal.setUsuarioModificacion(boletoPostergar.getUsuarioModificacion());
 					boletoOriginal.setIpModificacion(boletoPostergar.getIpModificacion());
 					
-					
 					//Tracking de inahabilitacion de comprobante
 					trackingInah.setVentaPasaje(boletoOriginal);
 					trackingInah.setOperacion("INHABILITADO POR "+motivoMovimiento+" NUEVO COMP: "+boletoPostergar.getNumeroBoleto());
@@ -1418,7 +1418,7 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 					trackingInah.setNumeroPiso(boletoOriginal.getNumeroPiso());
 					trackingInah.setNumeroAsiento(boletoOriginal.getNumeroAsiento());
 					trackingInah.setImportePagado(boletoOriginal.getImportePagado());
-					trackingInah.setTipoFormaPago(boletoPostergar.getTipoFormaPago());
+					trackingInah.setTipoFormaPago(boletoOriginal.getTipoFormaPago());
 					trackingInah.setEstadoRegistro(Constantes.VALUE_ACTIVO);
 					UtilData.auditarRegistro(trackingInah, boletoPostergar.getUsuario(), Executions.getCurrent());
 					
@@ -2468,10 +2468,10 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 							trackingIda.setServicio(anulacion.getServicio());
 							trackingIda.setRuta(anulacion.getRuta());
 							trackingIda.setAgenciaEmbarque(anulacion.getAgenciaPartida());
-							trackingIda.setFechaEmbarque(Util.DatetoString(anulacion.getFechaPartida(), "dd/MM/yyyy"));
-							trackingIda.setHoraEmbarque( UtilData.obtenerHoraEmbarque( anulacion.getItinerario().getId(), anulacion.getAgenciaPartida().getId()));
-							trackingIda.setNumeroPiso(anulacion.getNumeroPiso());
-							trackingIda.setNumeroAsiento(anulacion.getNumeroAsiento());
+							trackingIda.setFechaEmbarque(anulacion.getFechaPartida()==null ? null : Util.DatetoString(anulacion.getFechaPartida(), "dd/MM/yyyy"));
+							trackingIda.setHoraEmbarque( anulacion.getFechaPartida()==null ? null : UtilData.obtenerHoraEmbarque( anulacion.getItinerario().getId(), anulacion.getAgenciaPartida().getId()));
+							trackingIda.setNumeroPiso(anulacion.getFechaPartida()==null ? null : anulacion.getNumeroPiso());
+							trackingIda.setNumeroAsiento(anulacion.getFechaPartida()==null ? null : anulacion.getNumeroAsiento());
 							trackingIda.setImportePagado(anulacion.getImportePagado());
 							trackingIda.setTipoFormaPago(anulacion.getTipoFormaPago());
 							trackingIda.setEstadoRegistro(Constantes.VALUE_ACTIVO);

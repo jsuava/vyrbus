@@ -2116,6 +2116,7 @@ public class WndPostergacion extends WndBase implements Serializable {
 		}
 		
 		calcularPagos();
+
 	}
 
 	private void resetCheck_despuesViaje(Checkbox chkException)throws Exception{

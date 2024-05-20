@@ -293,7 +293,7 @@ public class WSFE implements Serializable{
 				}else{
 					/*Envia la venta a nuestro ws*/
 					//comentado temporalmento - 05/04/2024 - maoe
-//					result= getSoap().setVenta(TOKEN, oventa); 
+					result= getSoap().setVenta(TOKEN, oventa); 
 				}
 				
 				/*Agrega a la lista para la impresion - 06/12/2016 - jabanto*/
