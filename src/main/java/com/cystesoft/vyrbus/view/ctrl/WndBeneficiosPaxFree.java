@@ -715,7 +715,8 @@ public class WndBeneficiosPaxFree extends WndOpcionesMantenimiento {
 			ServiceLocator.getVentaPasajesManager().guardarVenta(ventaPasaje, false, true, true,true, false);
 			
 			//Actualiza el correlativo - jabanto - 22/01/2024
-			ServiceLocator.getVentaPasajesManager().actualizarCorrelativoComprobante(ventaPasaje, true);
+//			ServiceLocator.getVentaPasajesManager().actualizarCorrelativoComprobante(ventaPasaje, true);
+			ServiceLocator.getVentaPasajesManager().updateCorrelative(ventaPasaje, true);
 
 			/*Begin 27/10/2016 - jabanto*/
 			List<VentaPasaje> listVentaPasaje= new ArrayList<>();

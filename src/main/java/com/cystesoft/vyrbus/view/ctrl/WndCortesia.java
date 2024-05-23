@@ -598,7 +598,8 @@ public class WndCortesia extends WndOpcionesMantenimiento {
 		ServiceLocator.getVentaPasajesManager().guardarVenta(ventaPasaje, true, true, false, true, false);
 		
 		//Actualiza el correlativo - jabanto - 22/01/2024
-		ServiceLocator.getVentaPasajesManager().actualizarCorrelativoComprobante(ventaPasaje, true);
+//		ServiceLocator.getVentaPasajesManager().actualizarCorrelativoComprobante(ventaPasaje, true);
+		ServiceLocator.getVentaPasajesManager().updateCorrelative(ventaPasaje, true);
 
 		/* Guarda la cortesia */
 		cortesia.setTipoFormaPago(tipoFormaPago);
@@ -682,7 +683,8 @@ public class WndCortesia extends WndOpcionesMantenimiento {
 				
 				if(notaCredito!=null) {
 					//Actualiza el correlativo - jabanto - 22/01/2024
-					ServiceLocator.getVentaPasajesManager().actualizarCorrelativoComprobante(notaCredito, true);
+//					ServiceLocator.getVentaPasajesManager().actualizarCorrelativoComprobante(notaCredito, true);
+					ServiceLocator.getVentaPasajesManager().updateCorrelative(notaCredito, true);
 				}
 
 				limpiaControlesPasajero();

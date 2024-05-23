@@ -1704,15 +1704,18 @@ public class WndPostergacion extends WndBase implements Serializable {
 																					
 							//Actualiza el correlativo - jabanto - 22/01/2024
 							if(postergacion_id.longValue()!=postergacion.getId().longValue()) //solamente si se generó un nuevo comprobante
-								ServiceLocator.getVentaPasajesManager().actualizarCorrelativoComprobante(postergacion, true);
+//								ServiceLocator.getVentaPasajesManager().actualizarCorrelativoComprobante(postergacion, true);
+								ServiceLocator.getVentaPasajesManager().updateCorrelative(postergacion, true);
 							
 							//Actualiza el correlativo del gasto administrativo
 							if(gastoAdmin!=null)
-								ServiceLocator.getVentaPasajesManager().actualizarCorrelativoComprobante(gastoAdmin, true);
+//								ServiceLocator.getVentaPasajesManager().actualizarCorrelativoComprobante(gastoAdmin, true);
+								ServiceLocator.getVentaPasajesManager().updateCorrelative(gastoAdmin, true);
 							
 							//Actualiza el correlativo - jabanto - 22/01/2024
 							if(notaCredito !=null)
-								ServiceLocator.getVentaPasajesManager().actualizarCorrelativoComprobante(notaCredito, true);	
+//								ServiceLocator.getVentaPasajesManager().actualizarCorrelativoComprobante(notaCredito, true);
+								ServiceLocator.getVentaPasajesManager().updateCorrelative(notaCredito, true);
 														
 							
 							postergacion = ServiceLocator.getVentaPasajesManager().buscarVentaById(postergacion.getId());

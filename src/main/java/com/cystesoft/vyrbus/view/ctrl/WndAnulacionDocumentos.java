@@ -666,7 +666,8 @@ public class WndAnulacionDocumentos extends WndBase{
 		for(VentaPasaje venta:ventasNotas.getListVentas()){
 			
 			//Actualiza el correlativo - jabanto - 22/01/2024
-			ServiceLocator.getVentaPasajesManager().actualizarCorrelativoComprobante(venta, true);
+//			ServiceLocator.getVentaPasajesManager().actualizarCorrelativoComprobante(venta, true);
+			ServiceLocator.getVentaPasajesManager().updateCorrelative(venta, true);
 			
 			VentaPasaje envioVenta=ServiceLocator.getVentaPasajesManager().buscarVentaById(venta.getId());
 			lstVentasenviar.add(envioVenta);
@@ -674,7 +675,8 @@ public class WndAnulacionDocumentos extends WndBase{
 		
 		//Actualiza el correlativo de las NC - jabanto - 22/01/2024
 		for(VentaPasaje notaCredito:ventasNotas.getListNotasCredito()){
-			ServiceLocator.getVentaPasajesManager().actualizarCorrelativoComprobante(notaCredito, true);
+//			ServiceLocator.getVentaPasajesManager().actualizarCorrelativoComprobante(notaCredito, true);
+			ServiceLocator.getVentaPasajesManager().updateCorrelative(notaCredito, true);
 		}
 		
 		if(lstVentasenviar.size()>0)

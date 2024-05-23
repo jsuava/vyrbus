@@ -1678,7 +1678,8 @@ public class WndLiquidacionDiariaVentas extends WndBase implements Serializable 
 		VentaPasaje notaCredito= ServiceLocator.getVentaPasajesManager().anularMovimiento(ventaOriginal,false, false);
 		if(notaCredito!=null){
 			//Actualiza el correlativo - 22/01/2024 - jabanto
-			ServiceLocator.getVentaPasajesManager().actualizarCorrelativoComprobante(notaCredito, true);
+//			ServiceLocator.getVentaPasajesManager().actualizarCorrelativoComprobante(notaCredito, true);
+			notaCredito = ServiceLocator.getVentaPasajesManager().updateCorrelative(notaCredito, true);
 			//Comentado por MAOE 05/02/2024
 			WSFE.sendNota(notaCredito);
 		}

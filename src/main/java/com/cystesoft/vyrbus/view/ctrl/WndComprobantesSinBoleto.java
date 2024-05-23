@@ -683,7 +683,8 @@ public class WndComprobantesSinBoleto extends WndBase {
 								int result = ServiceLocator.getVentaPasajesManager().reimprimirBoleto(ventaOriginal, boletoReimprimir, false);
 								
 								//Actualiza el correlativo - jabanto - 22/01/2024
-								ServiceLocator.getVentaPasajesManager().actualizarCorrelativoComprobante(boletoReimprimir, true);
+//								ServiceLocator.getVentaPasajesManager().actualizarCorrelativoComprobante(boletoReimprimir, true);
+								ServiceLocator.getVentaPasajesManager().updateCorrelative(boletoReimprimir, true);
 								
 								if(result==Constantes.CORRECT){
 									boletoReimprimir = ServiceLocator.getVentaPasajesManager().buscarVentaById(boletoReimprimir.getId());

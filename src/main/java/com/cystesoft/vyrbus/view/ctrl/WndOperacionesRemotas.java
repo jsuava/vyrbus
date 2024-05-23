@@ -1229,7 +1229,8 @@ public class WndOperacionesRemotas extends WndBase {
 									
 									//Actualiza correlativo de la NC - 22/01/2024 - jabanto
 									if(notaCredito != null)
-										ServiceLocator.getVentaPasajesManager().actualizarCorrelativoComprobante(notaCredito, true);
+//										ServiceLocator.getVentaPasajesManager().actualizarCorrelativoComprobante(notaCredito, true);
+										ServiceLocator.getVentaPasajesManager().updateCorrelative(notaCredito, true);
 
 									/*Realiza el envio de la nota de credito - 11/11/2016 - jabanto*/
 									if(notaCredito!=null)

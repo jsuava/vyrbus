@@ -690,7 +690,8 @@ public interface VentaPasajesManager {
 	 * @param ejecutarSeqByCorrelativo : Indica si debe  no ejecutar el sequenciador para generar el correlativo
 	 * @throws Exception
 	 */
-	public Object actualizarCorrelativoComprobante(Object object, Boolean ejecutarSeqByCorrelativo) throws Exception;
+//	public Object actualizarCorrelativoComprobante(Object object, Boolean ejecutarSeqByCorrelativo) throws Exception;
+	public VentaPasaje updateCorrelative(VentaPasaje ventaPasaje, Boolean executeSequecer) throws Exception;
 
 	
 	/**

@@ -124,7 +124,7 @@ public interface VentaPasajesDAO extends GenericDAO {
 	 * @param idTipoComprobante	: Identificador del tipo de comprobante a validar.
 	 * @return Integer
 	 */
-	public Integer validarNumeroBoleto(String numeroBoleto, Integer idTipoComprobante)throws Exception;
+	public Boolean validarNumeroBoleto(String numeroBoleto, Integer idTipoComprobante, Long ventaPasajesId)throws Exception;
 	/**
 	 * Realiza la busqueda de las ventas.
 	 * @param idOrigen			: Identificador del Origen.

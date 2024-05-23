@@ -3074,6 +3074,9 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 									if(getObjetoConfirmar().getNumeroAsiento()!=null && getObjetoConfirmar().getNumeroAsiento().intValue()!=ventaPasaje.getNumeroAsiento().intValue())
 										validarBloqueo = true;
 									result = ServiceLocator.getVentaPasajesManager().guardarVenta(ventaPasaje,false, false, validarBloqueo,true, false);
+									//Actualiza el correlativo - jabanto - 22/01/2024
+//									ServiceLocator.getVentaPasajesManager().actualizarCorrelativoComprobante(ventaPasaje, true);
+									ventaPasaje = ServiceLocator.getVentaPasajesManager().updateCorrelative(ventaPasaje, true);
 									
 									MovimientoPasajes trackingIda = new MovimientoPasajes();
 									
@@ -3092,9 +3095,7 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 									trackingIda.setEstadoRegistro(Constantes.VALUE_ACTIVO);
 									UtilData.auditarRegistro(trackingIda, ventaPasaje.getUsuario(), Executions.getCurrent());
 									ServiceLocator.getMovimientoPasajesManager().guardar(trackingIda);
-									
-									//Actualiza el correlativo - jabanto - 22/01/2024
-									ServiceLocator.getVentaPasajesManager().actualizarCorrelativoComprobante(ventaPasaje, true);
+																		
 								}else{
 									//Confirmacion de F.A.
 									TipoNota tipoNotaCredito=null;
@@ -3113,13 +3114,15 @@ public class WndConfirmacion extends WndBase implements IConfirmacion {
 									
 									if(ventaPasaje_id==null)
 										//Actualiza el correlativo - jabanto - 22/01/2024
-										ServiceLocator.getVentaPasajesManager().actualizarCorrelativoComprobante(ventaPasaje, true);
+//										ServiceLocator.getVentaPasajesManager().actualizarCorrelativoComprobante(ventaPasaje, true);
+										ServiceLocator.getVentaPasajesManager().updateCorrelative(ventaPasaje, true);
 
 									System.out.println("Los IDs son: "+(ventaPasaje_id!=null?ventaPasaje_id:"null ")+", "+ventaPasaje.getId()+", "+ventaPasaje.getVentaOriginal());
 									
 									//Actualiza el correlativo - jabanto - 22/01/2024
 									if(notaCredito!=null)
-										ServiceLocator.getVentaPasajesManager().actualizarCorrelativoComprobante(notaCredito, true);
+//										ServiceLocator.getVentaPasajesManager().actualizarCorrelativoComprobante(notaCredito, true);
+										ServiceLocator.getVentaPasajesManager().updateCorrelative(notaCredito, true);
 									
 									result = Constantes.CORRECT;
 								}

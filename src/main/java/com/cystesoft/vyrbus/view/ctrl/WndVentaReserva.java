@@ -5385,9 +5385,10 @@ public class WndVentaReserva extends WndBase {
 									ServiceLocator.getVentaPasajesManager().guardarVenta(ventaPasaje, false, true, false, true, false);
 									
 									//Actualiza el correlativo - jabanto - 22/01/2024
-									ServiceLocator.getVentaPasajesManager().actualizarCorrelativoComprobante(ventaPasaje, true);
+//									ServiceLocator.getVentaPasajesManager().actualizarCorrelativoComprobante(ventaPasaje, true);
+									ventaPasaje = ServiceLocator.getVentaPasajesManager().updateCorrelative(ventaPasaje, true);
 									
-									ventaPasaje=ServiceLocator.getVentaPasajesManager().buscarVentaById(ventaPasaje.getId());
+									ventaPasaje = ServiceLocator.getVentaPasajesManager().buscarVentaById(ventaPasaje.getId());
 
 									String llaveEmbarque=cmbPtoEmbarque.getSelectedItem().getValue().toString();
 									String llaveDesembarque=cmbPtoDesembarque.getSelectedItem().getValue().toString();
@@ -5446,9 +5447,10 @@ public class WndVentaReserva extends WndBase {
 										ServiceLocator.getVentaPasajesManager().guardarVenta(ventaPasaje, false, true, false, true, false);
 										
 										//Actualiza el correlativo - jabanto - 22/01/2024
-										ServiceLocator.getVentaPasajesManager().actualizarCorrelativoComprobante(ventaPasaje, true);
+//										ServiceLocator.getVentaPasajesManager().actualizarCorrelativoComprobante(ventaPasaje, true);
+										ventaPasaje = ServiceLocator.getVentaPasajesManager().updateCorrelative(ventaPasaje, true);
 										
-										ventaPasaje=ServiceLocator.getVentaPasajesManager().buscarVentaById(ventaPasaje.getId());
+										ventaPasaje = ServiceLocator.getVentaPasajesManager().buscarVentaById(ventaPasaje.getId());
 
 										/**Valida si el numero de boleto enviado ha cambiado*/
 										if(!(boletoEnviado.equals(ventaPasaje.getNumeroBoleto()))){
@@ -6345,7 +6347,8 @@ public class WndVentaReserva extends WndBase {
 						int result = ServiceLocator.getVentaPasajesManager().guardarVenta(ventaPasaje, rdVentaFechaAbierta.isSelected(), true, true, true, false);
 						
 						//Actualiza el correlativo - jabanto - 22/01/2024
-						ServiceLocator.getVentaPasajesManager().actualizarCorrelativoComprobante(ventaPasaje, true);
+//						ServiceLocator.getVentaPasajesManager().actualizarCorrelativoComprobante(ventaPasaje, true);						
+						ventaPasaje = ServiceLocator.getVentaPasajesManager().updateCorrelative(ventaPasaje, true);
 						
 						/*Resta el saldo de LC del Cliente*/
 						if(((FormaPago)cmbFormaPago.getSelectedItem().getValue()).getId().equals(Constantes.ID_FORPAG_CREDITO)){
@@ -6373,22 +6376,28 @@ public class WndVentaReserva extends WndBase {
 								ventaPasaje = ServiceLocator.getVentaPasajesManager().buscarVentaById(ventaPasaje.getId());
 								
 								//Insertar el track de venta
-								MovimientoPasajes trackingIda= new MovimientoPasajes();
-								trackingIda.setVentaPasaje(ventaPasaje);
-								trackingIda.setOperacion("VENTA");
-								trackingIda.setFechaOperacion( Util.DatetoString(new Date(), "dd/MM/yyyy") );
-								trackingIda.setServicio(ventaPasaje.getServicio());
-								trackingIda.setRuta( ventaPasaje.getRuta() );
-								trackingIda.setAgenciaEmbarque(ventaPasaje.getAgenciaPartida());
-								trackingIda.setFechaEmbarque( Util.DatetoString(ventaPasaje.getFechaPartida(), "dd/MM/yyyy") );
-								trackingIda.setHoraEmbarque( UtilData.obtenerHoraEmbarque( ventaPasaje.getItinerario().getId(), ventaPasaje.getAgenciaPartida().getId()) );
-								trackingIda.setNumeroPiso(ventaPasaje.getNumeroPiso());
-								trackingIda.setNumeroAsiento(ventaPasaje.getNumeroAsiento());
-								trackingIda.setImportePagado(ventaPasaje.getImportePagado());
-								trackingIda.setTipoFormaPago(ventaPasaje.getTipoFormaPago());
-								trackingIda.setEstadoRegistro(Constantes.VALUE_ACTIVO);
-								UtilData.auditarRegistro(trackingIda, getUsuario(), Executions.getCurrent());
-								ServiceLocator.getMovimientoPasajesManager().guardar(trackingIda);								
+								try {
+									MovimientoPasajes trackingIda= new MovimientoPasajes();
+									trackingIda.setVentaPasaje(ventaPasaje);
+									trackingIda.setOperacion("VENTA");
+									trackingIda.setFechaOperacion( Util.DatetoString(new Date(), "dd/MM/yyyy") );
+									trackingIda.setServicio(ventaPasaje.getServicio());
+									trackingIda.setRuta( ventaPasaje.getRuta() );
+									trackingIda.setAgenciaEmbarque(ventaPasaje.getAgenciaPartida());
+									trackingIda.setFechaEmbarque( Util.DatetoString(ventaPasaje.getFechaPartida(), "dd/MM/yyyy") );
+									trackingIda.setHoraEmbarque( UtilData.obtenerHoraEmbarque( ventaPasaje.getItinerario().getId(), ventaPasaje.getAgenciaPartida().getId()) );
+									trackingIda.setNumeroPiso(ventaPasaje.getNumeroPiso());
+									trackingIda.setNumeroAsiento(ventaPasaje.getNumeroAsiento());
+									trackingIda.setImportePagado(ventaPasaje.getImportePagado());
+									trackingIda.setTipoFormaPago(ventaPasaje.getTipoFormaPago());
+									trackingIda.setEstadoRegistro(Constantes.VALUE_ACTIVO);
+									UtilData.auditarRegistro(trackingIda, getUsuario(), Executions.getCurrent());
+									ServiceLocator.getMovimientoPasajesManager().guardar(trackingIda);	
+								} catch (Exception e2) {
+									e2.printStackTrace();
+									log.error("Error al insertar el Tracking del Boleto:"+ e2);
+								}
+															
 								
 								if(getAgencia().getTipoAgencia().getId().intValue()==Constantes.ID_TIPAGE_TEPSA){
 									/**Solo Boletas y facturas*/
@@ -6526,6 +6535,8 @@ public class WndVentaReserva extends WndBase {
 			}
 		});
 	}
+	
+	
 
 	private void guardarVentaIdaVuelta(final List<VentaPasaje> lstVentas){
 		Messagebox.show(Messages.getString("WndVentaReserva.information.confirmacionGuardarVenta"), DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_YESNO, Messagebox.QUESTION, new EventListener<Event>() {
@@ -6537,7 +6548,8 @@ public class WndVentaReserva extends WndBase {
 						
 						//Actualiza el correlativo - jabanto - 22/01/2024
 						for(VentaPasaje _ventaPasaje: lstVentas) {
-							ServiceLocator.getVentaPasajesManager().actualizarCorrelativoComprobante(_ventaPasaje, true);	
+//							ServiceLocator.getVentaPasajesManager().actualizarCorrelativoComprobante(_ventaPasaje, true);
+							ServiceLocator.getVentaPasajesManager().updateCorrelative(_ventaPasaje, true);
 						}
 						
 						

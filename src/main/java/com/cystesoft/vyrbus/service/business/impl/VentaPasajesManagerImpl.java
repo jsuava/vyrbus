@@ -667,6 +667,15 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 //			return true;
 		return false;
 	}
+	
+	private boolean isDuplicateBoleto(String numeroBoleto, Integer tipoComprobanteId, Long ventaPasajeId)throws Exception{
+		
+		return getVentaPasajesDAO().validarNumeroBoleto(numeroBoleto, tipoComprobanteId, ventaPasajeId);
+//		int existeBoleto = getVentaPasajesDAO().validarNumeroBoleto(numberComprobant, typeComprobant, ventaPasajesId);
+//		if(existeBoleto>0)
+//			return true;
+//		return false;
+	}
 
 	/*
 	 * (non-Javadoc)
@@ -2962,47 +2971,48 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 	 */
 	@Transactional
 	@Override
-	public Object actualizarCorrelativoComprobante(Object object, Boolean ejecutarSeqByCorrelativo) throws Exception {
-		// TODO Auto-generated method stub
+//	public VentaPasaje actualizarCorrelativoComprobante(VentaPasaje ventaPasaje, Boolean ejecutarSeqByCorrelativo) throws Exception {
+	public VentaPasaje updateCorrelative(VentaPasaje ventaPasaje, Boolean executeSequecer) throws Exception {		
 		
-		if(object instanceof VentaPasaje) {
-			VentaPasaje ventaPasaje = (VentaPasaje)object;
-			/* Valida si no es un servicio especial*/
-//			if(!(ventaPasaje.getServicioEspecialFactura())){
-				if(ventaPasaje.getTipoTransaccion().equals(Constantes.TIPO_OPERACION_VENTA) ||
-						ventaPasaje.getTipoTransaccion().equals(Constantes.TIPO_OPERACION_VENTA_POOL) ||
-						ventaPasaje.getTipoTransaccion().equals(Constantes.TIPO_OPERACION_EXCESO) ||
-						ventaPasaje.getTipoTransaccion().equals(Constantes.TIPO_OPERACION_VENTA_ESPECIAL) ){
-					ControlEspecieValorada controlEspecieValorada = null;
-					if(ventaPasaje.getTipoComprobante().getId().intValue()!=Constantes.ID_TIPCOM_BOLETO_VIAJE){
-						
-						Integer aplicarA = null;
-						if(ventaPasaje.getTipoComprobante().getId()==Constantes.ID_TIPCOM_NOTA_CREDITO || ventaPasaje.getTipoComprobante().getId()==Constantes.ID_TIPCOM_NOTA_DEBITO) {
-							if(ventaPasaje.getVentaPasaje().getTipoComprobante().getId().intValue()==Constantes.ID_TIPCOM_BOLETA_VENTA)
-								aplicarA = Constantes.APLICAR_NC_A_BOLETA;
-							else if(ventaPasaje.getVentaPasaje().getTipoComprobante().getId().intValue()==Constantes.ID_TIPCOM_FACTURA)
-								aplicarA = Constantes.APLICAR_NC_A_FACTURA;	
-						}						
-						
-						controlEspecieValorada = UtilData.buscarEspecieValoradaByCaja(ventaPasaje.getTipoComprobante().getId(), ventaPasaje.getAgencia(), ejecutarSeqByCorrelativo, ventaPasaje.getUsuarioHardware(), aplicarA);
-						ventaPasaje.setNumeroBoleto(controlEspecieValorada.toString());
-					}
-					/*	Validando que el numero del comprobante no exista en la DB 	*/
-					if(isBoletoDuplicado(ventaPasaje.getNumeroBoleto(), ventaPasaje.getTipoComprobante().getId()))
-						throw new NumeroBoletoDuplicadoException();
-					
-					/*Actualiza el correlativo*/
-					if(ventaPasaje.getTipoComprobante().getId().intValue()!=Constantes.ID_TIPCOM_BOLETO_VIAJE){
-						int position = ventaPasaje.getNumeroBoleto().indexOf("-");
-						Long correlativo = Long.valueOf(ventaPasaje.getNumeroBoleto().substring(position+1))+1;
-						controlEspecieValorada.setCorrelativoActual(correlativo);
-						getControlEspecieValoradaDAO().update(controlEspecieValorada);
-					}
-				}else
-					ventaPasaje.setNumeroBoleto(null);
-//			}
-		}
-		return null;
+		/* Valida si no es un servicio especial*/
+		if(ventaPasaje.getTipoTransaccion().equals(Constantes.TIPO_OPERACION_VENTA) ||
+				ventaPasaje.getTipoTransaccion().equals(Constantes.TIPO_OPERACION_VENTA_POOL) ||
+				ventaPasaje.getTipoTransaccion().equals(Constantes.TIPO_OPERACION_EXCESO) ||
+				ventaPasaje.getTipoTransaccion().equals(Constantes.TIPO_OPERACION_VENTA_ESPECIAL) ){
+			ControlEspecieValorada controlEspecieValorada = null;
+			if(ventaPasaje.getTipoComprobante().getId().intValue()!=Constantes.ID_TIPCOM_BOLETO_VIAJE){			
+				Integer aplicarA = null;
+				if(ventaPasaje.getTipoComprobante().getId()==Constantes.ID_TIPCOM_NOTA_CREDITO || ventaPasaje.getTipoComprobante().getId()==Constantes.ID_TIPCOM_NOTA_DEBITO) {
+					if(ventaPasaje.getVentaPasaje().getTipoComprobante().getId().intValue()==Constantes.ID_TIPCOM_BOLETA_VENTA)
+						aplicarA = Constantes.APLICAR_NC_A_BOLETA;
+					else if(ventaPasaje.getVentaPasaje().getTipoComprobante().getId().intValue()==Constantes.ID_TIPCOM_FACTURA)
+						aplicarA = Constantes.APLICAR_NC_A_FACTURA;	
+				}						
+				
+				controlEspecieValorada = UtilData.buscarEspecieValoradaByCaja(ventaPasaje.getTipoComprobante().getId(), ventaPasaje.getAgencia(), executeSequecer, ventaPasaje.getUsuarioHardware(), aplicarA);				
+				String numCompSeq = controlEspecieValorada.toString();				
+				
+				//Si existe una duplicidad vuelve a consultar el correlativo.
+				if(isDuplicateBoleto(numCompSeq, ventaPasaje.getTipoComprobante().getId(), ventaPasaje.getId())) {
+					controlEspecieValorada = UtilData.buscarEspecieValoradaByCaja(ventaPasaje.getTipoComprobante().getId(), ventaPasaje.getAgencia(), executeSequecer, ventaPasaje.getUsuarioHardware(), aplicarA);				
+					numCompSeq = controlEspecieValorada.toString();
+				}
+				
+				//Actualiza el correlativo de la venta, según el Seq
+				ventaPasaje = buscarPorId(ventaPasaje.getId());
+				ventaPasaje.setNumeroBoleto(numCompSeq);
+				getVentaPasajesDAO().update(ventaPasaje);				
+				
+				/*Actualiza el correlativo en especies valoradas*/
+				int position = ventaPasaje.getNumeroBoleto().indexOf("-");
+				Long correlativo = Long.valueOf(ventaPasaje.getNumeroBoleto().substring(position+1))+1;
+				controlEspecieValorada.setCorrelativoActual(correlativo);
+				getControlEspecieValoradaDAO().update(controlEspecieValorada);			
+			}			
+		}else
+			ventaPasaje.setNumeroBoleto(null);
+		
+		return ventaPasaje;
 	}
 
 //	private String generarBoleto(String numBoleto, Integer idTipoComprobante, Integer idUsuarioHW) throws Exception{

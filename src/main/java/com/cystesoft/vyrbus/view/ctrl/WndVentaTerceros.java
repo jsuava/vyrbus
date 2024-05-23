@@ -2918,7 +2918,8 @@ public class WndVentaTerceros extends WndBase {
 						int result = ServiceLocator.getVentaPasajesManager().guardarVenta(ventaPasaje, false, true, true,true, false);
 						
 						//Actualiza el correlativo - jabanto - 22/01/2024
-						ServiceLocator.getVentaPasajesManager().actualizarCorrelativoComprobante(ventaPasaje, true);
+//						ServiceLocator.getVentaPasajesManager().actualizarCorrelativoComprobante(ventaPasaje, true);
+						ServiceLocator.getVentaPasajesManager().updateCorrelative(ventaPasaje, true);
 
 						/*Resta el saldo de LC del Cliente*/
 						if(((FormaPago)cmbFormaPago.getSelectedItem().getValue()).getId().equals(Constantes.ID_FORPAG_CREDITO))

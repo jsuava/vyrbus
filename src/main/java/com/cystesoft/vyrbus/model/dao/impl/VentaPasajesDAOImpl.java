@@ -794,13 +794,27 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 	 * @see com.tepsa.sisvyr.model.dao.VentaPasajesDAO#validarNumeroBoleto(java.lang.String, java.lang.Integer)
 	 */
 	@Override
-	public Integer validarNumeroBoleto(String numeroBoleto, Integer idTipoComprobante)throws Exception{
-		String hql = "FROM VentaPasaje vp WHERE vp.numeroBoleto='"+numeroBoleto+"' AND vp.tipoComprobante.id="+idTipoComprobante+" AND " +
-				"vp.estadoRegistro = '"+Constantes.VALUE_ACTIVO+"'";
+	public Boolean validarNumeroBoleto(String numeroBoleto, Integer idTipoComprobante, Long ventaPasajesId)throws Exception{
+//		String hql = "FROM VentaPasaje vp WHERE vp.numeroBoleto='"+numeroBoleto+"' AND vp.tipoComprobante.id="+idTipoComprobante+" AND " +
+//				"vp.estadoRegistro = '"+Constantes.VALUE_ACTIVO+"'";
+		
+		String sql = "SELECT vp.venpas_id, vp.C_NUMBOLETO FROM VRTVENPAS vp WHERE vp.C_NUMBOLETO = '" +numeroBoleto +"' AND vp.tipcom_id="+idTipoComprobante+" AND " +
+				"vp.c_estreg = '"+Constantes.VALUE_ACTIVO+"'";
 
-		log.info(hql);
-		int result = getSession().createQuery(hql).list().size();
-		return result;
+		log.info(sql);
+//		int result = getSession().createQuery(hql).list().size();
+		List<?> result = getSession().createSQLQuery(sql).list();	
+		boolean isDuplicate = false;
+		for(int i=0; i<result.size(); i++){
+			Object[] obj = (Object[])result.get(i);
+			long _ventaPasajesId = ((BigDecimal)obj[0]).longValue();
+			if(_ventaPasajesId != ventaPasajesId.longValue()) {
+				isDuplicate = true;
+				break;
+			}
+		}
+		
+		return isDuplicate;
 	}
 
 	/*

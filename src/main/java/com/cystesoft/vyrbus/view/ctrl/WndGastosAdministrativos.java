@@ -798,7 +798,8 @@ public class WndGastosAdministrativos extends WndBase{
 							if(rdModoElectronico.isChecked()){
 								
 								//Actualiza el correlativo - 22/01/2024 - jabanto
-								ServiceLocator.getVentaPasajesManager().actualizarCorrelativoComprobante(gastoAdmin, true);
+//								ServiceLocator.getVentaPasajesManager().actualizarCorrelativoComprobante(gastoAdmin, true);
+								ServiceLocator.getVentaPasajesManager().updateCorrelative(gastoAdmin, true);
 								
 								gastoAdmin=ServiceLocator.getVentaPasajesManager().buscarVentaById(gastoAdmin.getId());
 								txtComprobante.setText(gastoAdmin.getNumeroBoleto());//actualiza por si haya cambiado

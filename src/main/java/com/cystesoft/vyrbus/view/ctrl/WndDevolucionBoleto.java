@@ -1242,7 +1242,8 @@ public class WndDevolucionBoleto extends WndBase {
 							if(notaCredito!=null) {
 								
 								//Actualiza el correlativo - jabanto - 22/01/2024
-								ServiceLocator.getVentaPasajesManager().actualizarCorrelativoComprobante(notaCredito, true);
+//								ServiceLocator.getVentaPasajesManager().actualizarCorrelativoComprobante(notaCredito, true);
+								notaCredito = ServiceLocator.getVentaPasajesManager().updateCorrelative(notaCredito, true);
 								
 								WSFE.sendNota(notaCredito);
 							}
@@ -1296,10 +1297,12 @@ public class WndDevolucionBoleto extends WndBase {
 							
 							//Actualiza el correlativo - jabanto - 22/01/2024
 							if(notaCredito !=null)
-								ServiceLocator.getVentaPasajesManager().actualizarCorrelativoComprobante(notaCredito, true);
+//								ServiceLocator.getVentaPasajesManager().actualizarCorrelativoComprobante(notaCredito, true);
+								ServiceLocator.getVentaPasajesManager().updateCorrelative(notaCredito, true);
 							
 							//Actualiza el correlativo - jabanto - 22/01/2024
-							ServiceLocator.getVentaPasajesManager().actualizarCorrelativoComprobante(gastoAdmin, true);
+//							ServiceLocator.getVentaPasajesManager().actualizarCorrelativoComprobante(gastoAdmin, true);
+							gastoAdmin = ServiceLocator.getVentaPasajesManager().updateCorrelative(gastoAdmin, true);
 							
 							
 

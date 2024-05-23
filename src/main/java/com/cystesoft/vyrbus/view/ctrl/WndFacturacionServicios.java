@@ -508,7 +508,8 @@ public class WndFacturacionServicios extends WndBase {
 							int result = ServiceLocator.getVentaPasajesManager().guardarServicioEspecial(servicioEspecial, false);
 
 							//Actualiza el correlativo - 22/01/2024 - jabanto
-							ServiceLocator.getVentaPasajesManager().actualizarCorrelativoComprobante(servicioEspecial, true);
+//							ServiceLocator.getVentaPasajesManager().actualizarCorrelativoComprobante(servicioEspecial, true);
+							ServiceLocator.getVentaPasajesManager().updateCorrelative(servicioEspecial, true);
 							
 							servicioEspecial = ServiceLocator.getVentaPasajesManager().buscarVentaById(servicioEspecial.getId());
 
@@ -1416,7 +1417,8 @@ public class WndFacturacionServicios extends WndBase {
 		for(VentaPasaje venta:ventasNotas.getListVentas()){
 			
 			//Actualiza correlativo - jabanto - 22/01/2024
-			ServiceLocator.getVentaPasajesManager().actualizarCorrelativoComprobante(venta, true);			
+//			ServiceLocator.getVentaPasajesManager().actualizarCorrelativoComprobante(venta, true);
+			ServiceLocator.getVentaPasajesManager().updateCorrelative(venta, true);
 			
 			VentaPasaje envioVenta=ServiceLocator.getVentaPasajesManager().buscarVentaById(venta.getId());
 			lstVentasenviar.add(envioVenta);
@@ -1425,7 +1427,8 @@ public class WndFacturacionServicios extends WndBase {
 		if(ventasNotas.getListNotasCredito()!=null) {
 			for(VentaPasaje notaCredito: ventasNotas.getListNotasCredito()) {
 				//Actualiza correlativo - jabanto - 22/01/2024
-				ServiceLocator.getVentaPasajesManager().actualizarCorrelativoComprobante(notaCredito, true);				
+//				ServiceLocator.getVentaPasajesManager().actualizarCorrelativoComprobante(notaCredito, true);
+				ServiceLocator.getVentaPasajesManager().updateCorrelative(notaCredito, true);
 			}			
 		}
 		

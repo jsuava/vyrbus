@@ -561,7 +561,8 @@ public class WndReimprimirBoleto extends WndBase {
 										ServiceLocator.getVentaPasajesManager().generarGastoAdministrativo(gastoAdmin, true, false);
 										
 										//Actualiza el correlativo - jabanto - 22/01/2024
-										ServiceLocator.getVentaPasajesManager().actualizarCorrelativoComprobante(gastoAdmin, true);	
+//										ServiceLocator.getVentaPasajesManager().actualizarCorrelativoComprobante(gastoAdmin, true);
+										ServiceLocator.getVentaPasajesManager().updateCorrelative(gastoAdmin, true);
 										
 										//Consulta el gasto admin guardado
 										VentaPasaje gastoAdminGenerado = ServiceLocator.getVentaPasajesManager().buscarVentaById(gastoAdmin.getId());
