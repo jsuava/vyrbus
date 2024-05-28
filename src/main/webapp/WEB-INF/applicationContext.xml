@@ -453,6 +453,24 @@
    	<bean id="descuentoDAO" class="pe.itsb.vyrbus.model.dao.impl.DescuentoDAOImpl">
    		<property name="sessionFactory" ref="sessionFactory" />
    	</bean>
+   	<bean id="cuponPromocionalDAO" class="pe.itsb.vyrbus.model.dao.impl.CuponPromocionalDAOImpl">
+   		<property name="sessionFactory" ref="sessionFactory" />
+   	</bean>
+   	<bean id="tarifaByAsientoDAO" class="pe.itsb.vyrbus.model.dao.impl.TarifaByAsientoDAOImpl">
+   		<property name="sessionFactory" ref="sessionFactory" />
+   	</bean>
+   	<bean id="tarifaByAsientoDetalleDAO" class="pe.itsb.vyrbus.model.dao.impl.TarifaByAsientoDetalleDAOImpl">
+   		<property name="sessionFactory" ref="sessionFactory" />
+   	</bean>
+   	<bean id="tarifaByAsientoPlantillaEncabezadoDAO" class="pe.itsb.vyrbus.model.dao.impl.TarifaByAsientoPlantillaEncabezadoDAOImpl">
+   		<property name="sessionFactory" ref="sessionFactory" />
+   	</bean>
+   	<bean id="tarifaByAsientoPlantillaEncabezadoDetalleDAO" class="pe.itsb.vyrbus.model.dao.impl.TarifaByAsientoPlantillaEncabezadoDetalleDAOImpl">
+   		<property name="sessionFactory" ref="sessionFactory" />
+   	</bean>
+   	<bean id="tarifaByAsientoPlantillaPromocionDAO" class="pe.itsb.vyrbus.model.dao.impl.TarifaByAsientoPlantillaPromocionDAOImpl">
+   		<property name="sessionFactory" ref="sessionFactory" />
+   	</bean>
    	
 <!--    	VENTA DE SEGUROS -->
 	<bean id="ventaSeguroDAO" class="pe.itsb.vyrbus.model.dao.impl.VentaSeguroDAOImpl">
@@ -876,6 +894,25 @@
 	</bean>
 	<bean id="descuentoManager" class="pe.itsb.vyrbus.service.business.impl.DescuentoManagerImpl">
 		<property name="descuentoDAO" ref="descuentoDAO" />
+	</bean>
+	<bean id="cuponPromocionalManager" class="pe.itsb.vyrbus.service.business.impl.CuponPromocionalManagerImpl">
+		<property name="cuponPromocionalDAO" ref="cuponPromocionalDAO" />
+	</bean>
+	<bean id="tarifaByAsientoManager" class="pe.itsb.vyrbus.service.business.impl.TarifaByAsientoManagerImpl">
+		<property name="tarifaByAsientoDAO" ref="tarifaByAsientoDAO" />
+	</bean>
+	<bean id="tarifaByAsientoDetalleManager" class="pe.itsb.vyrbus.service.business.impl.TarifaByAsientoDetalleManagerImpl">
+		<property name="tarifaByAsientoDetalleDAO" ref="tarifaByAsientoDetalleDAO" />
+	</bean>
+	<bean id="tarifaByAsientoPlantillaEncabezadoManager" class="pe.itsb.vyrbus.service.business.impl.TarifaByAsientoPlantillaEncabezadoManagerImpl">
+		<property name="tarifaByAsientoPlantillaEncabezadoDAO" ref="tarifaByAsientoPlantillaEncabezadoDAO" />
+		<property name="tarifaByAsientoPlantillaEncabezadoDetalleDAO" ref="tarifaByAsientoPlantillaEncabezadoDetalleDAO" />
+	</bean>
+	<bean id="tarifaByAsientoPlantillaEncabezadoDetalleManager" class="pe.itsb.vyrbus.service.business.impl.TarifaByAsientoPlantillaEncabezadoDetalleManagerImpl">
+		<property name="tarifaByAsientoPlantillaEncabezadoDetalleDAO" ref="tarifaByAsientoPlantillaEncabezadoDetalleDAO" />
+	</bean>
+	<bean id="tarifaByAsientoPlantillaPromocionManager" class="pe.itsb.vyrbus.service.business.impl.TarifaByAsientoPlantillaPromocionManagerImpl">
+		<property name="tarifaByAsientoPlantillaPromocionDAO" ref="tarifaByAsientoPlantillaPromocionDAO" />
 	</bean>
 	
 <!-- 	VENTA DE SEGUROS -->

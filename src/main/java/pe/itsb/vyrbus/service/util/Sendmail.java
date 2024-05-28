@@ -1,8 +1,8 @@
 /**
  * Proyecto		: MANTYBUS
  * Sistema		: Sistema de Mantenimiento de Buses
- * Descripción	:
- * Autor		: José Avalos
+ * Descripciï¿½n	:
+ * Autor		: Josï¿½ Avalos
  * Fecha		: 11/08/2011
  */
 package pe.itsb.vyrbus.service.util;
@@ -50,7 +50,7 @@ public class Sendmail {
 			Properties props = new Properties();
 			// Nombre del host de correo, es smtp.gmail.com
 			props.setProperty("mail.smtp.host", "itsb.pe");
-			// TLS si está disponible
+			// TLS si estï¿½ disponible
 			props.setProperty("mail.smtp.starttls.enable", "true");
 			// Puerto de gmail para envio de correos
 //			props.setProperty("mail.smtp.port","587");
@@ -67,7 +67,7 @@ public class Sendmail {
 
 	        // Construir correo de texto con adjunto
 //	        BodyPart texto = new MimeBodyPart();
-//	        texto.setText("Documentos que vencerán");
+//	        texto.setText("Documentos que vencerï¿½n");
 //	        BodyPart adjunto = new MimeBodyPart();
 //	        adjunto.setDataHandler(new DataHandler(new FileDataSource("/usr/local/consumos/log/consumos.log")));
 //	        //adjunto.setDataHandler(new DataHandler(new FileDataSource("D:/usr/local/consumos/log/consumos.log")));
@@ -109,11 +109,11 @@ public class Sendmail {
 	        //Para enviar el mensaje usamos la clase Transport
 	        Transport t = session.getTransport("smtp");
 //	        // Establecemos la conexion
-	        t.connect(from, password);
+//	        t.connect(from, password);
 
 //	        // Enviamos el mensaje
-	        t.sendMessage(message,message.getAllRecipients());
-	        // Cerramos la conexxión
+//	        t.sendMessage(message,message.getAllRecipients());
+	        // Cerramos la conexxiï¿½n
 	        t.close();
 	        result = Constantes.CORRECT;
 		}catch(SendFailedException sfex){
@@ -134,10 +134,10 @@ public class Sendmail {
 	}
 
 	/**
-     * Método público y estático que envía un correo a las direcciones
-     * indicadas en el fichero de propiedades, desde la dirección indicada
-     * también en el mismo fichero con el asunto y el contenido que se pasan
-     * como parámetros.
+     * Mï¿½todo pï¿½blico y estï¿½tico que envï¿½a un correo a las direcciones
+     * indicadas en el fichero de propiedades, desde la direcciï¿½n indicada
+     * tambiï¿½n en el mismo fichero con el asunto y el contenido que se pasan
+     * como parï¿½metros.
      *
      * @param sAsunto String
      * @param sTexto String
@@ -171,8 +171,8 @@ public class Sendmail {
 	}
 
 	/**
-     * Método para inicializar los valores del seridor de correo,
-     * se cargan desde un fichero de configuración con los siguientes valores:
+     * Mï¿½todo para inicializar los valores del seridor de correo,
+     * se cargan desde un fichero de configuraciï¿½n con los siguientes valores:
      * app.servidorCorreo=smtp.xxxx
      * app.correoOrigen=origenxxx@xxx.com
      * app.correoDestino=dst1@xxx.com,dst2@xxx.com,...,dstn@xxx.com
@@ -194,7 +194,7 @@ public class Sendmail {
 	        }
 	        asCorreoDestino = asTmp;
 		}catch( Exception ex ){
-	        System.out.println( "No hay información de arranque!!" );
+	        System.out.println( "No hay informaciï¿½n de arranque!!" );
 	        System.exit( -2 );
 	    }
 	}

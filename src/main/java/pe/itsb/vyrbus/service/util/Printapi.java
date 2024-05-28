@@ -21,7 +21,7 @@ import sun.misc.BASE64Encoder;
  * @author abant
  *
  */
-@SuppressWarnings("restriction")
+//@SuppressWarnings("restriction")
 public class Printapi {
 
 	/**
@@ -36,6 +36,8 @@ public class Printapi {
 		byte[] pdfFile = null;
 		try {
 			String URL_API = UtilFlag.getUrlApi_printapi();
+//			URL_API = "http://localhost:1363/api/GenerarPdf";
+			
 			if(URL_API !=null) {
 				String rubro = "1"; // Pasajes
 				String contentBase64 = new BASE64Encoder().encode(xmlZip);

@@ -567,7 +567,7 @@ public class WndMapaBus extends WndBase implements Serializable {
 		oThisWindow.appendChild(divContenedorBus);
 	}
 
-	@SuppressWarnings("deprecation")
+
 	public void crearEstructura(VentaPasaje ventaPasaje){
 		try{
 			Servicio servicio = null;

@@ -1,0 +1,123 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 24/05/2012 11:51:01 AM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="pe.itsb.vyrbus.model.bean.TarifaByAsientoDetalle" table="VRMTARASIDET" schema="VYRBUSME">
+         <id name="id" type="java.lang.Long">
+            <column name="TARDET_ID" precision="18" scale="0" />
+            <generator class="sequence">
+                <param name="sequence">SEQ_VRTTARDET_ID</param>
+            </generator>
+        </id>
+         <many-to-one name="tarifaByAsiento" class="pe.itsb.vyrbus.model.bean.TarifaByAsiento" fetch="select">
+            <column name="TARASI_ID" precision="18" scale="0" not-null="true">
+                <comment>Identificador unico de la entidad, tamanio de la clave primaria 18.</comment>
+            </column>
+        </many-to-one>  
+        <many-to-one name="canalVenta" class="pe.itsb.vyrbus.model.bean.CanalVenta" fetch="select">
+            <column name="CANVEN_ID" precision="5" scale="0">
+                <comment>Identificador unico de la entidad, tamanio de la clave primaria 5.</comment>
+            </column>
+        </many-to-one>  
+        <many-to-one name="tipoAsiento" class="pe.itsb.vyrbus.model.bean.TipoAsiento" fetch="select">
+            <column name="TIPASI_ID" precision="5" scale="0" not-null="true">
+                <comment>Identificador unico de la entidad, tamanio de la clave primaria 5</comment>
+            </column>
+        </many-to-one>  
+         <property name="asientos" type="java.lang.String">
+            <column name="C_ASIENTOS" length="100" not-null="true">
+                <comment>Numero de asientos, Rango(N-N);individual(N,N,N,N), separado por punto y coma(;)</comment>
+            </column>
+        </property>
+        <property name="precio" type="java.lang.Double">
+            <column name="N_TARIFA" precision="10" scale="2" not-null="true">
+                <comment>Tarifa de los asientos</comment>
+            </column>
+        </property>
+        <many-to-one name="tipoPrecio" class="pe.itsb.vyrbus.model.bean.TipoPrecio" fetch="select">
+            <column name="TIPOPRECIO_ID" precision="5" scale="0" not-null="true">
+                <comment>Identificador unico de la entidad, tamanio de la clave primaria 5</comment>
+            </column>
+        </many-to-one>  
+        <many-to-one name="itinerario" class="pe.itsb.vyrbus.model.bean.Itinerario" fetch="select">
+            <column name="ITINERARIO_ID" precision="18" scale="0">
+                <comment>Identificador unico de la entidad, tamanio de la clave primaria 18</comment>
+            </column>
+        </many-to-one> 
+        <many-to-one name="agencia" class="pe.itsb.vyrbus.model.bean.Agencia" fetch="select">
+            <column name="AGENCIA_ID" precision="5" scale="0">
+                <comment>Identificador unico de la entidad, tamanio de la clave primaria 5</comment>
+            </column>
+        </many-to-one>   
+        <property name="observaciones" type="java.lang.String">
+            <column name="C_OBS" length="255">
+                <comment>Algunas Observaciones sobre la tarifa</comment>
+            </column>
+        </property>
+         <many-to-one name="tarifaByAsientoPlantillaPromocion" class="pe.itsb.vyrbus.model.bean.TarifaByAsientoPlantillaPromocion" fetch="select">
+            <column name="TARPLAPRO_ID" precision="5" scale="0" >
+                <comment>Identificador unico de la entidad, tamanio de la clave primaria 5.</comment>
+            </column>
+        </many-to-one>  
+        <property name="valorDescuento" type="java.lang.Double">
+            <column name="N_VALDES" precision="10" scale="2">
+                <comment>Valor del descueto</comment>
+            </column>
+        </property>
+        <property name="tipoDescuento" type="java.lang.String">
+            <column name="C_TIPDES" length="1">
+                <comment>Tipo descuento (P)Porcentaje, (S)Soles</comment>
+            </column>
+        </property>
+        <property name="ratioDiasFechaEmison" type="java.lang.Integer">
+            <column name="N_RATDIAFECEMI" precision="3" scale="0" >
+                <comment>Ratio de dias desde la fecha de emision hasta la fecha de viaje, para aplicar el descuento</comment>
+            </column>
+        </property>   
+        <property name="valorMaximoDescuentoSoles" type="java.lang.Double">
+            <column name="N_VALMAXDES" precision="10" scale="2">
+                <comment>Valor Maximo permitido para el descuento en soles</comment>
+            </column>
+        </property>        
+        
+        
+        <!-- 		BEGIN CAMPOS DE AUDITORIA	 	-->
+        <property name="estadoRegistro" type="java.lang.String">
+            <column name="C_ESTREG" length="1" not-null="true">
+                <comment>Estado de registro A(Activo), I(Inactivo).</comment>
+            </column>
+        </property>
+        <property name="fechaInsercion" type="java.util.Date">
+            <column name="AUDFECINS" length="7">
+                <comment>Fecha de insercion/modificacion.</comment>
+            </column>
+        </property>
+        <property name="usuarioInsercion" type="java.lang.String">
+            <column name="AUDUSUINS" length="30">
+                <comment>Usuario de insercion/modificacion.</comment>
+            </column>
+        </property>
+        <property name="ipInsercion" type="java.lang.String">
+            <column name="AUDIPINSE" length="15">
+                <comment>IP de insercion/modificacion.</comment>
+            </column>
+        </property>
+        <property name="fechaModificacion" type="java.util.Date">
+            <column name="AUDFECMOD" length="7">
+                <comment>Fecha de insercion/modificacion.</comment>
+            </column>
+        </property>
+        <property name="usuarioModificacion" type="java.lang.String">
+            <column name="AUDUSUMOD" length="30">
+                <comment>Usuario de insercion/modificacion.</comment>
+            </column>
+        </property>
+        <property name="ipModificacion" type="java.lang.String">
+            <column name="AUDIPMODI" length="15">
+                <comment>IP de insercion/modificacion.</comment>
+            </column>
+        </property>
+        <!-- 		END CAMPOS DE AUDITORIA	 	-->
+    </class>
+</hibernate-mapping>

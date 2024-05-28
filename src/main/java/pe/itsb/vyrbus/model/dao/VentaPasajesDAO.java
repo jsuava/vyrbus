@@ -12,11 +12,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
+
 import pe.itsb.vyrbus.model.bean.Agencia;
 import pe.itsb.vyrbus.model.bean.EntidadEncomiendaPasajes;
 import pe.itsb.vyrbus.model.bean.Itinerario;
 import pe.itsb.vyrbus.model.bean.Manifiesto;
 import pe.itsb.vyrbus.model.bean.Ruta;
+import pe.itsb.vyrbus.model.bean.TarifarioByAsientoByAvanceVentas;
 import pe.itsb.vyrbus.model.bean.Usuario;
 import pe.itsb.vyrbus.model.bean.VentaPasaje;
 import pe.itsb.vyrbus.service.mappers.ResumenAnulacionPostergacion;
@@ -555,4 +557,14 @@ public interface VentaPasajesDAO extends GenericDAO {
 	 * @throws Exception
 	 */
 	public Map<String, EntidadEncomiendaPasajes> buscarEquivalenciaEntidades(Integer tipoEntidad) throws Exception;
+	/**
+	 * Busca el avance de ventas de los servicios para el tarifario
+	 * @param fecha					: Fecha de salida de los servicios
+	 * @param servicio_id			: Identificador del Servicio
+	 * @param localidad_idOrigen	: Identificador de la localidad origen
+	 * @param localidad_idDestino	: Identificador de la localidad destino
+	 * @return
+	 * @throws Exception
+	 */
+	public List<TarifarioByAsientoByAvanceVentas>buscarAvanceVentasByTarifarioByAsiento(String fecha, Integer servicio_id, Integer localidad_idOrigen, Integer localidad_idDestino)throws Exception;
 }

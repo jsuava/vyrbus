@@ -40,4 +40,8 @@ public interface GenericDAO {
      * @return Lista de registros encontrados.
      */
     public List<?> findByX(Class<?> oClass, String campo, Object[] criterios, List<String> criteriosOrdenar, String estadoRegistro);
+    /**
+     * 
+     */
+    public void clearMemory();
 }

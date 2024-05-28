@@ -10,6 +10,7 @@ import pe.itsb.vyrbus.model.bean.EntidadEncomiendaPasajes;
 import pe.itsb.vyrbus.model.bean.Itinerario;
 import pe.itsb.vyrbus.model.bean.Liquidacion;
 import pe.itsb.vyrbus.model.bean.Manifiesto;
+import pe.itsb.vyrbus.model.bean.TarifarioByAsientoByAvanceVentas;
 import pe.itsb.vyrbus.model.bean.TipoNota;
 import pe.itsb.vyrbus.model.bean.Usuario;
 import pe.itsb.vyrbus.model.bean.VentaPasaje;
@@ -689,4 +690,14 @@ public interface VentaPasajesManager {
 	 * @throws Exception
 	 */
 	public void actualizarCorrelativoComprobante(Object object, Boolean ejecutarSeqByCorrelativo) throws Exception;
+	/**
+	 * Busca el avance de ventas de los servicios para el tarifario
+	 * @param fecha					: Fecha de salida de los servicios
+	 * @param servicio_id			: Identificador del Servicio
+	 * @param localidad_idOrigen	: Identificador de la localidad origen
+	 * @param localidad_idDestino	: Identificador de la localidad destino
+	 * @return
+	 * @throws Exception
+	 */
+	public List<TarifarioByAsientoByAvanceVentas>buscarAvanceVentasByTarifarioByAsiento(String fecha, Integer servicio_id, Integer localidad_idOrigen, Integer localidad_idDestino)throws Exception;
 }

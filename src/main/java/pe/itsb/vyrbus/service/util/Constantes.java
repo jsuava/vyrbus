@@ -148,6 +148,11 @@ public class Constantes {
 	/*Guarda los IDS  de los clientes que van a utilizar el excel Encabelzados_de_reporte.xls */
 //	public static final String IDS_CLIENTES_RPT_PERSONALIZADO="21996"; //-->21996=GYM,47653
 	/*boton por defecto en un un messagebox question yes no*/
+	
+	/*Identificadores del tipo de precio*/
+	public static final int ID_TIPOPRECIO_REGULAR=1;
+	public static final int ID_TIPOPRECIO_PROMOCIONAL=2;
+	public static final int ID_TIPOPRECIO_DSCT_TARIFA_REGULAR=3;
 
 	/*	Tipo de Rubros	*/
 	public static final Integer RUBRO_PASAJES=1;
@@ -437,6 +442,7 @@ public class Constantes {
 	public static final int ID_TIPFORPAG_ORDEN_TRABAJO=9;
 	public static final int ID_TIPFORPAG_PCE=13;
 	public static final int ID_TIPFORPAG_YAPE=14;
+	public static final int ID_TIPFORPAG_PAGOEFECTIVO = 159; 
 //	public static final int ID_TIPFORPAG_PASE_VACACIONAL=10;
 
 	/*	Constantes que referencian a las formas de pago	*/
@@ -490,6 +496,7 @@ public class Constantes {
 	public static final int ID_CANVEN_AGENCIA_VIAJES = 5;
 	public static final int ID_CANVEN_CORPORATIVO = 6;
 	public static final int ID_CANVEN_COUNTER = 1;
+	public static final int ID_CANVEN_CALLCENTER = 7;
 
 	/* Constantes que refieren al tipo de Alimentacion*/
 	public static final int ID_PREALIM_MENU_DEL_DIA = 1;

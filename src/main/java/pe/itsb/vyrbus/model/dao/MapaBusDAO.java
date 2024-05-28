@@ -11,7 +11,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.TreeMap;
 
+
 import pe.itsb.vyrbus.model.bean.MapaBus;
+import pe.itsb.vyrbus.model.bean.TipoAsiento;
 
 /**
  *
@@ -48,6 +50,19 @@ public interface MapaBusDAO extends GenericDAO {
 	 * @throws Exception
 	 */
 	public int deleteMapaBus(Integer idServicio)throws Exception;
-
+	/**
+	 * 
+	 * @param criteriosBusqueda
+	 * @param criteriosOrdenar
+	 * @return
+	 * @throws Exception
+	 */
 	public ArrayList<MapaBus> buscarPorX(TreeMap<String, Object> criteriosBusqueda, List<String> criteriosOrdenar)throws Exception;
+	/**
+	 * Realiza la busqueda de los tipos de asientos del servicio
+	 * @param servicioId : Identificador del servicio.
+	 * @return Lista con los tipos de asientos del servicio
+	 * @throws Exception
+	 */
+	public List<TipoAsiento> buscarTipoAsientoByServicio(Integer servicioId)throws Exception;
 }

@@ -21,6 +21,16 @@ public class TipoPrecio extends GenericBean{
 	private Integer id;
 	private String denominacion;
 	private String nombreCorto;
+	private Integer esTarifa;
+	
+	public TipoPrecio() {
+		super();
+	}
+	
+	public TipoPrecio(Integer id) {
+		this.id = id;
+	}
+	
 	/**
 	 * @return the id
 	 */
@@ -61,6 +71,18 @@ public class TipoPrecio extends GenericBean{
 	@Override
 	public String toString(){
 		return this.denominacion;
+	}
+	/**
+	 * @return the esTarifa
+	 */
+	public Integer getEsTarifa() {
+		return esTarifa;
+	}
+	/**
+	 * @param esTarifa the esTarifa to set
+	 */
+	public void setEsTarifa(Integer esTarifa) {
+		this.esTarifa = esTarifa;
 	}
 
 }

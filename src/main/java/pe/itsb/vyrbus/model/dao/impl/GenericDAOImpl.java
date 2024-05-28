@@ -213,4 +213,20 @@ protected final Logger log;
 
 		getSession().createQuery(hql.toString()).setLong(0, id).executeUpdate();
 	}
+	
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.model.dao.GenericDAO#clearMemory()
+	 */
+	@Override
+	public void clearMemory() {
+		log.debug("vaciando un lote de inserciones y liberando memoria");
+		try {
+			getHibernateTemplate().flush();
+			getHibernateTemplate().clear();
+			
+			log.debug("Vaciado de inserciones y liberación de memoria con exito");
+		} catch (RuntimeException rex) {
+			log.error("Fallo el borrado", rex);
+		}
+	}
 }

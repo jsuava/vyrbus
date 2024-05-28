@@ -3073,7 +3073,7 @@ public class WndVentaReservaNew  extends WndBase {
 				VentaIdaRetorno venta = item.getValue();
 				if(venta.getDetalleItinerarioIDA()!=null)
 					listVentasReimpresion.add(venta.getDetalleItinerarioIDA().getObjAsiento().getVentaPasaje());
-				if(venta.getDetalleItinerarioRETORNO()!=null)
+				if(venta.getDetalleItinerarioRETORNO()!=null) 
 					listVentasReimpresion.add(venta.getDetalleItinerarioRETORNO().getObjAsiento().getVentaPasaje());				
 			}
 		}
