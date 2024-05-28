@@ -24,6 +24,8 @@ public class TipoAsiento extends GenericBean{
 	private String denominacion;
 
 	private List<Integer> asientos; //No mapeado.
+	private Integer asientoInicial;
+	private Integer asientoFinal;
 
 	public TipoAsiento(){
 		super();
@@ -70,6 +72,34 @@ public class TipoAsiento extends GenericBean{
 	 */
 	public void setAsientos(List<Integer> asientos) {
 		this.asientos = asientos;
+	}
+
+	/**
+	 * @return the asientoInicial
+	 */
+	public Integer getAsientoInicial() {
+		return asientoInicial;
+	}
+
+	/**
+	 * @param asientoInicial the asientoInicial to set
+	 */
+	public void setAsientoInicial(Integer asientoInicial) {
+		this.asientoInicial = asientoInicial;
+	}
+
+	/**
+	 * @return the asientoFinal
+	 */
+	public Integer getAsientoFinal() {
+		return asientoFinal;
+	}
+
+	/**
+	 * @param asientoFinal the asientoFinal to set
+	 */
+	public void setAsientoFinal(Integer asientoFinal) {
+		this.asientoFinal = asientoFinal;
 	}
 
 }

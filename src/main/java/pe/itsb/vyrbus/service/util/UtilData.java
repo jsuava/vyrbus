@@ -26,6 +26,7 @@ import org.zkoss.zul.Comboitem;
 import org.zkoss.zul.Textbox;
 import org.zkoss.zul.Window;
 
+
 import pe.itsb.vyrbus.model.bean.Agencia;
 import pe.itsb.vyrbus.model.bean.AutorizadorCortesia;
 import pe.itsb.vyrbus.model.bean.Bus;
@@ -35,6 +36,7 @@ import pe.itsb.vyrbus.model.bean.Cliente;
 import pe.itsb.vyrbus.model.bean.Concesionario;
 import pe.itsb.vyrbus.model.bean.ConfiguracionImpresora;
 import pe.itsb.vyrbus.model.bean.ControlEspecieValorada;
+import pe.itsb.vyrbus.model.bean.DetalleItinerario;
 import pe.itsb.vyrbus.model.bean.DetalleLiquidacion;
 import pe.itsb.vyrbus.model.bean.Empresa;
 import pe.itsb.vyrbus.model.bean.EspecieValorada;
@@ -2886,6 +2888,19 @@ public class UtilData extends Window {
 		combobox.appendChild(comboitem);
 
 		combobox.setSelectedIndex(0);
+	}
+	
+	public static Double getTarifaByAsientoPresentacion(DetalleItinerario detalleItinerario, Boolean isSuite)throws Exception{		
+		Double precio=0.00;
+		
+		
+		precio = ServiceLocator.getTarifaByAsientoDetalleManager().buscraTarifaPresentacion(detalleItinerario.getItinerario().getId(), 
+				detalleItinerario.getRuta().getId(), Constantes.FORMAT_DATE.format(detalleItinerario.getFechaPartida()), 
+				detalleItinerario.getItinerario().getServicio().getId(), 
+				(isSuite?Constantes.TRUE_VALUE:Constantes.FALSE_VALUE), 
+				null, null);
+		
+		return precio;
 	}
 }
 

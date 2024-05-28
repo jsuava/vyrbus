@@ -56,11 +56,11 @@
         		<comment>Indica la zona a la que pertenece el asiento en el Piso del Bus.</comment>
         	</column>
         </property>        
-<!--          <many-to-one name="tipoAsiento" class="pe.itsb.vyrbus.model.bean.TipoAsiento" fetch="select">
+         <many-to-one name="tipoAsiento" class="pe.itsb.vyrbus.model.bean.TipoAsiento" fetch="select">
             <column name="TIPASI_ID" precision="2" scale="0" not-null="true">
                 <comment>Identificador unico de la entidad, tamanio de la clave primaria 2.</comment>
-            </column>
-        </many-to-one>  -->
+             </column>
+        </many-to-one>
         <!-- 		BEGIN CAMPOS DE AUDITORIA	 	-->
         <property name="estadoRegistro" type="java.lang.String">
             <column name="C_ESTREG" length="1" not-null="true">

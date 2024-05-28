@@ -16,10 +16,6 @@ public class Tarifa extends GenericBean implements java.io.Serializable, Cloneab
 	private Integer pisoBus;
 	private Integer zonaBus;
 	private Empresa empresa;
-//	private Double monto;
-//	private Date fechaActivacion;
-//	private Date fechaCaducidad;
-//	private Date fechaSuspension;
 
 	public Tarifa() {
 	}
@@ -31,13 +27,6 @@ public class Tarifa extends GenericBean implements java.io.Serializable, Cloneab
 		this.id = id;
 	}
 
-//	public Cliente getCliente() {
-//		return this.cliente;
-//	}
-//	public void setCliente(Cliente cliente) {
-//		this.cliente = cliente;
-//	}
-//
 	public Ruta getRuta() {
 		return this.ruta;
 	}
@@ -97,31 +86,4 @@ public class Tarifa extends GenericBean implements java.io.Serializable, Cloneab
 		return super.clone();
 	}
 
-//	public Double getMonto() {
-//		return this.monto;
-//	}
-//	public void setMonto(Double monto) {
-//		this.monto = monto;
-//	}
-//
-//	public Date getFechaActivacion() {
-//		return this.fechaActivacion;
-//	}
-//	public void setFechaActivacion(Date fechaActivacion) {
-//		this.fechaActivacion = fechaActivacion;
-//	}
-//
-//	public Date getFechaCaducidad() {
-//		return this.fechaCaducidad;
-//	}
-//	public void setFechaCaducidad(Date fechaCaducidad) {
-//		this.fechaCaducidad = fechaCaducidad;
-//	}
-//
-//	public Date getFechaSuspension() {
-//		return this.fechaSuspension;
-//	}
-//	public void setFechaSuspension(Date fechaSuspension) {
-//		this.fechaSuspension = fechaSuspension;
-//	}
 }

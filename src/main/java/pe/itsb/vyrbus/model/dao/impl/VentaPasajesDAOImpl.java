@@ -16,6 +16,7 @@ import java.util.TreeMap;
 
 import org.hibernate.SQLQuery;
 
+
 import pe.itsb.vyrbus.model.bean.Agencia;
 import pe.itsb.vyrbus.model.bean.Bus;
 import pe.itsb.vyrbus.model.bean.CanalVenta;
@@ -38,6 +39,8 @@ import pe.itsb.vyrbus.model.bean.Promocion;
 import pe.itsb.vyrbus.model.bean.Ruta;
 import pe.itsb.vyrbus.model.bean.Servicio;
 import pe.itsb.vyrbus.model.bean.Sexo;
+import pe.itsb.vyrbus.model.bean.TarifarioByAsientoByAvanceVentas;
+import pe.itsb.vyrbus.model.bean.TarifarioByAsientoSubByAvanceVentas;
 import pe.itsb.vyrbus.model.bean.TarjetaCredito;
 import pe.itsb.vyrbus.model.bean.TipoAgencia;
 import pe.itsb.vyrbus.model.bean.TipoCobranza;
@@ -81,7 +84,7 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 				"			 ap.c_nomcor as nombreCorto, p.tipdoc_id tipoDocPax, vp.forpag_id, vp.tipforpag_id, vp.c_rucclicre, vp.n_imppag, " +
 				"			 vp.tipmov_id, av.c_denominacion AGVENTA, u.c_login USUARIO, al.c_denominacion AGLLEGADA, vp.audfecins FECVENTA, p.c_telefono, "+ 
 				"            ap.agencia_id agencia_idpartida, al.agencia_id agencia_idllegada, tc.tipcom_id, tc.c_denominacion tipoComprobante,  "+ //43
-				"            vp.c_tiptra, cl.cliente_id, cl.c_numdoc ruc_cliente, cl.c_razsoc, cl.c_direccion, vp.usuario_id "+ //49
+				"            vp.c_tiptra, cl.cliente_id, cl.c_numdoc ruc_cliente, cl.c_razsoc, cl.c_direccion, vp.usuario_id, vp.empresa_id "+ //50
 				"FROM vrtvenpas vp " +
 				"	  INNER JOIN (SELECT MAX(venpas_id)venpas_id, c_numcontrol " +
 				"				  FROM vrtvenpas WHERE itinerario_id="+idItinerario+" GROUP BY c_numcontrol) max_venta " +
@@ -194,6 +197,8 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 				cliente.setDireccion(obj[48]!=null?obj[48].toString():null);
 				ventaPasaje.setCliente(cliente);
 			}
+			
+			ventaPasaje.setEmpresa(new Empresa(((BigDecimal)obj[50]).intValue()));
 
 //			TipoMovimiento tipoMovimiento = new TipoMovimiento();
 //			tipoMovimiento.setId(((BigDecimal)obj[34]).intValue());
@@ -4252,6 +4257,137 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 		}
 
 		return lstValores;
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.itsb.vyrbus.model.dao.VentaPasajesDAO#buscarAvanceVentasByTarifario(java.lang.String, java.lang.Integer, java.lang.Integer, java.lang.Integer)
+	 */
+	@Override
+	public List<TarifarioByAsientoByAvanceVentas> buscarAvanceVentasByTarifarioByAsiento(String fecha, Integer servicio_id,
+			Integer localidad_idOrigen, Integer localidad_idDestino) throws Exception {
+		String sql="SELECT P1.itinerario_id ,P1.ruta_idmayor ,P1.d_fecpar ,R.c_Origen ,R.c_Destino "
+			       + ",P1.c_origen Ori_Mayor ,P1.c_destino Des_Mayor ,P1.c_horpar ,P1.c_denominacion AS Servicio "
+			       + ",decode(P2.Flag, '1', P2.paxSuite, 0) PaxSuite,decode(P2.Flag, '1', P2.paxOtro, 0) paxOtro, P1.Capbus "
+			       + ",NVL(PR.CantPaxAsiSuite,0) PaxSuiteByRuta, NVL(PR.CantPaxAsiOtro,0) PaxOtroByRuta "
+			       + ",r.ruta_id, servicio_id, di.c_horpar, di.d_fecpar fecparTramo "
+			 + "FROM(SELECT CASE WHEN rm.localidad_idorigen=13 THEN 1 "
+			 				  + "WHEN rm.localidad_iddestino=13 THEN 2 "
+			 		     + "END tipoRuta "
+			 			+ ",i.itinerario_id, i.ruta_idmayor, s.c_denominacion, NVL(s.n_numasipis1,0)+NVL(s.n_numasipis2,0) Capbus "
+			 	        + ",i.d_fecpar, i.c_horpar, rm.c_origen  ,rm.c_destino, i.servicio_id "
+			 	  + "FROM vrtitinerario i "
+			 	    + "INNER JOIN vrmruta rm ON (i.ruta_idmayor = rm.ruta_id) "
+			 	    + "INNER JOIN vrmservicio s ON (i.servicio_id = s.servicio_id) "
+			 	  + "WHERE  i.d_fecpar BETWEEN to_date('"+fecha+"','dd/MM/yyyy') AND to_date('"+fecha+"','dd/MM/yyyy') "
+			 	    + "AND i.n_esanulado=0 AND rm.localidad_idorigen=rm.localidad_idorigen "
+			 	    + "AND rm.localidad_iddestino=rm.localidad_iddestino "
+			 	 + ") P1 "
+			   + "LEFT JOIN ( SELECT Flag, itinerario_id, SUM(paxSuite)paxSuite, SUM(paxOtro) paxOtro "
+			               + "FROM( SELECT '1' Flag, vt.itinerario_id, DECODE(mb.tipasi_id,3,COUNT(*),0) paxSuite, DECODE(mb.tipasi_id,3,0,COUNT(*)) paxOtro "
+			                     + "FROM vrtvenpas vt "
+			                       + "INNER JOIN (SELECT MAX(v.venpas_id) venpas_id "
+			                                   + "FROM vrtvenpas v "
+			                                     + "INNER JOIN vrtitinerario i on (i.itinerario_id=v.itinerario_id) "
+			                                   + "WHERE i.d_fecpar BETWEEN to_date('"+fecha+"','dd/MM/yyyy') AND to_date('"+fecha+"','dd/MM/yyyy') "
+			                                   + "GROUP BY v.c_numcontrol "
+			                                  + ") B on (vt.venpas_id = B.venpas_id) "
+			                       + "INNER JOIN vrtitinerario i on (i.itinerario_id=vt.itinerario_id) "
+			                       + "INNER JOIN vrtmapabus mb ON (mb.servicio_id=i.servicio_id AND mb.n_numasi=vt.n_numasiento) "
+			                     + "WHERE  i.d_fecpar BETWEEN to_date('"+fecha+"','dd/MM/yyyy') AND to_date('"+fecha+"','dd/MM/yyyy') "
+			                       + "AND vt.tipmov_id NOT IN (13,5,6) AND vt.c_tiptra=1 "
+			                     + "GROUP BY vt.itinerario_id, mb.tipasi_id "
+			                   + ") "
+			               + "GROUP BY Flag, itinerario_id "
+			              + ") P2 ON  (P2.itinerario_id = P1.itinerario_id) "
+			    + "INNER JOIN VRMRUTA rm ON (rm.ruta_id=P1.ruta_idmayor) "
+			    + "INNER JOIN VRTDETITI di ON (di.itinerario_id=P1.itinerario_id) "
+			    + "INNER JOIN VRMRUTA r ON (r.ruta_id=di.ruta_id) "
+			    + "LEFT JOIN(SELECT SUM(CantPaxSuite)CantPaxAsiSuite, SUM(CantPaxOtro)CantPaxAsiOtro,ruta_id, Itinerario_Id "
+			    		  + "FROM( SELECT DECODE(mb.tipasi_id,3,COUNT(*),0) CantPaxSuite, DECODE(mb.tipasi_id,3,0,COUNT(*)) CantPaxOtro "
+			    		              + ",vt.ruta_id, vt.Itinerario_Id "
+			    		        + "FROM vrtvenpas vt "
+			    		          + "INNER JOIN (SELECT MAX(v.venpas_id) venpas_id "
+			    		                      + "FROM vrtvenpas v "
+			    		                        + "INNER JOIN vrtitinerario i on (i.itinerario_id=v.itinerario_id) "
+			    		                      + "WHERE i.d_fecpar BETWEEN to_date('"+fecha+"','dd/MM/yyyy') AND to_date('"+fecha+"','dd/MM/yyyy') "
+			    		                      + "GROUP BY v.c_numcontrol "
+			    		                     + ") B on (vt.venpas_id = B.venpas_id) "
+			    		          + "INNER JOIN vrtitinerario i on (i.itinerario_id=vt.itinerario_id) "
+			    		          + "INNER JOIN VRTMAPABUS mb ON (mb.servicio_id=i.servicio_id AND vt.n_numasiento=mb.n_numasi) "
+			    		        + "WHERE  i.d_fecpar BETWEEN to_date('"+fecha+"','dd/MM/yyyy') AND to_date('"+fecha+"','dd/MM/yyyy') "
+			    		        + "AND vt.tipmov_id NOT IN (13,5,6) AND vt.c_tiptra=1 "
+			    		        + "GROUP BY vt.ruta_id, vt.itinerario_id,mb.tipasi_id "
+			    		      + ") "
+			    		  + "GROUP BY ruta_id, itinerario_id "
+			    		 + ") PR ON  (PR.ruta_id=r.ruta_id AND PR.itinerario_id=P1.itinerario_id) "
+			 + "WHERE rm.localidad_idorigen=NVL("+localidad_idOrigen+",rm.localidad_idorigen) "
+			   + "AND rm.localidad_iddestino=NVL("+localidad_idDestino+",rm.localidad_iddestino) "
+			   + "AND servicio_id=NVL("+servicio_id+",servicio_id) "
+			 + "ORDER BY tipoRuta, P1.d_fecpar, P1.c_horpar,di.d_fecpar, di.c_horpar, P1.c_origen, P1.c_destino, P1.c_denominacion";
+	log.info(sql);
+	List<?>result=getSession().createSQLQuery(sql).list();
+	
+	List<TarifarioByAsientoByAvanceVentas>listTarifarioVanceVentas= new ArrayList<>();
+	for(int x=0;x<result.size();x++){
+		Object[] obj=(Object[]) result.get(x);
+		Long itinerario_id=((BigDecimal)obj[0]).longValue();
+		
+		/*Valida duplicidad de rutas*/
+		boolean addRegistro=true;
+		for(TarifarioByAsientoByAvanceVentas tarifarioByAvanceVentas:listTarifarioVanceVentas){
+			if(itinerario_id.longValue()==tarifarioByAvanceVentas.getItinerario_id().longValue()){
+				addRegistro=false;
+				break;
+			}
+				
+		}
+		
+		if(addRegistro){
+			Ruta ruta_mayor=new Ruta();
+			ruta_mayor.setId(((BigDecimal)obj[1]).intValue());
+			ruta_mayor.setOrigen(obj[5].toString());
+			ruta_mayor.setDestino(obj[6].toString());
+			
+			Servicio servicio=new Servicio();
+			servicio.setId(((BigDecimal)obj[15]).intValue());
+			servicio.setDenominacion(obj[8].toString());
+			
+			TarifarioByAsientoByAvanceVentas tarifarioByAvanceVentas=new TarifarioByAsientoByAvanceVentas();
+			tarifarioByAvanceVentas.setItinerario_id(itinerario_id);
+			tarifarioByAvanceVentas.setFecha((Date)obj[2]);
+			tarifarioByAvanceVentas.setHoraSalida(obj[7].toString());
+			tarifarioByAvanceVentas.setRutaMayor(ruta_mayor);
+			tarifarioByAvanceVentas.setServicio(servicio);
+			tarifarioByAvanceVentas.setOcupacionAsientosSuite(((BigDecimal)obj[9]).intValue());
+			tarifarioByAvanceVentas.setOcupacionAsientosOtros(((BigDecimal)obj[10]).intValue());			
+			
+			List<TarifarioByAsientoSubByAvanceVentas>listTarifarioSubAvanceVentas= new ArrayList<>();
+			for(int i=0;i<result.size();i++){
+				Object[] subObj=(Object[]) result.get(i);				
+				Long _itinerario_id=((BigDecimal)subObj[0]).longValue();
+				
+				if(_itinerario_id.longValue()==tarifarioByAvanceVentas.getItinerario_id().longValue()){
+					Ruta ruta= new Ruta();
+					ruta.setId(((BigDecimal)subObj[14]).intValue());
+					ruta.setOrigen(subObj[3].toString());
+					ruta.setDestino(subObj[4].toString());
+					
+					TarifarioByAsientoSubByAvanceVentas subByAvanceVentas= new TarifarioByAsientoSubByAvanceVentas();
+					subByAvanceVentas.setRuta(ruta);
+					subByAvanceVentas.setOcupacionAsientosSuite(((BigDecimal)subObj[12]).intValue());
+					subByAvanceVentas.setOcupacionAsientosOtros(((BigDecimal)subObj[13]).intValue());						
+					subByAvanceVentas.setHoraSalida(obj[16].toString());
+					subByAvanceVentas.setFecha((Date)subObj[17]);
+					listTarifarioSubAvanceVentas.add(subByAvanceVentas);
+				}				
+			}
+			tarifarioByAvanceVentas.setTarifarioByAsientoSubByAvanceVentas(listTarifarioSubAvanceVentas);
+			listTarifarioVanceVentas.add(tarifarioByAvanceVentas);
+		}			
+	}
+	
+	
+	return listTarifarioVanceVentas;
 	}
 }
 

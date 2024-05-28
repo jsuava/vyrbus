@@ -21,6 +21,11 @@
                 <comment>Denominacion corta del tipo de precio</comment>
             </column>
         </property>
+        <property name="esTarifa" type="java.lang.Integer">
+            <column name="N_ESTARIFA" precision="1" scale="0" not-null="true">
+                <comment>Determina si el concepto es un tarifa(0) o un descuento(1)</comment>
+            </column>
+        </property>
         <!-- 		BEGIN CAMPOS DE AUDITORIA	 	-->
         <property name="estadoRegistro" type="java.lang.String">
             <column name="C_ESTREG" length="1" not-null="true">

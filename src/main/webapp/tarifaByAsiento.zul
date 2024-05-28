@@ -1,0 +1,446 @@
+<?page title="new page title" contentType="text/html;charset=UTF-8"?>
+<zk>
+<window id="wndTarifaByAsiento" border="none" use="pe.itsb.vyrbus.view.ctrl.WndTarifaByAsiento">
+	<groupbox mold="3d" closable="false">
+		<caption label="MANTENIMIENTO DE TARIFARIOS" />
+		<tabbox>
+			<tabs>
+				<tab id="tabCreacionPlantillaAsientos" label="Plantillas de Asientos"/>
+				<tab id="tabCreacionTarifario" label="Tarifario / Descuentos"/>
+				<tab id="tabEdicionServicio" label="Edición por servicio" selected="true"/>
+				<tab id="tabCuponesPromocionales" label="Cupones Promocionales"/>
+			</tabs>
+			<tabpanels>
+				<tabpanel>
+					<tabbox>
+						<tabs>
+							<tab id="tabCPA_ListPlantillaAsientos" label="Lista"/>
+							<tab id="tabCPA_MantenimientoPlantillaAsientos" label="Manitenimiento"/>
+						</tabs>
+						<tabpanels>
+							<tabpanel>								
+								<hbox align="center">
+									<label value = "EMPRESA :" />
+									<combobox id="cmbBusqCPA_empresa" readonly="true" width="200px" />
+									<button label="Buscar" onClick="wndTarifaByAsiento.onBuscarPlatillasAsientos()" sclass="btnCommandM" autodisable="self" image="/resources/mp_buscarEnabled.png" style="margin-left:10px"/>
+								</hbox>								
+								<separator/>
+								<listbox id="listCPA_listado" rows="10">
+									<listhead>
+										<listheader label="#" width="50px" style="color: #ffffff;"/>
+										<listheader label="EMPRESA" width="200px" style="color: #ffffff;"/>
+										<listheader label="TIPO TARIFA" width="150px" style="color: #ffffff;"/>
+										<listheader label="DENOMINACION" width="300px" style="color: #ffffff;"/>
+										<listheader/>
+									</listhead>
+								</listbox>
+							</tabpanel>
+							<tabpanel>
+								<grid>
+									<columns>
+										<column label="MANTENIMIENTO DE PLANTILLAS DE TARIFAS POR ASIENTO" sclass="label-size11-bold"/>
+									</columns>
+									<rows>
+										<row>
+											<grid style="border:none">
+												<columns>
+													<column width="125px" align="right" />
+													<column/>
+												</columns>
+												<rows>
+													<row>
+														<label value="EMPRESA :" sclass="label-size11-bold-blue"/>
+														<combobox id="cmbCPA_empresa" readonly="true" width="200px" />
+													</row>
+													<row>
+														<label value="DENOMINACION :" />
+														<textbox id="txtCPA_nombre" width="450px" maxlength="100" style="font-size:11px !important"/>								
+													</row>
+													<row>
+														<label value="TIPO PRECIO :" style="margin-left:50px" />
+														<combobox id="cmbCPA_tipoPrecio" width="150px" readonly="true" />
+													</row>
+												</rows>
+											</grid>								
+										</row>
+										<row>
+											<grid>
+												<columns>
+													<column/>
+												</columns>
+												<rows>
+													<row>
+														<grid style="border:none">
+															<columns>
+																<column width="80px" align="right"/>
+																<column width="100px"/>
+																<column width="80px" align="right"/>
+																<column/>
+															</columns>
+															<rows>
+																<row>
+																	<label value="TIPO ASIENTO :"/>
+																	<combobox id="cmbCPA_TipoAsiento" readonly="true" width="90px" />													
+																	<label value="ASIENTOS :"/>
+																	<hbox align="center">															
+																		<textbox id="txtCPA_Asientos" width="230px" style="font-size:12px !important" placeholder="Rango (1-50) individual (1,2,6,etc.)"/>
+																		<button id="btnCPA_agregar" image="/resources/mp_addEnabled.png" autodisable="self" onClick="wndTarifaByAsiento.onEvent_btnCPA_Add()"/>
+																	</hbox>														
+																</row>
+															</rows>
+														</grid>
+													</row>
+													<row>
+														<listbox id="lstCPA_plantillaAsientosDetalle" rows="7">
+															<listhead>
+																<listheader label="#" width="30px" style="color: #ffffff;"/>
+																<listheader label="TIPO ASIENTO" width="100px" style="color: #ffffff;"/>
+																<listheader label="ASIENTOS" width="270px" style="color: #ffffff;"/>
+																<listheader />
+															</listhead>
+														</listbox>
+													</row>
+													<row>
+														<hbox align="center">
+															<button id="btnCPA_Nuevo" label="Nuevo" autodisable="self" sclass="btnCommandL" image="/resources/mp_nuevoEnabled.png" onClick="wndTarifaByAsiento.onEvent_btnCPA_Nuevo()" />
+															<separator width="30px"/>
+															<button id="btnCPA_Guardar" label="Guardar" autodisable="self" sclass="btnCommandL"  image="/resources/mp_guardarEnabled.png" onClick="wndTarifaByAsiento.onEvent_btnCPA_Guardar()" />
+															<separator width="30px"/>
+															<button id="btnCPA_Cancelar" label="Cancelar" autodisable="self" sclass="btnCommandM"  image="/resources/mp_cancelarEnabled.png" onClick="wndTarifaByAsiento.onEvent_btnPCA_Cancelar()" />
+														</hbox>				
+													</row>
+												</rows>
+											</grid>
+										</row>
+									</rows>
+								</grid>	
+							</tabpanel>
+						</tabpanels>
+					</tabbox>					
+				</tabpanel>
+				<tabpanel>
+					<grid>
+						<columns>
+							<column width="80px" align="right"/>
+							<column width="160px"/>
+							<column width="140px" align="right"/>
+							<column/>
+						</columns>
+						<rows>
+							<row>
+								<label value="EMPRESA : " sclass="label-size11-bold-blue"/>
+								<combobox id="cmbEmpresa" readonly="true" width="150px"/>								
+								<label value="PLANTILLA DE ASIENTOS : "/>
+								<combobox id="cmbPantillaEncabezado" readonly="true" width="200px" onSelect="wndTarifaByAsiento.onSelect_plantillaEncabezado()" />
+							</row>
+							<row>
+								<label value="ORIGEN : "/>
+								<combobox id="cmbOrigen" autocomplete="true" onFocus="self.select()" readonly="true" autodrop="true" width="150px" onOK="cmbDestino.setFocus(true);cmbDestino.select();"/>
+								<label value="DESTINO : "/>
+								<hbox>
+									<combobox id="cmbDestino" autocomplete="true" onFocus="self.select()" readonly="true" autodrop="true" width="200px" onOK="wndTarifaByAsiento.onAgregarRuta()" />					
+									<separator/>
+									<button id="btnAgregarRuta" label="Agregar Ruta" autodisable="self" image="/resources/mp_addEnabled.png" onClick="wndTarifaByAsiento.onAgregarRuta()"/>
+								</hbox>
+							</row>	
+						</rows>		
+					</grid>
+					
+					<separator height="3px"/>		
+					<listbox id="ltbxNuevasTarifas" rows="7"></listbox>		
+					<separator height="3px"/>
+					
+					<hbox>
+						<grid width="360px">			
+							<columns>
+								<column label="APLICAR A LOS SERVICIOS..." style="color:blue"/>
+							</columns>
+							<rows>
+								<row>
+									<hbox align="center">
+										<label value="SERVICIO : " />
+										<combobox id="cmbServicio" readonly="true" width="200px" />
+										<separator width="15px" />
+										<button id="btnAgregarServicio" label="Agregar" image="/resources/mp_addEnabled.png" onClick="wndTarifaByAsiento.onAgregarServicio()" />
+									</hbox>
+								</row>
+								<row>
+									<listbox id="ltbxServicios" height="100px">
+										<listhead>
+											<listheader label="SERVICIO"/>
+										</listhead>
+									</listbox>		
+								</row>
+							</rows>
+						</grid>
+						
+						<grid width="400px">
+							<columns>
+								<column id="colGuardar" label="GUARDAR TARIFARIO" style="color:blue"/>
+							</columns>
+							<rows>
+								<row>
+									<hbox align="center">
+										<separator width="15px"/>
+										<label value="DESDE : " />
+										<datebox id="dtbxDesde" format="dd/MM/yyyy" readonly="true" onChange="dtbxHasta.setValue(dtbxDesde.getValue())"/>
+										
+										<separator width="38px"/>
+										
+										<label value="HASTA : " />
+										<datebox id="dtbxHasta" format="dd/MM/yyyy" readonly="true" />
+									</hbox>
+								</row>
+								<row>
+									<div align="center" width="100%">	
+										<checkbox id="chbxReemplazarPromociones" label="Anular todas las promociones existentes" style="color:blue" visible="false"/>									
+										<div id="divDestRatioDias" align="center" width="100%" visible="false">
+											<hbox align="center">
+												<label value="CON F. EMISION >= A : "/>
+												<intbox id="itbxRatioDiasPartida" width="40px" />
+												<label value="DIAS ANTES DEL VIAJE"/>
+ 												<separator width="100px" />												
+											</hbox>
+											<separator/>
+											<vbox>
+												<hbox align="center">
+													<label value="TIPO DESCUENTO "/>
+													<separator width="8px" />
+													<label value=": "/>
+													<combobox id="cmbTipoDescuento" readonly="true" width="90px"/>
+													<separator width="18px" />
+													<label value="DSCT.MAXIMO S/ :" />
+													<doublebox id="dblDescuentoMaximoSoles" width="50px" format="###,##0.00"/>
+																																							
+												</hbox>
+												<hbox align="center">
+													<label value="NOMBRE DESTO " />
+													<separator width="16px" />
+													<label value=": "/>
+													<textbox id="txtNombreDescuento"  maxlength="30" width="249px" />
+												</hbox>
+											</vbox>
+										</div>										
+									</div>									
+								</row>
+								<row>
+									<div align="center" width="100%">
+										<label id="lblTipoPrecio" style="text-transform:none;color:red;font-size:10px !important;" />
+									</div>
+								</row>																			
+								<row>						
+									<div align="center" width="100%">
+										<hbox align="center">
+											<button id="btnNuevoTarifario" label="Nuevo" autodisable="self" sclass= "btnCommandM"  image="/resources/mp_nuevoEnabled.png" onClick="wndTarifaByAsiento.onNuevoTarifario()" />
+											<separator width="50px"/>
+											<button id="btnCrearTarifario" label="Guardar" sclass= "btnCommandM" autodisable="self" image="/resources/mp_guardarEnabled.png" onClick="wndTarifaByAsiento.onGuardarTarifa()" />
+										</hbox>						
+									</div>					
+								</row>
+							</rows>
+						</grid>
+					</hbox>						
+				</tabpanel>
+				<tabpanel id="tabPanelEdicionServicio">
+					<grid>
+						<columns>
+							<column align="right" width="100px"/>
+							<column width="120px"/>
+							<column align="right" width="100px"/>
+							<column/>
+						</columns>
+						<rows>
+							<row>
+								<label value="FECHA :"/>
+								<datebox id="dtbxED_Fecha" format="dd/MM/yyyy" readonly="true"/>
+								<label value="SERVICIO :" />
+								<combobox id="cmbED_servicio" readonly="true" width="115px"/>
+							</row>
+							<row>
+								<label value="ORIGEN :"/>
+								<combobox id="cmbED_origen" readonly="true" width="115px"/>
+								<label value="DESTINO :"/>
+								<hbox align="center">
+									<combobox id="cmbED_destino" readonly="true" width="115px"/>
+									<separator width="15px"/>
+									<button id="btnED_buscar" label="Buscar" image="/resources/mp_buscarEnabled.png" autodisable="self" onClick="wndTarifaByAsiento.onBuscarServiciosOcupacion()"/>
+								</hbox>								
+							</row>
+						</rows>
+					</grid>
+					<separator height="1px" />					
+				</tabpanel>
+				<tabpanel id="tabPanelCuponesPromos">
+					<tabbox>
+						<tabs>
+							<tab id="tabCP_lista" label="Lista" />
+							<tab id="tabCP_mantenimiento" label="Mantenimiento" />
+						</tabs>
+						<tabpanels>
+							<tabpanel>
+								<grid>
+									<columns>
+										<column width="100px" align="right"/>
+										<column width="120px" />
+										<column width="100px" align="right"/>
+										<column/>
+									</columns>
+									<rows>
+										<row visible="false">
+											<label value="FECHA INICIO : "/>
+											<datebox id="dtbxCP_FechaInicio" readonly="true" format="dd/MM/yyyy"/>
+											
+											<label value="FECHA FIN : "/>
+											<hbox align="center">
+												<datebox id="dtbxCP_FechaFin" readonly="true" format="dd/MM/yyyy"/>
+												<separator width="10px"/>
+												<checkbox id="chbxCP_omitirFechas" onCheck="wndTarifaByAsiento.onEvent_chbxCP_omitirFechas()" label="Omitir Fechas" style="color:blue"/>
+											</hbox>								
+										</row>										
+										<row spans="1,2,1">
+											<label value="DENOMINACION : "/>
+											<textbox id="txtCP_busqDenominacion" width="200px" />
+											
+											<button id="btnCP_buscar" onClick="wndTarifaByAsiento.onEvent_btnCP_buscar()" label="Buscar" image="/resources/mp_buscarEnabled.png" autodisable="self" />
+										</row>
+										<row spans="1,3">
+											<label value="CODIGO : "/>
+											<textbox id="txtCP_busqCodigo" width="100px" />											
+										</row>
+									</rows>
+								</grid>
+								<listbox id="ltbxCP_codigosPromos">
+									<listhead>
+										<listheader label="DENOMINACION" width="200px" sort="auto"/>
+										<listheader label="RUTAS" width="200px" sort="auto"/>
+										<listheader label="SERVICIOS" width="100px" sort="auto"/>
+										<listheader label="CANALES VENTA" width="100px" sort="auto"/>
+										<listheader label="ASIENTOS" width="100px" sort="auto"/>
+										<listheader label="VAL DSCT." width="50px" sort="auto" tooltiptext="Valor del descuento"/>
+										<listheader label="TIPO DSCT." width="50px" sort="auto" tooltiptext="TipoDescuento"/>
+										<listheader label="CODIGO" width="80px" sort="auto"/>
+										<listheader label="VAL.MAX.DSCT." width="80px" sort="auto" tooltiptext="Valor maximo del desciento"/>
+										<listheader label="VALIDO DESDE" width="80px" sort="auto"/>
+										<listheader label="VALIDO HASTA" width="80px" sort="auto"/>
+									</listhead>
+								</listbox>
+							</tabpanel>
+							<tabpanel>
+								<grid>
+									<columns>
+										<column width="100px" align="right" />
+										<column width="200px" />
+										<column width="110px" align="right" />
+										<column/>
+									</columns>
+									<rows>
+										<row spans="1,3">
+											<label value="DENOMINACION : " />
+											<textbox id="txtCP_denominacion" />
+										</row>
+										<row>
+											<label value="RUTAS : " />
+											<hbox align="center">
+												<textbox id="txtCP_rutas" width="150px" multiline="true" rows="2" readonly="true" style="font-size:11px !important"/>
+												<button id="btnCP_busqRutas" onClick="wndTarifaByAsiento.onEvent_btnCP_busqRutas()" autodisable="self" image="/resources/mp_buscarEnabled.png"/>
+											</hbox>	
+											<label value="SERVICIOS : " />
+											<hbox align="center">
+												<textbox id="txtCP_servicios" width="150px" multiline="true" rows="2" readonly="true" style="font-size:11px !important"/>
+												<button id="btnCP_busqServicios" onClick="wndTarifaByAsiento.onEvent_btnCP_busqServicios()" autodisable="self" image="/resources/mp_buscarEnabled.png"/>
+											</hbox>										
+										</row>
+										<row>
+											<label value="CANALES VENTA : " />
+											<hbox align="center">
+												<textbox id="txtCP_canalesVenta" width="150px" multiline="true" rows="2" readonly="true" style="font-size:11px !important"/>
+												<button id="btnCP_busqCanalesVenta" onClick="wndTarifaByAsiento.onEvent_btnCP_busqCanalesVenta()" autodisable="self" image="/resources/mp_buscarEnabled.png"/>
+											</hbox>	
+											
+											<label value="T. FORMA DE PAGO :" />
+											<checkbox id="chbxTipoFormaPago_PagoEfectivo" checked="false" label="PagoEfectivo" style="color:blue" />
+<!-- 											<separator/> -->
+											<div visible="false">
+												<label value="ASIENTOS : " />
+												<hbox align="center">
+													<textbox id="txtCP_asientos" width="150px" style="font-size:12px !important"/>
+													<label value="Individuales separados por (,) y rangos separados por (-)" style="color:blue"/>
+												</hbox>
+											</div>																				
+										</row>
+										<row>
+											<label value="TIPOS ASIENTO : " />
+											<hbox align="center">
+												<textbox id="txtCP_tiposAsiento" width="150px" multiline="true" rows="2" readonly="true" style="font-size:11px !important"/>
+												<button id="btnCP_busqTiposAsientos" onClick="wndTarifaByAsiento.onEvent_btnCP_busqTipoAsientos()" autodisable="self" image="/resources/mp_buscarEnabled.png"/>
+											</hbox>	
+											
+											<label value="CANT.MAX SERVICIO :" />
+											<intbox id="itbxCP_cantMaxPorServicio" width="100px"/>																			
+										</row>
+										<row spans="1,3">
+											<label value="TIPO DE COMPRA :"/>
+											<div style="text-align:left">											
+											<groupbox mold="3d" closable="false">
+												<radiogroup id="rdgTipoCompra">
+													<radio id="rdTodas" label="Todas" checked="true"  style="color:blue"/>
+													<radio id="rdIdaVuelta" label="Solo Ida y Vuelta" style="color:blue;margin-left:30px"/>								
+													<radio id="rbNoIdaVuelta" label="NO válido para Ida y Vuelta" style="color:blue;margin-left:30px" />													
+												</radiogroup>
+												<vbox align="center" style="margin-left:20px;margin-top:5px">
+													<hbox align="center">
+														<checkbox id="chbxIdaVuelta_AplicarIda" visible="false" label="Aplicar Ida"/>
+														<separator width="25px" />
+														<checkbox id="chbxIdaVuelta_AplicarRetorno" visible="false" label="Aplicar Retorno"/>
+													</hbox>													
+												</vbox>
+											</groupbox>
+											</div>
+										</row>
+										<row>
+											<label value="VALOR DESCUENTO : " />
+											<doublebox id="dbxCP_valorDescuento" format="###,##0.00" style="font-size:12px !important" />
+											<label value="TIPO DESCUENTO : " />
+											<combobox id="cmbCP_tipoDescuento" readonly="true" />
+										</row>
+										<row>
+											<label value="CODIGO : " style="font-size:12px !important;color:red;font-weight:bold"/>
+											<textbox id="txtCP_codigo" width="150px" style="font-size:12px !important;color:red;font-weight:bold"/>
+											<label value="DESCUENTO MAX. S/ : "/>
+											<doublebox id="dbxCP_valorMaximoDesciento" format="###,##0.00" style="font-size:12px !important" />
+										</row>
+										<row>
+											<label value="VALIDO DESDE : " />
+											<datebox id="dtbxCP_validoDesde" readonly="true" format="dd/MM/yyyy" />
+											<label value="VALIDO HASTA : "/>
+											<datebox id="dtbxCP_validoHasta" readonly="true" format="dd/MM/yyyy" />
+										</row>										
+									</rows>
+								</grid>
+								<grid>
+									<columns>
+										<column/>
+									</columns>
+									<rows>
+										<row>
+											<hbox align="center">
+												<separator width="120px" />
+												<button id="btnCP_Nuevo" label="Nuevo" autodisable="self"   image="/resources/toolbar/mp_toolbarNuevo.png" onClick="wndTarifaByAsiento.onEvent_btnCP_Nuevo()" />
+												<separator width="30px"/>
+												<button id="btnCP_Guardar" label="Guardar" autodisable="self"   image="/resources/toolbar/mp_toolbarGuardar.png" onClick="wndTarifaByAsiento.onEvent_btnCP_Guardar()" />
+												<separator width="30px"/>
+												<button id="btnCP_Cancelar" label="Cancelar" autodisable="self"   image="/resources/toolbar/mp_toolbarCancelar.png" onClick="wndTarifaByAsiento.onEvent_btnCP_Cancelar()" />
+											</hbox>		
+										</row>
+									</rows>
+								</grid>											
+							</tabpanel>
+						</tabpanels>
+					</tabbox>
+				</tabpanel>
+			</tabpanels>
+		</tabbox>
+			
+	</groupbox>	
+</window>
+</zk>

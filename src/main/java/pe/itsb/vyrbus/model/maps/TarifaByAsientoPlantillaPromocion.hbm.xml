@@ -1,0 +1,83 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 24/05/2012 11:51:01 AM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="pe.itsb.vyrbus.model.bean.TarifaByAsientoPlantillaPromocion" table="VRMTARPLAPRO" schema="VYRBUSME">
+        <comment>Entidad que almacena las plantillas predefinidas con asientos promocionales</comment>
+        <id name="id" type="java.lang.Integer">
+            <column name="TARPLAPRO_ID" precision="5" scale="0" />
+            <generator class="sequence">
+                <param name="sequence">SEQ_VRTTARPLAPRO_ID</param>
+            </generator>
+        </id>
+        <property name="denominacion" type="java.lang.String">
+            <column name="C_DENOMINACION" length="100" not-null="true">
+                <comment>Nombre o denominacion de la plantilla de asientos promocionales</comment>
+            </column>
+        </property>
+        <many-to-one name="tipoAsiento" class="pe.itsb.vyrbus.model.bean.TipoAsiento" fetch="select">
+            <column name="TIPASI_ID" precision="5" scale="0" not-null="true">
+                <comment>Identificador unico de la entidad, tamanio de la clave primaria 5.</comment>
+            </column>
+        </many-to-one>  
+        <property name="asientos" type="java.lang.String">
+            <column name="C_ASIENTOS" length="100" not-null="true">
+                <comment>Numeros de asientos, separados por comas (N,N,N,)</comment>
+            </column>
+        </property>        
+        <property name="valorDescuento" type="java.lang.Double">
+            <column name="N_VALDES" precision="10" scale="2" not-null="true">
+                <comment>Valor de l descuento a aplicar a la tarifa del servicio</comment>
+            </column>
+        </property>        
+        <property name="isDescuentoSoles" type="java.lang.Integer">
+            <column name="N_TIPVADES" >
+                <comment>Tipo del valor del descuento, (0) Porcentaje, (1) Soles</comment>
+            </column>
+        </property>
+        <many-to-one name="empresa" class="pe.itsb.vyrbus.model.bean.Empresa" fetch="select">
+            <column name="EMPRESA_ID" precision="5" scale="0" not-null="true">
+                <comment>Identificador unico de la entidad, tamanio de la clave primaria 5.</comment>
+            </column>
+        </many-to-one> 
+                
+        <!-- 		BEGIN CAMPOS DE AUDITORIA	 	-->
+        <property name="estadoRegistro" type="java.lang.String">
+            <column name="C_ESTREG" length="1" not-null="true">
+                <comment>Estado de registro A(Activo), I(Inactivo).</comment>
+            </column>
+        </property>
+        <property name="fechaInsercion" type="java.util.Date">
+            <column name="AUDFECINS" length="7">
+                <comment>Fecha de insercion/modificacion.</comment>
+            </column>
+        </property>
+        <property name="usuarioInsercion" type="java.lang.String">
+            <column name="AUDUSUINS" length="30">
+                <comment>Usuario de insercion/modificacion.</comment>
+            </column>
+        </property>
+        <property name="ipInsercion" type="java.lang.String">
+            <column name="AUDIPINSE" length="15">
+                <comment>IP de insercion/modificacion.</comment>
+            </column>
+        </property>
+        <property name="fechaModificacion" type="java.util.Date">
+            <column name="AUDFECMOD" length="7">
+                <comment>Fecha de insercion/modificacion.</comment>
+            </column>
+        </property>
+        <property name="usuarioModificacion" type="java.lang.String">
+            <column name="AUDUSUMOD" length="30">
+                <comment>Usuario de insercion/modificacion.</comment>
+            </column>
+        </property>
+        <property name="ipModificacion" type="java.lang.String">
+            <column name="AUDIPMODI" length="15">
+                <comment>IP de insercion/modificacion.</comment>
+            </column>
+        </property>
+        <!-- 		END CAMPOS DE AUDITORIA	 	-->
+    </class>
+</hibernate-mapping>

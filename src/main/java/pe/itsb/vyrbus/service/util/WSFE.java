@@ -47,6 +47,7 @@ import pe.itsb.vyrbus.model.bean.ItinerarioAgenciaPartidaID;
 import pe.itsb.vyrbus.model.bean.Liquidacion;
 import pe.itsb.vyrbus.model.bean.OperadorTarjetaCredito;
 import pe.itsb.vyrbus.model.bean.TipoCobranza;
+import pe.itsb.vyrbus.model.bean.TipoDocumento;
 import pe.itsb.vyrbus.model.bean.TipoMovimiento;
 import pe.itsb.vyrbus.model.bean.TranscarUsuarioPersonal;
 import pe.itsb.vyrbus.model.bean.Usuario;
@@ -292,7 +293,7 @@ public class WSFE implements Serializable{
 					notaCredito=null;
 				}else{
 					/*Envia la venta a nuestro ws*/
-//					result= getSoap().setVenta(TOKEN, oventa); //comentado temporalmento - 09/09/2021 - jabanto
+					result= getSoap().setVenta(TOKEN, oventa); //comentado temporalmento - 09/09/2021 - jabanto
 				}
 
 				/*Agrega a la lista para la impresion - 06/12/2016 - jabanto*/
@@ -398,11 +399,14 @@ public class WSFE implements Serializable{
 
 			/*Busca el comprobante en el Servorde de F.E*/
 			for(VentaPasaje ventaPasaje: listVentaPasaje){
+				ventaPasaje = ServiceLocator.getVentaPasajesManager().buscarPorId(ventaPasaje.getId());
+				
 				int tipoComprobanteId = ventaPasaje.getTipoComprobante().getId();
-				String serie=ventaPasaje.getNumeroBoleto().split("-")[0];
-				String correlativo=ventaPasaje.getNumeroBoleto().split("-")[1];
+				String serie = ventaPasaje.getNumeroBoleto().split("-")[0];
+				String correlativo = ventaPasaje.getNumeroBoleto().split("-")[1];
+				
 				if(tipoComprobanteId==Constantes.ID_TIPCOM_BOLETA_VENTA || tipoComprobanteId==Constantes.ID_TIPCOM_FACTURA) {
-					String tipoComprobante=(tipoComprobanteId==Constantes.ID_TIPCOM_BOLETA_VENTA?FE_TIPCOM_BOLETA:FE_TIPCOM_FACTURA);				
+					String tipoComprobante=(tipoComprobanteId==Constantes.ID_TIPCOM_BOLETA_VENTA?FE_TIPCOM_BOLETA:FE_TIPCOM_FACTURA);
 					Result result=getSoap().buscarDetalleComprobante(TOKEN, tipoComprobante, serie, correlativo, ventaPasaje.getEmpresa().getNumeroDocumento());
 
 					if(result.getBarcodeQR().getValue()!=null && result.getBarcodeEmbarque().getValue()!=null){

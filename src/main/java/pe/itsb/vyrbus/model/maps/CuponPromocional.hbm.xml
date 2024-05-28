@@ -1,0 +1,143 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 24/05/2012 11:51:01 AM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="pe.itsb.vyrbus.model.bean.CuponPromocional" table="VRMCUPPRO" schema="VYRBUSME">
+        <comment>Entidad que almacena los cupones promocionales</comment>
+        <id name="id" type="java.lang.Long">
+            <column name="CUPPRO_ID" precision="6" scale="0" />
+            <generator class="sequence">
+                <param name="sequence">SEQ_VRTCUPPRO_ID</param>
+            </generator>
+        </id>
+        <property name="denominacion" type="java.lang.String">
+            <column name="C_DENOMINACION" length="150" >
+                <comment>Nombre o Denomincacion del codigo promocional</comment>
+            </column>
+        </property>
+        <property name="rutas" type="java.lang.String">
+            <column name="C_RUTAS" length="250" >
+                <comment>Identificadores de las rutas, separadas por coma (,) todos Null</comment>
+            </column>
+        </property>
+        <property name="servicios" type="java.lang.String">
+            <column name="C_SERVICIOS" length="50" >
+                <comment>Identificadores de las rutas, separadas por coma (,) todos Null</comment>
+            </column>
+        </property>
+        <property name="canalesVenta" type="java.lang.String">
+            <column name="C_CANALESVENTA" length="50" >
+                <comment>Identificadores de las rutas, separadas por coma (,) todos Null</comment>
+            </column>
+        </property>
+        <property name="tipoAsientos" type="java.lang.String">
+            <column name="C_TIPASI" length="50" >
+                <comment>Identificadores de los tipos de asientos, separadas por coma (,) todos Null</comment>
+            </column>
+        </property>
+        <property name="asientos" type="java.lang.String">
+            <column name="C_ASIENTOS" length="50" >
+                <comment>Numeros de asientos, separados por coma (,) o guion (-), todos Null</comment>
+            </column>
+        </property>
+        <property name="agencias" type="java.lang.String">
+            <column name="C_AGENCIAS" length="150" >
+                <comment>Identificadores de las rutas, separadas por coma (,) todos Null</comment>
+            </column>
+        </property>
+         <property name="valorDescuento" type="java.lang.Double">
+            <column name="N_VALDES" precision="10" scale="2">
+                <comment>Valor del descuento</comment>
+            </column>
+        </property>
+        <property name="tipoDescuento" type="java.lang.String">
+            <column name="C_TIPDES" length="1" >
+                <comment>Tipo de descuento, Porcetaje (P); Soles (S)</comment>
+            </column>
+        </property>
+        <property name="codigo" type="java.lang.String">
+            <column name="C_CODIGO" length="50" >
+                <comment>Codigo promocional</comment>
+            </column>
+        </property>
+        <property name="valorMaximoDescuento" type="java.lang.Double">
+            <column name="N_VALMAXDES" precision="10" scale="2">
+                <comment>Valor maximo que se puede aplicar del descuento en soles.</comment>
+            </column>
+        </property>        
+        <property name="fechaInicial" type="java.util.Date">
+            <column name="D_FECINI" length="7" >
+            	<comment>Inicio inicio</comment>
+            </column>
+        </property>
+        <property name="fechaFinal" type="java.util.Date">
+            <column name="D_FECFIN" length="7">
+            	<comment>Fecha fin</comment>
+            </column>
+        </property>    
+        <property name="idaVuelta" type="java.lang.String">
+            <column name="C_IDAVUE" length="1" >
+                <comment>asterisco (*): no se considera para este parametro; caso contrario S para indicar que si se aplica la promocion.</comment>
+            </column>
+        </property>
+        <property name="tipoIdaVuelta" type="java.lang.String">
+            <column name="C_TIPIDAVUE" length="10" >
+                <comment>Tipo de ida y vuelta, (*) aplica al ida y vuelta, (IDA) aplica solo a la ida, (VUE) aplica solo al retorno</comment>
+            </column>
+        </property>
+        <property name="tipoFormaPagos" type="java.lang.String">
+            <column name="C_TIPFORPAGOS" length="50" >
+                <comment>Identificadores de los tipos de forma de pagos, separadas por coma (,) todos Null</comment>
+            </column>
+        </property>
+         <property name="cantidaMaximaServicio" type="java.lang.Integer">
+            <column name="N_CANMAXSER" precision="10" scale="0">
+                <comment>Cantidad de asientos maximos por servicio</comment>
+            </column>
+        </property>
+        <property name="tipoCupon" type="java.lang.String">
+            <column name="C_TIPCUP" length="4" >
+                <comment>Tipo de cupon</comment>
+            </column>
+        </property>
+            
+        <!-- 		BEGIN CAMPOS DE AUDITORIA	 	-->
+        <property name="estadoRegistro" type="java.lang.String">
+            <column name="C_ESTREG" length="1" not-null="true">
+                <comment>Estado de registro A(Activo), I(Inactivo).</comment>
+            </column>
+        </property>
+        <property name="fechaInsercion" type="java.util.Date">
+            <column name="AUDFECINS" length="7">
+                <comment>Fecha de insercion/modificacion.</comment>
+            </column>
+        </property>
+        <property name="usuarioInsercion" type="java.lang.String">
+            <column name="AUDUSUINS" length="30">
+                <comment>Usuario de insercion/modificacion.</comment>
+            </column>
+        </property>
+        <property name="ipInsercion" type="java.lang.String">
+            <column name="AUDIPINSE" length="15">
+                <comment>IP de insercion/modificacion.</comment>
+            </column>
+        </property>
+        <property name="fechaModificacion" type="java.util.Date">
+            <column name="AUDFECMOD" length="7">
+                <comment>Fecha de insercion/modificacion.</comment>
+            </column>
+        </property>
+        <property name="usuarioModificacion" type="java.lang.String">
+            <column name="AUDUSUMOD" length="30">
+                <comment>Usuario de insercion/modificacion.</comment>
+            </column>
+        </property>
+        <property name="ipModificacion" type="java.lang.String">
+            <column name="AUDIPMODI" length="15">
+                <comment>IP de insercion/modificacion.</comment>
+            </column>
+        </property>
+        <!-- 		END CAMPOS DE AUDITORIA	 	-->
+    </class>
+</hibernate-mapping>

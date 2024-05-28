@@ -12,8 +12,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.TreeMap;
 
+
 import pe.itsb.vyrbus.model.bean.MapaBus;
 import pe.itsb.vyrbus.model.bean.Servicio;
+import pe.itsb.vyrbus.model.bean.TipoAsiento;
 import pe.itsb.vyrbus.model.dao.MapaBusDAO;
 import pe.itsb.vyrbus.service.util.Constantes;
 
@@ -201,5 +203,33 @@ public class MapaBusDAOImpl extends GenericDAOImpl implements MapaBusDAO {
 			throws Exception {
 		// TODO Auto-generated method stub
 		return (ArrayList<MapaBus>) super.findByX(MapaBus.class, criteriosBusqueda, criteriosOrdenar);
+	}
+	
+	
+	/* (non-Javadoc)
+	 * @see com.tepsa.sisvyr.model.dao.MapaBusDAO#buscarTipoAsientoByServicio(java.lang.Integer)
+	 */
+	@Override
+	public List<TipoAsiento> buscarTipoAsientoByServicio(Integer servicioId)throws Exception {
+		String sql="SELECT ta.tipasi_id, ta.c_denominacion tipoAsiento, min(mb.n_numasi)asientoInicial, max(mb.n_numasi)asientoFinal "
+				+ "FROM VRTMAPABUS  mb "
+					+ "INNER JOIN VRMTIPASI ta ON (ta.tipasi_id=mb.tipasi_id) "
+				+ "WHERE mb.servicio_id="+servicioId+" AND mb.n_tipobj=0 AND mb.c_estreg='A' "
+				+ "GROUP BY ta.tipasi_id, ta.c_denominacion "
+				+ "ORDER BY min(mb.n_numasi)";
+		log.info(sql);
+		List<?>result=getSession().createSQLQuery(sql).list();
+		
+		List<TipoAsiento> listTipoAsiento= new ArrayList<>();
+		for(int i=0; i<result.size(); i++){
+			Object[] obj = (Object[])result.get(i);
+			TipoAsiento tipoAsiento= new  TipoAsiento();
+			tipoAsiento.setId(((BigDecimal)obj[0]).intValue());
+			tipoAsiento.setDenominacion(obj[1].toString());
+			tipoAsiento.setAsientoInicial(((BigDecimal)obj[2]).intValue());
+			tipoAsiento.setAsientoFinal(((BigDecimal)obj[3]).intValue());
+			listTipoAsiento.add(tipoAsiento);
+		}
+		return listTipoAsiento;
 	}
 }

@@ -19,7 +19,7 @@ public class MapaBus extends GenericBean implements java.io.Serializable {
 	private Integer numeroFila;
 	private Integer numeroColumna;
 	private Integer numeroPiso;
-//	private TipoAsiento tipoAsiento;
+	private TipoAsiento tipoAsiento;
 	private Integer numeroZona;
 
 
@@ -209,5 +209,19 @@ public class MapaBus extends GenericBean implements java.io.Serializable {
 	 */
 	public void setRuta(Ruta ruta) {
 		this.ruta = ruta;
+	}
+
+	/**
+	 * @return the tipoAsiento
+	 */
+	public TipoAsiento getTipoAsiento() {
+		return tipoAsiento;
+	}
+
+	/**
+	 * @param tipoAsiento the tipoAsiento to set
+	 */
+	public void setTipoAsiento(TipoAsiento tipoAsiento) {
+		this.tipoAsiento = tipoAsiento;
 	}
 }

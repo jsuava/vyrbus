@@ -144,6 +144,12 @@
 		<mapping resource="pe/itsb/vyrbus/model/maps/Empresa.hbm.xml" />
 		<mapping resource="pe/itsb/vyrbus/model/maps/AutorizadorDescuento.hbm.xml" />
 		<mapping resource="pe/itsb/vyrbus/model/maps/Descuento.hbm.xml" />
+		<mapping resource="pe/itsb/vyrbus/model/maps/CuponPromocional.hbm.xml" />
+		<mapping resource="pe/itsb/vyrbus/model/maps/TarifaByAsiento.hbm.xml" />
+		<mapping resource="pe/itsb/vyrbus/model/maps/TarifaByAsientoDetalle.hbm.xml" />
+		<mapping resource="pe/itsb/vyrbus/model/maps/TarifaByAsientoPlantillaEncabezado.hbm.xml" />
+		<mapping resource="pe/itsb/vyrbus/model/maps/TarifaByAsientoPlantillaEncabezadoDetalle.hbm.xml" />
+		<mapping resource="pe/itsb/vyrbus/model/maps/TarifaByAsientoPlantillaPromocion.hbm.xml" />
 		
 <!-- 	VENTA DE SEGUROS -->
 		<mapping resource="pe/itsb/vyrbus/model/maps/VSTipoDocumento.hbm.xml" />

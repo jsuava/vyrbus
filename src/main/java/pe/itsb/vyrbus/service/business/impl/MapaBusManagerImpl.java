@@ -14,6 +14,7 @@ import java.util.TreeMap;
 import org.springframework.transaction.annotation.Transactional;
 
 import pe.itsb.vyrbus.model.bean.MapaBus;
+import pe.itsb.vyrbus.model.bean.TipoAsiento;
 import pe.itsb.vyrbus.model.dao.MapaBusDAO;
 import pe.itsb.vyrbus.model.dao.VentaPasajesDAO;
 import pe.itsb.vyrbus.service.business.MapaBusManager;
@@ -102,6 +103,14 @@ public class MapaBusManagerImpl implements MapaBusManager {
 			throws Exception {
 		// TODO Auto-generated method stub
 		return getMapaBusDAO().buscarPorX(criteriosBusqueda, criteriosOrdenar);
+	}
+	/* (non-Javadoc)
+	 * @see pe.itsb.vyrbus.service.business.MapaBusManager#buscarTipoAsientoByServicio(java.lang.Integer)
+	 */
+	@Override
+	public List<TipoAsiento> buscarTipoAsientoByServicio(Integer servicioId) throws Exception {
+		// TODO Auto-generated method stub
+		return getMapaBusDAO().buscarTipoAsientoByServicio(servicioId);
 	}
 
 

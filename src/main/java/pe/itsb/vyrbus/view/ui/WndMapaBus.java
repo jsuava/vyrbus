@@ -567,7 +567,7 @@ public class WndMapaBus extends WndBase implements Serializable {
 		oThisWindow.appendChild(divContenedorBus);
 	}
 
-	@SuppressWarnings("deprecation")
+
 	public void crearEstructura(VentaPasaje ventaPasaje){
 		try{
 			Servicio servicio = null;
@@ -812,7 +812,8 @@ public class WndMapaBus extends WndBase implements Serializable {
 							Util.DatetoString(ventaPasaje.getFechaPartida(), Constantes.DATE_FORMAT),
 							ventaPasaje.getHoraPartida(),
 							asientoSeleccionado.getPiso(),
-							asientoSeleccionado.getNumeroZona());
+							asientoSeleccionado.getNumeroZona(),
+							ventaPasaje.getEmpresa().getId());
 //					if(lstTarifaRegular.size()>0)
 //						asientoSeleccionado.getDetalleItinerario().setTarifa(lstTarifaRegular.get(0).getMonto()!=null
 //																			 ?lstTarifaRegular.get(0).getMonto()

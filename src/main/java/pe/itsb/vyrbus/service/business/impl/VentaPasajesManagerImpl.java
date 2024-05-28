@@ -31,6 +31,7 @@ import pe.itsb.vyrbus.model.bean.Manifiesto;
 import pe.itsb.vyrbus.model.bean.PasajeroFrecuente;
 import pe.itsb.vyrbus.model.bean.PuntosPasajeroFrecuente;
 import pe.itsb.vyrbus.model.bean.Ruta;
+import pe.itsb.vyrbus.model.bean.TarifarioByAsientoByAvanceVentas;
 import pe.itsb.vyrbus.model.bean.TipoComprobante;
 import pe.itsb.vyrbus.model.bean.TipoFormaPago;
 import pe.itsb.vyrbus.model.bean.TipoMovimiento;
@@ -3282,6 +3283,15 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 			}
 		}
 //		return null;
+	}
+	/* (non-Javadoc)
+	 * @see pe.itsb.vyrbus.service.business.VentaPasajesManager#buscarAvanceVentasByTarifario(java.lang.String, java.lang.Integer, java.lang.Integer, java.lang.Integer)
+	 */
+	@Override
+	public List<TarifarioByAsientoByAvanceVentas> buscarAvanceVentasByTarifarioByAsiento(String fecha, Integer servicio_id,
+			Integer localidad_idOrigen, Integer localidad_idDestino) throws Exception {
+		
+		return getVentaPasajesDAO().buscarAvanceVentasByTarifarioByAsiento(fecha, servicio_id, localidad_idOrigen, localidad_idDestino);
 	}
 
 //	private String generarBoleto(String numBoleto, Integer idTipoComprobante, Integer idUsuarioHW) throws Exception{

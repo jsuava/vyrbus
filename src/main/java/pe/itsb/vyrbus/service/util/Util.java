@@ -112,6 +112,7 @@ import pe.itsb.vyrbus.model.bean.TipoGasto;
 import pe.itsb.vyrbus.model.bean.TipoItinerario;
 import pe.itsb.vyrbus.model.bean.TipoMoneda;
 import pe.itsb.vyrbus.model.bean.TipoPersonal;
+import pe.itsb.vyrbus.model.bean.TipoPrecio;
 import pe.itsb.vyrbus.model.bean.TipoVia;
 import pe.itsb.vyrbus.model.bean.TipoZona;
 import pe.itsb.vyrbus.model.bean.Usuario;
@@ -503,6 +504,11 @@ public class Util {
 					combobox.setSelectedIndex(i);
 					break;
 				}
+			}else if(oClass.equals(TipoPrecio.class)) { //TIPO PRECIO
+				if (oComboitem.getValue()!=null && ((TipoPrecio)oComboitem.getValue()).getId().equals(valorItem)){
+					combobox.setSelectedIndex(i);
+					break;
+				}				
 			/** REFERENTES A LA VENTA SEGURO*/
 			}else if (oClass.equals(VSSexo.class)){//SEXO
 				if (oComboitem.getValue()!=null && ((VSSexo)oComboitem.getValue()).getId().equals(valorItem)){

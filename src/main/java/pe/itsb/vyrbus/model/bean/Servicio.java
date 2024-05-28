@@ -1,5 +1,8 @@
 package pe.itsb.vyrbus.model.bean;
 
+import java.util.List;
+
+
 // Generated 24/05/2012 11:51:01 AM by Hibernate Tools 3.4.0.CR1
 
 
@@ -24,6 +27,7 @@ public class Servicio extends GenericBean implements java.io.Serializable {
 	//no mapedo
 	private Integer numeroServicios;
 	private Integer totalAsientos;
+	private List<TipoAsiento> listTipoAsientos;
 
 
 	public Servicio() {
@@ -211,5 +215,19 @@ public class Servicio extends GenericBean implements java.io.Serializable {
 	 */
 	public void setTotalAsientos(Integer totalAsientos) {
 		this.totalAsientos = totalAsientos;
+	}
+
+	/**
+	 * @return the listTipoAsientos
+	 */
+	public List<TipoAsiento> getListTipoAsientos() {
+		return listTipoAsientos;
+	}
+
+	/**
+	 * @param listTipoAsientos the listTipoAsientos to set
+	 */
+	public void setListTipoAsientos(List<TipoAsiento> listTipoAsientos) {
+		this.listTipoAsientos = listTipoAsientos;
 	}
 }
