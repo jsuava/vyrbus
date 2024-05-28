@@ -2104,7 +2104,8 @@ public class WndPostergacion extends WndBase implements Serializable {
 						Util.DatetoString(postergacion.getFechaPartida(), Constantes.DATE_FORMAT),
 						postergacion.getHoraPartida(),
 						postergacion.getNumeroPiso(),
-						resultMapaBus.get(0).getNumeroZona());
+						resultMapaBus.get(0).getNumeroZona(),
+						postergacion.getEmpresa().getId());
 
 				Double tarifa = (lstTarifaRegular.get(0).getMonto()!=null?lstTarifaRegular.get(0).getMonto() :0.00);
 				if(tarifa > 0 && dblbxMontoAnterior.getValue() < tarifa)

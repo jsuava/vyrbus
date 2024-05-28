@@ -3,7 +3,7 @@
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <!-- Generated 24/05/2012 11:51:01 AM by Hibernate Tools 3.4.0.CR1 -->
 <hibernate-mapping>
-    <class name="pe.itsb.vyrbus.model.bean.HistoricoControlEspecieValorada" table="VRHCTRLESPVAL" schema="VYRBUSAMZ">
+    <class name="pe.itsb.vyrbus.model.bean.HistoricoControlEspecieValorada" table="VRHCTRLESPVAL" schema="VYRBUSME">
         <comment>Entidad que almacena el historico del control especie valorada</comment>
         <composite-id name="historicoControlEspecieValoradaID" class="pe.itsb.vyrbus.model.bean.HistoricoControlEspecieValoradaID">
             <key-property name="idTipoComprobante" type="java.lang.Integer">

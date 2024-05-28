@@ -3,7 +3,7 @@
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <!-- Generated 24/05/2012 11:51:01 AM by Hibernate Tools 3.4.0.CR1 -->
 <hibernate-mapping>
-    <class name="pe.itsb.vyrbus.model.bean.RangoSobregiro" table="VRMRANSOB" schema="VYRBUSAMZ">
+    <class name="pe.itsb.vyrbus.model.bean.RangoSobregiro" table="VRMRANSOB" schema="VYRBUSME">
         <comment>Entidad que almacen rangos de las líneas de crédito para determinar el porcentaje del sobregiro sugerido, mínimo y máximo.
         externos, y Agencias de Viaje.</comment>
         <id name="id" type="java.lang.Integer">

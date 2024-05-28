@@ -3,7 +3,7 @@
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <!-- Generated 24/05/2012 11:51:01 AM by Hibernate Tools 3.4.0.CR1 -->
 <hibernate-mapping>
-    <class name="pe.itsb.vyrbus.model.bean.TipoNota" table="VRMTIPNOTA" schema="VYRBUSAMZ">
+    <class name="pe.itsb.vyrbus.model.bean.TipoNota" table="VRMTIPNOTA" schema="VYRBUSME">
         <comment>Entidad que almacela los tipos de notas, para el caso de las notas de credito y debito</comment>
         <id name="id" type="java.lang.Integer">
             <column name="TIPNOTA_ID" precision="5" scale="0" />

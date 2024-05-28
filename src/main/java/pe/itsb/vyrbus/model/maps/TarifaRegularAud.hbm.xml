@@ -3,7 +3,7 @@
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <!-- Generated 04/05/2012 12:43:35 PM by Hibernate Tools 3.4.0.CR1 -->
 <hibernate-mapping>
-    <class name="pe.itsb.vyrbus.model.bean.TarifaRegularAud" table="VRTTARREGAUD" schema="VYRBUSAMZ">
+    <class name="pe.itsb.vyrbus.model.bean.TarifaRegularAud" table="VRTTARREGAUD" schema="VYRBUSME">
         <comment>Entidad que almacena la tarifa regular de los servicios para auditoria.</comment>
         <id name="id" type="java.lang.Long">
         	<column name="TARREGAUD_ID" precision="10" scale="0" />
