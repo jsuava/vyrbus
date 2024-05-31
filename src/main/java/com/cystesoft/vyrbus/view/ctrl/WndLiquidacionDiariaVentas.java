@@ -851,9 +851,10 @@ public class WndLiquidacionDiariaVentas extends WndBase implements Serializable 
 									&& venta.getLiquidacion()==null){
 								cell.appendChild(a);
 							}else if((getRol().getId().intValue()==Constantes.ID_ROL_SUPER_USUARIO || 
-									  getRol().getId().intValue()==Constantes.ID_ROL_ADMINISTRADOR) &&
+									  getRol().getId().intValue()==Constantes.ID_ROL_ADMINISTRADOR || 
+									  getRol().getId().intValue()==Constantes.ID_ROL_ADMIN) &&
 //									  getRol().getId().intValue()==Constantes.ID_ROL_FISCALIZACION) && 
-									venta.getFechaLiquidacion().getTime()>Constantes.FORMAT_DATE.parse(Constantes.FORMAT_DATE.format(new Date())).getTime()-(Constantes.MILISEGUNDOS_X_DIA*3)){
+									venta.getFechaLiquidacion().getTime()>Constantes.FORMAT_DATE.parse(Constantes.FORMAT_DATE.format(new Date())).getTime()-(Constantes.MILISEGUNDOS_X_DIA*1)){
 								//Rol superusuario y como maximo 3 d�as con anterioridad
 								cell.appendChild(a);
 							}else{

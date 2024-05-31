@@ -46,7 +46,7 @@ public class Sendmail {
 		int result = Constantes.FAILURE;
 		try{
 			final String from = "ti.soporte@itsb.pe";
-			final String password = "3tr0p0s2023";
+			final String password = "20243tr0p0S";
 			Properties props = new Properties();
 			// Nombre del host de correo, es smtp.gmail.com
 			props.setProperty("mail.smtp.host", "itsb.pe");
