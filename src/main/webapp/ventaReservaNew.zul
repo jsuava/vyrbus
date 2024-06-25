@@ -196,7 +196,7 @@
 							<tabbox width="710px">
 								<tabs>
 									<tab id="tabVtaIdaMapa" label="Bus de Ida"/>
-									<tab id="tabVtaVueltaMapa" label="Bus de Vuelta"/>			
+									<tab id="tabVtaVueltaMapa" label="Bus de Vuelta"/>	
 								</tabs>			
 								<tabpanels>
 									<tabpanel>
@@ -215,17 +215,19 @@
 								<grid width="250px" height="134px" style="margin-top:22px">
 									<columns><column align="center"/></columns>
 									<rows>	
-										<row><separator height="10px"/></row>					
+										<row><separator height="9px"/></row>					
 										<row>
 											<vbox align="center">
 												<label id="lblVtaTipoComprobante" sclass="label-size11-bold" style="font-size:14px !important"/>
 												<label id="lblVtaNumeroComprobante" sclass="label-size11-bold" style="font-size:14px !important"/>
 												<label id="lblVtaInfoTipoOperacion" sclass="label-size12-bold-alert" style="font-size:16px !important;"/>
 											</vbox>
-										</row>							
-										<row><separator height="20px"/></row>
+										</row>										
 										<row>
-											<checkbox id="chbxVtaUpdateMapAuto" label="Actualizar Mapa automáticamente" />
+											<vbox>
+												<checkbox id="chbxVtaIdaVuelta" label="Ida y Vuelta"/>
+												<checkbox id="chbxVtaUpdateMapAuto" label="Actualizar Mapa automáticamente" />
+											</vbox>											
 										</row>
 									</rows>
 								</grid>
@@ -278,25 +280,25 @@
 										<row>
 											<grid style="border:none">
 												<columns>
-													<column width="240px"/>
+													<column width="315px"/>
 													<column width="70px"/>
 													<column/>
 												</columns>
 												<rows>
 													<row>
-														<label id="lblVtaIdaDestino_fecha" sclass="label-size11-bold" style="font-size:14px !important;color:red" tooltiptext="Destino del Viaje de Ida"/>
+														<label id="lblVtaIdaDestino_fecha" sclass="label-size11-bold" style="font-size:13px !important;color:red" tooltiptext="Destino del Viaje de Ida"/>														
 														<label value="EMBARQUE :"/>
 														<hbox align="center">
-															<combobox id="cmbVtaIdaEmbarque_hora" onFocus="self.select();"  onOK="cmbVtaIdaDesembarque_hora.setFocus(true);" readonly="true" width="99%" tooltiptext="Punto de Embarque del viaje de Ida" placeholder="EMBARQUE" style="font-size:10px !important;font-weight: bold;"/>										
-															<separator width="30px"/>
+															<combobox id="cmbVtaIdaEmbarque_hora" onFocus="self.select();"  onOK="cmbVtaIdaDesembarque_hora.setFocus(true);" readonly="true" width="140px" tooltiptext="Punto de Embarque del viaje de Ida" placeholder="EMBARQUE" style="font-size:10px !important;font-weight: bold;"/>										
+															<separator width="10px"/>
 															<label value="DESEMB. :"/>
-															<combobox id="cmbVtaIdaDesembarque_hora" onFocus="self.select();" readonly="true" width="160px" tooltiptext="Punto de Desembarque del viaje de Ida" placeholder="DESEMBARQUE" style="font-size:10px !important;font-weight: bold;"/>
-															<separator width="15px"/>
+															<combobox id="cmbVtaIdaDesembarque_hora" onFocus="self.select();" readonly="true" width="140px" tooltiptext="Punto de Desembarque del viaje de Ida" placeholder="DESEMBARQUE" style="font-size:10px !important;font-weight: bold;"/>
+															<separator width="10px"/>
 															<label value="ASIENTO :"/>
 															<label id="lblVtaIdaAsiento" sclass="label-size11-bold" style="font-size:18px !important;color:black" />
-															<separator width="15px"/>
+															<separator width="10px"/>
 															<label value="TARIFA :"/>
-															<doublebox id="dbxVtaIdaTarifa" readonly="true" width="70px" sclass="label-size11-bold" format="#,##0.00" style="font-size:18px !important" />
+															<doublebox id="dbxVtaIdaTarifa" readonly="true" width="60px" sclass="label-size11-bold" format="#,##0.00" style="font-size:18px !important" />
 														</hbox>
 													</row>
 												</rows>
@@ -314,26 +316,26 @@
 										<row>
 											<grid style="border:none">
 												<columns>
-													<column width="240px"/>
+													<column width="315px"/>
 													<column width="70px"/>
 													<column/>
 												</columns>
 												<rows>
 													<row>
-														<label id="lblVtaVueltaDestino_fecha" sclass="label-size11-bold" style="font-size:14px !important;color:red" tooltiptext="Destino del Viaje de Ida"/>
+														<label id="lblVtaVueltaDestino_fecha" sclass="label-size11-bold" style="font-size:13px !important;color:red" tooltiptext="Destino del Viaje de Ida"/>
 														<label value="EMBARQUE :"/>
 														<hbox align="center">
-															<combobox id="cmbVtaVueltaEmbarque_hora" onFocus="self.select();" onOK="cmbVtaVueltaDesembarque_hora.setFocus(true);"  readonly="true" width="99%" tooltiptext="Punto de Embarque del viaje de Ida" placeholder="EMBARQUE" sclass="label-size11-bold" style="font-size:10px !important;font-weight: bold;"/>										
+															<combobox id="cmbVtaVueltaEmbarque_hora" onFocus="self.select();" onOK="cmbVtaVueltaDesembarque_hora.setFocus(true);"  readonly="true" width="140px" tooltiptext="Punto de Embarque del viaje de Ida" placeholder="EMBARQUE" sclass="label-size11-bold" style="font-size:10px !important;font-weight: bold;"/>										
 															<hbox align="center">
-																<separator width="30px"/>
+																<separator width="10px"/>
 																<label value="DESEMB. :"/>
-																<combobox id="cmbVtaVueltaDesembarque_hora" onFocus="self.select();" onOK="txtVtaPaxBusqueda.setFocus(true);" readonly="true" width="160px" tooltiptext="Punto de Desembarque del viaje de Ida" placeholder="DESEMBARQUE" style="font-size:10px !important;font-weight: bold;"/>
-																<separator width="15px"/>
+																<combobox id="cmbVtaVueltaDesembarque_hora" onFocus="self.select();" onOK="txtVtaPaxBusqueda.setFocus(true);" readonly="true" width="140px" tooltiptext="Punto de Desembarque del viaje de Ida" placeholder="DESEMBARQUE" style="font-size:10px !important;font-weight: bold;"/>
+																<separator width="10px"/>
 																<label value="ASIENTO :"/>
 																<label id="lblVtaVueltaAsiento" sclass="label-size11-bold" style="font-size:18px !important;color:black" />
-																<separator width="15px"/>
+																<separator width="10px"/>
 																<label value="TARIFA :"/>
-																<doublebox id="dbxVtaVueltaTarifa" readonly="true" width="70px" sclass="label-size11-bold" format="#,##0.00" style="font-size:18px !important" />				
+																<doublebox id="dbxVtaVueltaTarifa" readonly="true" width="60px" sclass="label-size11-bold" format="#,##0.00" style="font-size:18px !important" />				
 															</hbox>
 														</hbox>
 													</row>

@@ -336,7 +336,7 @@ public class WndUsuarioSistema extends WndOpcionesMantenimiento {
 				throw new RolNullException();
 			else if (txtLogin.getText().trim().equals(txtPassword.getText().trim()))
 				throw new PasswordException(PasswordException.PASSWORD_IGUAL_LOGIN);
-			else if (lbxRolesCarga.getSelectedItems().size()==0) {
+			else if (isConnectionTranscar && lbxRolesCarga.getSelectedItems().size()==0) {
 				throw new RolCargaNullException();
 			}else if (cmbTipoSeguridad.getSelectedIndex()<=0) {
 				DlgMessage.information(Messages.getString("WndUsuarioRol.information.noSelectTipoSeguridad"), cmbTipoSeguridad);

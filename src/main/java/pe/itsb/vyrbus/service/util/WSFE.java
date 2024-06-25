@@ -1117,7 +1117,7 @@ public class WSFE implements Serializable{
 								pathRpt= getPathFormatPrintByEmpresa(ventaPasaje.getEmpresa().getNumeroDocumento(), Constantes.FORMAT_PRINT_GUIA_EXCESO);
 						}
 						
-						if(pathRpt ==null)
+						if(pathRpt == null || pathRpt.trim().isEmpty())
 							new Exception(Messages.getString("WndVentaReservaNew.information.noFormatPrint"));
 						
 						Path path = Paths.get(pathRpt);
