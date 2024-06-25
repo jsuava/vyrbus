@@ -1,13 +1,8 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
-<<<<<<< HEAD
- * Descripciï¿½n	: Clase que centraliza las Constantes que se usa en todo el sistema.
- * Autor		: Josï¿½ Avalos
-=======
  * Descripcion	: Clase que centraliza las Constantes que se usa en todo el sistema.
  * Autor		: Jose Avalos
->>>>>>> 0766780c1964b82a8491cee81ab816d3a1f43dc2
  * Fecha		: 08/04/2012
  */
 package pe.itsb.vyrbus.service.util;
@@ -31,16 +26,16 @@ public class Constantes {
 	 * Vension actual del Sistema
 	 */
 
-	public static final String SYSTEM_VERSION = "VersiÃ³n 3.4.0";
+	public static final String SYSTEM_VERSION = "Versión 3.4.6";
 
 	/**
-	 * Constante para la Acciï¿½n Nuevo
+	 * Constante para la Accion Nuevo
 	 * @see WndOpcionesMantenimiento#onCancel(int)
 	 * @see WndOpcionesMantenimiento#onSave(int)
 	 */
 	public static final int ACTION_NEW = 0;
 	/**
-	 * Constante para la Acciï¿½n Modificar
+	 * Constante para la Accion Modificar
 	 * @see WndOpcionesMantenimiento#onCancel(int)
 	 * @see WndOpcionesMantenimiento#onSave(int)
 	 */
@@ -175,9 +170,9 @@ public class Constantes {
 //	public static final String SERVER_HOST = Executions.getCurrent().getHeader("host");
 //	public static final String SERVER_HOST = "ventas.tepsa.com.pe/";
 
-	public static final String SERVER_HOST = "localhost:8080";
+//	public static final String SERVER_HOST = "localhost:8080";
 	//Demo Wars
-//	public static final String SERVER_HOST = "170.0.233.156:8080";
+	public static final String SERVER_HOST = "170.0.233.156:8080";
 
 //	public static final String SERVER_HOST = "119.8.145.122:8080";
 

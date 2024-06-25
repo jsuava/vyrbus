@@ -8283,8 +8283,8 @@ public class WndVentaReservaNew  extends WndBase {
 		hbox.appendChild(btnManPaxAnular);
 		row.appendChild(hbox);
 		Radiogroup radiogroup = new Radiogroup();
-		rdManPaxPrintLaser = new Radio("Impresi贸n L谩ser");
-		rdManPaxPrintMatricial = new Radio("Impresi贸n Matricial");
+		rdManPaxPrintLaser = new Radio("Impresi\u00F3n L\u00E1ser");
+		rdManPaxPrintMatricial = new Radio("Impresi\u00F3n Matricial");
 		radiogroup.appendChild(rdManPaxPrintLaser);
 		radiogroup.appendChild(new Separator("vertical"));
 		radiogroup.appendChild(rdManPaxPrintMatricial);		
@@ -8652,7 +8652,7 @@ public class WndVentaReservaNew  extends WndBase {
 		}
 		manifiesto.setListDetalleManifiesto(listDetalleManifiesto);
 		
-		Messagebox.show(Messages.getString("WndManifiesto.question.confirmarImpresion"), DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_YESNO, Messagebox.QUESTION,DlgMessage.BTN_DEFAULT_NO, new EventListener<Event>() {
+		Messagebox.show(Messages.getString("WndManifiesto.question.confirmarImpresion"), DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_YESNO, Messagebox.QUESTION,new EventListener<Event>() {
 			@Override
 			public void onEvent(Event e) throws Exception {
 				if(e.getName().equals("onYes")){
@@ -9400,9 +9400,9 @@ public class WndVentaReservaNew  extends WndBase {
 			Date fechaActual = Constantes.FORMAT_DATE.parse(Constantes.FORMAT_DATE.format(new Date()));
 			Date fechaSalida = detalleItinerarioIda.getFechaPartida();
 			
-			//Valida la ejecuci贸n de l atarea
+			//Valida la ejecucion de l atarea
 			if(fechaSalida.getTime() >= fechaActual.getTime()) {
-				int minutos = 3; //Se ejecuta cada 3 minutos - configurar par谩metro
+				int minutos = 3; //Se ejecuta cada 3 minutos - configurar par醡etro
 				int ltime = (int) (Constantes.MILISEGUNDOS_X_MINUTO * minutos);
 		        timerRefreshMapa=new Timer(ltime);
 		        timerRefreshMapa.setRepeats(true);
@@ -9417,7 +9417,7 @@ public class WndVentaReservaNew  extends WndBase {
 								//Actualiza el Mapa
 					        	onRefreshMap();
 					        	String _message = Constantes.FORMAT_DATE_TIME_24H.format(new Date());
-					        		   _message += " Ejecuci贸n de proceso autom谩tico que actualiza el Mapa del bus, cada "+ String.valueOf(minutos) +" minuto(s)...";
+					        		   _message += " Ejecuci\\u00F3n de proceso autom\\u00E1tico que actualiza el Mapa del bus, cada "+ String.valueOf(minutos) +" minuto(s)...";
 					            System.out.println(_message);
 					            log.info("autoRefreshMapaBus "+ _message);
 							}else {
@@ -9433,7 +9433,7 @@ public class WndVentaReservaNew  extends WndBase {
 							if(timerRefreshMapa !=null) {
 								timerRefreshMapa.stop();
 								String _message = Constantes.FORMAT_DATE_TIME_24H.format(new Date());
-									   _message += " Ocurri贸 un error, se ha detenido el la tarea. Error:"+ e.getMessage();
+									   _message += " Ocurri\\u00F3 un error, se ha detenido el la tarea. Error:"+ e.getMessage();
 								System.out.println(_message);
 								log.error(_message);
 							}
