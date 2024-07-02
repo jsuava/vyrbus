@@ -41,7 +41,6 @@ public class WndTipoOperacion extends WndBase{
 	private Label lblInformativo1;
 	private Label lblInformativo2;
 
-
 	Liquidacion oliquidacion=null;
 
 	public WndTipoOperacion() throws Exception{
@@ -100,8 +99,8 @@ public class WndTipoOperacion extends WndBase{
 						//Valida si el usuario tiene una liquidacion cerrada en la agencia.
 						Liquidacion oLiquidacion= ServiceLocator.getLiquidacionManager().buscarUltimaLiquidacion(getAgencia().getId(), getUsuario().getId(), Constantes.FALSE_VALUE);
 						if(oLiquidacion!=null){
-							String fLiquidacion=Constantes.FORMAT_DATE.format(oLiquidacion.getFechaLiquidacion());
-							String fLiquidacionApertura=Constantes.FORMAT_DATE.format(dtbxFechaLiquidacion.getValue());
+							String fLiquidacion = Constantes.FORMAT_DATE.format(oLiquidacion.getFechaLiquidacion());
+							String fLiquidacionApertura = Constantes.FORMAT_DATE.format(dtbxFechaLiquidacion.getValue());
 							if(fLiquidacion.equals(fLiquidacionApertura) && oLiquidacion.getAgencia().getId().intValue()==getAgencia().getId().intValue() ){
 								DlgMessage.information("Ya cuenta con una liquidación en esta Agencia. \n No es posible abrir más de " +
 														"una liquidación en la misma Agencia en el mismo día.");
@@ -152,9 +151,9 @@ public class WndTipoOperacion extends WndBase{
 
 						/*********************************************************************************************/
 						//Segundo apertura la de pasajes
-						Liquidacion liquidacion=UtilData.aperturarLiquidacion(dtbxFechaLiquidacion.getValue(),getUsuario(),getAgencia());
+						Liquidacion liquidacion=UtilData.aperturarLiquidacion(dtbxFechaLiquidacion.getValue(), getUsuario(), getAgencia());
 
-						btnCaja.getParent().getParent().getParent().getDesktop().getSession().setAttribute("FECLIQ",liquidacion.getFechaLiquidacion());
+						btnCaja.getParent().getParent().getParent().getDesktop().getSession().setAttribute("FECLIQ", liquidacion.getFechaLiquidacion());
 						oliquidacion = new Liquidacion();
 						oliquidacion= liquidacion;
 

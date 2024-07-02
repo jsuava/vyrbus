@@ -162,7 +162,10 @@ public class UtilData extends Window {
 	public static void auditarRegistro(GenericBean genericBean, boolean actualizacion, Usuario usuario, Execution execution) throws Exception {
 		String loginUsuario = usuario.getLogin();
 		if (!actualizacion) {
-			genericBean.setFechaInsercion(new Date());
+			String datetimeSys = ServiceLocator.getVentaPasajesManager().getDateSystem();
+			Date datetime = Constantes.FORMAT_DATE_TIME_24H.parse(datetimeSys);			
+			genericBean.setFechaInsercion(datetime);
+			genericBean.setFechaModificacion(datetime);
 			genericBean.setUsuarioInsercion(loginUsuario);
 			genericBean.setIpInsercion(ipLocal(execution));
 		}
@@ -2508,7 +2511,7 @@ public class UtilData extends Window {
 		liquidacion.setEstadoLiquidacion(Constantes.LIQUI_ESTA_ABIERTO);
 		liquidacion.setEstadoRegistro(Constantes.VALUE_ACTIVO);
 		liquidacion.setMontoIngresadoDolares((double)0);
-
+		
 		UtilData.auditarRegistro(liquidacion, usuario, Executions.getCurrent());
 		ServiceLocator.getLiquidacionManager().aperturarLiquidacion(liquidacion);
 
@@ -2527,7 +2530,7 @@ public class UtilData extends Window {
 	 * @throws Exception
 	 */
 	public static void procesaCierreCaja(Liquidacion liquidacion, Double monto,Usuario usuario, Double montoDolares) throws Exception{
-		/*Actualiza liquidaci�n*/
+		/*Actualiza liquidación*/
 		liquidacion.setMontoIngresado(monto!=null? monto: .00);
 		liquidacion.setEstadoLiquidacion(Constantes.LIQUI_ESTA_CERRADO);
 		liquidacion.setEstadoRegistro(Constantes.VALUE_ACTIVO);
