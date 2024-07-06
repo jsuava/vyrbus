@@ -13,7 +13,8 @@ import pe.itsb.vyrbus.service.util.Util;
  */
 public class ControlEspecieValorada extends GenericBean implements Serializable, Cloneable {
 	private static final long serialVersionUID = 1L;
-	private ControlEspecieValoradaID controlEspecieValoradaID;
+//	private ControlEspecieValoradaID controlEspecieValoradaID;
+	private Integer id;
 	private UsuarioHardware usuarioHardware;
 	private TipoComprobante tipoComprobante;
 	private Empresa empresa;
@@ -25,24 +26,25 @@ public class ControlEspecieValorada extends GenericBean implements Serializable,
 	private Agencia agencia;
 	private String secuenciador;
 	private Integer aplica;
+	private Integer excesoEquipaje;
 
 	public ControlEspecieValorada() {
 	}
 
-	/**
-	 * @return Objeto controlEspecieValoradaID.
-	 */
-
-	public ControlEspecieValoradaID getControlEspecieValoradaID() {
-		return controlEspecieValoradaID;
-	}
-	/*
-	 * @param controlEspecieValoradaID	: Setea el objeto controlEspecieValoradaID.
-	 */
-
-	public void setControlEspecieValoradaID(ControlEspecieValoradaID controlEspecieValoradaID) {
-		this.controlEspecieValoradaID = controlEspecieValoradaID;
-	}
+//	/**
+//	 * @return Objeto controlEspecieValoradaID.
+//	 */
+//
+//	public ControlEspecieValoradaID getControlEspecieValoradaID() {
+//		return controlEspecieValoradaID;
+//	}
+//	/*
+//	 * @param controlEspecieValoradaID	: Setea el objeto controlEspecieValoradaID.
+//	 */
+//
+//	public void setControlEspecieValoradaID(ControlEspecieValoradaID controlEspecieValoradaID) {
+//		this.controlEspecieValoradaID = controlEspecieValoradaID;
+//	}
 
 	public UsuarioHardware getUsuarioHardware() {
 		return this.usuarioHardware;
@@ -181,5 +183,33 @@ public class ControlEspecieValorada extends GenericBean implements Serializable,
 	public Object clone() throws CloneNotSupportedException {
 		// TODO Auto-generated method stub
 		return super.clone();
+	}
+
+	/**
+	 * @return the excesoEquipaje
+	 */
+	public Integer getExcesoEquipaje() {
+		return excesoEquipaje;
+	}
+
+	/**
+	 * @param excesoEquipaje the excesoEquipaje to set
+	 */
+	public void setExcesoEquipaje(Integer excesoEquipaje) {
+		this.excesoEquipaje = excesoEquipaje;
+	}
+
+	/**
+	 * @return the id
+	 */
+	public Integer getId() {
+		return id;
+	}
+
+	/**
+	 * @param id the id to set
+	 */
+	public void setId(Integer id) {
+		this.id = id;
 	}
 }

@@ -357,7 +357,7 @@ public class WndControlEspecieValorada_LoadInicio extends Window {
 					if( (lngbxCorrelativoInicio.longValue() < especieValorada.getCorrelativoInicial().longValue()) || (lngbxCorrelativoFin.longValue() > especieValorada.getCorrelativoFinal().longValue()))
 						throw new CorrelativoException(CorrelativoException.FUERA_RANGO);
 
-					/*	Valida que el numero rango de correlativo ingresado no haga intersección con algún otro rango ingresado por otro usuario	*/
+					/*	Valida que el numero rango de correlativo ingresado no haga intersecciï¿½n con algï¿½n otro rango ingresado por otro usuario	*/
 					List<ControlEspecieValorada> lstResul=ServiceLocator.getControlEspecieValoradaManager()
 							.validaEVOtrasCajas(((UsuarioHardware)cmbUsuarioHardware.getSelectedItem().getValue()).getId(), cmbSerie.getText().trim(),
 							lngbxCorrelativoInicio.getValue().toString(), lngbxCorrelativoFin.getValue().toString());
@@ -383,11 +383,11 @@ public class WndControlEspecieValorada_LoadInicio extends Window {
 					usuarioHardware.setId(((UsuarioHardware)cmbUsuarioHardware.getSelectedItem().getValue()).getId());
 					usuarioHardware.setDescripcion(((UsuarioHardware)cmbUsuarioHardware.getSelectedItem().getValue()).getDescripcion());
 
-					ControlEspecieValoradaID controlEspecieValoradaID = new ControlEspecieValoradaID();
-					controlEspecieValoradaID.setIdTipoComprobante(tipoComprobante.getId());
-					controlEspecieValoradaID.setIdUsuarioHardware(usuarioHardware.getId());
+//					ControlEspecieValoradaID controlEspecieValoradaID = new ControlEspecieValoradaID();
+//					controlEspecieValoradaID.setIdTipoComprobante(tipoComprobante.getId());
+//					controlEspecieValoradaID.setIdUsuarioHardware(usuarioHardware.getId());
 
-					controlEspecieValorada.setControlEspecieValoradaID(controlEspecieValoradaID);
+//					controlEspecieValorada.setControlEspecieValoradaID(controlEspecieValoradaID);
 					controlEspecieValorada.setTipoComprobante(tipoComprobante);
 					controlEspecieValorada.setUsuarioHardware(usuarioHardware);
 					controlEspecieValorada.setSerie(cmbSerie.getText().toString());

@@ -1000,10 +1000,10 @@ public class WndPostergacion extends WndBase implements Serializable {
 				txtBoleto.setValue(controlEspecieValorada.toString());
 				/*END 15/06/2021 - javalos - Correlativo by caja*/
 			}else if(agencia.getTipoAgencia().getId().intValue()==Constantes.ID_TIPAGE_VIAJES){
-				especieValorada=UtilData.buscarEspecieValorada(Constantes.ID_TIPCOM_VOUCHER_AGENCIA_VIAJES, agencia,false);
+//				especieValorada=UtilData.buscarEspecieValorada(Constantes.ID_TIPCOM_VOUCHER_AGENCIA_VIAJES, agencia,false);
 				txtBoleto.setValue(especieValorada.toString());
 			}else{
-				especieValorada=UtilData.buscarEspecieValorada(Constantes.ID_TIPCOM_VOUCHER_CORPORATIVO, agencia,false);
+//				especieValorada=UtilData.buscarEspecieValorada(Constantes.ID_TIPCOM_VOUCHER_CORPORATIVO, agencia,false);
 				txtBoleto.setValue(especieValorada.toString());
 			}
 		}catch(EspecieValoradaNotAvailableException evnaex) {

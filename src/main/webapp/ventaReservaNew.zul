@@ -301,6 +301,12 @@
 															<doublebox id="dbxVtaIdaTarifa" readonly="true" width="60px" sclass="label-size11-bold" format="#,##0.00" style="font-size:18px !important" />
 														</hbox>
 													</row>
+													<row spans="3">
+														<hbox align="center">
+															<label value="OBSERVACIONES :" />
+															<textbox id="txtVtaIdaObservaciones" maxlength="120" width="420px" />
+														</hbox>														
+													</row>
 												</rows>
 											</grid>
 										</row>			
@@ -338,6 +344,12 @@
 																<doublebox id="dbxVtaVueltaTarifa" readonly="true" width="60px" sclass="label-size11-bold" format="#,##0.00" style="font-size:18px !important" />				
 															</hbox>
 														</hbox>
+													</row>
+													<row spans="3">
+														<hbox align="center">
+															<label value="OBSERVACIONES :" />
+															<textbox id="txtVtaVueltaObservaciones" maxlength="120" width="420px" />
+														</hbox>														
 													</row>
 												</rows>
 											</grid>

@@ -72,10 +72,10 @@ public class ControlEspecieValoradaManagerImpl implements ControlEspecieValorada
 					throw new CorrelativoException(CorrelativoException.DUPLICADO);
 
 				ControlEspecieValorada controlEspecieValorada2 = (ControlEspecieValorada)controlEspecieValorada.clone();
-				ControlEspecieValoradaID controlEspecieValoradaID = (ControlEspecieValoradaID)controlEspecieValorada.getControlEspecieValoradaID().clone();
+//				ControlEspecieValoradaID controlEspecieValoradaID = (ControlEspecieValoradaID)controlEspecieValorada.getControlEspecieValoradaID().clone();
 
 				controlEspecieValorada.setSerie("B"+controlEspecieValorada.getSerie());
-				controlEspecieValorada.getControlEspecieValoradaID().setStrSerie(controlEspecieValorada.getSerie());
+//				controlEspecieValorada.getControlEspecieValoradaID().setStrSerie(controlEspecieValorada.getSerie());
 				controlEspecieValorada.setSecuenciador(controlEspecieValorada.getSecuenciador()+controlEspecieValorada.getSerie());
 				controlEspecieValorada.setAplica(1);
 
@@ -85,8 +85,8 @@ public class ControlEspecieValoradaManagerImpl implements ControlEspecieValorada
 				getControlEspecieValoradaDAO().generarSecuenciador(controlEspecieValorada.getSecuenciador(), controlEspecieValorada.getCorrelativoActual());
 
 				controlEspecieValorada2.setSerie("F"+controlEspecieValorada2.getSerie());
-				controlEspecieValoradaID.setStrSerie(controlEspecieValorada2.getSerie());
-				controlEspecieValorada2.setControlEspecieValoradaID(controlEspecieValoradaID);
+//				controlEspecieValoradaID.setStrSerie(controlEspecieValorada2.getSerie());
+//				controlEspecieValorada2.setControlEspecieValoradaID(controlEspecieValoradaID);
 				controlEspecieValorada2.setSecuenciador(controlEspecieValorada2.getSecuenciador()+controlEspecieValorada2.getSerie());
 				controlEspecieValorada2.setAplica(2);
 
@@ -175,9 +175,12 @@ public class ControlEspecieValoradaManagerImpl implements ControlEspecieValorada
 
 	@Override
 	@Transactional
-	public void inactivar(ControlEspecieValoradaID controlEspecieValoradaID)throws Exception {
-		 getControlEspecieValoradaDAO().inactivar(controlEspecieValoradaID);
+	public void inactivar(Integer id)throws Exception {
+		 getControlEspecieValoradaDAO().inactivar(id);
 	}
+//	public void inactivar(ControlEspecieValoradaID controlEspecieValoradaID)throws Exception {
+//		 getControlEspecieValoradaDAO().inactivar(controlEspecieValoradaID);
+//	}
 
 	/*
 	 * (non-Javadoc)

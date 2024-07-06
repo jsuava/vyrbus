@@ -2291,44 +2291,44 @@ public class UtilData extends Window {
 	 * @return Numero de boleto.
 	 * @throws Exception
 	 */
-	public static EspecieValorada buscarEspecieValorada(Integer tipoComprobante, Agencia agencia, Boolean ejecutarSeqByCorrelativo) throws Exception{
-		EspecieValorada oespecieValorada=null;
-		try{
-			TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
-			criteriosBusqueda.put("tipoComprobante",new TipoComprobante(tipoComprobante));
-			criteriosBusqueda.put("agencia",agencia );
-			criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
-
-			List<EspecieValorada> lstEspecieValorada = ServiceLocator.getEspecieValoradaManager().buscarPorX(criteriosBusqueda, null);
-			if(lstEspecieValorada.size()==1){
-				EspecieValorada especieValorada = lstEspecieValorada.get(0);
-				if((tipoComprobante.equals(Constantes.ID_TIPCOM_FACTURA) || tipoComprobante.equals(Constantes.ID_TIPCOM_BOLETA_VENTA) || tipoComprobante.equals(Constantes.ID_TIPCOM_NOTA_CREDITO) || tipoComprobante.equals(Constantes.ID_TIPCOM_NOTA_DEBITO))){
-					if(especieValorada.getSeriefe()==null || especieValorada.getSeriefe().trim().isEmpty())
-						throw new EspecieValoradaNotAvailableException();
-
-					/*Valida si debe ejecutar el sequenciador y si lo tiene configurado*/
-					if(ejecutarSeqByCorrelativo && especieValorada.getNameSecuenciador()!=null && !(especieValorada.getNameSecuenciador().trim().isEmpty())){
-						especieValorada=ServiceLocator.getEspecieValoradaManager().ejecutarSeqCorrelativo(especieValorada);
-						oespecieValorada = especieValorada;
-					}else{
-						oespecieValorada=especieValorada;
-					}
-				}else
-					oespecieValorada=especieValorada;
-			}else if(lstEspecieValorada.size()>1){
-				throw new Exception(Messages.getString("UtilData.information.noUniqueEspecieValorada"));
-			}else
-				throw new Exception(Messages.getString("UtilData.information.noAsignacionEspecieValorada"));
-		}catch(EspecieValoradaNotAvailableException evnaex){
-			throw new Exception(Messages.getString("UtilData.information.notAvailableEspecieValorada"));
-//			DlgMessage.information(Messages.getString("UtilData.information.notAvailableEspecieValorada"));
-		}catch(Exception ex){
-			throw new Exception(ex);
-//			DlgMessage.information(ex.getMessage());
-		}
-
-		return oespecieValorada;
-	}
+//	public static EspecieValorada buscarEspecieValorada(Integer tipoComprobante, Agencia agencia, Boolean ejecutarSeqByCorrelativo) throws Exception{
+//		EspecieValorada oespecieValorada=null;
+//		try{
+//			TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
+//			criteriosBusqueda.put("tipoComprobante",new TipoComprobante(tipoComprobante));
+//			criteriosBusqueda.put("agencia",agencia );
+//			criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
+//
+//			List<EspecieValorada> lstEspecieValorada = ServiceLocator.getEspecieValoradaManager().buscarPorX(criteriosBusqueda, null);
+//			if(lstEspecieValorada.size()==1){
+//				EspecieValorada especieValorada = lstEspecieValorada.get(0);
+//				if((tipoComprobante.equals(Constantes.ID_TIPCOM_FACTURA) || tipoComprobante.equals(Constantes.ID_TIPCOM_BOLETA_VENTA) || tipoComprobante.equals(Constantes.ID_TIPCOM_NOTA_CREDITO) || tipoComprobante.equals(Constantes.ID_TIPCOM_NOTA_DEBITO))){
+//					if(especieValorada.getSeriefe()==null || especieValorada.getSeriefe().trim().isEmpty())
+//						throw new EspecieValoradaNotAvailableException();
+//
+//					/*Valida si debe ejecutar el sequenciador y si lo tiene configurado*/
+//					if(ejecutarSeqByCorrelativo && especieValorada.getNameSecuenciador()!=null && !(especieValorada.getNameSecuenciador().trim().isEmpty())){
+//						especieValorada=ServiceLocator.getEspecieValoradaManager().ejecutarSeqCorrelativo(especieValorada);
+//						oespecieValorada = especieValorada;
+//					}else{
+//						oespecieValorada=especieValorada;
+//					}
+//				}else
+//					oespecieValorada=especieValorada;
+//			}else if(lstEspecieValorada.size()>1){
+//				throw new Exception(Messages.getString("UtilData.information.noUniqueEspecieValorada"));
+//			}else
+//				throw new Exception(Messages.getString("UtilData.information.noAsignacionEspecieValorada"));
+//		}catch(EspecieValoradaNotAvailableException evnaex){
+//			throw new Exception(Messages.getString("UtilData.information.notAvailableEspecieValorada"));
+////			DlgMessage.information(Messages.getString("UtilData.information.notAvailableEspecieValorada"));
+//		}catch(Exception ex){
+//			throw new Exception(ex);
+////			DlgMessage.information(ex.getMessage());
+//		}
+//
+//		return oespecieValorada;
+//	}
 
 	/**
 	 * Carga el tipo de transaccion(Venta y Reserva)
@@ -2772,7 +2772,44 @@ public class UtilData extends Window {
 
 		return configuracionImpresora;
 	}
-
+	
+	private static ControlEspecieValorada buscarEspecieValoradaBy(TreeMap<String, Object> criteriosBusqueda, boolean ejecutarSeqByCorrelativo)throws Exception {
+		ControlEspecieValorada oControlEspecieValorada=null;
+		try {
+			List<ControlEspecieValorada> lstControlEspecieValorada = ServiceLocator.getControlEspecieValoradaManager().buscarPorX(criteriosBusqueda, null);
+			if(lstControlEspecieValorada.size() == 1){
+				ControlEspecieValorada controlEspecieValorada = lstControlEspecieValorada.get(0);
+				Integer tipoComprobanteId = controlEspecieValorada.getTipoComprobante().getId();
+				
+				if((tipoComprobanteId.equals(Constantes.ID_TIPCOM_FACTURA) || tipoComprobanteId.equals(Constantes.ID_TIPCOM_BOLETA_VENTA)
+						|| tipoComprobanteId.equals(Constantes.ID_TIPCOM_NOTA_CREDITO) || tipoComprobanteId.equals(Constantes.ID_TIPCOM_NOTA_DEBITO)
+						|| tipoComprobanteId.equals(Constantes.ID_TIPCOM_GUIA_TRANSPORTISTA) || tipoComprobanteId.equals(Constantes.ID_TIPCOM_TICKET_EQUIPAJE))){
+					/*Valida si debe ejecutar el sequenciador y si lo tiene configurado*/
+					if(ejecutarSeqByCorrelativo && controlEspecieValorada.getSecuenciador()!=null && !(controlEspecieValorada.getSecuenciador().trim().isEmpty())){
+						controlEspecieValorada=ServiceLocator.getControlEspecieValoradaManager().ejecutarSecuenciador(controlEspecieValorada);
+						oControlEspecieValorada = controlEspecieValorada;
+					}else{
+						oControlEspecieValorada = controlEspecieValorada;
+					}
+				}else
+					oControlEspecieValorada = controlEspecieValorada;
+			}else if(lstControlEspecieValorada.size() > 1 ) {
+				throw new Exception(Messages.getString("UtilData.information.noUniqueEspecieValorada"));			
+			}			
+		}catch(EspecieValoradaNotAvailableException evnaex){
+			throw new EspecieValoradaNotAvailableException();
+		}catch(Exception ex){
+			throw new Exception(ex);
+		}
+		
+		return oControlEspecieValorada;
+	}
+	
+	public static ControlEspecieValorada buscarEspecieValoradaByCaja (Integer tipoComprobante, Agencia agencia, Boolean ejecutarSeqByCorrelativo, 
+			UsuarioHardware usuarioHardware, Integer aplicarA, Integer idEmpresa) throws Exception{
+		return buscarEspecieValoradaByCaja(tipoComprobante, agencia, ejecutarSeqByCorrelativo, usuarioHardware, aplicarA, idEmpresa, false);
+	}
+	
 	/**
 	 * Realiza la busqueda del correlativo de la especie valorada, de los tipos de comprobante DIFERENTES al Boleto de Viaje
 	 * @param tipoComprobante			: Tipo de comprobante que se buscara.
@@ -2783,53 +2820,151 @@ public class UtilData extends Window {
 	 * @return Numero de boleto.
 	 * @throws Exception
 	 */
-	public static ControlEspecieValorada buscarEspecieValoradaByCaja (Integer tipoComprobante, Agencia agencia, Boolean ejecutarSeqByCorrelativo, UsuarioHardware usuarioHardware, Integer aplicarA, Integer idEmpresa) throws Exception{
+	public static ControlEspecieValorada buscarEspecieValoradaByCaja (Integer tipoComprobante, Agencia agencia, Boolean ejecutarSeqByCorrelativo, 
+			UsuarioHardware usuarioHardware, Integer aplicarA, Integer idEmpresa, boolean isExcesoEquipaje) throws Exception{
 		ControlEspecieValorada oControlEspecieValorada=null;
 		try{
+			Integer flagExcesoEquipajes = (isExcesoEquipaje? Constantes.TRUE_VALUE : Constantes.FALSE_VALUE);
+			// Correlativos por caja
 			TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
 			criteriosBusqueda.put("empresa",new Empresa(idEmpresa));
 			criteriosBusqueda.put("tipoComprobante",new TipoComprobante(tipoComprobante));
 			criteriosBusqueda.put("agencia",agencia );
 			criteriosBusqueda.put("usuarioHardware", usuarioHardware);
 			criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
+			criteriosBusqueda.put("excesoEquipaje", flagExcesoEquipajes);
 			if(tipoComprobante.equals(Constantes.ID_TIPCOM_NOTA_CREDITO) || tipoComprobante.equals(Constantes.ID_TIPCOM_NOTA_DEBITO))
 				criteriosBusqueda.put("aplica", aplicarA);
 
-			List<ControlEspecieValorada> lstControlEspecieValorada = ServiceLocator.getControlEspecieValoradaManager().buscarPorX(criteriosBusqueda, null);
-			if(lstControlEspecieValorada.size()==1){
-				ControlEspecieValorada controlEspecieValorada = lstControlEspecieValorada.get(0);
-				if((tipoComprobante.equals(Constantes.ID_TIPCOM_FACTURA) || tipoComprobante.equals(Constantes.ID_TIPCOM_BOLETA_VENTA)
-						|| tipoComprobante.equals(Constantes.ID_TIPCOM_NOTA_CREDITO) || tipoComprobante.equals(Constantes.ID_TIPCOM_NOTA_DEBITO)
-						|| tipoComprobante.equals(Constantes.ID_TIPCOM_GUIA_TRANSPORTISTA) || tipoComprobante.equals(Constantes.ID_TIPCOM_TICKET_EQUIPAJE))){
-//					if(controlEspecieValorada.getSeriefe()==null || controlEspecieValorada.getSeriefe().trim().isEmpty())
-//						throw new EspecieValoradaNotAvailableException();
-
-					/*Valida si debe ejecutar el sequenciador y si lo tiene configurado*/
-					if(ejecutarSeqByCorrelativo && controlEspecieValorada.getSecuenciador()!=null && !(controlEspecieValorada.getSecuenciador().trim().isEmpty())){
-						controlEspecieValorada=ServiceLocator.getControlEspecieValoradaManager().ejecutarSecuenciador(controlEspecieValorada);
-						oControlEspecieValorada = controlEspecieValorada;
-					}else{
-						oControlEspecieValorada=controlEspecieValorada;
+			// Busca el correolativo
+			oControlEspecieValorada = buscarEspecieValoradaBy(criteriosBusqueda, ejecutarSeqByCorrelativo);
+			if(oControlEspecieValorada == null) {
+				if(isExcesoEquipaje) {
+					// Cuando es un exceso de equipajes y no existe correlativo especifico para este tipo, busca un correlativo normal
+					criteriosBusqueda.replace("excesoEquipaje", Constantes.FALSE_VALUE);
+					
+					// Busca el correlativo
+					oControlEspecieValorada = buscarEspecieValoradaBy(criteriosBusqueda, ejecutarSeqByCorrelativo);
+				}
+				
+				// Correlativos por Agencia
+				if(oControlEspecieValorada == null) {					
+					criteriosBusqueda.replace("excesoEquipaje", flagExcesoEquipajes); // restaura el valor original
+					criteriosBusqueda.remove("usuarioHardware"); // Eliminanos el parametro Usuario Hardware
+					
+					// Busca el correlativo
+					oControlEspecieValorada = buscarEspecieValoradaBy(criteriosBusqueda, ejecutarSeqByCorrelativo);
+					
+					// Cuando es un exceso de equipajes y no existe correlativo especifico para este tipo, busca un correlativo normal
+					if(oControlEspecieValorada == null && isExcesoEquipaje) {						
+						criteriosBusqueda.replace("excesoEquipaje", Constantes.FALSE_VALUE);
+						
+						// Busca el correlativo
+						oControlEspecieValorada = buscarEspecieValoradaBy(criteriosBusqueda, ejecutarSeqByCorrelativo);
 					}
-				}else
-					oControlEspecieValorada=controlEspecieValorada;
-			}else if(lstControlEspecieValorada.size()>1) {
-				if(tipoComprobante.equals(Constantes.ID_TIPCOM_NOTA_CREDITO) || tipoComprobante.equals(Constantes.ID_TIPCOM_NOTA_DEBITO)) {
-
-				}else
-					throw new Exception(Messages.getString("UtilData.information.noUniqueEspecieValorada"));
-			}else
-				throw new EspecieValoradaNotAvailableException();
+					
+					// No existe correlativo configurado
+					if(oControlEspecieValorada == null) {
+						throw new EspecieValoradaNotAvailableException();
+					}
+				}				
+			}				
 		}catch(EspecieValoradaNotAvailableException evnaex){
 			throw new EspecieValoradaNotAvailableException();
-//			DlgMessage.information(Messages.getString("UtilData.information.notAvailableEspecieValorada"));
 		}catch(Exception ex){
 			throw new Exception(ex);
-//			DlgMessage.information(ex.getMessage());
 		}
 
 		return oControlEspecieValorada;
 	}
+	
+//	/**
+//	 * Realiza la busqueda del correlativo de la especie valorada, de los tipos de comprobante DIFERENTES al Boleto de Viaje
+//	 * @param tipoComprobante			: Tipo de comprobante que se buscara.
+//	 * @param agencia					: Identificador de la Agencia
+//	 * @param ejecutarSeqByCorrelativo	: Indica si se ejecutara el secuenciador
+//	 * @param usuarioHardware			: Usuario hardware para obtener sus especies
+//	 * @param aplicarA					: Indica si la NC o ND se aplica a boletas (1) o Facturas (2)
+//	 * @return Numero de boleto.
+//	 * @throws Exception
+//	 */
+//	public static ControlEspecieValorada buscarEspecieValoradaByCaja (Integer tipoComprobante, Agencia agencia, Boolean ejecutarSeqByCorrelativo, 
+//			UsuarioHardware usuarioHardware, Integer aplicarA, Integer idEmpresa, boolean isExcesoEquipaje) throws Exception{
+//		ControlEspecieValorada oControlEspecieValorada=null;
+//		try{
+//			// Correlativos por caja
+//			TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
+//			criteriosBusqueda.put("empresa",new Empresa(idEmpresa));
+//			criteriosBusqueda.put("tipoComprobante",new TipoComprobante(tipoComprobante));
+//			criteriosBusqueda.put("agencia",agencia );
+//			criteriosBusqueda.put("usuarioHardware", usuarioHardware);
+//			criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
+//			criteriosBusqueda.put("excesoEquipaje", isExcesoEquipaje? Constantes.TRUE_VALUE : Constantes.FALSE_VALUE);
+//			if(tipoComprobante.equals(Constantes.ID_TIPCOM_NOTA_CREDITO) || tipoComprobante.equals(Constantes.ID_TIPCOM_NOTA_DEBITO))
+//				criteriosBusqueda.put("aplica", aplicarA);
+//
+//			List<ControlEspecieValorada> lstControlEspecieValorada = ServiceLocator.getControlEspecieValoradaManager().buscarPorX(criteriosBusqueda, null);
+//			if(lstControlEspecieValorada.size()==1){
+//				ControlEspecieValorada controlEspecieValorada = lstControlEspecieValorada.get(0);
+//				if((tipoComprobante.equals(Constantes.ID_TIPCOM_FACTURA) || tipoComprobante.equals(Constantes.ID_TIPCOM_BOLETA_VENTA)
+//						|| tipoComprobante.equals(Constantes.ID_TIPCOM_NOTA_CREDITO) || tipoComprobante.equals(Constantes.ID_TIPCOM_NOTA_DEBITO)
+//						|| tipoComprobante.equals(Constantes.ID_TIPCOM_GUIA_TRANSPORTISTA) || tipoComprobante.equals(Constantes.ID_TIPCOM_TICKET_EQUIPAJE))){
+//					/*Valida si debe ejecutar el sequenciador y si lo tiene configurado*/
+//					if(ejecutarSeqByCorrelativo && controlEspecieValorada.getSecuenciador()!=null && !(controlEspecieValorada.getSecuenciador().trim().isEmpty())){
+//						controlEspecieValorada=ServiceLocator.getControlEspecieValoradaManager().ejecutarSecuenciador(controlEspecieValorada);
+//						oControlEspecieValorada = controlEspecieValorada;
+//					}else{
+//						oControlEspecieValorada=controlEspecieValorada;
+//					}
+//				}else
+//					oControlEspecieValorada=controlEspecieValorada;
+//			}else if(lstControlEspecieValorada.size()>1) {
+////				if(tipoComprobante.equals(Constantes.ID_TIPCOM_NOTA_CREDITO) || tipoComprobante.equals(Constantes.ID_TIPCOM_NOTA_DEBITO)) {
+////
+////				}else
+//					throw new Exception(Messages.getString("UtilData.information.noUniqueEspecieValorada"));			
+//			}else {
+//				// Correlativos por Agencia
+//				criteriosBusqueda = new TreeMap<>();
+//				criteriosBusqueda.put("empresa",new Empresa(idEmpresa));
+//				criteriosBusqueda.put("tipoComprobante",new TipoComprobante(tipoComprobante));
+//				criteriosBusqueda.put("agencia",agencia );
+//				criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
+//				criteriosBusqueda.put("excesoEquipaje", isExcesoEquipaje? Constantes.TRUE_VALUE : Constantes.FALSE_VALUE);
+//				if(tipoComprobante.equals(Constantes.ID_TIPCOM_NOTA_CREDITO) || tipoComprobante.equals(Constantes.ID_TIPCOM_NOTA_DEBITO))
+//					criteriosBusqueda.put("aplica", aplicarA);
+//				
+//				lstControlEspecieValorada = ServiceLocator.getControlEspecieValoradaManager().buscarPorX(criteriosBusqueda, null);
+//				if(lstControlEspecieValorada.size()==1){
+//					ControlEspecieValorada controlEspecieValorada = lstControlEspecieValorada.get(0);
+//					if((tipoComprobante.equals(Constantes.ID_TIPCOM_FACTURA) || tipoComprobante.equals(Constantes.ID_TIPCOM_BOLETA_VENTA)
+//							|| tipoComprobante.equals(Constantes.ID_TIPCOM_NOTA_CREDITO) || tipoComprobante.equals(Constantes.ID_TIPCOM_NOTA_DEBITO)
+//							|| tipoComprobante.equals(Constantes.ID_TIPCOM_GUIA_TRANSPORTISTA) || tipoComprobante.equals(Constantes.ID_TIPCOM_TICKET_EQUIPAJE))){
+//						/*Valida si debe ejecutar el sequenciador y si lo tiene configurado*/
+//						if(ejecutarSeqByCorrelativo && controlEspecieValorada.getSecuenciador()!=null && !(controlEspecieValorada.getSecuenciador().trim().isEmpty())){
+//							controlEspecieValorada=ServiceLocator.getControlEspecieValoradaManager().ejecutarSecuenciador(controlEspecieValorada);
+//							oControlEspecieValorada = controlEspecieValorada;
+//						}else{
+//							oControlEspecieValorada=controlEspecieValorada;
+//						}
+//					}else
+//						oControlEspecieValorada=controlEspecieValorada;
+//				}else if(lstControlEspecieValorada.size() > 1) {
+//					throw new Exception(Messages.getString("UtilData.information.noUniqueEspecieValorada"));
+//				}else								
+//					throw new EspecieValoradaNotAvailableException();
+//			}
+//				
+//		}catch(EspecieValoradaNotAvailableException evnaex){
+//			throw new EspecieValoradaNotAvailableException();
+////			DlgMessage.information(Messages.getString("UtilData.information.notAvailableEspecieValorada"));
+//		}catch(Exception ex){
+//			throw new Exception(ex);
+////			DlgMessage.information(ex.getMessage());
+//		}
+//
+//		return oControlEspecieValorada;
+//	}
 
 	/**
 	 * Obtiene el identificador de la entidad agencia de la bd transcarweb

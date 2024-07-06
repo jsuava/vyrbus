@@ -2396,7 +2396,7 @@ public class CreateDocument implements Serializable {
 			//---> line 2:
 			String nombreEmpresa = itinerario.getEmpresa().getRazonSocial();
 			linea = "EMPRESA  : " + nombreEmpresa;
-			linea+=tabular(39-nombreEmpresa.length())+"NRO. MANIF.: "+numeroManifiesto;
+			linea+=tabular(39-nombreEmpresa.length())+"NRO. MANIF.: "+ numeroManifiesto;
 			bw.write(linea + NEWLINE);
 
 			//---> line 3:(Agencia - Fecha)

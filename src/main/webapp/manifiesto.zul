@@ -29,8 +29,8 @@
 							<label value="IMPRIMIR" />
 							<combobox id="cmbImprimir" readonly="true" width="160px" onChange="wndManifiesto.validaImpresionManifiesto()" />
 							<button id="cmdPrevio" image="/resources/mp_preliminar.png" sclass="btnImage" tooltiptext="Vista Preliminar" />
-							<button id="cmdImprimir" image="/resources/mp_imprimir.png" sclass="btnImage" tooltiptext="Imprimir" />
 							<button id="cmdReImprimir" image="/resources/mp_reimprimir.png" sclass="btnImage" tooltiptext="Re-Imprimir" />
+							<button id="cmdImprimir" visible="false" image="/resources/mp_imprimir.png" sclass="btnImage" tooltiptext="Imprimir" />							
 							<button id="btnPostergar" image="/resources/mp_postergarFA.png" sclass="btnImage" tooltiptext="Postegar a Fecha Abierta" visible="false"/>
 						</row>
 					</rows>

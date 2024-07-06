@@ -99,15 +99,15 @@
 					<label value="N° MALETAS :" />
 					<intbox id="itbxNumeroMaletas" width="40px" onOK="itbxTotalKilos.setFocus(true)" style="font-size:13px !important;text-align:right"/>
 					<label value="TOTAL KG :" />
-					<intbox id="itbxTotalKilos" width="40px" onOK="if(!dbxTotalPago.isDisabled()) dbxTotalPago.setFocus(true); else btnGuardar.setFocus(true);" style="font-size:13px !important;text-align:right"/>
+					<intbox id="itbxTotalKilos" width="40px" style="font-size:13px !important;text-align:right"/>
 					<label value="TOTAL PAGO :" />
-					<doublebox id="dbxTotalPago" format="###,##0.00" onOK="if(rowExceso.isVisible())cmbTipoComprobante.setFocus(true); else btnGuardar.setFocus(true); " disabled="true" width="70px" style="font-size:13px !important"/>
+					<doublebox id="dbxTotalPago" format="###,##0.00" disabled="true" width="70px" style="font-size:13px !important"/>
 				</row>
 				<row id="rowExceso" visible="false">
 					<label value="TIPO COMPROBANTE :"/>
-					<combobox id="cmbTipoComprobante" readonly="true" onOK="cmbTipoPago.setFocus(true)" width="130px" placeholder="TIPO COMPROBANTE"/>
+					<combobox id="cmbTipoComprobante" readonly="true" width="130px" placeholder="TIPO COMPROBANTE"/>
 					<label value="FORMA PAGO :"/>
-					<combobox id="cmbTipoPago" readonly="true" width="120px" onOK="if(!cmbOperadorTarjeta.isDisabled()) cmbOperadorTarjeta.setFocus(true); else btnGuardar.setFocus(true);" placeholder="FORMA PAGO"/>
+					<combobox id="cmbTipoPago" readonly="true" width="120px" placeholder="FORMA PAGO"/>
 					<label/>
 					<label/>					
 				</row>

@@ -125,15 +125,24 @@ public class ControlEspecieValoradaDAOImpl extends GenericDAOImpl implements Con
 	}
 
 	@Override
-	public void inactivar(ControlEspecieValoradaID controlEspecieValoradaID)throws Exception {
+	public void inactivar(Integer id)throws Exception {
 		String hql="UPDATE ControlEspecieValorada SET estadoRegistro='I' "+
-					"WHERE tipoComprobante.id="+controlEspecieValoradaID.getIdTipoComprobante()+" AND usuarioHardware.id="+controlEspecieValoradaID.getIdUsuarioHardware()+"  " +
+					"WHERE id="+ id +
 					" AND  estadoRegistro='"+ Constantes.VALUE_ACTIVO+ "' ";
 		log.info(hql);
 
 		getSession().createQuery(hql).executeUpdate();
 
 	}
+//	public void inactivar(ControlEspecieValoradaID controlEspecieValoradaID)throws Exception {
+//		String hql="UPDATE ControlEspecieValorada SET estadoRegistro='I' "+
+//					"WHERE tipoComprobante.id="+controlEspecieValoradaID.getIdTipoComprobante()+" AND usuarioHardware.id="+controlEspecieValoradaID.getIdUsuarioHardware()+"  " +
+//					" AND  estadoRegistro='"+ Constantes.VALUE_ACTIVO+ "' ";
+//		log.info(hql);
+//
+//		getSession().createQuery(hql).executeUpdate();
+//
+//	}
 
 	/*
 	 * (non-Javadoc)
@@ -144,7 +153,7 @@ public class ControlEspecieValoradaDAOImpl extends GenericDAOImpl implements Con
 		String sql="SELECT TC.TIPCOM_ID,TC.C_DENOMINACION, UH.USUHARD_ID,UH.C_DESCRIPCION, CEV.C_SERIE, CEV.N_CORINI, "+ //0-5
 					       "CEV.N_CORFIN, CEV.N_CORACTUAL, A.AGENCIA_ID, A.C_NOMCOR" +//6-9
 					       ", CEV.AUDFECINS, CEV.AUDUSUINS, CEV.AUDIPINSE, UH.CANVEN_ID, CEV.N_FORMATO, CEV.C_CORSEQ, " + //10-15 
-					       "E.EMPRESA_ID, E.C_RAZSOC, E.C_NOMCOR, E.C_NUMDOC "+ //16-19
+					       "E.EMPRESA_ID, E.C_RAZSOC, E.C_NOMCOR, E.C_NUMDOC, CTRLESPVAL_ID "+ //16-20
 					"FROM VRTCTRLESPVAL CEV "+
 					"INNER JOIN VRTUSUHARD UH ON (UH.USUHARD_ID=CEV.USUHARD_ID) "+
 					"INNER JOIN VRMAGENCIA A ON (A.AGENCIA_ID=UH.AGENCIA_ID) " +
@@ -170,7 +179,7 @@ public class ControlEspecieValoradaDAOImpl extends GenericDAOImpl implements Con
 			Object[] obj = (Object[])result.get(i);
 
 			ControlEspecieValorada controlEspecieValorada= new ControlEspecieValorada();
-			ControlEspecieValoradaID controlEspecieValoradaID=new ControlEspecieValoradaID();
+//			ControlEspecieValoradaID controlEspecieValoradaID=new ControlEspecieValoradaID();
 			UsuarioHardware usuarioHardware= new UsuarioHardware();
 			Agencia agencia= new Agencia();
 			TipoComprobante tipoComprobante=new TipoComprobante();
@@ -191,15 +200,16 @@ public class ControlEspecieValoradaDAOImpl extends GenericDAOImpl implements Con
 			usuarioHardware.setDescripcion(obj[3].toString());
 			usuarioHardware.setAgencia(agencia);
 			usuarioHardware.setCanalVenta(canalVenta);
-			controlEspecieValoradaID.setIdTipoComprobante(tipoComprobante.getId());
-			controlEspecieValoradaID.setIdUsuarioHardware(usuarioHardware.getId());
+//			controlEspecieValoradaID.setIdTipoComprobante(tipoComprobante.getId());
+//			controlEspecieValoradaID.setIdUsuarioHardware(usuarioHardware.getId());
 			empresa.setId(((BigDecimal)obj[16]).intValue());
 			empresa.setRazonSocial(obj[17].toString());
 			empresa.setNombreCorto(obj[18]==null?"":obj[18].toString());
 			empresa.setNumeroDocumento(obj[19].toString());
 			controlEspecieValorada.setEmpresa(empresa);
 
-			controlEspecieValorada.setControlEspecieValoradaID(controlEspecieValoradaID);
+//			controlEspecieValorada.setControlEspecieValoradaID(controlEspecieValoradaID);
+			controlEspecieValorada.setId(((BigDecimal)obj[20]).intValue());
 			controlEspecieValorada.setTipoComprobante(tipoComprobante);
 			controlEspecieValorada.setUsuarioHardware(usuarioHardware);
 			controlEspecieValorada.setFechaInsercion(obj[10]!=null? (Date)obj[10]: null);

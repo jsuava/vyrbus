@@ -1,8 +1,8 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	:
- * Autor		: José Avalos
+ * Descripciï¿½n	:
+ * Autor		: Josï¿½ Avalos
  * Fecha		: 13/09/2013
  */
 package pe.itsb.vyrbus.view.ctrl;
@@ -677,12 +677,12 @@ public class WndAsistenteAgencias extends WndBase implements Serializable {
 
 					//Busca el correlativo asignado a la agencia o cliente corporativo.
 					if(agencia.getTipoAgencia().getId().equals(Constantes.ID_TIPAGE_VIAJES)){
-						EspecieValorada especieValorada=UtilData.buscarEspecieValorada(Constantes.ID_TIPCOM_VOUCHER_AGENCIA_VIAJES, agencia, false);
-						txtCorrelativo.setText(especieValorada.toString());
+//						EspecieValorada especieValorada=UtilData.buscarEspecieValorada(Constantes.ID_TIPCOM_VOUCHER_AGENCIA_VIAJES, agencia, false);
+//						txtCorrelativo.setText(especieValorada.toString());
 //						txtCorrelativo.setText(UtilData.buscarEspecieValorada(Constantes.ID_TIPCOM_VOUCHER_AGENCIA_VIAJES, agencia));
 					}else if(agencia.getTipoAgencia().getId().equals(Constantes.ID_TIPAGE_CORPORATIVO)){
-						EspecieValorada especieValorada=UtilData.buscarEspecieValorada(Constantes.ID_TIPCOM_VOUCHER_CORPORATIVO, agencia, false);
-						txtCorrelativo.setText(especieValorada.toString());
+//						EspecieValorada especieValorada=UtilData.buscarEspecieValorada(Constantes.ID_TIPCOM_VOUCHER_CORPORATIVO, agencia, false);
+//						txtCorrelativo.setText(especieValorada.toString());
 //						txtCorrelativo.setText(UtilData.buscarEspecieValorada(Constantes.ID_TIPCOM_VOUCHER_CORPORATIVO, agencia));
 					}
 
@@ -807,7 +807,7 @@ public class WndAsistenteAgencias extends WndBase implements Serializable {
 				titanFuncionarioPersonaPasaje.setComisionable(comisionable?Constantes.TRUE_VALUE:Constantes.FALSE_VALUE);
 				titanFuncionarioPersonaPasaje.setPersona(titanPersona);
 				titanFuncionarioPersonaPasaje.setFechaActivacion(Constantes.FORMAT_DATE.format(new Date()));
-				titanFuncionarioPersonaPasaje.setFechaSuspencion(Constantes.FORMAT_DATE.format(new Date(new Date().getTime()+(Constantes.MILISEGUNDOS_X_DIA*3650)))); //10 años
+				titanFuncionarioPersonaPasaje.setFechaSuspencion(Constantes.FORMAT_DATE.format(new Date(new Date().getTime()+(Constantes.MILISEGUNDOS_X_DIA*3650)))); //10 aï¿½os
 				titanFuncionarioPersonaPasaje.setEstadoRegistroID(Constantes.TRUE_VALUE);
 				titanFuncionarioPersonaPasaje.setIp(UtilData.ipLocal(Executions.getCurrent()));
 				titanFuncionarioPersonaPasaje.setUsuarioPersonal(titanUsuarioPersonalRegistro!=null?titanUsuarioPersonalRegistro:null);
@@ -932,7 +932,7 @@ public class WndAsistenteAgencias extends WndBase implements Serializable {
 				buscarUsuarios();
 			}
 			tlbrBarraHerramientas.setParent(rowUsuario);
-			txtEmailInfo.setPlaceholder("Ingrese una dirección de correo valida");
+			txtEmailInfo.setPlaceholder("Ingrese una direcciï¿½n de correo valida");
 		}catch(Exception ex){
 			ex.printStackTrace();
 			DlgMessage.error(this.getClass().getSimpleName()+" "+ex.getMessage());
@@ -1783,7 +1783,7 @@ public class WndAsistenteAgencias extends WndBase implements Serializable {
 		dtbxFechaSuspensionCliente.setValue(null);
 		lblInformativo.setValue("");
 
-		//Infromación de concesionario.
+		//Infromaciï¿½n de concesionario.
 		txtRUCConcesionario.setText("");
 		txtRazonSocialConcesionario.setText("");
 		txtDireccionConcesionario.setText("");
@@ -1792,7 +1792,7 @@ public class WndAsistenteAgencias extends WndBase implements Serializable {
 		cmbTipoComision.setSelectedIndex(0);
 		ckbIncluyeIgv.setChecked(false);
 
-		//Información de la Agencia
+		//Informaciï¿½n de la Agencia
 		cmbAgencia.setSelectedIndex(0);
 		cmbConcesionario.setSelectedIndex(0);
 		cmbLocalidad.setSelectedIndex(0);

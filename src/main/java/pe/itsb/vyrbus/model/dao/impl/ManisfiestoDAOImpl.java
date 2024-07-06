@@ -63,11 +63,12 @@ public class ManisfiestoDAOImpl extends GenericDAOImpl implements ManifiestoDAO 
 						"s.c_denominacion as servicio, "+//25
 						"pcx.personal_id CPXID, pcx.c_apepat CPXAP, pcx.c_apemat CPXAM, pcx.c_nombre CPXN, pcx.c_numdoc CPXND, pcx.tipdoc_id PCXTD, " + //26-31
 						"pp.c_numdoc PPND, pp.tipdoc_id PPTD, pc.c_numdoc PCND, pc.tipdoc_id PCTD, pt.c_numdoc PTND, pt.tipdoc_id PTTD,pcx.c_licencia PCXLC  "+ //32-38
-						",i.itinerario_id, i.empresa_id "+ //40
+						",i.itinerario_id, ep.empresa_id, ep.c_razsoc empresa_razonSocial "+ //41
 					"FROM vrtdetiti di "+
 						"INNER JOIN vrtitinerario i ON (i.itinerario_id=di.itinerario_id) " +
 						"INNER JOIN VRMSERVICIO s ON (s.servicio_id=i.servicio_id) "+
 						"INNER JOIN vrmtipiti ti ON (ti.tipiti_id=i.tipiti_id) " +
+						"INNER JOIN vrmempresa ep ON (ep.empresa_id = i.empresa_id)  "+
 						"LEFT JOIN vrmruta r ON (r.ruta_id=di.ruta_id) "+
 						"LEFT JOIN (SELECT t.c_numdocbus, t.bus_id FROM vrtdocbus t WHERE t.tipdoc_id="+Constantes.ID_TIPDOC_TARJETA_CIRCULACION+" ) tdb ON (tdb.bus_id=i.bus_id) "+
 						"LEFT JOIN vrtproser ps ON (ps.itinerario_id=i.itinerario_id AND ps.c_estreg='A') "+
@@ -180,7 +181,12 @@ public class ManisfiestoDAOImpl extends GenericDAOImpl implements ManifiestoDAO 
 			itinerario.setServicio(servicio);
 			itinerario.setTipoItinerario(tipoItinerario);
 			itinerario.setRuta(ruta);
-			itinerario.setEmpresa(new Empresa(((BigDecimal)obj[40]).intValue()));
+//			itinerario.setEmpresa(new Empresa(((BigDecimal)obj[40]).intValue()));
+			Empresa empresa = new Empresa();
+			empresa.setId(((BigDecimal)obj[40]).intValue());
+			empresa.setRazonSocial(obj[41].toString());
+			
+			itinerario.setEmpresa(empresa);
 		}
 
 
