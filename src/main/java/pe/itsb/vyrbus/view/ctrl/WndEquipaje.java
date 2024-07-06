@@ -446,7 +446,7 @@ public class WndEquipaje extends WndBase implements Serializable{
 	 */
 	private void onOk_dbxTotalPago() {
 		if(rowExceso.isVisible()){
-			Util.seleccionarValorItemCombo(TipoComprobante.class, cmbTipoComprobante, Constantes.ID_TIPCOM_GUIA);
+			Util.seleccionarValorItemCombo(TipoComprobante.class, cmbTipoComprobante, Constantes.ID_TIPCOM_GUIA_EXCESO);
 			cmbTipoComprobante.setFocus(true); 
 			cmbTipoComprobante.open(); 
 		}else 
@@ -920,7 +920,7 @@ public class WndEquipaje extends WndBase implements Serializable{
 				rowExceso.setVisible(true);
 				rowExcesoTarjeta.setVisible(true);
 				dbxTotalPago.setDisabled(false);
-				Util.seleccionarValorItemCombo(TipoComprobante.class, cmbTipoComprobante, Constantes.ID_TIPCOM_GUIA);
+				Util.seleccionarValorItemCombo(TipoComprobante.class, cmbTipoComprobante, Constantes.ID_TIPCOM_GUIA_EXCESO);
 				onSelect_cmbTipoComprobante();
 				generatedGlosaByExceso();
 			}
