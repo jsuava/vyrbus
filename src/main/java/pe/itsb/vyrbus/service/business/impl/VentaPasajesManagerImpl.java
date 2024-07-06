@@ -303,6 +303,9 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 				if(ventaPasaje.getTipoTransaccion().equals(Constantes.TIPO_OPERACION_VENTA) ||
 						ventaPasaje.getTipoTransaccion().equals(Constantes.TIPO_OPERACION_VENTA_POOL) ||
 						ventaPasaje.getTipoTransaccion().equals(Constantes.TIPO_OPERACION_EXCESO)){
+					
+					boolean isExceso = (ventaPasaje.getTipoTransaccion().equals(Constantes.TIPO_OPERACION_EXCESO));
+					
 					/**Begin 21/10/2016 - jabanto**/
 					/*Vuelve a realizar la busqueda del correlativo y lo actualiza, a exception de los boletos, ya que no son necesarios pues son manuales*/
 //					EspecieValorada especieValorada=null;
@@ -310,7 +313,8 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 					if(ventaPasaje.getTipoComprobante().getId().intValue()!=Constantes.ID_TIPCOM_BOLETO_VIAJE){
 //						especieValorada=UtilData.buscarEspecieValorada(ventaPasaje.getTipoComprobante().getId(), ventaPasaje.getAgencia(), true);
 //						ventaPasaje.setNumeroBoleto(especieValorada.toString());
-						controlEspecieValorada = UtilData.buscarEspecieValoradaByCaja(ventaPasaje.getTipoComprobante().getId(), ventaPasaje.getAgencia(), true, ventaPasaje.getUsuarioHardware(), null, ventaPasaje.getItinerario().getEmpresa().getId());
+						controlEspecieValorada = UtilData.buscarEspecieValoradaByCaja(ventaPasaje.getTipoComprobante().getId(), ventaPasaje.getAgencia(), true, 
+								ventaPasaje.getUsuarioHardware(), null, ventaPasaje.getItinerario().getEmpresa().getId(), isExceso);
 						ventaPasaje.setNumeroBoleto(controlEspecieValorada.toString());
 					}
 					/*	Validando que el numero del comprobante no exista en la DB 	*/
