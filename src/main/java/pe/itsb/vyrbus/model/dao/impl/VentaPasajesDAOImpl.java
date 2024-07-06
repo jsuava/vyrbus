@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.TreeMap;
 
 import org.hibernate.SQLQuery;
@@ -84,7 +85,7 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 				"			 ap.c_nomcor as nombreCorto, p.tipdoc_id tipoDocPax, vp.forpag_id, vp.tipforpag_id, vp.c_rucclicre, vp.n_imppag, " +
 				"			 vp.tipmov_id, av.c_denominacion AGVENTA, u.c_login USUARIO, al.c_denominacion AGLLEGADA, vp.audfecins FECVENTA, p.c_telefono, "+ 
 				"            ap.agencia_id agencia_idpartida, al.agencia_id agencia_idllegada, tc.tipcom_id, tc.c_denominacion tipoComprobante,  "+ //43
-				"            vp.c_tiptra, cl.cliente_id, cl.c_numdoc ruc_cliente, cl.c_razsoc, cl.c_direccion, vp.usuario_id, vp.empresa_id "+ //50
+				"            vp.c_tiptra, cl.cliente_id, cl.c_numdoc ruc_cliente, cl.c_razsoc, cl.c_direccion, vp.usuario_id, vp.empresa_id, vp.c_observaciones "+ //51
 				"FROM vrtvenpas vp " +
 				"	  INNER JOIN (SELECT MAX(venpas_id)venpas_id, c_numcontrol " +
 				"				  FROM vrtvenpas WHERE itinerario_id="+idItinerario+" GROUP BY c_numcontrol) max_venta " +
@@ -199,6 +200,7 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 			}
 			
 			ventaPasaje.setEmpresa(new Empresa(((BigDecimal)obj[50]).intValue()));
+			ventaPasaje.setObservaciones(obj[51] != null? obj[51].toString() : null);
 
 //			TipoMovimiento tipoMovimiento = new TipoMovimiento();
 //			tipoMovimiento.setId(((BigDecimal)obj[34]).intValue());
@@ -1751,7 +1753,7 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 					"DECODE(tm.c_denominacion, 'POSTERGACION', DECODE(tfp.c_denominacion, 'EFECTIVO', 'POST.(EF)', DECODE(tfp.c_denominacion,'YAPE','POST.(YAP)', 'POST.(TC)') ), " +
 					"DECODE(tm.c_denominacion, 'POSTERGACION FA', DECODE(tfp.c_denominacion, 'EFECTIVO', 'POST.FA.(EF)', DECODE(tfp.c_denominacion,'YAPE','POST.FA.(YAP)', 'POST.FA.(TC)') ), "+
 					"DECODE(tm.tipmov_id,"+Constantes.ID_TIPMOV_GASTOS_ADMINISTRATIVOS+", DECODE(tfp.c_denominacion, 'EFECTIVO', 'GAS.ADM(EFE)', DECODE(tfp.c_denominacion,'YAPE','GAS.ADM.(YAP)', 'GAS.ADM.(TC)') ),  " +
-					"DECODE(vp.tipmov_id,"+Constantes.ID_TIPMOV_GRT+", DECODE(tfp.c_denominacion, 'PCE', 'EQUIPAJE(PCE)', DECODE(tfp.c_denominacion, 'EFECTIVO', 'EQUIPAJE(EF)', DECODE(tfp.c_denominacion,'YAPE','EQUIPAJE.(YAP)', 'EQUIPAJE.(TC)') )),  " +
+					"DECODE(vp.tipmov_id,"+Constantes.ID_TIPMOV_EXCESO_EQUIPAJE+", DECODE(tfp.c_denominacion, 'PCE', 'EQUIPAJE(PCE)', DECODE(tfp.c_denominacion, 'EFECTIVO', 'EQUIPAJE(EF)', DECODE(tfp.c_denominacion,'YAPE','EQUIPAJE.(YAP)', 'EQUIPAJE.(TC)') )),  " +
 					"DECODE(vp.tipmov_id,"+Constantes.ID_TIPMOV_SERVICIO_ESPECIAL+", DECODE(tfp.c_denominacion, 'EFECTIVO', 'SERV.ESP(EF)', DECODE(tfp.c_denominacion,'YAPE','SERV.ESP.(YAP)', 'SERV.ESP.(TC)') ),  " +
 					"DECODE(vp.tipcom_id,"+Constantes.ID_TIPCOM_NOTA_CREDITO+", 'NOTA CREDITO',  " +
 					"DECODE(tm.c_denominacion, 'EFECTIVO', DECODE(tfp.c_denominacion, 'EFECTIVO', 'V.(EF)', DECODE(tfp.c_denominacion, 'TRANSFERENCIA', 'V.(TRA)', DECODE(tfp.c_denominacion,'YAPE','V.(YAP)', 'V.(TC)') )"
@@ -1833,7 +1835,7 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 					"DECODE(tm.c_denominacion, 'POSTERGACION', DECODE(tfp.c_denominacion, 'EFECTIVO', 'POST.(EF)', 'POST.(TC)'), " +
 					"DECODE(tm.c_denominacion, 'POSTERGACION FA', DECODE(tfp.c_denominacion, 'EFECTIVO', 'POST.FA. (EF)', 'POST.FA. (TC)'), " +
 					"DECODE(tm.tipmov_id,"+Constantes.ID_TIPMOV_GASTOS_ADMINISTRATIVOS+", DECODE(tfp.c_denominacion, 'EFECTIVO', 'GAS.ADM(EFE)','GAS.ADM(TC)'),  " +
-					"DECODE(vp.tipmov_id,"+Constantes.ID_TIPMOV_GRT+", DECODE(tfp.c_denominacion, 'PCE', 'EQUIPAJE(PCE)', DECODE(tfp.c_denominacion, 'EFECTIVO', 'EQUIPAJE(EF)','EQUIPAJE(TC)')),  " +
+					"DECODE(vp.tipmov_id,"+Constantes.ID_TIPMOV_EXCESO_EQUIPAJE+", DECODE(tfp.c_denominacion, 'PCE', 'EQUIPAJE(PCE)', DECODE(tfp.c_denominacion, 'EFECTIVO', 'EQUIPAJE(EF)','EQUIPAJE(TC)')),  " +
 					"DECODE(vp.tipmov_id,"+Constantes.ID_TIPMOV_SERVICIO_ESPECIAL+", DECODE(tfp.c_denominacion, 'EFECTIVO', 'SERV.ESP(EF)', 'SERV.ESP(TC)'),  " +
 					"DECODE(tm.c_denominacion, 'EFECTIVO', DECODE(tfp.c_denominacion, 'EFECTIVO', 'V.(EF)', DECODE(tfp.c_denominacion, 'TRANSFERENCIA', 'V.(TRA)', 'V.(TC)'))))))))))) TIPOVENTA ";
 			where = " AND vp.forpag_id = 1 AND vp.tipcom_id in ("+Constantes.ID_TIPCOM_BOLETA_VENTA+","+Constantes.ID_TIPCOM_BOLETO_VIAJE+","+Constantes.ID_TIPCOM_FACTURA+","+Constantes.ID_TIPCOM_NOTA_CREDITO+","+Constantes.ID_TIPCOM_NOTA_DEBITO+") "

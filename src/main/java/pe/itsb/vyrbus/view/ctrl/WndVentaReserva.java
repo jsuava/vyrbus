@@ -1247,7 +1247,7 @@ public class WndVentaReserva extends WndBase {
 //			if(chkBoletoPrepagado.isChecked()){
 			if(rdPrepagadoRemoto.isChecked()){
 				if(chkVentaRemota.isChecked()){
-					especieValorada=UtilData.buscarEspecieValorada(Constantes.ID_TIPCOM_RECIBO_CAJA,(Agencia)cmbAgenciaRemota.getSelectedItem().getValue(), false);
+//					especieValorada = UtilData.buscarEspecieValorada(Constantes.ID_TIPCOM_RECIBO_CAJA,(Agencia)cmbAgenciaRemota.getSelectedItem().getValue(), false);
 					txtBoleto.setValue(especieValorada.toString());
 				}else{
 //					txtBoleto.setValue(UtilData.buscarEspecieValorada(Constantes.ID_TIPCOM_RECIBO_CAJA, agencia,false));
@@ -1275,10 +1275,10 @@ public class WndVentaReserva extends WndBase {
 				txtBoleto.setValue(controlEspecieValorada.toString());
 			}
 		}else if(agencia.getTipoAgencia().getId().intValue()==Constantes.ID_TIPAGE_VIAJES){
-			especieValorada=UtilData.buscarEspecieValorada(Constantes.ID_TIPCOM_VOUCHER_AGENCIA_VIAJES, agencia,false);
+//			especieValorada=UtilData.buscarEspecieValorada(Constantes.ID_TIPCOM_VOUCHER_AGENCIA_VIAJES, agencia,false);
 			txtBoleto.setValue(especieValorada.toString());
 		}else{
-			especieValorada=UtilData.buscarEspecieValorada(Constantes.ID_TIPCOM_VOUCHER_CORPORATIVO, agencia,false);
+//			especieValorada=UtilData.buscarEspecieValorada(Constantes.ID_TIPCOM_VOUCHER_CORPORATIVO, agencia,false);
 			txtBoleto.setValue(especieValorada.toString());
 		}
 	}

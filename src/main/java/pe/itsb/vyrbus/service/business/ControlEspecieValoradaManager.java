@@ -34,7 +34,8 @@ public interface ControlEspecieValoradaManager {
 	 * @param controlEspecieValoradaID : identifocador de ControlEspecieValorada.
 	 * @throws Exception
 	 */
-	public void inactivar (ControlEspecieValoradaID controlEspecieValoradaID) throws Exception;
+//	public void inactivar (ControlEspecieValoradaID controlEspecieValoradaID) throws Exception;
+	public void inactivar (Integer id) throws Exception;
 
 	/**
 	 * busca Control especies valoradas

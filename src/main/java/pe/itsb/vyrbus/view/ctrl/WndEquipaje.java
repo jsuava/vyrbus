@@ -16,6 +16,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.Optional;
 import java.util.TreeMap;
 
 import org.zkoss.zk.ui.Executions;
@@ -173,16 +174,53 @@ public class WndEquipaje extends WndBase implements Serializable{
 				onChanging_itbxTotalKilos(event);
 			}
 		});
+		itbxTotalKilos.addEventListener(Events.ON_OK, new EventListener<Event>() {
+			@Override
+			public void onEvent(Event event) throws Exception {
+				onOk_itbxTotalKilos();
+			}
+		});
+		dbxTotalPago.addEventListener(Events.ON_OK, new EventListener<Event>() {
+			@Override
+			public void onEvent(Event event) throws Exception {
+				onOk_dbxTotalPago();
+			}
+		});
 		cmbTipoComprobante.addEventListener(Events.ON_SELECT, new EventListener<Event>() {
 			@Override
 			public void onEvent(Event event) throws Exception {
 				onSelect_cmbTipoComprobante();
 			}
 		});
+		cmbTipoComprobante.addEventListener(Events.ON_OK, new EventListener<Event>() {
+			@Override
+			public void onEvent(Event event) throws Exception {				
+				onOk_cmbTipoComprobante();
+			}
+		});
 		cmbTipoPago.addEventListener(Events.ON_SELECT, new EventListener<Event>() {
 			@Override
 			public void onEvent(Event event) throws Exception {
 				onSelect_cmbTipoPago();
+			}
+		});
+		cmbTipoPago.addEventListener(Events.ON_OK, new EventListener<Event>() {
+			@Override
+			public void onEvent(Event event) throws Exception {
+				onOk_cmbTipoPago();
+			}
+		});
+		cmbOperadorTarjeta.addEventListener(Events.ON_OK, new EventListener<Event>() {
+
+			@Override
+			public void onEvent(Event event) throws Exception {
+				onOk_Operador();
+			}
+		});
+		cmbTarjetaCredito.addEventListener(Events.ON_OK, new EventListener<Event>() {
+			@Override
+			public void onEvent(Event event) throws Exception {
+				btnGuardar.setFocus(true);
 			}
 		});
 		btnGuardar.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
@@ -249,11 +287,13 @@ public class WndEquipaje extends WndBase implements Serializable{
 					cmbTipoComprobante.appendChild(comboitem);
 				}
 			}
+//			Util.seleccionarValorItemCombo(TipoComprobante.class, cmbTipoComprobante, Constantes.ID_TIPCOM_GUIA);
+			loadTipoFormaPago(null);
 			UtilData.cargarDataCombo(cmbOperadorTarjeta, OperadorTarjetaCredito.class, null);
 			dbxTotalPago.setLocale(Locale.US);
 			cmbOperadorTarjeta.setDisabled(true);
 			cmbTarjetaCredito.setDisabled(true);
-
+			
 			disabledControls(true);
 			btnGuardar.setDisabled(true);
 
@@ -382,11 +422,64 @@ public class WndEquipaje extends WndBase implements Serializable{
 	 * @throws Exception
 	 */
 	private void onChanging_itbxTotalKilos(Event event)throws Exception{
+		Integer valor = 0;
+;		
 		if(((InputEvent)event).getValue()!=null && ((InputEvent)event).getValue().toString().trim().length()>0) {
-			calcularExceso(Integer.valueOf(((InputEvent)event).getValue()));
+			valor = Integer.valueOf(((InputEvent)event).getValue());			
 		}
+		
+		calcularExceso(valor);
+	}
+	
+	/**
+	 * 
+	 */
+	private void onOk_itbxTotalKilos() {
+		if(!dbxTotalPago.isDisabled()) 
+			dbxTotalPago.setFocus(true); 
+		else 
+			btnGuardar.setFocus(true);
+	}
+	
+	/**
+	 * 
+	 */
+	private void onOk_dbxTotalPago() {
+		if(rowExceso.isVisible()){
+			Util.seleccionarValorItemCombo(TipoComprobante.class, cmbTipoComprobante, Constantes.ID_TIPCOM_GUIA);
+			cmbTipoComprobante.setFocus(true); 
+			cmbTipoComprobante.open(); 
+		}else 
+			btnGuardar.setFocus(true);
+	}
+	
+	/**
+	 * 
+	 */
+	private void onOk_cmbTipoComprobante() {
+		cmbTipoPago.setSelectedIndex(0);
+		cmbTipoPago.setFocus(true); 
+		cmbTipoPago.open();
+	}
+	
+	/**
+	 * 
+	 */
+	private void onOk_cmbTipoPago() {
+		if(!cmbOperadorTarjeta.isDisabled()) {
+			cmbOperadorTarjeta.setFocus(true);
+			cmbOperadorTarjeta.open();
+		}else 
+			btnGuardar.setFocus(true);
 	}
 
+	private void onOk_Operador() {
+		if(!cmbTarjetaCredito.isDisabled()) {
+			cmbTarjetaCredito.setFocus(true);
+			cmbTarjetaCredito.open();
+		}
+	}
+	
 	/**
 	 *
 	 * @throws Exception
@@ -403,7 +496,7 @@ public class WndEquipaje extends WndBase implements Serializable{
 		if(cmbTipoComprobante.getSelectedIndex()>=0) {
 			txtNumeroComprobante.setText(onLoadEspecieValorada((TipoComprobante)cmbTipoComprobante.getSelectedItem().getValue()));
 			TipoComprobante tipoComprobante = cmbTipoComprobante.getSelectedItem().getValue();
-			loadTipoFormaPago(tipoComprobante);
+//			loadTipoFormaPago(tipoComprobante);
 			if(tipoComprobante.getId().intValue()==Constantes.ID_TIPCOM_FACTURA)
 				rowRuc.setVisible(true);
 		}
@@ -501,13 +594,14 @@ public class WndEquipaje extends WndBase implements Serializable{
 				UtilData.auditarRegistro(cliente, getUsuario(), Executions.getCurrent());
 			}
 		}
-
+		
 		/*Cabecera*/
 		equipaje= new Equipaje();
 		equipaje.setItinerario(((VentaPasaje)ltbxBoletos.getItemAtIndex(0).getValue()).getItinerario());
 		equipaje.setAgencia(getAgencia());
 		equipaje.setPeso(itbxTotalKilos.getValue().doubleValue());
 		equipaje.setUsuarioHardware(getUsuarioHardware());
+		equipaje.setEmpresa(((VentaPasaje)ltbxBoletos.getItemAtIndex(0).getValue()).getEmpresa());
 		equipaje.setEstadoRegistro(Constantes.VALUE_ACTIVO);
 		if(!(txtobservaciones.getText().trim().isEmpty()))
 			equipaje.setObservaciones(txtobservaciones.getText().trim().toUpperCase());
@@ -597,7 +691,7 @@ public class WndEquipaje extends WndBase implements Serializable{
 			ventaExceso.setFormaPago(new FormaPago(Constantes.ID_FORPAG_CONTADO));
 			ventaExceso.setServicio(ventaPrincipal.getServicio());
 			ventaExceso.setTipoComprobante((TipoComprobante)cmbTipoComprobante.getSelectedItem().getValue());
-			ventaExceso.setTipoMovimiento(new TipoMovimiento(Constantes.ID_TIPMOV_EFECTIVO));
+			ventaExceso.setTipoMovimiento(new TipoMovimiento(Constantes.ID_TIPMOV_EXCESO_EQUIPAJE));
 			ventaExceso.setTipoFormaPago(tipoFormaPago);
 			ventaExceso.setNumeroBoleto(txtNumeroComprobante.getText().trim().toUpperCase());
 			ventaExceso.setNumeroBoletoAnterior(ventaPrincipal.getNumeroBoleto());
@@ -769,7 +863,7 @@ public class WndEquipaje extends WndBase implements Serializable{
 		cmbTipoPago.setText("");
 		cmbOperadorTarjeta.setSelectedIndex(-1);
 		Util.limpiarCombobox(cmbTipoPago);
-		if(tipoComprobante.getRubro().intValue()==Constantes.RUBRO_CARGA) {
+		if(tipoComprobante != null && tipoComprobante.getRubro().intValue()==Constantes.RUBRO_CARGA) {
 			TipoFormaPago tipoFormaPago = ServiceLocator.getTipoFormaPagoManager().buscarPorId(Long.valueOf(Constantes.ID_TIPFORPAG_PCE));
 			Comboitem comboitem= new Comboitem(tipoFormaPago.getDenominacion());
 			comboitem.setValue(tipoFormaPago);
@@ -781,11 +875,13 @@ public class WndEquipaje extends WndBase implements Serializable{
 			criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
 			List<TipoFormaPago> resultTipoFormaPago = ServiceLocator.getTipoFormaPagoManager().buscarPorX(criteriosBusqueda, null);
 			for(TipoFormaPago tipoFormaPago: resultTipoFormaPago) {
-				if(tipoFormaPago.getId().intValue()==Constantes.ID_TIPFORPAG_EFECTIVO || tipoFormaPago.getId().intValue()==Constantes.ID_TIPFORPAG_TARJETA) {
+//				if(tipoFormaPago.getId().intValue()==Constantes.ID_TIPFORPAG_EFECTIVO || tipoFormaPago.getId().intValue()==Constantes.ID_TIPFORPAG_TARJETA) {
+				if(tipoFormaPago.getFormaPago().getId().equals(Constantes.ID_FORPAG_CONTADO)) {
 					Comboitem comboitem= new Comboitem(tipoFormaPago.getDenominacion());
 					comboitem.setValue(tipoFormaPago);
 					cmbTipoPago.appendChild(comboitem);
-				}
+				}					
+//				}
 			}
 		}
 	}
@@ -814,16 +910,18 @@ public class WndEquipaje extends WndBase implements Serializable{
 
 	private void calcularExceso(Integer valor)throws Exception{
 		clearControlsExceso();
-		if(valor==null && itbxTotalKilos.getValue()!=null)
+		if(valor == null && itbxTotalKilos.getValue() != null)
 			valor = itbxTotalKilos.getValue();
 		dbxTotalPago.setDisabled(true);
 		if(valor!=null && valor.toString().trim().length()>0 && !(lblKilosLibres.getValue().isEmpty())) {
 			int totalKg = valor;
 			int totalKgLibres = Integer.valueOf(lblKilosLibres.getValue());
-			if(totalKg>totalKgLibres) {
+			if(totalKg > totalKgLibres) {				
 				rowExceso.setVisible(true);
 				rowExcesoTarjeta.setVisible(true);
 				dbxTotalPago.setDisabled(false);
+				Util.seleccionarValorItemCombo(TipoComprobante.class, cmbTipoComprobante, Constantes.ID_TIPCOM_GUIA);
+				onSelect_cmbTipoComprobante();
 				generatedGlosaByExceso();
 			}
 		}
@@ -858,8 +956,9 @@ public class WndEquipaje extends WndBase implements Serializable{
 	private void generatedGlosaByExceso()throws Exception{
 		String _subGlosa = "";
 		for(Listitem item: ltbxBoletos.getItems()) {
-			VentaPasaje ventaPasaje = ServiceLocator.getVentaPasajesManager().buscarPorId(((VentaPasaje)item.getValue()).getId());
-			_subGlosa = (_subGlosa.isEmpty()?"COMP: "+ventaPasaje.getNumeroBoleto()+" \n"+ventaPasaje.getRuta().toString():", "+"COMP: "+ventaPasaje.getNumeroBoleto()+" \n"+ventaPasaje.getRuta().toString());
+//			VentaPasaje ventaPasaje = ServiceLocator.getVentaPasajesManager().buscarPorId(((VentaPasaje)item.getValue()).getId());
+			VentaPasaje ventaPasaje = item.getValue();
+			_subGlosa = (_subGlosa.isEmpty()?"COMP: "+ ventaPasaje.getNumeroBoleto()+" \n"+ ventaPasaje.getRuta().toString():", "+"COMP: "+ventaPasaje.getNumeroBoleto()+" \n"+ventaPasaje.getRuta().toString());
 			_subGlosa += "\nASIENTO:"+ventaPasaje.getNumeroAsiento().toString();
 			_subGlosa += "-->H.SALIDA:"+ventaPasaje.getHoraPartida();
 		}
@@ -890,24 +989,15 @@ public class WndEquipaje extends WndBase implements Serializable{
 	private String onLoadEspecieValorada(TipoComprobante tipoComprobante)throws Exception{
 		String numeroComprobante = "";
 		
-		try {
-			EspecieValorada especieValorada=null;
-			ControlEspecieValorada controlEspecieValorada = null;
-			if(getAgencia().getTipoAgencia().getId().intValue()==Constantes.ID_TIPAGE_TEPSA){
-				controlEspecieValorada=UtilData.buscarEspecieValoradaByCaja(tipoComprobante.getId(), getAgencia(), false, getUsuarioHardware(), null, itinerario.getEmpresa().getId());
-				numeroComprobante = controlEspecieValorada.toString();
-			}else if(getAgencia().getTipoAgencia().getId().intValue()==Constantes.ID_TIPAGE_VIAJES){
-				especieValorada=UtilData.buscarEspecieValorada(Constantes.ID_TIPCOM_VOUCHER_AGENCIA_VIAJES, getAgencia(),false);
-				numeroComprobante= especieValorada.toString();
-			}else{
-				especieValorada=UtilData.buscarEspecieValorada(Constantes.ID_TIPCOM_VOUCHER_CORPORATIVO, getAgencia(),false);
-				numeroComprobante= especieValorada.toString();
-			}
-
+		try {			
+			Integer tipoComprobanteId = tipoComprobante.getId();
+			Integer empresaId = itinerario.getEmpresa().getId();
 			
+			ControlEspecieValorada controlEspecieValorada = 
+					UtilData.buscarEspecieValoradaByCaja(tipoComprobanteId, getAgencia(), false, getUsuarioHardware(), null, empresaId, true);
+			numeroComprobante = controlEspecieValorada.toString();			
 			
 		} catch (EspecieValoradaNotAvailableException ex) {
-			// TODO: handle exception
 			DlgMessage.information(Messages.getString("WndVentaReserva.information.noNumeroBoleto"));
 			log.error(Messages.getString("WndVentaReserva.information.noNumeroBoleto"));
 		}

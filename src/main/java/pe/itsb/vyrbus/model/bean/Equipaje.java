@@ -1,8 +1,8 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	:
- * Autor		: José Abanto
+ * Descripciï¿½n	:
+ * Autor		: Josï¿½ Abanto
  * Fecha		: 14 jul. 2021
  * Hora			: 11:37:14
  */
@@ -25,6 +25,7 @@ public class Equipaje extends GenericBean implements java.io.Serializable{
 	private String observaciones;
 
 	private UsuarioHardware usuarioHardware;
+	private Empresa empresa;
 
 	public Equipaje() {
 		super();
@@ -107,6 +108,20 @@ public class Equipaje extends GenericBean implements java.io.Serializable{
 	 */
 	public void setObservaciones(String observaciones) {
 		this.observaciones = observaciones;
+	}
+
+	/**
+	 * @return the empresa
+	 */
+	public Empresa getEmpresa() {
+		return empresa;
+	}
+
+	/**
+	 * @param empresa the empresa to set
+	 */
+	public void setEmpresa(Empresa empresa) {
+		this.empresa = empresa;
 	}
 
 

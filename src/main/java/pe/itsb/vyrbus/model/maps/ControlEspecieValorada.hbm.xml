@@ -5,15 +5,21 @@
 <hibernate-mapping>
     <class name="pe.itsb.vyrbus.model.bean.ControlEspecieValorada" table="VRTCTRLESPVAL" schema="VYRBUSME">
         <comment>Entidad que almacena la relacion estre las especies valoradas y las cajas por agencia.</comment>
-        <composite-id name="controlEspecieValoradaID" class="pe.itsb.vyrbus.model.bean.ControlEspecieValoradaID">
-            <key-property name="idTipoComprobante" type="java.lang.Integer">
-                <column name="TIPCOM_ID" precision="2" scale="0" />
-            </key-property>
-            <key-property name="idUsuarioHardware" type="java.lang.Integer">
-                <column name="USUHARD_ID" precision="5" scale="0" />
-            </key-property>
-            <key-property name="strSerie" type="java.lang.String" column="C_SERIE" length="4"/>
-        </composite-id>
+<!--         <composite-id name="controlEspecieValoradaID" class="pe.itsb.vyrbus.model.bean.ControlEspecieValoradaID"> -->
+<!--             <key-property name="idTipoComprobante" type="java.lang.Integer"> -->
+<!--                 <column name="TIPCOM_ID" precision="2" scale="0" /> -->
+<!--             </key-property> -->
+<!--             <key-property name="idUsuarioHardware" type="java.lang.Integer"> -->
+<!--                 <column name="USUHARD_ID" precision="5" scale="0" /> -->
+<!--             </key-property> -->
+<!--             <key-property name="strSerie" type="java.lang.String" column="C_SERIE" length="4"/> -->
+<!--         </composite-id> -->
+		<id name="id" type="java.lang.Integer">
+            <column name="CTRLESPVAL_ID" precision="5" scale="0" />
+            <generator class="sequence">
+                <param name="sequence">SEQ_VRTCTRLESPVAL_ID</param>
+            </generator>
+        </id>
         <many-to-one name="usuarioHardware" class="pe.itsb.vyrbus.model.bean.UsuarioHardware" update="false" insert="false" fetch="select">
             <column name="USUHARD_ID" precision="5" scale="0" not-null="true">
                 <comment>Identificador unico de la entidad, tamanio de la clave primaria 5.</comment>
@@ -67,6 +73,11 @@
         <property name="aplica" type="java.lang.Integer">
             <column name="N_APLICA" precision="1" scale="0" >
                 <comment>Indica si la NC o ND se aplica a la boleta (1) o factura (2).</comment>
+            </column>
+        </property>
+        <property name="excesoEquipaje" type="java.lang.Integer">
+            <column name="N_EXCEQU" precision="1" scale="0" >
+                <comment>Indica si el correlativo será de uso exclusivo para exceso de equipajes (1), caso contrario (0)</comment>
             </column>
         </property>
         

@@ -26,7 +26,7 @@ public class Constantes {
 	 * Vension actual del Sistema
 	 */
 
-	public static final String SYSTEM_VERSION = "Versión 3.4.6";
+	public static final String SYSTEM_VERSION = "Versión 3.4.7";
 
 	/**
 	 * Constante para la Accion Nuevo
@@ -312,6 +312,8 @@ public class Constantes {
 //	public static final String RUC_TRANSMAR="20501622819";
 //	public static final String OPERADO_POR_CRUZ_DEL_SUR="CRUZ DEL SUR";
 //	public static final String OPERADO_CIVA="EXCLUCIVA";
+	
+	
 
 	/**/
 	public static final Double MONTO_MINIMO_EXCESO = 5.0;
@@ -426,6 +428,7 @@ public class Constantes {
 	public static final int ID_TIPMOV_SERVICIO_ESPECIAL = 16;
 	public static final int ID_TIPMOV_GRT = 17;
 	public static final int ID_TIPMOV_CANJE_GRT = 18;
+	public static final int ID_TIPMOV_EXCESO_EQUIPAJE = 20;
 	/**
 	 *Movimiento que no debe ser tomado como venta, este se emite cuando a un conprobante se le aplica un NC y ese comprobante no se le genera un movimiento de anulacion(5) - 10/01/2017 - jabanto
 	 */

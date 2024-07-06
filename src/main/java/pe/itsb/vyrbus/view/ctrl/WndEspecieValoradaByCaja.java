@@ -1,6 +1,7 @@
 package pe.itsb.vyrbus.view.ctrl;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.event.Event;
@@ -209,15 +210,15 @@ public class WndEspecieValoradaByCaja extends WndOpcionesMantenimiento {
 			usuarioHardware.setDescripcion(((UsuarioHardware)cmbUsuarioHardware.getSelectedItem().getValue()).getDescripcion());
 			usuarioHardware.setAgencia(((Agencia)cmbAgencia.getSelectedItem().getValue()));
 
-			ControlEspecieValoradaID controlEspecieValoradaID = new ControlEspecieValoradaID();
-			controlEspecieValoradaID.setIdTipoComprobante(tipoComprobante.getId());
-			controlEspecieValoradaID.setIdUsuarioHardware(usuarioHardware.getId());
-			controlEspecieValoradaID.setStrSerie(txtSerie.getText().toUpperCase().trim().toString());
-			controlEspecieValoradaID.setIdEmpresa(empresa.getId());
+//			ControlEspecieValoradaID controlEspecieValoradaID = new ControlEspecieValoradaID();
+//			controlEspecieValoradaID.setIdTipoComprobante(tipoComprobante.getId());
+//			controlEspecieValoradaID.setIdUsuarioHardware(usuarioHardware.getId());
+//			controlEspecieValoradaID.setStrSerie(txtSerie.getText().toUpperCase().trim().toString());
+//			controlEspecieValoradaID.setIdEmpresa(empresa.getId());
 
 			controlEspecieValorada.setAgencia(usuarioHardware.getAgencia());
 			controlEspecieValorada.setEmpresa(empresa);
-			controlEspecieValorada.setControlEspecieValoradaID(controlEspecieValoradaID);
+//			controlEspecieValorada.setControlEspecieValoradaID(controlEspecieValoradaID);
 			controlEspecieValorada.setTipoComprobante(tipoComprobante);
 			controlEspecieValorada.setUsuarioHardware(usuarioHardware);
 			controlEspecieValorada.setSerie(txtSerie.getText().toUpperCase().trim().toString());
@@ -240,9 +241,9 @@ public class WndEspecieValoradaByCaja extends WndOpcionesMantenimiento {
 			}
 
 			idAgencia=((Agencia)cmbAgencia.getSelectedItem().getValue()).getId();
-			idTipoComprobante=controlEspecieValoradaID.getIdTipoComprobante();
-			idUsuarioHardware=controlEspecieValoradaID.getIdUsuarioHardware();
-			idEmpresa = controlEspecieValoradaID.getIdEmpresa();
+			idTipoComprobante = controlEspecieValorada.getTipoComprobante().getId(); //controlEspecieValoradaID.getIdTipoComprobante();
+			idUsuarioHardware = Optional.ofNullable(controlEspecieValorada.getUsuarioHardware()).map(UsuarioHardware::getId).orElse(null);  //controlEspecieValoradaID.getIdUsuarioHardware();
+			idEmpresa = controlEspecieValorada.getEmpresa().getId(); // controlEspecieValoradaID.getIdEmpresa();
 			Util.limpiarListbox(listboxLista);
 			listarRegistros(ServiceLocator.getControlEspecieValoradaManager().buscarEspecieValoradas(idAgencia, idTipoComprobante,idUsuarioHardware, idEmpresa));
 
@@ -291,10 +292,12 @@ public class WndEspecieValoradaByCaja extends WndOpcionesMantenimiento {
 		switch (tab) {
 			case TAB_LIST:
 				Listitem itemListBox = listboxLista.getItemAtIndex(listboxLista.getSelectedIndex());
-				ServiceLocator.getControlEspecieValoradaManager().inactivar(((ControlEspecieValorada)itemListBox.getValue()).getControlEspecieValoradaID());
+				ServiceLocator.getControlEspecieValoradaManager().inactivar(((ControlEspecieValorada)itemListBox.getValue()).getId());
+//				ServiceLocator.getControlEspecieValoradaManager().inactivar(((ControlEspecieValorada)itemListBox.getValue()).getControlEspecieValoradaID());
 				break;
 			case TAB_MAINTENANCE:
-				ServiceLocator.getControlEspecieValoradaManager().inactivar(controlEspecieValorada.getControlEspecieValoradaID());
+				ServiceLocator.getControlEspecieValoradaManager().inactivar(controlEspecieValorada.getId());
+//				ServiceLocator.getControlEspecieValoradaManager().inactivar(controlEspecieValorada.getControlEspecieValoradaID());
 				break;
 		}
 	}
@@ -365,11 +368,12 @@ public class WndEspecieValoradaByCaja extends WndOpcionesMantenimiento {
 	 *
 	 */
 	private void mantenimiento() throws Exception{
-		if(listboxLista.getSelectedIndex()>=0){
+		if(listboxLista.getSelectedIndex() >= 0 ){
 			Listitem lItemControlEspecieValorada = listboxLista.getItemAtIndex(listboxLista.getSelectedIndex());
 			controlEspecieValorada = new ControlEspecieValorada();
 			controlEspecieValorada = lItemControlEspecieValorada.getValue();
-			textboxId.setText(controlEspecieValorada.getControlEspecieValoradaID().getIdTipoComprobante().toString());
+//			textboxId.setText(controlEspecieValorada.getControlEspecieValoradaID().getIdTipoComprobante().toString());
+			textboxId.setText(controlEspecieValorada.getId().toString());
 			Util.seleccionarValorItemCombo(Agencia.class, cmbAgencia, (controlEspecieValorada.getUsuarioHardware().getAgencia().getId()));
 			/*carga os usuarios hardware segun la agencia seleccionada*/
 			UtilData.cargarUsuarioHasrdware(cmbUsuarioHardware, false, ((Agencia)cmbAgencia.getSelectedItem().getValue()));

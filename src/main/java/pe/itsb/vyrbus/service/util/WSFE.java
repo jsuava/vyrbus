@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.TreeMap;
 
 import javax.xml.bind.JAXBContext;
@@ -1047,6 +1048,7 @@ public class WSFE implements Serializable{
 	 * @throws Exception
 	 */
 //	@SuppressWarnings("restriction")
+	@SuppressWarnings({ "restriction", "restriction" })
 	private static XmlVentaPasaje createXmlVenta(List<VentaPasaje> listVentaPasaje, boolean isReimpresion, int numPrintCopies)throws Exception{
 		try {
 			XmlVentaPasaje xmlVentaPasaje= null;
@@ -1094,27 +1096,30 @@ public class WSFE implements Serializable{
 //									pathRpt=Constantes.DIRECTORY_FORMAT_TICKET+"Factura_TM.rpt";
 //							}
 //						}
+						
+						String empresa_ruc = ventaPasaje.getEmpresa().getNumeroDocumento();
+						
 						if(tipoComprobanteId == Constantes.ID_TIPCOM_BOLETA_VENTA){
 							if(ventaPasaje.getTipoTransaccion().equals(Constantes.TIPO_OPERACION_EXCESO))
-								pathRpt= getPathFormatPrintByEmpresa(ventaPasaje.getEmpresa().getNumeroDocumento(), Constantes.FORMAT_PRINT_BOLETA_EXCESO);
+								pathRpt= getPathFormatPrintByEmpresa(empresa_ruc, Constantes.FORMAT_PRINT_BOLETA_EXCESO);
 							else {
 								if(ventaPasaje.getTipoMovimiento().getId().intValue()==Constantes.ID_TIPMOV_GASTOS_ADMINISTRATIVOS)
-									pathRpt= getPathFormatPrintByEmpresa(ventaPasaje.getEmpresa().getNumeroDocumento(), Constantes.FORMAT_PRINT_BOLETA_GA);
+									pathRpt= getPathFormatPrintByEmpresa(empresa_ruc, Constantes.FORMAT_PRINT_BOLETA_GA);
 								else
-									pathRpt= getPathFormatPrintByEmpresa(ventaPasaje.getEmpresa().getNumeroDocumento(), Constantes.FORMAT_PRINT_BOLETA);
+									pathRpt= getPathFormatPrintByEmpresa(empresa_ruc, Constantes.FORMAT_PRINT_BOLETA);
 							}
 						}else if(tipoComprobanteId == Constantes.ID_TIPCOM_FACTURA){
 							if(ventaPasaje.getTipoTransaccion().equals(Constantes.TIPO_OPERACION_EXCESO))
-								pathRpt= getPathFormatPrintByEmpresa(ventaPasaje.getEmpresa().getNumeroDocumento(), Constantes.FORMAT_PRINT_FACTURA_EXCESO);
+								pathRpt= getPathFormatPrintByEmpresa(empresa_ruc, Constantes.FORMAT_PRINT_FACTURA_EXCESO);
 							else {
 								if(ventaPasaje.getTipoMovimiento().getId().intValue()==Constantes.ID_TIPMOV_GASTOS_ADMINISTRATIVOS)
-									pathRpt= getPathFormatPrintByEmpresa(ventaPasaje.getEmpresa().getNumeroDocumento(), Constantes.FORMAT_PRINT_FACTURA_GA);
+									pathRpt= getPathFormatPrintByEmpresa(empresa_ruc, Constantes.FORMAT_PRINT_FACTURA_GA);
 								else
-									pathRpt= getPathFormatPrintByEmpresa(ventaPasaje.getEmpresa().getNumeroDocumento(), Constantes.FORMAT_PRINT_FACTURA);
+									pathRpt= getPathFormatPrintByEmpresa(empresa_ruc, Constantes.FORMAT_PRINT_FACTURA);
 							}
 						}else if(tipoComprobanteId==Constantes.ID_TIPCOM_GUIA_EXCESO) {
 							if(ventaPasaje.getTipoTransaccion().equals(Constantes.TIPO_OPERACION_EXCESO))
-								pathRpt= getPathFormatPrintByEmpresa(ventaPasaje.getEmpresa().getNumeroDocumento(), Constantes.FORMAT_PRINT_GUIA_EXCESO);
+								pathRpt= getPathFormatPrintByEmpresa(empresa_ruc, Constantes.FORMAT_PRINT_GUIA_EXCESO);
 						}
 						
 						if(pathRpt == null || pathRpt.trim().isEmpty())
@@ -1235,12 +1240,18 @@ public class WSFE implements Serializable{
 						String reimpresion = (xmlVenta.getV0_ObserImport()!=null? xmlVenta.getV0_ObserImport() + " - REIMPRESIÓN" : "REIMPRESIÓN" );
 						xmlVenta.setV0_ObserImport(reimpresion);
 					}
-
-
+					
+					if(ventaPasaje.getObservaciones() != null) {
+						
+					}
+					
 					/*Centro de costo del cliente*/
-					if(ventaPasaje.getCentroCosto()!=null)
-						xmlVenta.setV992_CentroCosto(ventaPasaje.getCentroCosto().getCodigo()+" - "+ventaPasaje.getCentroCosto().getDenominacion());
-
+//					if(ventaPasaje.getCentroCosto()!=null)
+//						xmlVenta.setV992_CentroCosto(ventaPasaje.getCentroCosto().getCodigo()+" - "+ventaPasaje.getCentroCosto().getDenominacion());
+					if(ventaPasaje.getObservaciones() != null) {
+						xmlVenta.setV992_CentroCosto(ventaPasaje.getObservaciones().trim());
+					}
+					
 					/*Numero de comprobante referencial*/
 					if(ventaPasaje.getNumeroBoletoAnterior()!=null){
 						String at=xmlVenta.getV992_PartPage4();

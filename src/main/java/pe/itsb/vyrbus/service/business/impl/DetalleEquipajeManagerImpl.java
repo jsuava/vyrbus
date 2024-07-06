@@ -24,6 +24,7 @@ import pe.itsb.vyrbus.model.dao.EquipajeDAO;
 import pe.itsb.vyrbus.service.business.DetalleEquipajeManager;
 import pe.itsb.vyrbus.service.locator.ServiceLocator;
 import pe.itsb.vyrbus.service.util.Constantes;
+import pe.itsb.vyrbus.service.util.Messages;
 import pe.itsb.vyrbus.service.util.UtilData;
 
 /**
@@ -166,7 +167,10 @@ public class DetalleEquipajeManagerImpl implements DetalleEquipajeManager{
 			_detalleEquipaje.setEquipaje(equipaje);
 			//Obtenemos el correlativo actualizado para los tickets
 //			ControlEspecieValorada controlEspecieValorada = UtilData.buscarEspecieValoradaByCaja(Constantes.ID_TIPCOM_TICKET_EQUIPAJE, ventaExceso.getAgencia(), true, ventaExceso.getUsuarioHardware(), null);
-			ControlEspecieValorada controlEspecieValorada = UtilData.buscarEspecieValoradaByCaja(Constantes.ID_TIPCOM_TICKET_EQUIPAJE, equipaje.getAgencia(), true, equipaje.getUsuarioHardware(), null, ventaExceso.getEmpresa().getId());
+			ControlEspecieValorada controlEspecieValorada = UtilData.buscarEspecieValoradaByCaja(Constantes.ID_TIPCOM_TICKET_EQUIPAJE, equipaje.getAgencia(), true, equipaje.getUsuarioHardware(), null, equipaje.getEmpresa().getId(), true);
+			if(controlEspecieValorada == null) {
+				throw new Exception(Messages.getString("WndRecepcionEquipajes.correlativoTicketEquipaje.null"));
+			}
 			_detalleEquipaje.setTicket(controlEspecieValorada.toString());
 			//Actualizamos el correlativo
 			int position = _detalleEquipaje.getTicket().indexOf("-");
