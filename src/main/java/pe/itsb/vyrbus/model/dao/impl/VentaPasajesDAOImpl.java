@@ -1780,7 +1780,7 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 					"INNER JOIN vrmtipcom tcp ON (tcp.tipcom_id=vp.tipcom_id) "+
 					"WHERE vp.agencia_id="+idAgencia+" AND vp.usuario_id=NVL("+idUsuario+",vp.usuario_id) AND vp.d_fecliq BETWEEN to_date('"+fechaInicial+"','dd/mm/yyyy') AND " +
    						  "to_date('"+fechaFinal+"','dd/mm/yyyy') AND vp.forpag_id=1 "
-   						+ "AND vp.tipcom_id in ("+Constantes.ID_TIPCOM_BOLETO_VIAJE+","+Constantes.ID_TIPCOM_BOLETA_VENTA+","+Constantes.ID_TIPCOM_FACTURA+","+Constantes.ID_TIPCOM_NOTA_CREDITO+","+Constantes.ID_TIPCOM_NOTA_DEBITO+","+Constantes.ID_TIPCOM_GUIA_TRANSPORTISTA+","+Constantes.ID_TIPCOM_GUIA+") "
+   						+ "AND vp.tipcom_id in ("+Constantes.ID_TIPCOM_BOLETO_VIAJE+","+Constantes.ID_TIPCOM_BOLETA_VENTA+","+Constantes.ID_TIPCOM_FACTURA+","+Constantes.ID_TIPCOM_NOTA_CREDITO+","+Constantes.ID_TIPCOM_NOTA_DEBITO+","+Constantes.ID_TIPCOM_GUIA_TRANSPORTISTA+","+Constantes.ID_TIPCOM_GUIA_EXCESO+") "
 						+ "AND vp.n_tarifa>0 AND vp.tipmov_id NOT IN (4,5,6,10,11,12,13)) "; // +
 //   					"ORDER BY venpas_id ";
 //					"ORDER BY NroBoleto ";

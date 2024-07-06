@@ -243,7 +243,7 @@ public class WndEquipaje extends WndBase implements Serializable{
 			List<TipoComprobante> resultTipoComprobante = ServiceLocator.getTipoComprobanteManager().buscarPorEstadoRegistro(Constantes.VALUE_ACTIVO, "denominacion");
 			for(TipoComprobante tipoComprobante: resultTipoComprobante) {
 				if(tipoComprobante.getId().intValue()==Constantes.ID_TIPCOM_BOLETA_VENTA || tipoComprobante.getId().intValue()==Constantes.ID_TIPCOM_FACTURA ||
-						tipoComprobante.getId().intValue()==Constantes.ID_TIPCOM_GUIA) {
+						tipoComprobante.getId().intValue()==Constantes.ID_TIPCOM_GUIA_EXCESO) {
 					Comboitem comboitem= new Comboitem(tipoComprobante.getDenominacion());
 					comboitem.setValue(tipoComprobante);
 					cmbTipoComprobante.appendChild(comboitem);
@@ -665,7 +665,7 @@ public class WndEquipaje extends WndBase implements Serializable{
 								WSFE.sendVenta(listVentaPasajes, wndEquipaje, true, null, Constantes.NUMERO_COPIAS_COMPROBANTE_EXCESO);
 
 //								timerdownloadFileEquipaje = true;
-							}else if(ventaExceso.getTipoComprobante().getId().intValue()==Constantes.ID_TIPCOM_GUIA)	
+							}else if(ventaExceso.getTipoComprobante().getId().intValue()==Constantes.ID_TIPCOM_GUIA_EXCESO)	
 								WSFE.reimprimirComprobante(Arrays.asList(ventaExceso), wndEquipaje, Constantes.NUMERO_COPIAS_COMPROBANTE_EXCESO, false);							
 						}
 

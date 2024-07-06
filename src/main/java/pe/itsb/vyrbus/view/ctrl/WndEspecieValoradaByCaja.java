@@ -191,6 +191,8 @@ public class WndEspecieValoradaByCaja extends WndOpcionesMantenimiento {
 				correlativo = "SEQ_AGE"+((Agencia)cmbAgencia.getSelectedItem().getValue()).getId()+((Empresa)cmbEmpresa.getSelectedItem().getValue()).getSigla()+"GRT"+txtSerie.getText().trim().toUpperCase();
 			else if(((TipoComprobante)cmbTipoComprobante.getSelectedItem().getValue()).getId()==Constantes.ID_TIPCOM_TICKET_EQUIPAJE)
 				correlativo = "SEQ_AGE"+((Agencia)cmbAgencia.getSelectedItem().getValue()).getId()+((Empresa)cmbEmpresa.getSelectedItem().getValue()).getSigla()+"TKQ"+txtSerie.getText().trim().toUpperCase();
+			else if(((TipoComprobante)cmbTipoComprobante.getSelectedItem().getValue()).getId()==Constantes.ID_TIPCOM_GUIA_EXCESO)
+				correlativo = "SEQ_AGE"+((Agencia)cmbAgencia.getSelectedItem().getValue()).getId()+((Empresa)cmbEmpresa.getSelectedItem().getValue()).getSigla()+"GEX"+txtSerie.getText().trim().toUpperCase();
 
 			if (action==ACTION_NEW)
 				controlEspecieValorada= new ControlEspecieValorada();

@@ -1055,7 +1055,7 @@ public class WSFE implements Serializable{
 			for(VentaPasaje ventaPasaje: listVentaPasaje){
 				int tipoComprobanteId=ventaPasaje.getTipoComprobante().getId();
 				if(tipoComprobanteId==Constantes.ID_TIPCOM_BOLETA_VENTA || tipoComprobanteId==Constantes.ID_TIPCOM_FACTURA || 
-						tipoComprobanteId==Constantes.ID_TIPCOM_VOUCHER_AGENCIA_VIAJES || tipoComprobanteId==Constantes.ID_TIPCOM_GUIA){
+						tipoComprobanteId==Constantes.ID_TIPCOM_VOUCHER_AGENCIA_VIAJES || tipoComprobanteId==Constantes.ID_TIPCOM_GUIA_EXCESO){
 					/*Valida el tipo de comprobante*/
 					String cryptoBarcodeEmbarque=null;
 					String cryptoBarcodeSunat=null;
@@ -1112,7 +1112,7 @@ public class WSFE implements Serializable{
 								else
 									pathRpt= getPathFormatPrintByEmpresa(ventaPasaje.getEmpresa().getNumeroDocumento(), Constantes.FORMAT_PRINT_FACTURA);
 							}
-						}else if(tipoComprobanteId==Constantes.ID_TIPCOM_GUIA) {
+						}else if(tipoComprobanteId==Constantes.ID_TIPCOM_GUIA_EXCESO) {
 							if(ventaPasaje.getTipoTransaccion().equals(Constantes.TIPO_OPERACION_EXCESO))
 								pathRpt= getPathFormatPrintByEmpresa(ventaPasaje.getEmpresa().getNumeroDocumento(), Constantes.FORMAT_PRINT_GUIA_EXCESO);
 						}
