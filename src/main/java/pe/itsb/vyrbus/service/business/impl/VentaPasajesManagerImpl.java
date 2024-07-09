@@ -22,12 +22,15 @@ import pe.itsb.vyrbus.model.bean.CanalVenta;
 import pe.itsb.vyrbus.model.bean.Cliente;
 import pe.itsb.vyrbus.model.bean.ControlEspecieValorada;
 import pe.itsb.vyrbus.model.bean.DestinatariosEmails;
+import pe.itsb.vyrbus.model.bean.DetalleEquipaje;
 import pe.itsb.vyrbus.model.bean.EntidadEncomiendaPasajes;
+import pe.itsb.vyrbus.model.bean.Equipaje;
 import pe.itsb.vyrbus.model.bean.FormaPago;
 import pe.itsb.vyrbus.model.bean.Itinerario;
 import pe.itsb.vyrbus.model.bean.LineaCreditoCliente;
 import pe.itsb.vyrbus.model.bean.Liquidacion;
 import pe.itsb.vyrbus.model.bean.Manifiesto;
+import pe.itsb.vyrbus.model.bean.MovimientoPasajes;
 import pe.itsb.vyrbus.model.bean.PasajeroFrecuente;
 import pe.itsb.vyrbus.model.bean.PuntosPasajeroFrecuente;
 import pe.itsb.vyrbus.model.bean.Ruta;
@@ -48,6 +51,7 @@ import pe.itsb.vyrbus.model.dao.ControlEspecieValoradaDAO;
 import pe.itsb.vyrbus.model.dao.EspecieValoradaDAO;
 import pe.itsb.vyrbus.model.dao.ItinerarioDAO;
 import pe.itsb.vyrbus.model.dao.LineaCreditoClienteDAO;
+import pe.itsb.vyrbus.model.dao.MovimientoPasajesDAO;
 import pe.itsb.vyrbus.model.dao.PasajeroDAO;
 import pe.itsb.vyrbus.model.dao.PasajeroFrecuenteDAO;
 import pe.itsb.vyrbus.model.dao.PuntosPasajeroFrecuenteDAO;
@@ -63,6 +67,7 @@ import pe.itsb.vyrbus.service.exceptions.NumeroBoletoDuplicadoException;
 import pe.itsb.vyrbus.service.exceptions.TiempoExpiracionBloqueoException;
 import pe.itsb.vyrbus.service.fe.Result;
 import pe.itsb.vyrbus.service.locator.ServiceLocator;
+import pe.itsb.vyrbus.service.mappers.GpsComprobante;
 import pe.itsb.vyrbus.service.mappers.ResumenAnulacionPostergacion;
 import pe.itsb.vyrbus.service.mappers.ResumenVentas;
 import pe.itsb.vyrbus.service.mappers.VentasPiloto;
@@ -92,7 +97,15 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 	private VentaPasajesHistorialDAO ventaPasajesHistorialDAO;
 	private PasajeroDAO pasajeroDAO;
 	private ClienteDAO clienteDAO;
+	private MovimientoPasajesDAO movimientoPasajesDAO;
 
+	public MovimientoPasajesDAO getMovimientoPasajesDAO() {
+		return movimientoPasajesDAO;
+	}
+	
+	public void setMovimientoPasajesDAO(MovimientoPasajesDAO movimientoPasajesDAO) {
+		this.movimientoPasajesDAO = movimientoPasajesDAO;
+	}
 	/**
 	 * @return the titanDAO
 	 */
@@ -427,6 +440,11 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 					guardarPuntosPaxFree(paxfree, ventaPasaje);
 				}
 			}
+			
+			//Guarda el GPS - jabanto - 06/07/2024
+			if(ventaPasaje.getMovimientoPasajes() !=null) {
+				getMovimientoPasajesDAO().save(ventaPasaje.getMovimientoPasajes());
+			}
 
 			/* Valida si el DNI del pasajero es o no valido seg�n validacion previa con el reniec  02/06/2015*/
 			Util.validarValidacionDNIReniec(ventaPasaje);
@@ -620,6 +638,16 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 						//Genera puntos ganados
 						guardarPuntosPaxFree(paxfree, ventaPasaje);
 					}
+				}
+				
+				//Guarda el GPS - jabanto - 06/07/2024
+				if(ventaPasaje.getMovimientoPasajes() !=null) {
+					MovimientoPasajes movimientoPasajes = ventaPasaje.getMovimientoPasajes();
+					if(movimientoPasajes.getVentaPasaje() == null ) {
+						// Ocurre cuanto por primera vez se crea la venta/reserva
+						movimientoPasajes.setVentaPasaje(ventaPasaje);
+					}						
+					getMovimientoPasajesDAO().save(movimientoPasajes);
 				}
 			}
 
@@ -817,7 +845,12 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 						guardarPuntosPaxFree(paxfree, ventaPasaje);
 					}
 				}
-
+				
+				//Guarda el GPS - jabanto - 06/07/2024
+				if(ventaPasaje.getMovimientoPasajes() !=null) {
+					getMovimientoPasajesDAO().save(ventaPasaje.getMovimientoPasajes());
+				}
+				
 				/* Valida si el DNI del pasajero es o no valido seg�n validacion previa con el reniec  02/06/2015*/
 				Util.validarValidacionDNIReniec(ventaPasaje);
 			}
@@ -1013,6 +1046,12 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 		ventaDuplicado.setNumeroControl(nControl);
 		/*	Actualizando el numero de control a la venta realizada	*/
 		getVentaPasajesDAO().update(ventaDuplicado);
+		
+		//Guarda el GPS - jabanto - 06/07/2024
+		if(ventaDuplicado.getMovimientoPasajes() !=null) {
+			getMovimientoPasajesDAO().save(ventaDuplicado.getMovimientoPasajes());
+		}
+		
 		result = Constantes.CORRECT;
 		return result;
 	}
@@ -1029,7 +1068,8 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 		if(movimiento.getTipoComprobante().getId().intValue()==Constantes.ID_TIPCOM_BOLETO_VIAJE ||
 				movimiento.getTipoComprobante().getId().intValue()==Constantes.ID_TIPCOM_RECIBO_CAJA ||
 				movimiento.getTipoComprobante().getId().intValue()==Constantes.ID_TIPCOM_VOUCHER_AGENCIA_VIAJES ||
-				movimiento.getTipoComprobante().getId().intValue()==Constantes.ID_TIPCOM_VOUCHER_CORPORATIVO){
+				movimiento.getTipoComprobante().getId().intValue()==Constantes.ID_TIPCOM_VOUCHER_CORPORATIVO || 
+				movimiento.getTipoComprobante().getId().intValue()==Constantes.ID_TIPCOM_GUIA){
 
 			/*Boletos y recibos de caja y/o vouchers*/
 			getVentaPasajesDAO().update(movimiento);
@@ -1045,16 +1085,16 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 				/*Realiza solamente la anulacion de la nota de credito o debito*/
 
 				//Primero anula en el WSFE
-				Result result=WSFE.anularComprobante(movimiento);
-				if(result.isIsCorrect()) //{
+				Result result = WSFE.anularComprobante(movimiento);
+				if(result.isIsCorrect()) {
+					movimiento.setFechaModificacion(new Date());
 					getVentaPasajesDAO().update(movimiento);
 
 					/*Activa el comprobante asociado a la nota de credito o debito*/
 //					if(movimiento.getTipoComprobante().getId().intValue()==Constantes.ID_TIPCOM_NOTA_CREDITO ||
 //							movimiento.getTipoComprobante().getId().intValue()==Constantes.ID_TIPCOM_NOTA_DEBITO){
 //					}
-//				}
-
+				}
 				else
 					throw new Exception("No se pudo realizar la anulación, debido a que no se obtuvo respuesta del servicio F.E.");
 			}else{
@@ -1083,6 +1123,53 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 					getVentaPasajesDAO().activarReciboCaja(reciboCaja.getId());
 				}
 			}
+		}
+		
+		// Valida si es un Exceso de Equipajes
+		if(movimiento.getTipoTransaccion().equals(Constantes.TIPO_OPERACION_EXCESO)) {
+			// Busca el identificador del equipaje
+			TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+			criteriosBusqueda.put("ventaPasajeExceso", movimiento);
+			criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
+			Long equipajeId = ServiceLocator.getDetalleEquipajeManager().buscarPorX(criteriosBusqueda, null).stream()
+					.map(DetalleEquipaje::getEquipaje)
+					.map(Equipaje::getId)
+					.findAny()
+					.orElse(null);
+			
+			if(equipajeId != null) {
+				Usuario usuario = (Usuario)Executions.getCurrent().getSession().getAttribute(Constantes.ATRIBUTO_USUARIO);
+				// Busca y anula el equipaje
+				Equipaje equipaje = ServiceLocator.getEquipajeManager().buscarPorId(equipajeId);
+				equipaje.setEstadoRegistro(Constantes.VALUE_INACTIVO);
+				UtilData.auditarRegistro(equipaje, true, usuario, Executions.getCurrent());
+				ServiceLocator.getEquipajeManager().actualizar(equipaje);
+				
+				// Busca y anula el detalle del equipaje
+				criteriosBusqueda.remove("ventaPasajeExceso");
+				criteriosBusqueda.put("equipaje", equipaje);
+				ServiceLocator.getDetalleEquipajeManager().buscarPorX(criteriosBusqueda, null).stream()
+					.forEach(detequi -> {
+						try {
+							detequi.setEstadoRegistro(Constantes.VALUE_INACTIVO);
+							UtilData.auditarRegistro(detequi, true, usuario, Executions.getCurrent());
+							ServiceLocator.getDetalleEquipajeManager().actualizar(detequi);
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+					});
+			}			
+		}
+		
+		//Guarda el GPS - jabanto - 06/07/2024
+		if(movimiento.getMovimientoPasajes() !=null) {
+			MovimientoPasajes movimientoPasajes = movimiento.getMovimientoPasajes();
+			if (notaCredito != null) {
+				String motivoMovimiento = movimientoPasajes.getOperacion();
+				motivoMovimiento += " - N.C. " + notaCredito.getNumeroBoleto();
+				movimientoPasajes.setOperacion(motivoMovimiento);
+			}				
+			getMovimientoPasajesDAO().save(movimientoPasajes);
 		}
 
 
@@ -1389,6 +1476,11 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 			tmp.setNumeroAsiento(ventaPasaje.getNumeroAsiento());
 			tmp.setNumeroPiso(ventaPasaje.getNumeroPiso());
 			getTmpOcupacionAsientosDAO().desbloquearAsiento(tmp);
+			
+			//Guarda el GPS - jabanto - 06/07/2024
+			if(ventaPasaje.getMovimientoPasajes() !=null) {		
+				getMovimientoPasajesDAO().save(ventaPasaje.getMovimientoPasajes());
+			}
 
 //			result = Constantes.CORRECT;
 		}catch(CapacityExceedsException ceex){
@@ -1654,6 +1746,11 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 
 			if(boletoPostergar.getFechaPartida()!=null)
 				borrarAsientoTmpOcupacion(boletoPostergar);
+			
+			//Guarda el GPS - jabanto - 06/07/2024
+			if(boletoPostergar.getMovimientoPasajes() !=null) {		
+				getMovimientoPasajesDAO().save(boletoPostergar.getMovimientoPasajes());
+			}
 
 			/* Valida si el DNI del pasajero es o no valido seg�n validacion previa con el reniec  02/06/2015*/
 			Util.validarValidacionDNIReniec(boletoPostergar);
@@ -1890,6 +1987,17 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 				
 				if(notaCredito!=null)
 					listNotasCredito.add(notaCredito);
+				
+				//Guarda el GPS - jabanto - 06/07/2024
+				if(boletoPostergar.getMovimientoPasajes() !=null) {
+					MovimientoPasajes movimientoPasajes = boletoPostergar.getMovimientoPasajes();
+					if(notaCredito != null) {
+						String operacion = movimientoPasajes.getOperacion();
+						operacion += " - N.C. "+ notaCredito.getNumeroBoleto();
+						movimientoPasajes.setOperacion(operacion);
+					}
+					getMovimientoPasajesDAO().save(movimientoPasajes);
+				}
 			}
 
 			return listNotasCredito;
@@ -1997,7 +2105,7 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 		ventaReimprimir.setFechaInsercion(Util.StringtoDate(getVentaPasajesDAO().getDateSystem(), Constantes.DATE_TIME_FORMAT));
 		getVentaPasajesDAO().update(ventaReimprimir);
 
-
+		
 		/*##End Begin 28/10/2016 - jabanto*/
 		/*	Actualizando el correlativo de las especies valoradas	*/
 //		int position = ventaReimprimir.getNumeroBoleto().indexOf("-");
@@ -2071,9 +2179,20 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 			/***********************************************/
 
 			if(emitirNota){
-				notaCredito=generarNotaCredito(venta.getVentaPasaje(), venta.getTipoNota(),false, false);
-				if(notaCredito==null)
+				notaCredito = generarNotaCredito(venta.getVentaPasaje(), venta.getTipoNota(),false, false);
+				if(notaCredito == null)
 					throw new Exception("Ha ocurrido un error al emitir la Nota de Cr�dito...");
+			}
+			
+			//Guarda el GPS - jabanto - 06/07/2024
+			if(venta.getMovimientoPasajes() !=null) {
+				MovimientoPasajes movimientoPasajes = venta.getMovimientoPasajes();
+				if(notaCredito != null) {
+					String operacion = movimientoPasajes.getOperacion();
+					operacion += " - N.C. "+ notaCredito.getNumeroBoleto();
+					movimientoPasajes.setOperacion(operacion);
+				}
+				getMovimientoPasajesDAO().save(movimientoPasajes);
 			}
 		}
 
@@ -2286,6 +2405,11 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 			Usuario usuario=(Usuario) Executions.getCurrent().getSession().getAttribute(Constantes.ATRIBUTO_USUARIO);
 			UtilData.auditarRegistro(ventaPasaje, true, usuario, Executions.getCurrent());
 			getVentaPasajesDAO().update(ventaPasaje);
+			
+			//Guarda el GPS - jabanto - 06/07/2024
+			MovimientoPasajes movimientoPasajes = UtilData.createTracking(ventaPasaje, "CAMBIO DE ASIENTO");
+			getMovimientoPasajesDAO().save(movimientoPasajes);
+			
 
 		}catch(CapacityExceedsException ceex){
 			throw new CapacityExceedsException();
@@ -2846,9 +2970,10 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 			}
 
 			/*Valida si debe o no aplicar una nota de credito al comprobante*/
+			VentaPasaje notaCredito = null;
 			if(aplicarNotaCredito){
 				TipoNota tipoNota=ServiceLocator.getTipoNotaManager().buscarPorId((long)Constantes.ID_TIPNOTA_ANULACION);
-				VentaPasaje notaCredito = generarNotaCredito(ventaPasaje, tipoNota, anularMovimiento, true,liquidacion);
+				notaCredito = generarNotaCredito(ventaPasaje, tipoNota, anularMovimiento, true,liquidacion);
 				notasCredito.add(notaCredito);
 
 				/*Coloca al comprobante en estado pagado*/
@@ -2901,6 +3026,17 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 				ServiceLocator.getPuntosPasajeroFrecuenteManager().restaurarPuntos(ventaPasaje.getVentaOriginal()); //Restaura los puntos utilizados para la cortesia por puntos
 			}else if(ventaPasaje.getFormaPago().getId().intValue()!=Constantes.ID_FORPAG_CORTESIA){
 				anularPuntosPaxFree(ventaPasaje);//Realiza la anulacion de los puntos del pax fre
+			}
+			
+			//Guarda el GPS - jabanto - 06/07/2024
+			if(ventaPasaje.getMovimientoPasajes() !=null) {
+				MovimientoPasajes movimientoPasajes = ventaPasaje.getMovimientoPasajes();
+				if(notaCredito != null) {
+					String operacion = movimientoPasajes.getOperacion();
+					operacion += " - N.C. "+ notaCredito.getNumeroBoleto();
+					movimientoPasajes.setOperacion(operacion);
+				}
+				getMovimientoPasajesDAO().save(movimientoPasajes);
 			}
 		}
 
@@ -3296,6 +3432,15 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 			Integer localidad_idOrigen, Integer localidad_idDestino) throws Exception {
 		
 		return getVentaPasajesDAO().buscarAvanceVentasByTarifarioByAsiento(fecha, servicio_id, localidad_idOrigen, localidad_idDestino);
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.itsb.vyrbus.service.business.VentaPasajesManager#buscarGpsComprobante(java.lang.Long)
+	 */
+	@Override
+	public List<GpsComprobante> buscarGpsComprobante(Long idVentaPasaje) {
+		
+		return getVentaPasajesDAO().buscarGpsComprobante(idVentaPasaje);
 	}
 
 //	private String generarBoleto(String numBoleto, Integer idTipoComprobante, Integer idUsuarioHW) throws Exception{

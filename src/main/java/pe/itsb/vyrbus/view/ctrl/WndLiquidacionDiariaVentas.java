@@ -58,6 +58,7 @@ import org.zkoss.zul.Vlayout;
 import org.zkoss.zul.Window;
 
 import pe.itsb.vyrbus.model.bean.Agencia;
+import pe.itsb.vyrbus.model.bean.MovimientoPasajes;
 import pe.itsb.vyrbus.model.bean.OperadorTarjetaCredito;
 import pe.itsb.vyrbus.model.bean.Rol;
 import pe.itsb.vyrbus.model.bean.TarjetaCredito;
@@ -1595,17 +1596,25 @@ public class WndLiquidacionDiariaVentas extends WndBase implements Serializable 
 		button.setClass("btnCommandM");
 		button.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
 			@Override
-			public void onEvent(Event e){
+			public void onEvent(Event e) throws Exception{
 				if(txtMotivoAnulacion.getText().trim().isEmpty()){
 					DlgMessage.information(Messages.getString("WndLiquidacionDiariaVentas.information.noMotivoAnulacion"),txtMotivoAnulacion);
 					return;
 				}
+				
+				/************** Tracking (GPS) **********************/
+				String motivoMovimiento = "ANULACION";
+				motivoMovimiento += " ("+ txtMotivoAnulacion.getText().trim().toUpperCase() +")";
+				MovimientoPasajes movimientoPasajes = UtilData.createTracking(ventaOriginal, motivoMovimiento);
+				ventaOriginal.setMovimientoPasajes(movimientoPasajes);
+				/****************************************************/
+				
 				Messagebox.show(Messages.getString("WndLiquidacionDiariaVentas.information.confirmarAnulacion"), DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_YESNO, Messagebox.QUESTION, new EventListener<Event>() {
 					@Override
 					public void onEvent(Event e){
 						try{
 							if(e.getName().equals("onYes")){
-								realizarAnulacion(ventaOriginal, wndAnular,txtMotivoAnulacion.getText().trim().toUpperCase());
+								realizarAnulacion(ventaOriginal, wndAnular, txtMotivoAnulacion.getText().trim().toUpperCase());
 							}
 						}catch(Exception ex){
 							ex.printStackTrace();

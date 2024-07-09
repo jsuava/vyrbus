@@ -14,6 +14,7 @@ import pe.itsb.vyrbus.model.bean.TarifarioByAsientoByAvanceVentas;
 import pe.itsb.vyrbus.model.bean.TipoNota;
 import pe.itsb.vyrbus.model.bean.Usuario;
 import pe.itsb.vyrbus.model.bean.VentaPasaje;
+import pe.itsb.vyrbus.service.mappers.GpsComprobante;
 import pe.itsb.vyrbus.service.mappers.ResumenAnulacionPostergacion;
 import pe.itsb.vyrbus.service.mappers.ResumenVentas;
 import pe.itsb.vyrbus.service.mappers.VentasPiloto;
@@ -700,4 +701,10 @@ public interface VentaPasajesManager {
 	 * @throws Exception
 	 */
 	public List<TarifarioByAsientoByAvanceVentas>buscarAvanceVentasByTarifarioByAsiento(String fecha, Integer servicio_id, Integer localidad_idOrigen, Integer localidad_idDestino)throws Exception;
+	/**
+	 * Busca el GPS de un comprobante
+	 * @param idVentaPasaje	: ID de la venta de pasaje
+	 * @return
+	 */
+	public List<GpsComprobante> buscarGpsComprobante(Long idVentaPasaje);
 }

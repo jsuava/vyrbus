@@ -86,6 +86,7 @@
 			<tab label="Pago"/>
 			<tab id="tbCortesia" label="Cortesia"  />
 			<tab id="tbDoctReferencia" />
+			<tab label="GPS"/>
 		</tabs>
 		<tabpanels>
 			<tabpanel>
@@ -298,6 +299,30 @@
 						</row>
 					</rows>
 				</grid>
+			</tabpanel>
+			<tabpanel>
+				<listbox id="lbxGps" height="200px"  class="z-listbox-header-bg"  mold="paging" pageSize="10"  >
+					<listhead class="z-listbox-header-bg" sizable="false">
+						<listheader label="#" width="20px" style="color: #ffffff;" />
+						<listheader label="ID" width="30px" style="color: #ffffff;" visible="false" />
+						<listheader label="IDVENPAS" width="30px" style="color: #ffffff;" visible="false" />
+						<listheader label="EMISION" width="65px" style="color: #ffffff;"/>
+						<listheader label="TIPO PAGO" width="70px" style="color: #ffffff;"/>
+						<listheader label="COMPROBANTE" width="90px" style="color: #ffffff;"/>
+						<listheader label="IMPORTE" width="60px" style="color: #ffffff;" />
+						<listheader label="SERVICIO" width="80px" style="color: #ffffff;"/>
+						<listheader label="RUTA" width="150px" style="color: #ffffff;" />
+						<listheader label="EMBARQUE" width="80px" style="color: #ffffff;"/>
+						<listheader label="F. VIAJE" width="65px" style="color: #ffffff;"/>
+						<listheader label="H. EMB." width="50px" style="color: #ffffff;"/>
+						<listheader label="ASI." width="30px" style="color: #ffffff;"/>
+						<listheader label="PASAJERO" width="250px" style="color: #ffffff;"/>
+						<listheader label="DOC. IDE." width="60px" style="color: #ffffff;"/>
+						<listheader label="FEC. OPE." width="100px" style="color: #ffffff;"/>
+						<listheader label="USUARIO" width="60px" style="color: #ffffff;"/>
+						<listheader label="ESTADO" width="250px" style="color: #ffffff;"/>
+					</listhead>
+				</listbox>			
 			</tabpanel>
 		</tabpanels>
 	</tabbox>

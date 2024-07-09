@@ -20,12 +20,12 @@
                 <param name="sequence">SEQ_VRTCTRLESPVAL_ID</param>
             </generator>
         </id>
-        <many-to-one name="usuarioHardware" class="pe.itsb.vyrbus.model.bean.UsuarioHardware" update="false" insert="false" fetch="select">
-            <column name="USUHARD_ID" precision="5" scale="0" not-null="true">
+        <many-to-one name="usuarioHardware" class="pe.itsb.vyrbus.model.bean.UsuarioHardware" fetch="select">
+            <column name="USUHARD_ID" precision="5" scale="0">
                 <comment>Identificador unico de la entidad, tamanio de la clave primaria 5.</comment>
             </column>
         </many-to-one>
-        <many-to-one name="tipoComprobante" class="pe.itsb.vyrbus.model.bean.TipoComprobante" update="false" insert="false" fetch="select">
+        <many-to-one name="tipoComprobante" class="pe.itsb.vyrbus.model.bean.TipoComprobante" fetch="select">
             <column name="TIPCOM_ID" precision="2" scale="0" not-null="true">
                 <comment>Identificador unico de la entidad, tamanio de la clave primaria 2.</comment>
             </column>
@@ -40,7 +40,7 @@
                 <comment>Identificador unico de la entidad, tamanio de la clave primaria 7.</comment>
             </column>
         </many-to-one>
-        <property name="serie" type="java.lang.String" update="false" insert="false">
+        <property name="serie" type="java.lang.String">
             <column name="C_SERIE" length="4" not-null="true">
                 <comment>Numero de serie de las especies valoradas.</comment>
             </column>

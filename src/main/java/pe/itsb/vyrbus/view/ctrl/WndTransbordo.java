@@ -25,6 +25,7 @@ import org.zkoss.zul.Window;
 
 import pe.itsb.vyrbus.model.bean.DetalleItinerario;
 import pe.itsb.vyrbus.model.bean.Itinerario;
+import pe.itsb.vyrbus.model.bean.MovimientoPasajes;
 import pe.itsb.vyrbus.model.bean.TmpOcupacionAsientos;
 import pe.itsb.vyrbus.model.bean.TmpOcupacionAsientosID;
 import pe.itsb.vyrbus.model.bean.Transbordo;
@@ -1498,6 +1499,13 @@ public class WndTransbordo extends WndBase implements Serializable{
 		transbordo.setEstadoRegistro(Constantes.VALUE_ACTIVO);
 		UtilData.auditarRegistro(transbordo, getUsuario(), Executions.getCurrent());
 		ServiceLocator.getTransbordoManajer().guardar(transbordo);
+		
+		/************** Tracking (GPS) **********************/
+		VentaPasaje vtaPasajeTransbordo = ServiceLocator.getVentaPasajesManager().buscarVentaById(ventaPasaje.getId());
+		String motivoMovimiento = "TRANSBORDO";
+		MovimientoPasajes movimientoPasajes = UtilData.createTracking(vtaPasajeTransbordo, motivoMovimiento);
+		ServiceLocator.getMovimientoPasajesManager().guardar(movimientoPasajes);
+		/****************************************************/
 	}
 
 

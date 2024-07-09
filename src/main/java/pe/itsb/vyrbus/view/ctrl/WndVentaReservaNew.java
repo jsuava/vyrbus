@@ -101,6 +101,7 @@ import pe.itsb.vyrbus.model.bean.ItinerarioAgenciaPartida;
 import pe.itsb.vyrbus.model.bean.Localidad;
 import pe.itsb.vyrbus.model.bean.Manifiesto;
 import pe.itsb.vyrbus.model.bean.MapaBus;
+import pe.itsb.vyrbus.model.bean.MovimientoPasajes;
 import pe.itsb.vyrbus.model.bean.OperadorTarjetaCredito;
 import pe.itsb.vyrbus.model.bean.Pasajero;
 import pe.itsb.vyrbus.model.bean.Personal;
@@ -1547,6 +1548,21 @@ public class WndVentaReservaNew  extends WndBase {
 									if(e.getName().equals("onYes")){
 										
 										WSFE.reimprimirComprobante(listVentasReimpresion, wndVentaReservaNew, Constantes.NUMERO_COPIAS_COMPROBANTE_PASAJES);
+										
+										/************** Tracking (GPS) **********************/
+										listVentasReimpresion.forEach(vta -> {
+											try {	
+												VentaPasaje ventaPasaje = ServiceLocator.getVentaPasajesManager().buscarVentaById(vta.getId());
+												String motivoMovimiento = "REIMPRESION";										
+												MovimientoPasajes movimientoPasajes = UtilData.createTracking(ventaPasaje, motivoMovimiento);
+												ServiceLocator.getMovimientoPasajesManager().guardar(movimientoPasajes);
+											} catch (Exception e1) {
+												e1.printStackTrace();
+												log.error(e1);
+												DlgMessage.error(e1.getMessage());
+											}								
+										});
+										/****************************************************/
 									}
 								}catch(Exception ex) {
 									ex.printStackTrace();
@@ -3122,6 +3138,21 @@ public class WndVentaReservaNew  extends WndBase {
 					if(e.getName().equals("onYes")){
 						
 						WSFE.reimprimirComprobante(listVentasReimpresion, wndVentaReservaNew, Constantes.NUMERO_COPIAS_COMPROBANTE_PASAJES);
+												
+						/************** Tracking (GPS) **********************/
+						listVentasReimpresion.forEach(vta -> {
+							try {	
+								VentaPasaje ventaPasaje = ServiceLocator.getVentaPasajesManager().buscarVentaById(vta.getId());
+								String motivoMovimiento = "REIMPRESION";										
+								MovimientoPasajes movimientoPasajes = UtilData.createTracking(ventaPasaje, motivoMovimiento);
+								ServiceLocator.getMovimientoPasajesManager().guardar(movimientoPasajes);
+							} catch (Exception e1) {
+								e1.printStackTrace();
+								log.error(e1);
+								DlgMessage.error(e1.getMessage());
+							}								
+						});
+						/****************************************************/
 					}
 				}catch(Exception ex) {
 					ex.printStackTrace();
@@ -3673,10 +3704,18 @@ public class WndVentaReservaNew  extends WndBase {
 				String observaciones = null;
 				Double importePagado = .00;
 				Date fechaExpiraReserva = null;
+				boolean isConfirmaReserva = false;
 				
 				VentaPasaje ventaPasajeRef = null;
 				if(detalleItinerario.getObjAsiento().getVentaPasaje()!=null)
 					ventaPasajeRef = detalleItinerario.getObjAsiento().getVentaPasaje();
+				
+				// Valida si es una confirmacion de reserva
+				if(ventaPasajeRef!=null && ventaPasajeRef.getTipoTransaccion().equals(Constantes.TIPO_OPERACION_RESERVA)) {
+					isConfirmaReserva = true;
+				}
+				
+				// Crea una nueva instacia de VentaPasajes
 				ventaPasaje_x = new VentaPasaje();			
 				
 				if(detalleItinerario.getEsIda()) {
@@ -3711,7 +3750,8 @@ public class WndVentaReservaNew  extends WndBase {
 					ventaPasaje_x.setFechaExpiracionReserva(fechaExpiraReserva);					
 				}else {
 					//Cuando es una confimación de reserva, valida que esta aún este disponible.
-					if(ventaPasajeRef!=null && ventaPasajeRef.getTipoTransaccion().equals(Constantes.TIPO_OPERACION_RESERVA)) {
+//					if(ventaPasajeRef!=null && ventaPasajeRef.getTipoTransaccion().equals(Constantes.TIPO_OPERACION_RESERVA)) {
+					if(isConfirmaReserva) {
 						VentaPasaje reserva = ServiceLocator.getVentaPasajesManager().buscarPorId(ventaPasajeRef.getId());
 						int tipoMovimientoId = reserva.getTipoMovimiento().getId();
 						if(tipoMovimientoId==Constantes.ID_TIPMOV_ANULACION_SISTEMA || tipoMovimientoId==Constantes.ID_TIPMOV_ANULACION) {
@@ -3787,7 +3827,18 @@ public class WndVentaReservaNew  extends WndBase {
 				ventaPasaje_x.setNumeroControl("T00000");
 				ventaPasaje_x.setObservaciones(observaciones);
 				UtilData.auditarRegistro(ventaPasaje_x, false, getUsuario(), Executions.getCurrent());
-
+				
+				/************** Tracking (GPS) **********************/
+				String motivoMovimiento = (isReserva? "RESERVA" : "VENTA");
+				if(isConfirmaReserva) {
+					motivoMovimiento += " (CONFIRMACION DE RESERVA)";
+				}
+				if(!isReserva) {
+					MovimientoPasajes movimientoPasajes = UtilData.createTracking(ventaPasaje_x, motivoMovimiento);
+					ventaPasaje_x.setMovimientoPasajes(movimientoPasajes);	
+				}				
+				/****************************************************/
+				
 				listVentas.add(ventaPasaje_x);
 			}
 			if(isVenta)
@@ -3824,6 +3875,13 @@ public class WndVentaReservaNew  extends WndBase {
 				postergacionFA.setUsuarioHardware(getUsuarioHardware());	
 //				postergacionFA.setObservaciones(postergacionFA.getObservaciones()!=null?postergacionFA.getObservaciones()+";"+"POSTERGACION F.A.":"POSTERGACION F.A.");
 				UtilData.auditarRegistro(postergacionFA, true, getUsuario(), Executions.getCurrent());
+				
+				/************** Tracking (GPS) **********************/
+				String motivoMovimiento = "POSTERGACION F.A.";
+				MovimientoPasajes movimientoPasajes = UtilData.createTracking(postergacionFA, motivoMovimiento);
+				postergacionFA.setMovimientoPasajes(movimientoPasajes);
+				/****************************************************/
+				
 				listVentas.add(postergacionFA);
 			}
 			messageConfirmationUser = "WndVentaReserva.question.postergacionFA";
@@ -3846,6 +3904,13 @@ public class WndVentaReservaNew  extends WndBase {
 				ventaPasajeCambioNombre.setUsuarioHardware(getUsuarioHardware());
 //				ventaPasajeCambioNombre.setObservaciones(ventaPasajeCambioNombre.getObservaciones()!=null?ventaPasajeCambioNombre.getObservaciones()+";"+"CAMBIO DE NOMBRE":"CAMBIO DE NOMBRE");				
 				UtilData.auditarRegistro(ventaPasajeCambioNombre, true, getUsuario(), Executions.getCurrent());
+				
+				/************** Tracking (GPS) **********************/
+				String motivoMovimiento = "CAMBIO DE NOMBRE";
+				MovimientoPasajes movimientoPasajes = UtilData.createTracking(ventaPasajeCambioNombre, motivoMovimiento);
+				ventaPasajeCambioNombre.setMovimientoPasajes(movimientoPasajes);
+				/****************************************************/
+				
 				listVentas.add(ventaPasajeCambioNombre);
 			}
 			messageConfirmationUser = "WndVentaReserva.question.cambioNombre";
@@ -3920,7 +3985,8 @@ public class WndVentaReservaNew  extends WndBase {
 					confirmacionFA.setTarifa(ventaPasaje_x.getTarifa());
 					confirmacionFA.setDescuento(ventaPasaje_x.getDescuento());
 					confirmacionFA.setImportePagado(ventaPasaje_x.getImportePagado());
-					confirmacionFA.setFormaPago(ventaPasaje_x.getFormaPago());	
+					confirmacionFA.setFormaPago(ventaPasaje_x.getFormaPago());
+					confirmacionFA.setTipoFormaPago(ventaPasaje_x.getTipoFormaPago());
 				}
 				
 				confirmacionFA.setEstadoDocumento(Constantes.ESTADO_DOCUMENTO_PAGADO);
@@ -3934,6 +4000,12 @@ public class WndVentaReservaNew  extends WndBase {
 					UtilData.auditarRegistro(confirmacionFA, false, getUsuario(), Executions.getCurrent());
 				else
 					UtilData.auditarRegistro(confirmacionFA, true, getUsuario(), Executions.getCurrent());	
+				
+				/************** Tracking (GPS) **********************/
+				String motivoMovimiento = "CONFIRMACION F.A.";
+				MovimientoPasajes movimientoPasajes = UtilData.createTracking(confirmacionFA, motivoMovimiento);
+				confirmacionFA.setMovimientoPasajes(movimientoPasajes);
+				/****************************************************/
 				
 				listVentas.add(confirmacionFA);
 			}
@@ -6401,11 +6473,19 @@ public class WndVentaReservaNew  extends WndBase {
 		button.setClass("btnCommandM");
 		button.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
 			@Override
-			public void onEvent(Event e){
+			public void onEvent(Event e) throws Exception{
 				if(txtMotivoAnulacion.getText().trim().isEmpty()){
 					DlgMessage.information(Messages.getString("WndLiquidacionDiariaVentas.information.noMotivoAnulacion"),txtMotivoAnulacion);
 					return;
 				}
+				
+				/************** Tracking (GPS) **********************/
+				String motivoMovimiento = "ANULACION VTA";
+				motivoMovimiento += " ("+ txtMotivoAnulacion.getText().trim().toUpperCase() +")";
+				MovimientoPasajes movimientoPasajes = UtilData.createTracking(ventaOriginal, motivoMovimiento);
+				ventaOriginal.setMovimientoPasajes(movimientoPasajes);
+				/****************************************************/
+				
 				Messagebox.show(Messages.getString("WndLiquidacionDiariaVentas.information.confirmarAnulacion"), DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_YESNO, Messagebox.QUESTION, new EventListener<Event>() {
 					@Override
 					public void onEvent(Event e){
@@ -7145,6 +7225,28 @@ public class WndVentaReservaNew  extends WndBase {
 		postergacion.setEnviadoSFE(null);
 		postergacion.setFechaEnvioSFE(null);
 		postergacion.setObservaciones(!txtPostObservaciones.getText().trim().isEmpty()? txtPostObservaciones.getText().trim().toUpperCase(): null);
+		
+		/************** Tracking (GPS) **********************/
+		String motivoMovimiento = "";
+		
+		// Valida si es una postergacion
+		if(!postergacion.getItinerario().getId().equals(ventaOriginal.getItinerario().getId())) {
+			motivoMovimiento = "POSTERGACION";
+		}else {
+			// Valida si es un cambio de asiento
+			motivoMovimiento = "CAMBIO DE ASIENTO";
+		}
+		
+		// Valida si es cambio de servicio
+		if(!postergacion.getServicio().getId().equals(ventaOriginal.getServicio().getId())) {
+			motivoMovimiento += (motivoMovimiento.length() > 0? ", " : "");
+			motivoMovimiento += "CAMBIO DE SERVICIO";
+		}
+		
+		MovimientoPasajes movimientoPasajes = UtilData.createTracking(postergacion, motivoMovimiento);
+		postergacion.setMovimientoPasajes(movimientoPasajes);
+		/****************************************************/
+		
 		UtilData.auditarRegistro(postergacion,getUsuario(), Executions.getCurrent());
 		
 		Messagebox.show(Messages.getString("WndPostergacion.information.confirmacionPostergacion"), DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_YESNO, Messagebox.QUESTION, new EventListener<Event>() {

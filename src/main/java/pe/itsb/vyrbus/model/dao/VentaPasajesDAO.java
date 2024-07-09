@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
+import pe.itsb.vyrbus.service.mappers.GpsComprobante;
 
 import pe.itsb.vyrbus.model.bean.Agencia;
 import pe.itsb.vyrbus.model.bean.EntidadEncomiendaPasajes;
@@ -567,4 +568,11 @@ public interface VentaPasajesDAO extends GenericDAO {
 	 * @throws Exception
 	 */
 	public List<TarifarioByAsientoByAvanceVentas>buscarAvanceVentasByTarifarioByAsiento(String fecha, Integer servicio_id, Integer localidad_idOrigen, Integer localidad_idDestino)throws Exception;
+	
+	/**
+	 * Busca el GPS de un comprobante
+	 * @param idVentaPasaje	: ID de la venta de pasaje
+	 * @return
+	 */
+	public List<GpsComprobante> buscarGpsComprobante(Long idVentaPasaje);
 }

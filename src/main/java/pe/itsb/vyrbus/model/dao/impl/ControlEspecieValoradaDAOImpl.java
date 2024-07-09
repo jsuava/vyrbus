@@ -151,14 +151,15 @@ public class ControlEspecieValoradaDAOImpl extends GenericDAOImpl implements Con
 	@Override
 	public List<ControlEspecieValorada> buscarEspecieValoradas(Integer idAgencia, Integer idTipoComprobante, Integer idUsuarioHarware, Integer idEmpresa){
 		String sql="SELECT TC.TIPCOM_ID,TC.C_DENOMINACION, UH.USUHARD_ID,UH.C_DESCRIPCION, CEV.C_SERIE, CEV.N_CORINI, "+ //0-5
-					       "CEV.N_CORFIN, CEV.N_CORACTUAL, A.AGENCIA_ID, A.C_NOMCOR" +//6-9
-					       ", CEV.AUDFECINS, CEV.AUDUSUINS, CEV.AUDIPINSE, UH.CANVEN_ID, CEV.N_FORMATO, CEV.C_CORSEQ, " + //10-15 
-					       "E.EMPRESA_ID, E.C_RAZSOC, E.C_NOMCOR, E.C_NUMDOC, CTRLESPVAL_ID "+ //16-20
+					       "CEV.N_CORFIN, CEV.N_CORACTUAL, A.AGENCIA_ID, A.C_NOMCOR, " +//6-9
+					       "CEV.AUDFECINS, CEV.AUDUSUINS, CEV.AUDIPINSE, UH.CANVEN_ID, CEV.N_FORMATO, CEV.C_CORSEQ, " + //10-15 
+					       "E.EMPRESA_ID, E.C_RAZSOC, E.C_NOMCOR, E.C_NUMDOC, CTRLESPVAL_ID, N_EXCEQU "+ //16-21
 					"FROM VRTCTRLESPVAL CEV "+
-					"INNER JOIN VRTUSUHARD UH ON (UH.USUHARD_ID=CEV.USUHARD_ID) "+
-					"INNER JOIN VRMAGENCIA A ON (A.AGENCIA_ID=UH.AGENCIA_ID) " +
-					"INNER JOIN VRMTIPCOM TC ON (TC.TIPCOM_ID=CEV.TIPCOM_ID) " +
-					"INNER JOIN VRMEMPRESA E ON (E.EMPRESA_ID=CEV.EMPRESA_ID) "+
+					"LEFT JOIN VRTUSUHARD UH ON (UH.USUHARD_ID = CEV.USUHARD_ID) "+
+					"INNER JOIN VRMAGENCIA A ON (A.AGENCIA_ID = CEV.AGENCIA_ID) " +
+//					"INNER JOIN VRMAGENCIA A ON (A.AGENCIA_ID = nvl(UH.AGENCIA_ID, CEV.AGENCIA_ID)) " +
+					"INNER JOIN VRMTIPCOM TC ON (TC.TIPCOM_ID = CEV.TIPCOM_ID) " +
+					"INNER JOIN VRMEMPRESA E ON (E.EMPRESA_ID = CEV.EMPRESA_ID) "+
 					"WHERE CEV.C_ESTREG='A' AND A.TIPAGE_ID="+Constantes.ID_TIPAGE_TEPSA+" "; //Solo recupera los de TIPO AGENCIA TEPSA, mas no agencias de viaje, corporativos, ect.
 
 		if(idEmpresa!=null)
@@ -179,14 +180,10 @@ public class ControlEspecieValoradaDAOImpl extends GenericDAOImpl implements Con
 			Object[] obj = (Object[])result.get(i);
 
 			ControlEspecieValorada controlEspecieValorada= new ControlEspecieValorada();
-//			ControlEspecieValoradaID controlEspecieValoradaID=new ControlEspecieValoradaID();
-			UsuarioHardware usuarioHardware= new UsuarioHardware();
+//			ControlEspecieValoradaID controlEspecieValoradaID=new ControlEspecieValoradaID();			
 			Agencia agencia= new Agencia();
 			TipoComprobante tipoComprobante=new TipoComprobante();
 			Empresa empresa = new Empresa();			
-
-			CanalVenta canalVenta=new CanalVenta();
-			canalVenta.setId(((BigDecimal)obj[13]).intValue());
 
 			tipoComprobante.setId(((BigDecimal)obj[0]).intValue());
 			tipoComprobante.setDenominacion(obj[1].toString());
@@ -196,10 +193,19 @@ public class ControlEspecieValoradaDAOImpl extends GenericDAOImpl implements Con
 			controlEspecieValorada.setCorrelativoActual(((BigDecimal)obj[7]).longValue());
 			agencia.setId(((BigDecimal)obj[8]).intValue());
 			agencia.setNombreCorto(obj[9].toString());
-			usuarioHardware.setId(((BigDecimal)obj[2]).intValue());
-			usuarioHardware.setDescripcion(obj[3].toString());
-			usuarioHardware.setAgencia(agencia);
-			usuarioHardware.setCanalVenta(canalVenta);
+			UsuarioHardware usuarioHardware = null;
+			if(obj[2] != null) {
+				CanalVenta canalVenta=new CanalVenta();
+				canalVenta.setId(((BigDecimal)obj[13]).intValue());
+				
+				usuarioHardware = new UsuarioHardware();
+				usuarioHardware.setId(((BigDecimal)obj[2]).intValue());
+				usuarioHardware.setDescripcion(obj[3].toString());
+				usuarioHardware.setAgencia(agencia);
+				usuarioHardware.setCanalVenta(canalVenta);
+			}else {								
+				controlEspecieValorada.setAgencia(agencia);
+			}
 //			controlEspecieValoradaID.setIdTipoComprobante(tipoComprobante.getId());
 //			controlEspecieValoradaID.setIdUsuarioHardware(usuarioHardware.getId());
 			empresa.setId(((BigDecimal)obj[16]).intValue());
@@ -217,6 +223,7 @@ public class ControlEspecieValoradaDAOImpl extends GenericDAOImpl implements Con
 			controlEspecieValorada.setIpInsercion(obj[12]!=null? obj[12].toString():" ");
 			controlEspecieValorada.setFormato(((BigDecimal)obj[14]).intValue());
 			controlEspecieValorada.setSecuenciador(obj[15]!=null?obj[15].toString():"");
+			controlEspecieValorada.setExcesoEquipaje(obj[21]!=null? ((BigDecimal)obj[21]).intValue(): 0);
 
 			lstResul.add(controlEspecieValorada);
 		}

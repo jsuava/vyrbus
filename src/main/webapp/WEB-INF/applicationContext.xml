@@ -471,6 +471,9 @@
    	<bean id="tarifaByAsientoPlantillaPromocionDAO" class="pe.itsb.vyrbus.model.dao.impl.TarifaByAsientoPlantillaPromocionDAOImpl">
    		<property name="sessionFactory" ref="sessionFactory" />
    	</bean>
+   	<bean id="movimientoPasajesDAO" class="pe.itsb.vyrbus.model.dao.impl.MovimientoPasajesDAOImpl">
+   		<property name="sessionFactory" ref="sessionFactory" />
+   	</bean>
    	
 <!--    	VENTA DE SEGUROS -->
 	<bean id="ventaSeguroDAO" class="pe.itsb.vyrbus.model.dao.impl.VentaSeguroDAOImpl">
@@ -660,6 +663,7 @@
 		<property name="lineaCreditoClienteDAO" ref="lineaCreditoClienteDAO" />
 		<property name="pasajeroDAO" ref="pasajeroDAO" />
 		<property name="clienteDAO" ref="clienteDAO" />
+		<property name="movimientoPasajesDAO" ref="movimientoPasajesDAO" />
 	</bean>
 	<bean id="ventaPasajesHistorialManager" class="pe.itsb.vyrbus.service.business.impl.VentaPasajesHistorialManagerImpl">
 		<property name="ventaPasajesHistorialDAO" ref="ventaPasajesHistorialDAO"/>		
@@ -913,6 +917,9 @@
 	</bean>
 	<bean id="tarifaByAsientoPlantillaPromocionManager" class="pe.itsb.vyrbus.service.business.impl.TarifaByAsientoPlantillaPromocionManagerImpl">
 		<property name="tarifaByAsientoPlantillaPromocionDAO" ref="tarifaByAsientoPlantillaPromocionDAO" />
+	</bean>
+	<bean id="movimientoPasajesManager" class="pe.itsb.vyrbus.service.business.impl.MovimientoPasajesManagerImpl">
+		<property name="movimientoPasajesDAO" ref="movimientoPasajesDAO" />
 	</bean>
 	
 <!-- 	VENTA DE SEGUROS -->

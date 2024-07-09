@@ -104,6 +104,7 @@ public class VentaPasaje extends GenericBean implements java.io.Serializable, Cl
 	private List<VentaPasaje> lstVentaXRuta;
 	private List<VentaPasaje> lstPasajeros;
 	private Result result;
+	private MovimientoPasajes movimientoPasajes;
 
 	private Double importeDescuentos;
 	private Double importeReal;
@@ -1419,6 +1420,20 @@ public class VentaPasaje extends GenericBean implements java.io.Serializable, Cl
 	 */
 	public void setCodigoDescuento(String codigoDescuento) {
 		this.codigoDescuento = codigoDescuento;
+	}
+
+	/**
+	 * @return the movimientoPasajes
+	 */
+	public MovimientoPasajes getMovimientoPasajes() {
+		return movimientoPasajes;
+	}
+
+	/**
+	 * @param movimientoPasajes the movimientoPasajes to set
+	 */
+	public void setMovimientoPasajes(MovimientoPasajes movimientoPasajes) {
+		this.movimientoPasajes = movimientoPasajes;
 	}
 
 	//No mapeados

@@ -56,6 +56,7 @@ import pe.itsb.vyrbus.model.bean.VentaPasaje;
 import pe.itsb.vyrbus.model.bean.report.RptVentaUsuario;
 import pe.itsb.vyrbus.model.dao.VentaPasajesDAO;
 import pe.itsb.vyrbus.service.locator.ServiceLocator;
+import pe.itsb.vyrbus.service.mappers.GpsComprobante;
 import pe.itsb.vyrbus.service.mappers.ResumenAnulacionPostergacion;
 import pe.itsb.vyrbus.service.mappers.ResumenVentas;
 import pe.itsb.vyrbus.service.mappers.SecuenciaTramo;
@@ -4390,6 +4391,60 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 	
 	
 	return listTarifarioVanceVentas;
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.itsb.vyrbus.model.dao.VentaPasajesDAO#buscarGpsComprobante(java.lang.Long)
+	 */
+	@Override
+	public List<GpsComprobante> buscarGpsComprobante(Long idVentaPasaje) {
+		String sql="SELECT \r\n" + 
+				"       mp.movpas_id ID, vp.venpas_id IDVENPAS, vp.d_fecliq FECEMI, tfp.c_denominacion TIPOPAGO, \r\n" + 
+				"       vp.c_numboleto COMPROBANTE, mp.n_imppag IMPORTE, s.c_denominacion SERVICIO, \r\n" + 
+				"       r.c_origen||'-'||r.c_destino RUTA, a.c_denominacion AGEEMB, mp.c_fecemb FECHAVIAJE, \r\n" + 
+				"       mp.c_horemb HORAVIAJE, mp.n_numpis+1 PISO, mp.n_numasi ASIENTO, p.c_nomape PASAJERO, \r\n" + 
+				"       p.c_numdoc DOCIDE, mp.audfecins FECOPE, mp.audusuins USUARIO, mp.c_desope ESTADO\r\n" + 
+				"FROM \r\n" + 
+				"       vrtmovpas mp \r\n" + 
+				"       INNER JOIN vrtvenpas vp ON (mp.venpas_id = vp.venpas_id)\r\n" + 
+				"       INNER JOIN vrmpasajero p ON (vp.pasajero_id = p.pasajero_id)\r\n" + 
+				"       INNER JOIN vrmruta r ON (mp.ruta_id = r.ruta_id)\r\n" + 
+				"       LEFT JOIN vrmagencia a ON (mp.agencia_idembarque = a.agencia_id)       \r\n" + 
+				"       INNER JOIN vrmservicio s ON (mp.servicio_id = s.servicio_id)\r\n" + 
+				"       INNER JOIN vrmtipforpag tfp ON (mp.tipforpag_id = tfp.tipforpag_id)\r\n" + 
+				"WHERE vp.venpas_idoriginal =  "+idVentaPasaje +
+				"ORDER BY 1";
+		
+		List<?> result = getSession().createSQLQuery(sql).list();
+
+		List<GpsComprobante> lstMovimientos = new ArrayList<>();
+		
+		for(int i = 0; i<result.size(); i++){
+			Object[] obj = (Object[]) result.get(i);
+			GpsComprobante gps = new GpsComprobante();
+			
+			gps.setId(((BigDecimal)obj[0]).longValue());
+			gps.setIdVentaPasaje(((BigDecimal)obj[1]).longValue());
+			gps.setFechaEmision((Date)obj[2]);
+			gps.setTipoPago(obj[3].toString());
+			gps.setNumComprobante(obj[4].toString());
+			gps.setImporte(((BigDecimal)obj[5]).doubleValue());
+			gps.setServicio(obj[6].toString());
+			gps.setRuta(obj[7].toString());
+			gps.setAgenciaEmbarque(obj[8]==null ? null : obj[8].toString());
+			gps.setFechaViaje(obj[9]==null ? null : obj[9].toString());
+			gps.setHoraViaje(obj[10]==null ? null : obj[10].toString());
+			gps.setPiso(obj[11]==null ? null : ((BigDecimal)obj[11]).intValue());
+			gps.setAsiento(obj[12]==null ? null : ((BigDecimal)obj[12]).intValue());
+			gps.setPasajero(obj[13].toString());
+			gps.setDocIdentidad(obj[14].toString());
+			gps.setFechaOperacion((Date)obj[15]);
+			gps.setUsuario(obj[16].toString());
+			gps.setEstado(obj[17].toString());
+			
+			lstMovimientos.add(gps);			
+		}
+		return lstMovimientos;		
 	}
 }
 

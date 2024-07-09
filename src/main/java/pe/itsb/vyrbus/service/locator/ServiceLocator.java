@@ -1005,45 +1005,52 @@ public class ServiceLocator {
 	}
 	
 	/**
-	 * Obtiene el bean de CuponPromocionalManager, para realizar la comunicación con la capa modelo
+	 * Obtiene el bean de CuponPromocionalManager, para realizar la comunicaciï¿½n con la capa modelo
 	 * @return <b>CuponPromocionalManager</b>
 	 */
 	public static CuponPromocionalManager getCuponPromocionalManager(){
 		return (CuponPromocionalManager) SpringUtil.getBean("cuponPromocionalManager",CuponPromocionalManager.class);
 	}
 	/**
-	 * Obtiene el bean de TarifaByAsientoPlantillaEncabezadoManager, para realizar la comunicación con la capa modelo
+	 * Obtiene el bean de TarifaByAsientoPlantillaEncabezadoManager, para realizar la comunicaciï¿½n con la capa modelo
 	 * @return <b>TarifaByAsientoPlantillaEncabezadoManager</b>
 	 */
 	public static TarifaByAsientoPlantillaEncabezadoManager getTarifaByAsientoPlantillaEncabezadoManager(){
 		return (TarifaByAsientoPlantillaEncabezadoManager) SpringUtil.getBean("tarifaByAsientoPlantillaEncabezadoManager",TarifaByAsientoPlantillaEncabezadoManager.class);
 	}
 	/**
-	 * Obtiene el bean de TarifaByAsientoManager, para realizar la comunicación con la capa modelo
+	 * Obtiene el bean de TarifaByAsientoManager, para realizar la comunicaciï¿½n con la capa modelo
 	 * @return <b>TarifaByAsientoManager</b>
 	 */
 	public static TarifaByAsientoManager getTarifaByAsientoManager(){
 		return (TarifaByAsientoManager) SpringUtil.getBean("tarifaByAsientoManager",TarifaByAsientoManager.class);
 	}
 	/**
-	 * Obtiene el bean de TarifaByAsientoDetalleManager, para realizar la comunicación con la capa modelo
+	 * Obtiene el bean de TarifaByAsientoDetalleManager, para realizar la comunicaciï¿½n con la capa modelo
 	 * @return <b>TarifaDByAsientoetalleManager</b>
 	 */
 	public static TarifaByAsientoDetalleManager getTarifaByAsientoDetalleManager(){
 		return (TarifaByAsientoDetalleManager) SpringUtil.getBean("tarifaByAsientoDetalleManager",TarifaByAsientoDetalleManager.class);
 	}
 	/**
-	 * Obtiene el bean de TarifaByAsientoPlantillaEncabezadoDetalleManager, para realizar la comunicación con la capa modelo
+	 * Obtiene el bean de TarifaByAsientoPlantillaEncabezadoDetalleManager, para realizar la comunicaciï¿½n con la capa modelo
 	 * @return <b>TarifaByAsientoPlantillaEncabezadoDetalleManager</b>
 	 */
 	public static TarifaByAsientoPlantillaEncabezadoDetalleManager getTarifaByAsientoPlantillaEncabezadoDetalleManager(){
 		return (TarifaByAsientoPlantillaEncabezadoDetalleManager) SpringUtil.getBean("tarifaByAsientoPlantillaEncabezadoDetalleManager",TarifaByAsientoPlantillaEncabezadoDetalleManager.class);
 	}
 	/**
-	 * Obtiene el bean de TarifaByAsientoPlantillaPromocionManager, para realizar la comunicación con la capa modelo
+	 * Obtiene el bean de TarifaByAsientoPlantillaPromocionManager, para realizar la comunicaciï¿½n con la capa modelo
 	 * @return <b>TarifaByAsientoPlantillaPromocionManager</b>
 	 */
 	public static TarifaByAsientoPlantillaPromocionManager getTarifaByAsientoPlantillaPromocionManager(){
 		return (TarifaByAsientoPlantillaPromocionManager) SpringUtil.getBean("tarifaPlantillaPromocionManager",TarifaByAsientoPlantillaPromocionManager.class);
+	}
+	/**
+	 * Obtiene el bean de MovimientoPasajesManager, para realizar la comunicaciï¿½n con la capa modelo
+	 * @return <b>MovimientoPasajesManager</b>
+	 */
+	public static MovimientoPasajesManager getMovimientoPasajesManager(){
+		return (MovimientoPasajesManager) SpringUtil.getBean("movimientoPasajesManager",MovimientoPasajesManager.class);
 	}
 }
