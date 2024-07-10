@@ -3896,7 +3896,7 @@ public class CreateDocument implements Serializable {
 				if((ventaPasaje.getTipoComprobante().getId().intValue() == Constantes.ID_TIPCOM_FACTURA ||
 						ventaPasaje.getTipoComprobante().getId().intValue() == Constantes.ID_TIPCOM_BOLETA_VENTA ||
 						ventaPasaje.getTipoComprobante().getId().intValue() == Constantes.ID_TIPCOM_GUIA_TRANSPORTISTA ||
-								ventaPasaje.getTipoComprobante().getId().intValue() == Constantes.ID_TIPCOM_GUIA_EXCESO ||
+								ventaPasaje.getTipoComprobante().getId().intValue() == Constantes.ID_TIPCOM_GUIA ||
 						ventaPasaje.getTipoComprobante().getId().intValue() == Constantes.ID_TIPCOM_NOTA_CREDITO) && ventaPasaje.getTipoMovimiento().getId().intValue()!=Constantes.ID_TIPMOV_DEVOLUCION
 						) {
 

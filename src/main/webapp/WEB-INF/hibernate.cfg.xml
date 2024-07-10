@@ -150,6 +150,7 @@
 		<mapping resource="pe/itsb/vyrbus/model/maps/TarifaByAsientoPlantillaEncabezado.hbm.xml" />
 		<mapping resource="pe/itsb/vyrbus/model/maps/TarifaByAsientoPlantillaEncabezadoDetalle.hbm.xml" />
 		<mapping resource="pe/itsb/vyrbus/model/maps/TarifaByAsientoPlantillaPromocion.hbm.xml" />
+		<mapping resource="pe/itsb/vyrbus/model/maps/MovimientoPasajes.hbm.xml" />
 		
 <!-- 	VENTA DE SEGUROS -->
 		<mapping resource="pe/itsb/vyrbus/model/maps/VSTipoDocumento.hbm.xml" />

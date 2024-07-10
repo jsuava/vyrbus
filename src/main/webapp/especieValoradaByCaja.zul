@@ -46,11 +46,10 @@
 					<label value="SERIE (*) :" />
 					<textbox id="txtSerie" maxlength="4" width="160px" style="font-size:11px !important"/>
 				</row>
-				<row>
+				<row spans="1,1,2">
 					<label value="CORRELATIVO ACTUAL (*):"/>
 					<longbox id="lgbxCorrelativoInicio"/>
-					<label/>
-					<label/>
+					<checkbox id = "chbxExcesoEquipaje" label="EXCESO DE EQUIPAJES"/>
 				</row>
 			</rows>
 		</grid>

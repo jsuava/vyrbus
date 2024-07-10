@@ -8,6 +8,7 @@ import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zul.Button;
+import org.zkoss.zul.Checkbox;
 import org.zkoss.zul.Column;
 import org.zkoss.zul.Columns;
 import org.zkoss.zul.Combobox;
@@ -61,6 +62,7 @@ public class WndEspecieValoradaByCaja extends WndOpcionesMantenimiento {
 	private Combobox cmbAgencia;
 	private Longbox lgbxCorrelativoInicio;
 	private Combobox cmbEmpresa;
+	private Checkbox chbxExcesoEquipaje;
 
 	private ControlEspecieValorada controlEspecieValorada = null;
 	private Window wndSearch = null;
@@ -97,6 +99,7 @@ public class WndEspecieValoradaByCaja extends WndOpcionesMantenimiento {
 		cmbAgencia=(Combobox)getFellow("cmbAgencia");
 		cmbEmpresa=(Combobox)getFellow("cmbEmpresa");
 		lgbxCorrelativoInicio = (Longbox)getFellow("lgbxCorrelativoInicio");
+		chbxExcesoEquipaje = (Checkbox)this.getFellow("chbxExcesoEquipaje");
 	}
 
 	@Override
@@ -112,6 +115,7 @@ public class WndEspecieValoradaByCaja extends WndOpcionesMantenimiento {
 		cmbUsuarioHardware.getItems().clear();
 		UtilData.cargarGenericData(cmbUsuarioHardware, false);
 		UtilData.cargarGenericData(cmbTipoComprobante, false);
+		chbxExcesoEquipaje.setChecked(false);
 
 		if(cmbAgencia.getSelectedItem()!=null){
 			/*carga los usuarios hardware segun la agencia seleccionada*/
@@ -126,8 +130,8 @@ public class WndEspecieValoradaByCaja extends WndOpcionesMantenimiento {
 
 		//Por defecto selecciona el usuario harware donde se ingresa al sistema.
 		Util.seleccionarValorItemCombo(UsuarioHardware.class, cmbUsuarioHardware, getUsuarioHardware().getId());
-//		if(!(cmbUsuarioHardware.getSelectedItem().getValue() instanceof UsuarioHardware))
-//			cmbUsuarioHardware.setSelectedIndex(0);
+		if(cmbUsuarioHardware.getSelectedIndex() < 0)
+			cmbUsuarioHardware.setSelectedIndex(0);
 
 		/**Habilita controles para el rol super usuario*/
 		cmbAgencia.setDisabled( !(getRol().getId().equals(Constantes.ID_ROL_SUPER_USUARIO)));
@@ -170,8 +174,8 @@ public class WndEspecieValoradaByCaja extends WndOpcionesMantenimiento {
 				throw new EmpresaException();
 			else if (!(cmbAgencia.getSelectedItem().getValue() instanceof Agencia))
 				throw new AgenciaNullException();
-			else if (!(cmbUsuarioHardware.getSelectedItem().getValue() instanceof UsuarioHardware))
-				throw new UsuarioHardwareNullException();
+//			else if (!(cmbUsuarioHardware.getSelectedItem().getValue() instanceof UsuarioHardware))
+//				throw new UsuarioHardwareNullException();
 			else if (!(cmbTipoComprobante.getSelectedItem().getValue() instanceof TipoComprobante))
 				throw new TipoComprobanteNullException();
 			else if (txtSerie.getText().trim()==null || txtSerie.getText().trim().equals(0))
@@ -179,21 +183,21 @@ public class WndEspecieValoradaByCaja extends WndOpcionesMantenimiento {
 			else if (lgbxCorrelativoInicio.getValue()<=0)
                 throw new CorrelativoException(CorrelativoException.ACTUAL_NULL);
 
-			String correlativo = "";
+			String nameSequence = "";
 			if(((TipoComprobante)cmbTipoComprobante.getSelectedItem().getValue()).getId()==Constantes.ID_TIPCOM_BOLETA_VENTA)
-				correlativo = "SEQ_AGE"+((Agencia)cmbAgencia.getSelectedItem().getValue()).getId()+((Empresa)cmbEmpresa.getSelectedItem().getValue()).getSigla()+"BOL"+txtSerie.getText().trim().toUpperCase();
+				nameSequence = "SEQ_AGE"+((Agencia)cmbAgencia.getSelectedItem().getValue()).getId()+((Empresa)cmbEmpresa.getSelectedItem().getValue()).getSigla()+"BOL"+txtSerie.getText().trim().toUpperCase();
 			else if(((TipoComprobante)cmbTipoComprobante.getSelectedItem().getValue()).getId()==Constantes.ID_TIPCOM_FACTURA)
-				correlativo = "SEQ_AGE"+((Agencia)cmbAgencia.getSelectedItem().getValue()).getId()+((Empresa)cmbEmpresa.getSelectedItem().getValue()).getSigla()+"FAC"+txtSerie.getText().trim().toUpperCase();
+				nameSequence = "SEQ_AGE"+((Agencia)cmbAgencia.getSelectedItem().getValue()).getId()+((Empresa)cmbEmpresa.getSelectedItem().getValue()).getSigla()+"FAC"+txtSerie.getText().trim().toUpperCase();
 			else if(((TipoComprobante)cmbTipoComprobante.getSelectedItem().getValue()).getId()==Constantes.ID_TIPCOM_NOTA_CREDITO)
-				correlativo = "SEQ_AGE"+((Agencia)cmbAgencia.getSelectedItem().getValue()).getId()+((Empresa)cmbEmpresa.getSelectedItem().getValue()).getSigla()+"NC";
+				nameSequence = "SEQ_AGE"+((Agencia)cmbAgencia.getSelectedItem().getValue()).getId()+((Empresa)cmbEmpresa.getSelectedItem().getValue()).getSigla()+"NC";
 			else if(((TipoComprobante)cmbTipoComprobante.getSelectedItem().getValue()).getId()==Constantes.ID_TIPCOM_NOTA_DEBITO)
-				correlativo = "SEQ_AGE"+((Agencia)cmbAgencia.getSelectedItem().getValue()).getId()+((Empresa)cmbEmpresa.getSelectedItem().getValue()).getSigla()+"ND";
+				nameSequence = "SEQ_AGE"+((Agencia)cmbAgencia.getSelectedItem().getValue()).getId()+((Empresa)cmbEmpresa.getSelectedItem().getValue()).getSigla()+"ND";
 			else if(((TipoComprobante)cmbTipoComprobante.getSelectedItem().getValue()).getId()==Constantes.ID_TIPCOM_GUIA_TRANSPORTISTA)
-				correlativo = "SEQ_AGE"+((Agencia)cmbAgencia.getSelectedItem().getValue()).getId()+((Empresa)cmbEmpresa.getSelectedItem().getValue()).getSigla()+"GRT"+txtSerie.getText().trim().toUpperCase();
+				nameSequence = "SEQ_AGE"+((Agencia)cmbAgencia.getSelectedItem().getValue()).getId()+((Empresa)cmbEmpresa.getSelectedItem().getValue()).getSigla()+"GRT"+txtSerie.getText().trim().toUpperCase();
 			else if(((TipoComprobante)cmbTipoComprobante.getSelectedItem().getValue()).getId()==Constantes.ID_TIPCOM_TICKET_EQUIPAJE)
-				correlativo = "SEQ_AGE"+((Agencia)cmbAgencia.getSelectedItem().getValue()).getId()+((Empresa)cmbEmpresa.getSelectedItem().getValue()).getSigla()+"TKQ"+txtSerie.getText().trim().toUpperCase();
-			else if(((TipoComprobante)cmbTipoComprobante.getSelectedItem().getValue()).getId()==Constantes.ID_TIPCOM_GUIA_EXCESO)
-				correlativo = "SEQ_AGE"+((Agencia)cmbAgencia.getSelectedItem().getValue()).getId()+((Empresa)cmbEmpresa.getSelectedItem().getValue()).getSigla()+"GEX"+txtSerie.getText().trim().toUpperCase();
+				nameSequence = "SEQ_AGE"+((Agencia)cmbAgencia.getSelectedItem().getValue()).getId()+((Empresa)cmbEmpresa.getSelectedItem().getValue()).getSigla()+"TKQ"+txtSerie.getText().trim().toUpperCase();
+			else if(((TipoComprobante)cmbTipoComprobante.getSelectedItem().getValue()).getId()==Constantes.ID_TIPCOM_GUIA)
+				nameSequence = "SEQ_AGE"+((Agencia)cmbAgencia.getSelectedItem().getValue()).getId()+((Empresa)cmbEmpresa.getSelectedItem().getValue()).getSigla()+"GUI"+txtSerie.getText().trim().toUpperCase();
 
 			if (action==ACTION_NEW)
 				controlEspecieValorada= new ControlEspecieValorada();
@@ -205,10 +209,21 @@ public class WndEspecieValoradaByCaja extends WndOpcionesMantenimiento {
 			TipoComprobante tipoComprobante = new TipoComprobante();
 			tipoComprobante.setId(((TipoComprobante) cmbTipoComprobante.getSelectedItem().getValue()).getId());
 			tipoComprobante.setDenominacion(((TipoComprobante) cmbTipoComprobante.getSelectedItem().getValue()).getDenominacion());
-			UsuarioHardware usuarioHardware = new UsuarioHardware();
-			usuarioHardware.setId(((UsuarioHardware)cmbUsuarioHardware.getSelectedItem().getValue()).getId());
-			usuarioHardware.setDescripcion(((UsuarioHardware)cmbUsuarioHardware.getSelectedItem().getValue()).getDescripcion());
-			usuarioHardware.setAgencia(((Agencia)cmbAgencia.getSelectedItem().getValue()));
+			
+			Agencia agencia = null;
+			UsuarioHardware usuarioHardware = null;
+			if(cmbUsuarioHardware.getSelectedItem().getValue() instanceof UsuarioHardware) {
+				usuarioHardware = new UsuarioHardware();
+				usuarioHardware.setId(((UsuarioHardware)cmbUsuarioHardware.getSelectedItem().getValue()).getId());
+				usuarioHardware.setDescripcion(((UsuarioHardware)cmbUsuarioHardware.getSelectedItem().getValue()).getDescripcion());
+				usuarioHardware.setAgencia(((Agencia)cmbAgencia.getSelectedItem().getValue()));
+				
+				agencia = usuarioHardware.getAgencia();
+			}else {
+				agencia = cmbAgencia.getSelectedItem().getValue();
+			}
+				
+			
 
 //			ControlEspecieValoradaID controlEspecieValoradaID = new ControlEspecieValoradaID();
 //			controlEspecieValoradaID.setIdTipoComprobante(tipoComprobante.getId());
@@ -216,17 +231,18 @@ public class WndEspecieValoradaByCaja extends WndOpcionesMantenimiento {
 //			controlEspecieValoradaID.setStrSerie(txtSerie.getText().toUpperCase().trim().toString());
 //			controlEspecieValoradaID.setIdEmpresa(empresa.getId());
 
-			controlEspecieValorada.setAgencia(usuarioHardware.getAgencia());
+			controlEspecieValorada.setAgencia(agencia);
 			controlEspecieValorada.setEmpresa(empresa);
 //			controlEspecieValorada.setControlEspecieValoradaID(controlEspecieValoradaID);
 			controlEspecieValorada.setTipoComprobante(tipoComprobante);
 			controlEspecieValorada.setUsuarioHardware(usuarioHardware);
 			controlEspecieValorada.setSerie(txtSerie.getText().toUpperCase().trim().toString());
-			controlEspecieValorada.setSecuenciador(correlativo);
+			controlEspecieValorada.setSecuenciador(nameSequence);
 			controlEspecieValorada.setCorrelativoInicio(new Long(1));
 			controlEspecieValorada.setCorrelativoFin(new Long(99999999));
 			controlEspecieValorada.setCorrelativoActual(lgbxCorrelativoInicio.getValue());
 			controlEspecieValorada.setFormato(0);
+			controlEspecieValorada.setExcesoEquipaje(chbxExcesoEquipaje.isChecked()? Constantes.TRUE_VALUE : Constantes.FALSE_VALUE);
 			controlEspecieValorada.setEstadoRegistro(Constantes.VALUE_ACTIVO);
 
 			switch (action) {
@@ -347,12 +363,12 @@ public class WndEspecieValoradaByCaja extends WndOpcionesMantenimiento {
 				item.appendChild(cell);
 				cell = new Listcell(controlEspecieValorada.getTipoComprobante().getDenominacion());
 				item.appendChild(cell);
-				cell = new Listcell(controlEspecieValorada.getUsuarioHardware().getDescripcion());
+				cell = new Listcell(controlEspecieValorada.getUsuarioHardware()!=null? controlEspecieValorada.getUsuarioHardware().getDescripcion(): "");
 				item.appendChild(cell);
 				cell = new Listcell(controlEspecieValorada.getSerie());
 				cell.setStyle("font-size:12px !important");
 				item.appendChild(cell);
-				cell = new Listcell(controlEspecieValorada.getUsuarioHardware().getAgencia().getNombreCorto());
+				cell = new Listcell(controlEspecieValorada.getUsuarioHardware()!=null?controlEspecieValorada.getUsuarioHardware().getAgencia().getNombreCorto(): controlEspecieValorada.getAgencia().getNombreCorto());
 				item.appendChild(cell);
 				cell = new Listcell(controlEspecieValorada.getSecuenciador());
 				item.appendChild(cell);
@@ -370,20 +386,26 @@ public class WndEspecieValoradaByCaja extends WndOpcionesMantenimiento {
 	private void mantenimiento() throws Exception{
 		if(listboxLista.getSelectedIndex() >= 0 ){
 			Listitem lItemControlEspecieValorada = listboxLista.getItemAtIndex(listboxLista.getSelectedIndex());
-			controlEspecieValorada = new ControlEspecieValorada();
 			controlEspecieValorada = lItemControlEspecieValorada.getValue();
 //			textboxId.setText(controlEspecieValorada.getControlEspecieValoradaID().getIdTipoComprobante().toString());
-			textboxId.setText(controlEspecieValorada.getId().toString());
-			Util.seleccionarValorItemCombo(Agencia.class, cmbAgencia, (controlEspecieValorada.getUsuarioHardware().getAgencia().getId()));
-			/*carga os usuarios hardware segun la agencia seleccionada*/
-			UtilData.cargarUsuarioHasrdware(cmbUsuarioHardware, false, ((Agencia)cmbAgencia.getSelectedItem().getValue()));
+			textboxId.setText(controlEspecieValorada.getId().toString());			
 
 			UtilData.cargarGenericData(cmbTipoComprobante, true);
 			onLoadTipoComprobante(cmbTipoComprobante);
 			Util.seleccionarValorItemCombo(TipoComprobante.class, cmbTipoComprobante, (controlEspecieValorada.getTipoComprobante().getId()));
-			Util.seleccionarValorItemCombo(UsuarioHardware.class, cmbUsuarioHardware, (controlEspecieValorada.getUsuarioHardware().getId()));
+			if(controlEspecieValorada.getUsuarioHardware() != null) {
+				Util.seleccionarValorItemCombo(Agencia.class, cmbAgencia, (controlEspecieValorada.getUsuarioHardware().getAgencia().getId()));
+				Util.seleccionarValorItemCombo(UsuarioHardware.class, cmbUsuarioHardware, (controlEspecieValorada.getUsuarioHardware().getId()));
+			}else {
+				Util.seleccionarValorItemCombo(Agencia.class, cmbAgencia, (controlEspecieValorada.getAgencia().getId()));
+			}
+			
+			/*carga os usuarios hardware segun la agencia seleccionada*/
+			UtilData.cargarUsuarioHasrdware(cmbUsuarioHardware, false, ((Agencia)cmbAgencia.getSelectedItem().getValue()));
+			
 			txtSerie.setText(controlEspecieValorada.getSerie());
 			lgbxCorrelativoInicio.setValue(controlEspecieValorada.getCorrelativoActual());
+			chbxExcesoEquipaje.setChecked(controlEspecieValorada.getExcesoEquipaje().equals(Constantes.TRUE_VALUE));
 
 			cmbTipoComprobante.setDisabled(true);
 			cmbUsuarioHardware.setDisabled(true);
@@ -462,7 +484,8 @@ public class WndEspecieValoradaByCaja extends WndOpcionesMantenimiento {
 		/*Carga solamente la agencias tepsa*/
 		UtilData.cargarAgenciaXtipoAgencia(cmbAgencia, Constantes.ID_TIPAGE_TEPSA,true);
 		UtilData.cargarDataCombo(cmbEmpresaSearch, Empresa.class, false);
-
+		Util.seleccionarValorItemCombo(Agencia.class, cmbAgencia, getAgencia().getId());
+		
 		if(cmbAgencia.getSelectedItem()==null)
 			cmbAgencia.setSelectedIndex(0);
 

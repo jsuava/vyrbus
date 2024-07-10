@@ -281,7 +281,7 @@ public class WndEquipaje extends WndBase implements Serializable{
 			List<TipoComprobante> resultTipoComprobante = ServiceLocator.getTipoComprobanteManager().buscarPorEstadoRegistro(Constantes.VALUE_ACTIVO, "denominacion");
 			for(TipoComprobante tipoComprobante: resultTipoComprobante) {
 				if(tipoComprobante.getId().intValue()==Constantes.ID_TIPCOM_BOLETA_VENTA || tipoComprobante.getId().intValue()==Constantes.ID_TIPCOM_FACTURA ||
-						tipoComprobante.getId().intValue()==Constantes.ID_TIPCOM_GUIA_EXCESO) {
+						tipoComprobante.getId().intValue()==Constantes.ID_TIPCOM_GUIA) {
 					Comboitem comboitem= new Comboitem(tipoComprobante.getDenominacion());
 					comboitem.setValue(tipoComprobante);
 					cmbTipoComprobante.appendChild(comboitem);
@@ -446,7 +446,7 @@ public class WndEquipaje extends WndBase implements Serializable{
 	 */
 	private void onOk_dbxTotalPago() {
 		if(rowExceso.isVisible()){
-			Util.seleccionarValorItemCombo(TipoComprobante.class, cmbTipoComprobante, Constantes.ID_TIPCOM_GUIA_EXCESO);
+			Util.seleccionarValorItemCombo(TipoComprobante.class, cmbTipoComprobante, Constantes.ID_TIPCOM_GUIA);
 			cmbTipoComprobante.setFocus(true); 
 			cmbTipoComprobante.open(); 
 		}else 
@@ -759,7 +759,7 @@ public class WndEquipaje extends WndBase implements Serializable{
 								WSFE.sendVenta(listVentaPasajes, wndEquipaje, true, null, Constantes.NUMERO_COPIAS_COMPROBANTE_EXCESO);
 
 //								timerdownloadFileEquipaje = true;
-							}else if(ventaExceso.getTipoComprobante().getId().intValue()==Constantes.ID_TIPCOM_GUIA_EXCESO)	
+							}else if(ventaExceso.getTipoComprobante().getId().intValue()==Constantes.ID_TIPCOM_GUIA)	
 								WSFE.reimprimirComprobante(Arrays.asList(ventaExceso), wndEquipaje, Constantes.NUMERO_COPIAS_COMPROBANTE_EXCESO, false);							
 						}
 
@@ -920,7 +920,7 @@ public class WndEquipaje extends WndBase implements Serializable{
 				rowExceso.setVisible(true);
 				rowExcesoTarjeta.setVisible(true);
 				dbxTotalPago.setDisabled(false);
-				Util.seleccionarValorItemCombo(TipoComprobante.class, cmbTipoComprobante, Constantes.ID_TIPCOM_GUIA_EXCESO);
+				Util.seleccionarValorItemCombo(TipoComprobante.class, cmbTipoComprobante, Constantes.ID_TIPCOM_GUIA);
 				onSelect_cmbTipoComprobante();
 				generatedGlosaByExceso();
 			}

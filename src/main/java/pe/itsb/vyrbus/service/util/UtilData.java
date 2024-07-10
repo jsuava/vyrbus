@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.TreeMap;
 
 import org.springframework.transaction.annotation.Transactional;
@@ -26,6 +27,11 @@ import org.zkoss.zul.Comboitem;
 import org.zkoss.zul.Textbox;
 import org.zkoss.zul.Window;
 
+import pe.itsb.vyrbus.model.bean.ItinerarioAgenciaPartida;
+import pe.itsb.vyrbus.model.bean.ItinerarioAgenciaPartidaID;
+import pe.itsb.vyrbus.service.util.Constantes;
+import pe.itsb.vyrbus.service.util.Util;
+import pe.itsb.vyrbus.service.util.UtilData;
 
 import pe.itsb.vyrbus.model.bean.Agencia;
 import pe.itsb.vyrbus.model.bean.AutorizadorCortesia;
@@ -51,6 +57,7 @@ import pe.itsb.vyrbus.model.bean.Liquidacion;
 import pe.itsb.vyrbus.model.bean.Localidad;
 import pe.itsb.vyrbus.model.bean.MotivoCortesia;
 import pe.itsb.vyrbus.model.bean.MotivoTemporadaAlta;
+import pe.itsb.vyrbus.model.bean.MovimientoPasajes;
 import pe.itsb.vyrbus.model.bean.Nacionalidad;
 import pe.itsb.vyrbus.model.bean.NumeroFlota;
 import pe.itsb.vyrbus.model.bean.ObjetoBus;
@@ -84,6 +91,7 @@ import pe.itsb.vyrbus.model.bean.Usuario;
 import pe.itsb.vyrbus.model.bean.UsuarioAprobador;
 import pe.itsb.vyrbus.model.bean.UsuarioHardware;
 import pe.itsb.vyrbus.model.bean.UsuarioRol;
+import pe.itsb.vyrbus.model.bean.VentaPasaje;
 import pe.itsb.vyrbus.model.bean.VentaPool;
 import pe.itsb.vyrbus.model.bean.VentaTramo;
 import pe.itsb.vyrbus.service.exceptions.EspecieValoradaNotAvailableException;
@@ -3039,6 +3047,98 @@ public class UtilData extends Window {
 				null, null);
 		
 		return precio;
+	}
+	
+	/**
+	 * Crea el Tracking de la venta (GPS)
+	 * @param ventaPasaje : Instancia VentaPasaje
+	 * @param motivoMovimiento : Descripción del tipo de movimiento
+	 * @return Instance MovimientoPasaje
+	 * @throws Exception
+	 */
+	public static MovimientoPasajes createTracking(VentaPasaje ventaPasaje, String motivoMovimiento)throws Exception{
+		// Recupera el identificador de la venta original
+		VentaPasaje ventaPasajeOriginal = Optional.ofNullable(ventaPasaje.getVentaOriginal())
+				.map(id -> new VentaPasaje(id))
+				.orElseGet(() -> {					
+					if(ventaPasaje.getId() != null)
+						return ventaPasaje;
+					return null;
+				});
+		
+		// Fecha en que se realiza la operacion
+		String fechaOperacion = Util.DatetoString(new Date(), "dd/MM/yyyy");
+		
+		// Agencia Partida
+		Agencia agenciaPartida = Optional.ofNullable(ventaPasaje.getAgenciaPartida())
+				.orElse(null);
+		
+		// Fecha de embarque
+		String fechaEmbarque = Optional.ofNullable(ventaPasaje.getFechaPartida())
+				.map(fp -> Util.DatetoString(fp, "dd/MM/yyyy"))
+				.orElse(null);
+		
+		// Hora de embarque
+		String horaEmbarque = Optional.ofNullable(ventaPasaje.getFechaPartida())
+				.map(fp -> UtilData.obtenerHoraEmbarque(ventaPasaje.getItinerario().getId(), ventaPasaje.getAgenciaPartida().getId()))
+				.orElse(null);
+		
+		// Numero Asiento
+		Integer numeroAsiento = Optional.ofNullable(ventaPasaje.getNumeroAsiento())
+				.orElse(null);
+		
+		// Numero de Piso
+		Integer numeroPiso = Optional.ofNullable(ventaPasaje.getNumeroPiso())
+				.orElse(null);
+		
+		// Tipo Forma d ePago (cuando es Reserva este valor llega Null, se envia con efectivo ya que la estructura no permite nullos.
+		TipoFormaPago tipoFormaPago = Optional.ofNullable(ventaPasaje.getTipoFormaPago())
+				.orElse(new TipoFormaPago(Constantes.ID_TIPFORPAG_EFECTIVO));
+
+		// Tracking
+		MovimientoPasajes tracking = new MovimientoPasajes();
+		tracking.setVentaPasaje(ventaPasajeOriginal);
+		tracking.setOperacion(motivoMovimiento);
+		tracking.setFechaOperacion(fechaOperacion);
+		tracking.setServicio(ventaPasaje.getServicio());
+		tracking.setRuta(ventaPasaje.getRuta());
+		tracking.setAgenciaEmbarque(agenciaPartida);
+		tracking.setFechaEmbarque(fechaEmbarque);
+		tracking.setHoraEmbarque(horaEmbarque);
+		tracking.setNumeroAsiento(numeroAsiento);
+		tracking.setNumeroPiso(numeroPiso);		
+		tracking.setImportePagado(ventaPasaje.getImportePagado());
+		tracking.setTipoFormaPago(tipoFormaPago);
+		tracking.setEstadoRegistro(Constantes.VALUE_ACTIVO);
+		UtilData.auditarRegistro(tracking, ventaPasaje.getUsuario(), Executions.getCurrent());
+		
+		return tracking;
+	}
+	
+	/**
+	 * Obtiene la hora del embarque
+	 * @param idItinerario : Identificador del Itienrario
+	 * @param idAgencia : Identificador de la agencia
+	 * @return Hora del Embarque
+	 */
+	public static String obtenerHoraEmbarque(Long idItinerario, Integer idAgencia){
+		String result = null;
+		try{
+			TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+			ItinerarioAgenciaPartidaID itinerarioAgenciaPartidaID = new ItinerarioAgenciaPartidaID();
+			itinerarioAgenciaPartidaID.setIdItinerario(idItinerario);
+			itinerarioAgenciaPartidaID.setIdAgencia(idAgencia);
+			criteriosBusqueda.put("itinerarioAgenciaPartidaID", itinerarioAgenciaPartidaID);
+			criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
+			List<ItinerarioAgenciaPartida> lstItinerarioAgenciaPartida = ServiceLocator.getItinerarioAgenciaPartidaManager().buscarPorX(criteriosBusqueda, null);
+			if(lstItinerarioAgenciaPartida.size()>0)
+				result = lstItinerarioAgenciaPartida.get(0).getHoraPartida();
+			else
+				result = null;
+		}catch(Exception ex){
+			ex.printStackTrace();
+		}
+		return result;
 	}
 }
 

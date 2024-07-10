@@ -406,9 +406,9 @@ public class WSFE implements Serializable{
 				String serie = ventaPasaje.getNumeroBoleto().split("-")[0];
 				String correlativo = ventaPasaje.getNumeroBoleto().split("-")[1];
 				
-				if(tipoComprobanteId==Constantes.ID_TIPCOM_BOLETA_VENTA || tipoComprobanteId==Constantes.ID_TIPCOM_FACTURA) {
+				if(tipoComprobanteId == Constantes.ID_TIPCOM_BOLETA_VENTA || tipoComprobanteId == Constantes.ID_TIPCOM_FACTURA) {
 					String tipoComprobante=(tipoComprobanteId==Constantes.ID_TIPCOM_BOLETA_VENTA?FE_TIPCOM_BOLETA:FE_TIPCOM_FACTURA);
-					Result result=getSoap().buscarDetalleComprobante(TOKEN, tipoComprobante, serie, correlativo, ventaPasaje.getEmpresa().getNumeroDocumento());
+					Result result = getSoap().buscarDetalleComprobante(TOKEN, tipoComprobante, serie, correlativo, ventaPasaje.getEmpresa().getNumeroDocumento());
 
 					if(result.getBarcodeQR().getValue()!=null && result.getBarcodeEmbarque().getValue()!=null){
 						ventaPasaje.setResult(result);
@@ -417,8 +417,21 @@ public class WSFE implements Serializable{
 						/*Alertar */
 						sendMail("Metod reimprimirComprobante : "+ventaPasaje.getNumeroBoleto()+" \n"+result.getMessage().getValue());
 					}
-				}else
+				}else {
+					if(ventaPasaje.getTipoTransaccion().equals(Constantes.TIPO_OPERACION_EXCESO)) {											
+						if(ventaPasaje.getCliente() != null)
+							ventaPasaje.setCliente(ServiceLocator.getClienteManager().buscarPorId(ventaPasaje.getCliente().getId()));
+						ventaPasaje.setEmpresa(ServiceLocator.getEmpresaManager().buscarPorId(ventaPasaje.getEmpresa().getId().longValue()));						
+						ventaPasaje.getPasajero().setTipoDocumento(ServiceLocator.getTipoDocumentoManager().buscarPorId(ventaPasaje.getPasajero().getTipoDocumento().getId().longValue()));
+						ventaPasaje.setUsuario(ServiceLocator.getUsuarioManager().buscarPorId(ventaPasaje.getUsuario().getId().longValue()));
+						if(ventaPasaje.getAgenciaPartida()!=null)
+							ventaPasaje.setAgenciaPartida(ServiceLocator.getAgenciaManager().buscarPorId(ventaPasaje.getAgenciaPartida().getId().longValue()));
+						if(ventaPasaje.getAgenciaLlegada()!=null)
+							ventaPasaje.setAgenciaLlegada(ServiceLocator.getAgenciaManager().buscarPorId(ventaPasaje.getAgenciaLlegada().getId().longValue()));
+						ventaPasaje.setTipoMovimiento(ServiceLocator.getTipoMovimientoManager().buscarPorId(ventaPasaje.getTipoMovimiento().getId().longValue()));
+					}
 					ventasEnviadasSFE.add(ventaPasaje);
+				}
 			}
 
 			/*Crea y descarga el Archivo xml para la impresion*/
@@ -1057,7 +1070,7 @@ public class WSFE implements Serializable{
 			for(VentaPasaje ventaPasaje: listVentaPasaje){
 				int tipoComprobanteId=ventaPasaje.getTipoComprobante().getId();
 				if(tipoComprobanteId==Constantes.ID_TIPCOM_BOLETA_VENTA || tipoComprobanteId==Constantes.ID_TIPCOM_FACTURA || 
-						tipoComprobanteId==Constantes.ID_TIPCOM_VOUCHER_AGENCIA_VIAJES || tipoComprobanteId==Constantes.ID_TIPCOM_GUIA_EXCESO){
+						tipoComprobanteId==Constantes.ID_TIPCOM_VOUCHER_AGENCIA_VIAJES || tipoComprobanteId==Constantes.ID_TIPCOM_GUIA){
 					/*Valida el tipo de comprobante*/
 					String cryptoBarcodeEmbarque=null;
 					String cryptoBarcodeSunat=null;
@@ -1117,7 +1130,7 @@ public class WSFE implements Serializable{
 								else
 									pathRpt= getPathFormatPrintByEmpresa(empresa_ruc, Constantes.FORMAT_PRINT_FACTURA);
 							}
-						}else if(tipoComprobanteId==Constantes.ID_TIPCOM_GUIA_EXCESO) {
+						}else if(tipoComprobanteId==Constantes.ID_TIPCOM_GUIA) {
 							if(ventaPasaje.getTipoTransaccion().equals(Constantes.TIPO_OPERACION_EXCESO))
 								pathRpt= getPathFormatPrintByEmpresa(empresa_ruc, Constantes.FORMAT_PRINT_GUIA_EXCESO);
 						}

@@ -1,0 +1,119 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 24/05/2012 11:51:01 AM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+  <class name="pe.itsb.vyrbus.model.bean.MovimientoPasajes" schema="VYRBUSME" table="VRTMOVPAS">
+  <comment>Entidad que almacena los estados de un comprobante en el tiempo para rastrearlo.</comment>
+  <id name="id" type="java.lang.Long">
+     <column name="MOVPAS_ID" precision="18" scale="0" />
+     <generator class="sequence">
+     	<param name="sequence">SEQ_VRTMOVPAS_ID</param>
+     </generator>
+  </id>
+  
+  <many-to-one name="ventaPasaje" class="pe.itsb.vyrbus.model.bean.VentaPasaje">
+     <column name="VENPAS_ID" precision="18" scale="0" not-null="true">
+        <comment>Identificador unico de la entidad, tamanio de la clave primaria 18.</comment>
+     </column>
+  </many-to-one>  
+  
+  <many-to-one name="servicio" class="pe.itsb.vyrbus.model.bean.Servicio">
+     <column name="SERVICIO_ID" precision="2" scale="0" not-null="true">
+        <comment>Identificador unico de la entidad, tamanio de la clave primaria 18.</comment>
+     </column>
+  </many-to-one>
+  
+    <many-to-one name="ruta" class="pe.itsb.vyrbus.model.bean.Ruta">
+     <column name="RUTA_ID" precision="5" scale="0" not-null="true">
+        <comment>Identificador unico de la entidad, tamanio de la clave primaria 18.</comment>
+     </column>
+  </many-to-one>
+  
+    <many-to-one name="tipoFormaPago" class="pe.itsb.vyrbus.model.bean.TipoFormaPago">
+     <column name="TIPFORPAG_ID" precision="2" scale="0" not-null="true">
+        <comment>Identificador unico de la entidad, tamanio de la clave primaria 18.</comment>
+     </column>
+  </many-to-one>  
+  
+  <many-to-one name="agenciaEmbarque" class="pe.itsb.vyrbus.model.bean.Agencia">
+     <column name="AGENCIA_IDEMBARQUE" precision="5" scale="0" not-null="false">
+        <comment>Identificador unico de la entidad, tamanio de la clave primaria 18.</comment>
+     </column>
+  </many-to-one>
+
+  <property name="operacion" type="java.lang.String">
+     <column name="C_DESOPE" length="250">
+         <comment>Descripcion de la operacion.</comment>
+     </column>
+  </property>
+  <property name="fechaOperacion" type="java.lang.String">
+     <column name="C_FECOPE" length="20">
+        <comment>Fecha de la operacion.</comment>
+     </column>
+  </property>
+  <property name="fechaEmbarque" type="java.lang.String">
+     <column name="C_FECEMB" length="20">
+        <comment>Fecha de Embarque del movimiento.</comment>
+     </column>
+  </property>
+  <property name="horaEmbarque" type="java.lang.String">
+     <column name="C_HOREMB" length="10">
+        <comment>Hora de embarque del movimiento.</comment>
+     </column>
+  </property>  
+  <property name="numeroPiso" type="java.lang.Integer">
+     <column name="N_NUMPIS" precision="1" scale="0">
+        <comment>Indica el numero del piso al cual pertenece el asiento</comment>
+     </column>
+  </property>
+  <property name="numeroAsiento" type="java.lang.Integer">
+     <column name="N_NUMASI" precision="1" scale="0">
+        <comment>Indica el numero de asiento</comment>
+     </column>
+  </property>
+  <property name="importePagado" type="java.lang.Double">
+     <column name="N_IMPPAG" precision="8" scale="2" not-null="true">
+        <comment>Importe pagado por el pasaje.</comment>
+     </column>
+  </property>  
+    
+  <!-- 		BEGIN CAMPOS DE AUDITORIA	 	-->
+  <property generated="never" lazy="false" name="estadoRegistro" type="java.lang.String">
+   <column length="1" name="C_ESTREG" not-null="true">
+    <comment>Estado de registro A(Activo), I(Inactivo).</comment>
+   </column>
+  </property>
+  <property generated="never" lazy="false" name="fechaInsercion" type="java.util.Date">
+   <column length="7" name="AUDFECINS">
+    <comment>Fecha de insercion/modificacion.</comment>
+   </column>
+  </property>
+  <property generated="never" lazy="false" name="usuarioInsercion" type="java.lang.String">
+   <column length="30" name="AUDUSUINS">
+    <comment>Usuario de insercion/modificacion.</comment>
+   </column>
+  </property>
+  <property generated="never" lazy="false" name="ipInsercion" type="java.lang.String">
+   <column length="15" name="AUDIPINSE">
+    <comment>IP de insercion/modificacion.</comment>
+   </column>
+  </property>
+  <property generated="never" lazy="false" name="fechaModificacion" type="java.util.Date">
+   <column length="7" name="AUDFECMOD">
+    <comment>Fecha de insercion/modificacion.</comment>
+   </column>
+  </property>
+  <property generated="never" lazy="false" name="usuarioModificacion" type="java.lang.String">
+   <column length="30" name="AUDUSUMOD">
+    <comment>Usuario de insercion/modificacion.</comment>
+   </column>
+  </property>
+  <property generated="never" lazy="false" name="ipModificacion" type="java.lang.String">
+   <column length="15" name="AUDIPMODI">
+    <comment>IP de insercion/modificacion.</comment>
+   </column>
+  </property>
+  <!-- 		END CAMPOS DE AUDITORIA	 	-->
+ </class>
+</hibernate-mapping>
