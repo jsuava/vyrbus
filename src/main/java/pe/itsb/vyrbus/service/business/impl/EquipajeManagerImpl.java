@@ -1,8 +1,8 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	:
- * Autor		: José Abanto
+ * Descripciï¿½n	:
+ * Autor		: Josï¿½ Abanto
  * Fecha		: 14 jul. 2021
  * Hora			: 12:14:59
  */
@@ -84,5 +84,15 @@ public class EquipajeManagerImpl implements EquipajeManager{
 	public void actualizar(Equipaje equipaje) {
 		// TODO Auto-generated method stub
 		getEquipajeDAO().actualizar(equipaje);
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.itsb.vyrbus.service.business.EquipajeManager#buscar(java.lang.String, java.lang.String, java.lang.Integer, java.lang.Integer, java.lang.Integer)
+	 */
+	@Override
+	public List<Equipaje> buscar(String fechaInicio, String fechaFin, Integer agenciaIdEmbaruqe,
+			Integer localidadIdOrigen, Integer localidadIdDestino) {
+		
+		return getEquipajeDAO().buscar(fechaInicio, fechaFin, agenciaIdEmbaruqe, localidadIdOrigen, localidadIdDestino);
 	}
 }

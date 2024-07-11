@@ -25,6 +25,7 @@ public class Ruta extends GenericBean implements java.io.Serializable {
 	private Set<Tarifa> tarifas = new HashSet<>(0);
 
 	public Ruta() {
+		super();
 	}
 
 	/**
@@ -33,6 +34,11 @@ public class Ruta extends GenericBean implements java.io.Serializable {
 	public Ruta(Integer id) {
 		super();
 		this.id = id;
+	}
+	
+	public Ruta(String origen, String destino) {
+		this.origen = origen;
+		this.destino = destino;
 	}
 
 	/**

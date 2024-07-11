@@ -1,8 +1,8 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	:
- * Autor		: José Abanto
+ * Descripciï¿½n	:
+ * Autor		: Josï¿½ Abanto
  * Fecha		: 25/08/2012
  */
 package pe.itsb.vyrbus.view.ctrl;
@@ -34,6 +34,7 @@ import org.zkoss.zul.Window;
 
 import pe.itsb.vyrbus.model.bean.Agencia;
 import pe.itsb.vyrbus.model.bean.DestinatariosEmails;
+import pe.itsb.vyrbus.model.bean.Empresa;
 import pe.itsb.vyrbus.model.bean.EspecieValorada;
 import pe.itsb.vyrbus.model.bean.SerieEspecieValorada;
 import pe.itsb.vyrbus.model.bean.TipoAgencia;
@@ -73,6 +74,7 @@ public class WndEspecieValorada extends WndOpcionesMantenimiento {
 	private Spinner spCorrelativoActual;
 	private Textbox txtAutorizacionSunat;
 	private Combobox cmbFormato;
+	private Combobox cmbEmpresa;
 
 	private EspecieValorada oespecieValorada = null;
 	private Window wndSearch = null;
@@ -89,6 +91,7 @@ public class WndEspecieValorada extends WndOpcionesMantenimiento {
 	 */
 	@Override
 	public void onCreate() throws Exception {
+		UtilData.cargarEmpresa(cmbEmpresa, false);
 //		UtilData.cargarDataCombo(cboAgencia, Agencia.class, false);
 		UtilData.cargarAgenciaXtipoAgencia(cboAgencia, Constantes.ID_TIPAGE_TEPSA, false);
 //		UtilData.cargarDataCombo(cboTipoComprobante, TipoComprobante.class, false);
@@ -138,7 +141,7 @@ public class WndEspecieValorada extends WndOpcionesMantenimiento {
 		spCorrelativoActual.setText("");
 		spCorrelativoFinal.setText("");
 		habilitaControles(true);
-		/**A manera temporal el combo agencias solo se habilitará para el rol Super Usuario*/
+		/**A manera temporal el combo agencias solo se habilitarï¿½ para el rol Super Usuario*/
 		cboAgencia.setDisabled( !(getRol().getId().equals(Constantes.ID_ROL_SUPER_USUARIO)));
 
 		if (cboAgencia.getSelectedIndex()<=0)
@@ -158,7 +161,7 @@ public class WndEspecieValorada extends WndOpcionesMantenimiento {
 				if(listEv.size()>0)
 					throw new CorrelativoException(CorrelativoException.DUPLICADO);
 
-				//Genera los correlativos de manera automática 10/11/2016 - jabanto
+				//Genera los correlativos de manera automï¿½tica 10/11/2016 - jabanto
 				String ultimaSerie=ServiceLocator.getEspecieValoradaManager().buscarUltimaSerieUtilAge(tipoComprobante.getId());
 				if(tipoComprobante.getId().intValue()==Constantes.ID_TIPCOM_BOLETA_VENTA || tipoComprobante.getId().intValue()==Constantes.ID_TIPCOM_FACTURA ||
 						tipoComprobante.getId().intValue()==Constantes.ID_TIPCOM_NOTA_CREDITO || tipoComprobante.getId().intValue()==Constantes.ID_TIPCOM_NOTA_DEBITO){
@@ -222,7 +225,7 @@ public class WndEspecieValorada extends WndOpcionesMantenimiento {
 						serie=serie.substring(1); //Suprime el prefijo, este lo asigna el sistema cuento ge genera la nota de credito o debito
 
 					if(serie.isEmpty()){
-						DlgMessage.information("No hay números de serie disponibles para generar.");
+						DlgMessage.information("No hay nï¿½meros de serie disponibles para generar.");
 						return;
 					}
 
@@ -235,7 +238,7 @@ public class WndEspecieValorada extends WndOpcionesMantenimiento {
 				spCorrelativoFinal.setValue(999999999);
 
 				/*End Begin 10/11/2016 - jabanto*/
-//				//Genera los correlativos de manera automática
+//				//Genera los correlativos de manera automï¿½tica
 //				Integer ultimaSeria=ServiceLocator.getEspecieValoradaManager().buscarUltimaSerieUtilAge(tipoComprobante.getId());
 //				txtNumeroSerie.setText(String.valueOf(ultimaSeria+1));
 //				spCorrelativoInicial.setValue(1);
@@ -279,6 +282,7 @@ public class WndEspecieValorada extends WndOpcionesMantenimiento {
 		spCorrelativoActual = (Spinner) getFellow("spCorrelativoActual");
 		txtAutorizacionSunat = (Textbox) getFellow("txtAutorizacionSunat");
 		cmbFormato=(Combobox)this.getFellow("cmbFormato");
+		cmbEmpresa = (Combobox)this.getFellow("cmbEmpresa");
 	}
 
 	@Override
@@ -293,7 +297,11 @@ public class WndEspecieValorada extends WndOpcionesMantenimiento {
 
 			cmbFormato.setSelectedIndex(0);
 
-			/**A manera temporal el combo agencias solo se habilitará para el rol Super Usuario*/
+			cmbEmpresa.setSelectedIndex(0);
+			if(cmbEmpresa.getItemCount() == 2)
+				cmbEmpresa.setSelectedIndex(0);
+			
+			/**A manera temporal el combo agencias solo se habilitarï¿½ para el rol Super Usuario*/
 			cboAgencia.setDisabled( !(getRol().getId().equals(Constantes.ID_ROL_SUPER_USUARIO)));
 		} catch (Exception e) {
 		}
@@ -369,6 +377,9 @@ public class WndEspecieValorada extends WndOpcionesMantenimiento {
 			else if (((TipoComprobante)cboTipoComprobante.getSelectedItem().getValue()).getId().intValue()==Constantes.ID_TIPCOM_BOLETO_VIAJE && cmbFormato.getSelectedIndex()<=0){
 				DlgMessage.information(Messages.getString("WndEspecieValorada.information.noFormato"),cmbFormato);
 				throw new CancelaGrabacionException();
+			}else if(!(cmbEmpresa.getSelectedItem().getValue() instanceof Empresa)) {
+				DlgMessage.information(Messages.getString("WndEspecieValorada.information.noEmpresa"),cmbEmpresa);
+				throw new CancelaGrabacionException();
 			}
 
 			TipoComprobante tipoComprobante=cboTipoComprobante.getSelectedItem().getValue();
@@ -395,9 +406,9 @@ public class WndEspecieValorada extends WndOpcionesMantenimiento {
 				if(diferencia>1){//Si existe diferencia entre el ultimo correlativo registrado y el inicial que se este registrando
 					//Valida si el rol es superusuario
 					if(getRol().getId().intValue()==Constantes.ID_ROL_SUPER_USUARIO){
-						Messagebox.show(Messages.getString("El último correlativo registrado es: "+ultimoCorrRegistrado+" \n y el que se va a registrar es desde el "+spCorrelativoInicial.getValue()+",\n"+
+						Messagebox.show(Messages.getString("El ï¿½ltimo correlativo registrado es: "+ultimoCorrRegistrado+" \n y el que se va a registrar es desde el "+spCorrelativoInicial.getValue()+",\n"+
 						"lo que hace una diferencia de "+diferencia+" correlativos . \n\n "+
-						" ¿Realmente desea continuar?"), DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_YESNO, Messagebox.QUESTION,DlgMessage.BTN_DEFAULT_NO, new EventListener<Event>() {
+						" Â¿Realmente desea continuar?"), DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_YESNO, Messagebox.QUESTION,DlgMessage.BTN_DEFAULT_NO, new EventListener<Event>() {
 							@Override
 							public void onEvent(Event e) throws Exception {
 								if(e.getName().equals("onYes")){
@@ -406,7 +417,7 @@ public class WndEspecieValorada extends WndOpcionesMantenimiento {
 							}
 						});
 					}else{
-						DlgMessage.information("El último correlativo registrado es: "+ultimoCorrRegistrado+" \n y el que se va a regsitrar es desde el "+spCorrelativoInicial.getValue()+",\n"+
+						DlgMessage.information("El Ãºltimo correlativo registrado es: "+ultimoCorrRegistrado+" \n y el que se va a regsitrar es desde el "+spCorrelativoInicial.getValue()+",\n"+
 								"lo que hace una diferencia de "+diferencia+" correlativos . \n \n " +
 								"La diferencia solamente debe de ser un correlativo, No puede continuar.");
 					}
@@ -446,12 +457,12 @@ public class WndEspecieValorada extends WndOpcionesMantenimiento {
 				throw new CancelaGrabacionException();
 			}else if (c.getTipo().intValue()==CorrelativoException.CORRELATIVO_INICIAL_MENOR_DB){
 				DlgMessage.information(Messages.getString("WndEspecieValorada.information.correlativoInicalMenorUltimoDB")+
-						"\n El último es: "+ultimoCorrRegistrado.toString()
+						"\n El ï¿½ltimo es: "+ultimoCorrRegistrado.toString()
 						,spCorrelativoInicial);
 				throw new CancelaGrabacionException();
 			}else if(c.getTipo().intValue()==CorrelativoException.CORRELATIVO_FINAL_MENOR_DB){
 				DlgMessage.information(Messages.getString("WndEspecieValorada.information.correlativoFinallMenorUltimoDB")+
-						"\n El último es: "+ultimoCorrRegistrado.toString()
+						"\n El ï¿½ltimo es: "+ultimoCorrRegistrado.toString()
 						,spCorrelativoFinal);
 				throw new CancelaGrabacionException();
 			}else if (c.getTipo().intValue()==CorrelativoException.SERIE_NO_REGISTRADA){
@@ -481,11 +492,11 @@ public class WndEspecieValorada extends WndOpcionesMantenimiento {
 		if(!txtNumeroSerie.isDisabled()){
 			if(serieEspecieValorada.getAgencia().getId().intValue()!=agencia.getId().intValue() && tipoComprobante.getId().intValue()==Constantes.ID_TIPCOM_MANIFIESTO_PAX){
 				/*Valida si la serie que se va a registrar pertenece a la agencia que esta haciendo el registro*/
-				DlgMessage.information("Este número de Serie está registrada en la Agencia "+serieEspecieValorada.getAgencia().toString()+", no puede continuar.");
+				DlgMessage.information("Este nï¿½mero de Serie estï¿½ registrada en la Agencia "+serieEspecieValorada.getAgencia().toString()+", no puede continuar.");
 				return;
 			}else if(serieEspecieValorada.getAgencia().getId().intValue()!=agencia.getId().intValue()){
-				Messagebox.show(Messages.getString("Este número de Serie está registrada en la Agencia "+serieEspecieValorada.getAgencia().toString()+
-						"\n\n ¿Realmente desea registrarla?"), DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_YESNO, Messagebox.QUESTION,DlgMessage.BTN_DEFAULT_NO, new EventListener<Event>() {
+				Messagebox.show(Messages.getString("Este nï¿½mero de Serie estï¿½ registrada en la Agencia "+serieEspecieValorada.getAgencia().toString()+
+						"\n\n ï¿½Realmente desea registrarla?"), DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_YESNO, Messagebox.QUESTION,DlgMessage.BTN_DEFAULT_NO, new EventListener<Event>() {
 					@Override
 					public void onEvent(Event e) throws Exception {
 						if(e.getName().equals("onYes")){
@@ -507,7 +518,7 @@ public class WndEspecieValorada extends WndOpcionesMantenimiento {
 	 * @throws Exception
 	 */
 	private void enviarCorreo(Agencia agenciaCorresponde) throws Exception{
-		String title="Número de Serie utilizada en más de una Agencia";
+		String title="Nï¿½mero de Serie utilizada en mï¿½s de una Agencia";
 		String toAddress="rdelnegro@tepsa.com.pe, dquispe@tepsa.com.pe";
 		String ccAddress="sistemas@tepsa.com.pe";
 		String mensaje = "";
@@ -531,13 +542,13 @@ public class WndEspecieValorada extends WndOpcionesMantenimiento {
 //			}
 //		}
 		//Cuerpo del mensaje
-		mensaje="Se ha registrado un número de Serie de un comprobante que corresponde a otra Agencia: \n";
+		mensaje="Se ha registrado un nï¿½mero de Serie de un comprobante que corresponde a otra Agencia: \n";
 		mensaje+="Tipo de Comprobante            :"+cboTipoComprobante.getText()+"\n";
-		mensaje+="Agencia a quién le corresponde :"+agenciaCorresponde.toString()+"\n";
-		mensaje+="Agencia en donde se registró   :"+cboAgencia.getText()+"\n";
+		mensaje+="Agencia a quiï¿½n le corresponde :"+agenciaCorresponde.toString()+"\n";
+		mensaje+="Agencia en donde se registrï¿½   :"+cboAgencia.getText()+"\n";
 		mensaje+="Usuario registro               :"+getUsuario().toString()+"\n";
 		mensaje+="Fecha hora registro            :"+new MyTime().dateServer()+"\n";
-		mensaje+="Número de Serie                :"+txtNumeroSerie.getValue().toString()+"\n";
+		mensaje+="Nï¿½mero de Serie                :"+txtNumeroSerie.getValue().toString()+"\n";
 		mensaje+="Correlativos registrados       :Del "+spCorrelativoInicial.getValue()+" Al "+spCorrelativoFinal.getValue()+"\n";
 
 		//Si no encuentra el email de genencia comercial.
@@ -549,7 +560,7 @@ public class WndEspecieValorada extends WndOpcionesMantenimiento {
 
 		//Envia E-Mail
 		mensaje+="\n\n";
-		mensaje+="NOTA: [Este buzon es de envio automático, por favor no responda.]";
+		mensaje+="NOTA: [Este buzon es de envio automï¿½tico, por favor no responda.]";
 		DestinatariosEmails window = new DestinatariosEmails();
 		window.setEmails("TO:"+toAddress+";CC:"+ccAddress);
 		Sendmail.enviaEmail(mensaje,title, window);
@@ -587,6 +598,7 @@ public class WndEspecieValorada extends WndOpcionesMantenimiento {
 				oespecieValorada.setFormato((int)cmbFormato.getSelectedItem().getValue());
 			else
 				oespecieValorada.setFormato(Constantes.FALSE_VALUE);
+			oespecieValorada.setEmpresa(cmbEmpresa.getSelectedItem().getValue());
 			oespecieValorada.setEstadoRegistro(Constantes.VALUE_ACTIVO);
 
 			/*Busca alguna especie valorada de la agencia para inactivarla, solo si es diferente al manifiesto de pasajeros.*/
@@ -614,7 +626,7 @@ public class WndEspecieValorada extends WndOpcionesMantenimiento {
 						UtilData.auditarRegistro(ultimaEspecieValorada,true,getUsuario(),Executions.getCurrent());
 						ServiceLocator.getEspecieValoradaManager().actualizar(ultimaEspecieValorada);
 					}else{
-						//Si los correlativos de la ultima especie valorada aún estan disponibles el nuevo registro sera insertado con el estado inactivo.
+						//Si los correlativos de la ultima especie valorada aï¿½n estan disponibles el nuevo registro sera insertado con el estado inactivo.
 						oespecieValorada.setEstadoRegistro(Constantes.VALUE_INACTIVO);
 					}
 				}
@@ -787,6 +799,7 @@ public class WndEspecieValorada extends WndOpcionesMantenimiento {
 			if (oagencia != null){
 				Util.seleccionarValorItemCombo(Agencia.class, cboAgencia, oagencia.getId());
 			}
+			Util.seleccionarValorItemCombo(Empresa.class, cmbEmpresa, oespecieValorada.getEmpresa().getId());
 			txtNumeroSerie.setText(oespecieValorada.getSerie().toString());
 			spCorrelativoInicial.setText(oespecieValorada.getCorrelativoInicial().toString());
 			spCorrelativoFinal.setText(oespecieValorada.getCorrelativoFinal().toString());

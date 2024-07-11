@@ -372,8 +372,13 @@ public class WSFE implements Serializable{
 			tipoComprobante = FE_TIPCOM_NOTA_CREDITO;
 		else
 			tipoComprobante = FE_TIPCOM_NOTA_DEBITO;
+		
+		// Busca la Empresa
+		Empresa empresa = ServiceLocator.getEmpresaManager().buscarPorId(ventaPasaje.getEmpresa().getId().longValue());
 
-		Result result= getSoap().getRepresentacionImpresa(TOKEN, false, tipoComprobante, serie, correlativo, ventaPasaje.getEmpresa().getNumeroDocumento());
+		// Consulta el Pdf en el WSFE
+		Result result= getSoap().getRepresentacionImpresa(TOKEN, false, tipoComprobante, serie, correlativo, empresa.getNumeroDocumento());
+		
 		if(result.isIsCorrect() && result.getPdf().getValue()!=null) {
 			return result.getPdf().getValue();
 		}else

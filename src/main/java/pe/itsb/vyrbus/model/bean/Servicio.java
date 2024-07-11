@@ -31,10 +31,15 @@ public class Servicio extends GenericBean implements java.io.Serializable {
 
 
 	public Servicio() {
+		super();
 	}
 
 	public Servicio(Integer id){
 		this.id=id;
+	}
+	
+	public Servicio(String denominacion) {
+		this.denominacion = denominacion;
 	}
 
 	/**
