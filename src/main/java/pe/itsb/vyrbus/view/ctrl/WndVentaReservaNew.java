@@ -948,8 +948,9 @@ public class WndVentaReservaNew  extends WndBase {
 				public void onEvent(Event event) throws Exception {
 					// TODO Auto-generated method stub
 					try {
-						if(((Textbox)event.getTarget()).isReadonly()==false)
-							buscarCliente(((Textbox)event.getTarget()).getText().trim().toUpperCase());
+//						if(((Textbox)event.getTarget()).isReadonly()==false)
+//							buscarCliente(((Textbox)event.getTarget()).getText().trim().toUpperCase());
+						txtVtaFacRazonSocial.setFocus(true);
 						
 					} catch (Exception ex) {
 						ex.printStackTrace();
@@ -8468,7 +8469,8 @@ public class WndVentaReservaNew  extends WndBase {
 		hbox.appendChild(btnManPaxAnular);
 		row.appendChild(hbox);
 		Radiogroup radiogroup = new Radiogroup();
-		rdManPaxPrintLaser = new Radio("Impresi\u00F3n L\u00E1ser");
+//		rdManPaxPrintLaser = new Radio("Impresi\u00F3n L\u00E1ser");
+		rdManPaxPrintLaser = new Radio("Formato Pdf");
 		rdManPaxPrintMatricial = new Radio("Impresi\u00F3n Matricial");
 		radiogroup.appendChild(rdManPaxPrintLaser);
 		radiogroup.appendChild(new Separator("vertical"));
@@ -8966,9 +8968,9 @@ public class WndVentaReservaNew  extends WndBase {
 
 				//************************************************************************************
 				//Consulta la version de impresi�n configurada para la agencia - jabanto 16/11/2022
-				Agencia oagencia = (Agencia)Executions.getCurrent().getSession().getAttribute(Constantes.ATRIBUTO_AGENCIA);
+//				Agencia oagencia = (Agencia)Executions.getCurrent().getSession().getAttribute(Constantes.ATRIBUTO_AGENCIA);
 
-				if(UtilFlag.isFormatPrintViewPdfManifiesto(oagencia.getId())) {
+//				if(UtilFlag.isFormatPrintViewPdfManifiesto(oagencia.getId())) {
 					int len = path_sunat.length();
 					int pos = path_sunat.indexOf("PRNTLSR-");
 					String nameFileZip = path_sunat.substring(pos,len);
@@ -8984,36 +8986,36 @@ public class WndVentaReservaNew  extends WndBase {
 						}
 					}
 
-				}else if(UtilFlag.isFormatPrintDownload(oagencia.getId())) {
-					int len = path_sunat.length();
-					int pos = path_sunat.indexOf("PRNTLSR-");
-					String nameFileZip = path_sunat.substring(pos,len);
-					File file= new File(path_sunat);
-					byte[] fileXmlZip = java.nio.file.Files.readAllBytes(file.toPath());
-
-					byte[] filePdfZip =  Printapi.getPrintPdf(fileXmlZip, nameFileZip, Constantes.FORMATO_IMPRESION_A4, false);
-					if(filePdfZip !=null)
-						Filedownload.save(filePdfZip, "multipart/form-data", nameFileZip);
-
-				}else if(UtilFlag.isFormatPrintViewPdf(oagencia.getId())) {
-					int len = path_sunat.length();
-					int pos = path_sunat.indexOf("PRNTLSR-");
-					String nameFileZip = path_sunat.substring(pos,len);
-					File file= new File(path_sunat);
-					byte[] fileXmlZip = java.nio.file.Files.readAllBytes(file.toPath());
-//					int x = 0;
-					byte[] filePdfZip =  Printapi.getPrintPdf(fileXmlZip, nameFileZip, Constantes.FORMATO_IMPRESION_A4, true);
-					if(filePdfZip !=null) {
-						String urlViewPdf = UtilFlag.getUrlView_pdf();
-						if(urlViewPdf !=null) {
-							String crypto = new BASE64Encoder().encode(filePdfZip);
-							Executions.getCurrent().sendRedirect(urlViewPdf+"?vl="+crypto, "_blank");
-						}
-					}
-				}else {
-					/*Descarga el archivo .xml*/
-					Filedownload.save(new File(path_sunat), "application/zip");
-				}
+//				}else if(UtilFlag.isFormatPrintDownload(oagencia.getId())) {
+//					int len = path_sunat.length();
+//					int pos = path_sunat.indexOf("PRNTLSR-");
+//					String nameFileZip = path_sunat.substring(pos,len);
+//					File file= new File(path_sunat);
+//					byte[] fileXmlZip = java.nio.file.Files.readAllBytes(file.toPath());
+//
+//					byte[] filePdfZip =  Printapi.getPrintPdf(fileXmlZip, nameFileZip, Constantes.FORMATO_IMPRESION_A4, false);
+//					if(filePdfZip !=null)
+//						Filedownload.save(filePdfZip, "multipart/form-data", nameFileZip);
+//
+//				}else if(UtilFlag.isFormatPrintViewPdf(oagencia.getId())) {
+//					int len = path_sunat.length();
+//					int pos = path_sunat.indexOf("PRNTLSR-");
+//					String nameFileZip = path_sunat.substring(pos,len);
+//					File file= new File(path_sunat);
+//					byte[] fileXmlZip = java.nio.file.Files.readAllBytes(file.toPath());
+////					int x = 0;
+//					byte[] filePdfZip =  Printapi.getPrintPdf(fileXmlZip, nameFileZip, Constantes.FORMATO_IMPRESION_A4, true);
+//					if(filePdfZip !=null) {
+//						String urlViewPdf = UtilFlag.getUrlView_pdf();
+//						if(urlViewPdf !=null) {
+//							String crypto = new BASE64Encoder().encode(filePdfZip);
+//							Executions.getCurrent().sendRedirect(urlViewPdf+"?vl="+crypto, "_blank");
+//						}
+//					}
+//				}else {
+//					/*Descarga el archivo .xml*/
+//					Filedownload.save(new File(path_sunat), "application/zip");
+//				}
 				
 			}else
 				DlgMessage.information(Messages.getString("WndVentaReservaNew.information.noFormatPrint"));
@@ -9062,9 +9064,9 @@ public class WndVentaReservaNew  extends WndBase {
 
 				//************************************************************************************
 				//Consulta la version de impresi�n configurada para la agencia - jabanto 16/11/2022
-				Agencia oagencia = (Agencia)Executions.getCurrent().getSession().getAttribute(Constantes.ATRIBUTO_AGENCIA);
+//				Agencia oagencia = (Agencia)Executions.getCurrent().getSession().getAttribute(Constantes.ATRIBUTO_AGENCIA);
 
-				if(UtilFlag.isFormatPrintViewPdfCarpetaDespacho(oagencia.getId())) {
+//				if(UtilFlag.isFormatPrintViewPdfCarpetaDespacho(oagencia.getId())) {
 					int len = path_sunat.length();
 					int pos = path_sunat.indexOf("PRNTLSR-");
 					String nameFileZip = path_sunat.substring(pos,len);
@@ -9080,37 +9082,37 @@ public class WndVentaReservaNew  extends WndBase {
 						}
 					}
 
-				}else if(UtilFlag.isFormatPrintDownload(oagencia.getId())) {
-					int len = path_sunat.length();
-					int pos = path_sunat.indexOf("PRNTLSR-");
-					String nameFileZip = path_sunat.substring(pos,len);
-					File file= new File(path_sunat);
-					byte[] fileXmlZip = java.nio.file.Files.readAllBytes(file.toPath());
-
-					byte[] filePdfZip =  Printapi.getPrintPdf(fileXmlZip, nameFileZip, Constantes.FORMATO_IMPRESION_A4, false);
-					if(filePdfZip !=null)
-						Filedownload.save(filePdfZip, "multipart/form-data", nameFileZip);
-
-				}else if(UtilFlag.isFormatPrintViewPdf(oagencia.getId())) {
-					int len = path_sunat.length();
-					int pos = path_sunat.indexOf("PRNTLSR-");
-					String nameFileZip = path_sunat.substring(pos,len);
-					File file= new File(path_sunat);
-					byte[] fileXmlZip = java.nio.file.Files.readAllBytes(file.toPath());
-
-					byte[] filePdfZip =  Printapi.getPrintPdf(fileXmlZip, nameFileZip, Constantes.FORMATO_IMPRESION_A4, true);
-					if(filePdfZip !=null) {
-						String urlViewPdf = UtilFlag.getUrlView_pdf();
-						if(urlViewPdf !=null) {
-							String crypto = new BASE64Encoder().encode(filePdfZip);
-							Executions.getCurrent().sendRedirect(urlViewPdf+"?vl="+crypto, "_blank");
-						}
-					}
-
-				}else {
-					/*Descarga el archivo .xml*/
-					Filedownload.save(new File(path_sunat), "application/zip");
-				}
+//				}else if(UtilFlag.isFormatPrintDownload(oagencia.getId())) {
+//					int len = path_sunat.length();
+//					int pos = path_sunat.indexOf("PRNTLSR-");
+//					String nameFileZip = path_sunat.substring(pos,len);
+//					File file= new File(path_sunat);
+//					byte[] fileXmlZip = java.nio.file.Files.readAllBytes(file.toPath());
+//
+//					byte[] filePdfZip =  Printapi.getPrintPdf(fileXmlZip, nameFileZip, Constantes.FORMATO_IMPRESION_A4, false);
+//					if(filePdfZip !=null)
+//						Filedownload.save(filePdfZip, "multipart/form-data", nameFileZip);
+//
+//				}else if(UtilFlag.isFormatPrintViewPdf(oagencia.getId())) {
+//					int len = path_sunat.length();
+//					int pos = path_sunat.indexOf("PRNTLSR-");
+//					String nameFileZip = path_sunat.substring(pos,len);
+//					File file= new File(path_sunat);
+//					byte[] fileXmlZip = java.nio.file.Files.readAllBytes(file.toPath());
+//
+//					byte[] filePdfZip =  Printapi.getPrintPdf(fileXmlZip, nameFileZip, Constantes.FORMATO_IMPRESION_A4, true);
+//					if(filePdfZip !=null) {
+//						String urlViewPdf = UtilFlag.getUrlView_pdf();
+//						if(urlViewPdf !=null) {
+//							String crypto = new BASE64Encoder().encode(filePdfZip);
+//							Executions.getCurrent().sendRedirect(urlViewPdf+"?vl="+crypto, "_blank");
+//						}
+//					}
+//
+//				}else {
+//					/*Descarga el archivo .xml*/
+//					Filedownload.save(new File(path_sunat), "application/zip");
+//				}
 			}else
 				DlgMessage.information(Messages.getString("WndVentaReservaNew.information.noFormatPrint"));
 		}

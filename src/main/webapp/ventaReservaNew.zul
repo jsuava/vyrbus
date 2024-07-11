@@ -432,7 +432,7 @@
 												</row>
 												<row spans="2">
 													<hbox align="center">
-														<checkbox id="chbxVtaFactura" onOK="if(chbxVtaFactura.isChecked()) txtVtaFacRuc.setFocus(true); else if(cmbVtaTipoFormaPago.getSelectedIndex()>=0) btnVtaGuardar.setFocus(true); else cmbVtaTipoFormaPago.setFocus(true);" checked="false" label="FACTURA" style="font-size:10px !important"/>
+														<checkbox id="chbxVtaFactura" onOK="if(chbxVtaFactura.isChecked()) txtVtaFacRuc.setFocus(true); else if(cmbVtaTipoFormaPago.getSelectedIndex()>=0) btnVtaGuardar.setFocus(true); else {cmbVtaTipoFormaPago.setSelectedIndex(0); cmbVtaTipoFormaPago.open(); cmbVtaTipoFormaPago.setFocus(true);}" checked="false" label="FACTURA" style="font-size:10px !important"/>
 														<separator width="20px" />
 														<textbox id="txtVtaFacRuc" onFocus="self.select();" onOK="txtVtaFacRazonSocial.setFocus(true);" width="80px" placeholder="RUC"/>
 														<textbox id="txtVtaFacRazonSocial" onFocus="self.select();" onOK="txtVtaFacDireccion.setFocus(true);" width="248px" placeholder="RAZÓN SOCIAL"/>

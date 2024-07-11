@@ -3,7 +3,7 @@
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <!-- Generated 24/05/2012 11:51:01 AM by Hibernate Tools 3.4.0.CR1 -->
 <hibernate-mapping>
-    <class name="pe.itsb.vyrbus.model.bean.HRE" table="VRTHOJRUTELE" schema="VYRBUSME">
+    <class name="pe.itsb.vyrbus.model.bean.HRE" table="VRTHOJRUTELE" schema="VRANTEZANA">
         <comment>Entidad que almacena las hojas de ruta electronica</comment>
          <composite-id name="numeroHojaRutaID" class="pe.itsb.vyrbus.model.bean.NumeroHojaRutaID">
             <key-property name="idNumeroHojaRuta" type="java.lang.String">

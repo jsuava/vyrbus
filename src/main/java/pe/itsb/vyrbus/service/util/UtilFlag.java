@@ -269,7 +269,9 @@ public class UtilFlag {
 		Flag flag = ServiceLocator.getFlagManager().buscarPorId((long)FLAG_IDURL_VIEW_PDF);
 		if(flag !=null && flag.getLlave()!=null && flag.getEstadoRegistro().equals(Constantes.VALUE_ACTIVO))
 			url = flag.getLlave();
-
+		
+//		url = "http://localhost:38822/viewboldir";
+		
 		return url;
 	}
 

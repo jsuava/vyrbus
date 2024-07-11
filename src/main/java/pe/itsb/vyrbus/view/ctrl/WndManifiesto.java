@@ -475,7 +475,7 @@ public class WndManifiesto extends WndBase {
 		itinerario = ServiceLocator.getManifiestoManager().consultaItinerario(idItinerario, tramoOrigen, tramoDestino);
 
 		txtItinerario.setText(idItinerario.toString());
-		lbRuta.setValue(itinerario.getRuta().toString());
+		lbRuta.setValue(itinerario.getRuta()!=null?itinerario.getRuta().toString():"");
 		/*Valida si el itinerario esta o no asiciado a un bus*/
 		if (itinerario.getBus() !=null){
 			lbBus.setValue(itinerario.getBus().getCodigo());

@@ -170,9 +170,9 @@ public class Constantes {
 //	public static final String SERVER_HOST = Executions.getCurrent().getHeader("host");
 //	public static final String SERVER_HOST = "ventas.tepsa.com.pe/";
 
-//	public static final String SERVER_HOST = "localhost:8080";
+	public static final String SERVER_HOST = "localhost:8080";
 	//Demo Wars
-	public static final String SERVER_HOST = "170.0.233.156:8080";
+//	public static final String SERVER_HOST = "170.0.233.156:8080";
 
 //	public static final String SERVER_HOST = "119.8.145.122:8080";
 
