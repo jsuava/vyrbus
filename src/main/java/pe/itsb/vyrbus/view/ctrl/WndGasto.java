@@ -34,6 +34,7 @@ import org.zkoss.zul.Window;
 import pe.itsb.vyrbus.model.bean.Agencia;
 import pe.itsb.vyrbus.model.bean.Bus;
 import pe.itsb.vyrbus.model.bean.DetalleLiquidacion;
+import pe.itsb.vyrbus.model.bean.Empresa;
 import pe.itsb.vyrbus.model.bean.Gasto;
 import pe.itsb.vyrbus.model.bean.Liquidacion;
 import pe.itsb.vyrbus.model.bean.TipoAgencia;
@@ -73,6 +74,7 @@ public class WndGasto extends WndOpcionesMantenimiento {
 	private Radio rbIngreso;
 	private Row filaDeposito;
 	private Label lblMensaje;
+	private Combobox cmbEmpresa;
 
 //	private Agencia agencia = null;
 	private Gasto gasto=null;
@@ -104,6 +106,7 @@ public class WndGasto extends WndOpcionesMantenimiento {
 	@Override
 	public void onCreate() throws Exception {
 		UtilData.cargarDataCombo(cmbBus, Bus.class, false);
+		UtilData.cargarEmpresa(cmbEmpresa, false);		
 
 		criteriosOrdenar = new ArrayList<>();
 		criteriosOrdenar.add("tipoGasto");
@@ -111,6 +114,10 @@ public class WndGasto extends WndOpcionesMantenimiento {
 		dbMonto.setLocale(Locale.US);
 		UtilData.cargarTipoGasto(cmbTipoGasto, false, Constantes.FALSE_VALUE);
 		rbGasto.setChecked(true);
+		
+		cmbEmpresa.setSelectedIndex(0);
+		if(cmbEmpresa.getItemCount() == 2)
+			cmbEmpresa.setSelectedIndex(1);
 	}
 
 	/* (non-Javadoc)
@@ -132,6 +139,7 @@ public class WndGasto extends WndOpcionesMantenimiento {
 		rbGasto = (Radio)this.getFellow("rbGasto");
 		rbIngreso = (Radio)this.getFellow("rbIngreso");
 		lblMensaje = (Label)this.getFellow("lblMensaje");
+		cmbEmpresa = (Combobox)this.getFellow("cmbEmpresa");
 
 		rbGasto.addEventListener(Events.ON_CHECK, new EventListener<Event>() {
 			@Override
@@ -200,6 +208,10 @@ public class WndGasto extends WndOpcionesMantenimiento {
 		lblMensaje.setValue("");
 
 		isClikSaved=false;
+		
+		cmbEmpresa.setSelectedIndex(0);
+		if(cmbEmpresa.getItemCount() == 2)
+			cmbEmpresa.setSelectedIndex(1);
 
 	}
 
@@ -323,6 +335,9 @@ public class WndGasto extends WndOpcionesMantenimiento {
 				else if(txtHoraDeposito.getText().trim().isEmpty())
 					throw new GastosException(GastosException.HORADEPOSITO_NULL);
 			}
+			if(!(cmbEmpresa.getSelectedItem().getValue() instanceof Empresa)) {
+				throw new GastosException(GastosException.EMPRESA_NULL);
+			}
 
 
 			/*	Busca una liquidacion aperturada para la fecha actual	*/
@@ -380,6 +395,7 @@ public class WndGasto extends WndOpcionesMantenimiento {
 			gasto.setObservacion(txtObservacion.getText().trim().toUpperCase());
 			gasto.setNroCtacte(txtNroCtacte.getText().trim().toUpperCase());
 			gasto.setHoraDeposito(txtHoraDeposito.getText().trim().toUpperCase());
+			gasto.setEmpresa(cmbEmpresa.getSelectedItem().getValue());
 			gasto.setEstadoRegistro(Constantes.VALUE_ACTIVO);
 
 
@@ -449,6 +465,10 @@ public class WndGasto extends WndOpcionesMantenimiento {
 			}else if (gex.getTipo()==GastosException.DOCUMENTO_NO_VALIDO){
 				DlgMessage.information(Messages.getString("WndGasto.Information.DocumenoInvalido"));
 				txtNroDocumento.setFocus(true);throw new CancelaGrabacionException();
+			}else if(gex.getTipo()==GastosException.EMPRESA_NULL) {
+				DlgMessage.information(Messages.getString("WndGasto.Information.empresa.null"), cmbEmpresa);
+				cmbEmpresa.setFocus(true);
+				throw new CancelaGrabacionException();
 			}
 		}catch (NumeroDocumentoNullException nde){
 			DlgMessage.information(Messages.getString("WndGasto.Information.DocumentoNull"));
@@ -592,6 +612,8 @@ public class WndGasto extends WndOpcionesMantenimiento {
 			item = new Listitem();
 			cell = new Listcell((Integer.toString(x)));
 			item.appendChild(cell); //Correlativo
+			cell = new Listcell(gasto.getEmpresa().getNombreCorto());
+			item.appendChild(cell);
 			cell = new Listcell(Util.DatetoString(gasto.getLiquidacion().getFechaLiquidacion(), "dd/MM/yyyy"));
 			item.appendChild(cell);
 			cell = new Listcell(gasto.getAgencia().getDenominacion());
@@ -635,6 +657,8 @@ public class WndGasto extends WndOpcionesMantenimiento {
 				rbGasto.setChecked(true);
 			else
 				rbIngreso.setChecked(true);
+			
+			Util.seleccionarValorItemCombo(Empresa.class, cmbEmpresa, gasto.getEmpresa().getId());
 
 			onCheck_tipoOperacion();
 			Util.seleccionarValorItemCombo(TipoGasto.class, cmbTipoGasto, (gasto.getTipoGasto().getId()));

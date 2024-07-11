@@ -1,8 +1,8 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	:
- * Autor		: José Avalos
+ * Descripciï¿½n	:
+ * Autor		: Josï¿½ Avalos
  * Fecha		: 24/06/2013
  */
 package pe.itsb.vyrbus.service.exceptions;
@@ -26,6 +26,7 @@ public class GastosException extends Exception {
 	public static final int	DOCUMENTO_NO_VALIDO=6;
 	public static final int	CTACTE_NULL=7;
 	public static final int	HORADEPOSITO_NULL=8;
+	public static final int	EMPRESA_NULL=9;
 
 
 	private int tipo;

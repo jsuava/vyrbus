@@ -39,6 +39,7 @@ import org.zkoss.zul.Row;
 import org.zkoss.zul.Textbox;
 import org.zkoss.zul.Window;
 
+import pe.itsb.vyrbus.model.bean.Agencia;
 import pe.itsb.vyrbus.model.bean.CanalVenta;
 import pe.itsb.vyrbus.model.bean.Cliente;
 import pe.itsb.vyrbus.model.bean.ControlEspecieValorada;
@@ -47,6 +48,8 @@ import pe.itsb.vyrbus.model.bean.Equipaje;
 import pe.itsb.vyrbus.model.bean.EspecieValorada;
 import pe.itsb.vyrbus.model.bean.FormaPago;
 import pe.itsb.vyrbus.model.bean.Itinerario;
+import pe.itsb.vyrbus.model.bean.Localidad;
+import pe.itsb.vyrbus.model.bean.MovimientoPasajes;
 import pe.itsb.vyrbus.model.bean.OperadorTarjetaCredito;
 import pe.itsb.vyrbus.model.bean.TarjetaCredito;
 import pe.itsb.vyrbus.model.bean.TipoComprobante;
@@ -105,6 +108,15 @@ public class WndEquipaje extends WndBase implements Serializable{
 	private Textbox txtRazonSocial;
 	private Textbox txtDireccionFiscal;
 	private Textbox txtobservaciones;
+	
+	private Datebox dtbxFechaInicio;
+	private Datebox dtbxFechaFin;
+	private Combobox cmbOrigen;
+	private Combobox cmbDestino;
+	private Combobox cmbAgenciaEmbarque;
+	private Listbox ltbxEquipajes;
+	private Button btnBuscarEquipajes;
+	private Button btnAnularTk;
 
 	private TreeMap<String, Object> criteriosBusqueda;
 	private int KG_X_BOLETO_LIBRES = 20;
@@ -154,6 +166,15 @@ public class WndEquipaje extends WndBase implements Serializable{
 		txtRazonSocial = (Textbox)this.getFellow("txtRazonSocial");
 		txtDireccionFiscal = (Textbox)this.getFellow("txtDireccionFiscal");
 		txtobservaciones = (Textbox)this.getFellow("txtobservaciones");
+		
+		dtbxFechaInicio = (Datebox)this.getFellow("dtbxFechaInicio");
+		dtbxFechaFin = (Datebox)this.getFellow("dtbxFechaFin");
+		cmbOrigen = (Combobox)this.getFellow("cmbOrigen");
+		cmbDestino = (Combobox)this.getFellow("cmbDestino");
+		cmbAgenciaEmbarque = (Combobox)this.getFellow("cmbAgenciaEmbarque");
+		ltbxEquipajes = (Listbox)this.getFellow("ltbxEquipajes");
+		btnBuscarEquipajes = (Button)this.getFellow("btnBuscarEquipajes");
+		btnAnularTk = (Button)this.getFellow("btnAnularTk");
 
 		txtNumeroBoleto.addEventListener(Events.ON_OK, new EventListener<Event>() {
 			@Override
@@ -255,6 +276,25 @@ public class WndEquipaje extends WndBase implements Serializable{
 				onLoadTarjetas();
 			}
 		});
+		
+		btnBuscarEquipajes.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+			@Override
+			public void onEvent(Event event) throws Exception {
+				onClick_btnBuscarEquipajes();				
+			}
+		});
+		btnAnularTk.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+			@Override
+			public void onEvent(Event event) throws Exception {
+				onClick_btnAnularTk();				
+			}
+		});
+		ltbxEquipajes.addEventListener(Events.ON_SELECT, new EventListener<Event>() {
+			@Override
+			public void onEvent(Event event) throws Exception {
+				onSelect_ltbxEquipajes(event);
+			}
+		});
 	}
 
 
@@ -297,6 +337,23 @@ public class WndEquipaje extends WndBase implements Serializable{
 			disabledControls(true);
 			btnGuardar.setDisabled(true);
 
+			//Contrls Busqueda
+			dtbxFechaInicio.setValue(new Date());
+			dtbxFechaFin.setValue(new Date());
+			UtilData.cargarDataCombo(cmbOrigen, Localidad.class, true);
+			UtilData.cargarDataCombo(cmbDestino, Localidad.class, true);
+			UtilData.cargarDataCombo(cmbAgenciaEmbarque, Agencia.class, true);			
+			Util.seleccionarValorItemCombo(Localidad.class, cmbOrigen, getAgencia().getLocalidad().getId());
+			Util.seleccionarValorItemCombo(Agencia.class, cmbAgenciaEmbarque, getAgencia().getId());
+			
+			cmbOrigen.setDisabled(true);
+			cmbAgenciaEmbarque.setDisabled(true);
+			if(getRol().getId().equals(Constantes.ID_ROL_SUPER_USUARIO)) {
+				cmbAgenciaEmbarque.setDisabled(false);
+				cmbOrigen.setDisabled(false);
+			}			
+			btnAnularTk.setVisible(false);
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 			DlgMessage.error(e.getMessage());
@@ -1033,9 +1090,156 @@ public class WndEquipaje extends WndBase implements Serializable{
 		}catch(Exception ex){
 			ex.printStackTrace();
 			log.error(ex);
-		}
+		}		
 	}
 
+	/**
+	 * 
+	 */
+	private void onClick_btnBuscarEquipajes(){
+		try {
+			Util.limpiarListbox(ltbxEquipajes);
+			btnAnularTk.setVisible(false);
+			
+			String fechaInicio = Constantes.FORMAT_DATE.format(dtbxFechaInicio.getValue());
+			String fechaFin = Constantes.FORMAT_DATE.format(dtbxFechaFin.getValue());
+			Integer localidadIdOrigen = null;
+			Integer localidadIdDestino = null;
+			Integer agenciaIdEmbarque = null;
+			if(cmbOrigen.getSelectedItem().getValue() instanceof Localidad) {
+				localidadIdOrigen = ((Localidad)cmbOrigen.getSelectedItem().getValue()).getId();
+			}
+			
+			if(cmbDestino.getSelectedItem().getValue() instanceof Localidad) {
+				localidadIdDestino = ((Localidad)cmbDestino.getSelectedItem().getValue()).getId();
+			}
+			
+			if(cmbAgenciaEmbarque.getSelectedItem().getValue() instanceof Agencia) {
+				agenciaIdEmbarque = ((Agencia)cmbAgenciaEmbarque.getSelectedItem().getValue()).getId();
+			}
+			
+			List<Equipaje> listEquipajes = ServiceLocator.getEquipajeManager().buscar(fechaInicio, fechaFin, agenciaIdEmbarque, localidadIdOrigen, localidadIdDestino);
+			
+			for(Equipaje equipaje: listEquipajes) {
+				
+				Listitem item = new Listitem();
+				Listcell cell = new Listcell(Constantes.FORMAT_DATE.format(equipaje.getDetalleEquipaje().getVentaPasaje().getFechaPartida()));
+				item.appendChild(cell);
+				cell = new Listcell(equipaje.getDetalleEquipaje().getVentaPasaje().getHoraEmbarque());
+				item.appendChild(cell);
+				cell = new Listcell(equipaje.getDetalleEquipaje().getVentaPasaje().getAgenciaPartida().getDenominacion());
+				item.appendChild(cell);
+				cell = new Listcell(equipaje.getDetalleEquipaje().getVentaPasaje().getRuta().getOrigen());
+				item.appendChild(cell);
+				cell = new Listcell(equipaje.getDetalleEquipaje().getVentaPasaje().getRuta().getDestino());
+				item.appendChild(cell);
+				cell = new Listcell(equipaje.getDetalleEquipaje().getVentaPasaje().getServicio().getDenominacion());
+				item.appendChild(cell);
+				cell = new Listcell(equipaje.getDetalleEquipaje().getVentaPasaje().getNumeroBoleto());
+				item.appendChild(cell);
+				cell = new Listcell(equipaje.getDetalleEquipaje().getVentaPasaje().getNumeroAsiento().toString());
+				item.appendChild(cell);
+				cell = new Listcell(equipaje.getDetalleEquipaje().getVentaPasaje().getNumeroPiso().toString());
+				item.appendChild(cell);
+				cell = new Listcell(equipaje.getDetalleEquipaje().getVentaPasajeExceso() !=null? "SI" : "NO");
+				item.appendChild(cell);
+				cell = new Listcell(equipaje.getDetalleEquipaje().getTicket());
+				item.appendChild(cell);
+				cell = new Listcell(equipaje.getDetalleEquipaje().getNumeroCorrelativo().toString());
+				item.appendChild(cell);
+				cell = new Listcell(equipaje.getDetalleEquipaje().getPeso().toString());
+				item.appendChild(cell);
+				cell = new Listcell(equipaje.getDetalleEquipaje().getVentaPasaje().getPasajero().getNombresApellidos());
+				item.appendChild(cell);
+				cell = new Listcell(equipaje.getObservaciones()!=null? equipaje.getObservaciones() : "");
+				item.appendChild(cell);				
+				item.setValue(equipaje);
+				ltbxEquipajes.appendChild(item);
+			}			
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			log.error(e);
+			DlgMessage.error(this.getClass().getName()+" "+e.getMessage());
+		}
+	}
+	
+	private void onSelect_ltbxEquipajes(Event event) {
+		try {
+			btnAnularTk.setVisible(false);
+			
+			Equipaje equipaje = ltbxEquipajes.getSelectedItem().getValue();
+			VentaPasaje ventaPasajeExceso = Optional.ofNullable(equipaje.getDetalleEquipaje().getVentaPasajeExceso()).orElse(null);
+			String fechaActual = Constantes.FORMAT_DATE.format(new Date());
+			String fechaPartida = Constantes.FORMAT_DATE.format(equipaje.getDetalleEquipaje().getVentaPasaje().getFechaPartida());
+			
+			// habilita la anulaciónn del tk siempre y cuando sea del mismo dia y este no tenga un exceso
+			if(fechaActual.equals(fechaPartida) && ventaPasajeExceso == null) {
+				btnAnularTk.setVisible(true);
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			log.error(e);
+			DlgMessage.error(this.getClass().getName()+" "+e.getMessage());
+		}
+	}
+	
+	private void onClick_btnAnularTk(){
+		try {
+			
+			Equipaje equipaje = ltbxEquipajes.getSelectedItem().getValue();
+			VentaPasaje ventaPasajeExceso = Optional.ofNullable(equipaje.getDetalleEquipaje().getVentaPasajeExceso()).orElse(null);
+			if(ventaPasajeExceso != null) {
+				DlgMessage.information("No se puede anular el Ticket debido a que tiene comprobantes por Exceso.");
+				return;
+			}
+			
+			// Busca el detalle 
+			Long detalleEquipajeId = equipaje.getDetalleEquipaje().getId();
+			DetalleEquipaje detalleEquipaje = ServiceLocator.getDetalleEquipajeManager().buscarPorId(detalleEquipajeId);
+			detalleEquipaje.setEstadoRegistro(Constantes.VALUE_INACTIVO);
+			UtilData.auditarRegistro(detalleEquipaje, true, getUsuario(), Executions.getCurrent());
+			
+			Messagebox.show("Realmente desea anular el Ticket Nro. "+ detalleEquipaje.getTicket(), DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_YESNO, Messagebox.QUESTION, new EventListener<Event>() {
+				@Override
+				public void onEvent(Event e){
+					try{
+						if(e.getName().equals("onYes")){
+							// Anula el Tk
+							ServiceLocator.getDetalleEquipajeManager().actualizar(detalleEquipaje);
+							
+							// Busca tk activos del equipaje
+							TreeMap<String, Object> criteriosBusqueda = new TreeMap<String, Object>();
+							criteriosBusqueda.put("equipaje", detalleEquipaje.getEquipaje());
+							criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_INACTIVO);
+							List<DetalleEquipaje> listDetequipaje = ServiceLocator.getDetalleEquipajeManager().buscarPorX(criteriosBusqueda, null);
+							if(listDetequipaje.isEmpty()) {
+								// Anula la cabecera cuando ya no existen tk activos 
+								Equipaje oequipaje = ServiceLocator.getEquipajeManager().buscarPorId(equipaje.getId());
+								oequipaje.setEstadoRegistro(Constantes.VALUE_INACTIVO);
+								UtilData.auditarRegistro(oequipaje, true, getUsuario(), Executions.getCurrent());
+								ServiceLocator.getEquipajeManager().actualizar(equipaje);
+							}
+							
+							// Actualiza la lista
+							onClick_btnBuscarEquipajes();				
+						}
+					}catch(Exception ex) {
+						ex.printStackTrace();
+						log.error(ex);
+						DlgMessage.error(ex.getMessage());
+					}
+				}
+			});
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			log.error(e);
+			DlgMessage.error(this.getClass().getName()+" "+e.getMessage());
+		}
+	}
+	
 //	/**
 //	 * Permite enlazar los controles a la ventana de selecci�n de Itinerario
 //	 * @param textboxItinerario :en este Textbox se devolvera el Id del itinerario seleccionado.

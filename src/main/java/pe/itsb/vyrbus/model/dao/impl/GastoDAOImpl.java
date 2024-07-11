@@ -8,6 +8,7 @@ import java.util.TreeMap;
 
 import pe.itsb.vyrbus.model.bean.Agencia;
 import pe.itsb.vyrbus.model.bean.DetalleLiquidacion;
+import pe.itsb.vyrbus.model.bean.Empresa;
 import pe.itsb.vyrbus.model.bean.Gasto;
 import pe.itsb.vyrbus.model.bean.Liquidacion;
 import pe.itsb.vyrbus.model.bean.LiquidacionOficina;
@@ -114,11 +115,13 @@ public class GastoDAOImpl extends GenericDAOImpl implements GastoDAO {
 					"g.audfecins as GfechaInsercion, g.audusuins as GUsuarioInsercion, g.audipinse as GIpInsercion, "+//17-19
 					"lq.n_estliq, a.c_nomcor as nombreCorto, nvl(tg.n_tipope,0) tipope, tg.c_nomcor nomCarGasto "+//20-23
 					", g.c_ctacte ctacte, g.c_hordep hordep  "+ //24-25
+					",ep.empresa_id, ep.c_numdoc empresa_numdoc, ep.c_razsoc empresa_razonSocial, ep.C_NOMCOR empresa_nombrecorto "+ //26-29
 			"FROM vrtgasto g "+
 				"INNER JOIN vrtdetliq dlq ON (dlq.gasto_id=g.gasto_id) "+
 				"INNER JOIN vrtliquidacion lq ON (lq.liquidacion_id=dlq.liquidacion_id) "+
 				"INNER JOIN vrmtipgas tg ON (tg.tipgas_id=g.tipgas_id) "+
 				"INNER JOIN vrmagencia a ON (a.agencia_id=lq.agencia_id) " +
+				"INNER JOIN vrmempresa ep ON (ep.empresa_id = g.empresa_id) "+
 			"WHERE lq.d_fecliq between to_date('"+fechaGasto+"','dd/MM/yyyy') and to_date('"+fechaFinGasto+"','dd/MM/yyyy') " +
 				 "AND lq.agencia_id=NVL("+idAgencia+",lq.agencia_id) " +
 				 "AND g.tipgas_id=NVL("+idTipoGasto+",g.tipgas_id) " +
@@ -182,14 +185,21 @@ public class GastoDAOImpl extends GenericDAOImpl implements GastoDAO {
 				gasto.setUsuarioInsercion(obj[18].toString());
 			if (obj[19] !=null)
 				gasto.setIpInsercion(obj[19].toString());
+			
+			Empresa empresa = new Empresa();
+			empresa.setId(((BigDecimal)obj[26]).intValue());
+			empresa.setNumeroDocumento(obj[27].toString());
+			empresa.setRazonSocial(obj[28].toString());
+			empresa.setNombreCorto(obj[29].toString());
+			
 			//Se a�adieron dos campos adicionales para el gasto
 			gasto.setNroCtacte(obj[24] != null ? obj[24].toString() : "");
 			gasto.setHoraDeposito(obj[25] != null ? obj[25].toString() : "");
-
 			gasto.setAgencia(agencia);
 			gasto.setLiquidacion(liquidacion);
 			gasto.setTipoGasto(tipoGasto);
 			gasto.setDetalleLiquidacion(detalleLiquidacion);
+			gasto.setEmpresa(empresa);
 
 			ListResult.add(gasto);
 		}

@@ -2220,21 +2220,24 @@ public class WndLiquidacionDiariaVentas extends WndBase implements Serializable 
 //		if(isCarga) {
 //
 //		}else
-		comprobantePrevio = WSFE.representacionImpresa(ventaPasaje);
-
 		final Window window = new Window(".", "normal", true);
 		window.setWidth("770px");
 		window.setHeight("700px");
+		
+		comprobantePrevio = WSFE.representacionImpresa(ventaPasaje);
+		if(comprobantePrevio != null) {
+			String numeroComprobante = ventaPasaje.getNumeroBoleto();
+			InputStream inputStream = new ByteArrayInputStream(comprobantePrevio);
+			AMedia amedia = new AMedia(numeroComprobante + ".pdf", "pdf","application/pdf", inputStream);
 
-		String numeroComprobante = ventaPasaje.getNumeroBoleto();
-		InputStream inputStream = new ByteArrayInputStream(comprobantePrevio);
-		AMedia amedia = new AMedia(numeroComprobante + ".pdf", "pdf","application/pdf", inputStream);
-
-		Iframe iframe = new Iframe();
-		iframe.setStyle("width:100%; height:100%;");
-		iframe.setScrolling("none");
-		iframe.setContent(amedia);
-		window.appendChild(iframe);
+			Iframe iframe = new Iframe();
+			iframe.setStyle("width:100%; height:100%;");
+			iframe.setScrolling("none");
+			iframe.setContent(amedia);
+			window.appendChild(iframe);			
+		}else {
+			DlgMessage.information("El Comprobante no existen en F.E.");
+		}
 
 		return window;
 	}

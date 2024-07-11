@@ -27,6 +27,12 @@
 			</columns>
 			<rows>
 				<row>
+					<label value = "EMPRESA :" />
+					<combobox id="cmbEmpresa" readonly="true" width="100%" />
+					<separator/>
+					<separator/>
+				</row>				
+				<row>
 					<label value="AGENCIA (*) :" />
 					<div>
 						<textbox id="textboxId"/>

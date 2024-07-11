@@ -1,149 +1,204 @@
 <?page title="" contentType="text/html;charset=UTF-8"?>
 <zk>
-<window id="wndEquipaje" title="" border="none" use="pe.itsb.vyrbus.view.ctrl.WndEquipaje" width="680px">
-	<groupbox closable="false" mold="3d">
-		<caption label="INFORMACIÓN BOLETOS" style="color: #ffffff;" />
-		<grid style="border:none">
-			<columns>
-				<column width="80px"/>
-				<column width="150px"/>
-				<column width="100px" align="right"/>
-				<column width="120px"/>
-				<column/>
-			</columns>
-			<rows>
-<!-- 				<row>	 -->
-<!-- 					<label value="ITINERARIO :" /> -->
-<!-- 					<hbox align="center"> -->
-<!-- 						<textbox id="txtitinerario" width="70px" readonly="true"/> -->
-<!-- 						<button id="btnBuscarItinerario" image="/resources/mp_buscarEnabled.png"/> -->
-<!-- 					</hbox> -->
-<!-- 					<separator/> -->
-<!-- 					<separator/> -->
-<!-- 					<separator/> -->
-<!-- 				</row> -->
-				<row>
-					<label value="N° BOLETO :" />
-					<textbox id="txtNumeroBoleto" width="90%" focus="true" style="font-size:12px !important" placeholder="N° BOLETO" />
-					<label value="FECHA PARTIDA :" />
-					<datebox id="dtbxFechaPartida" width="115px" format="dd/MM/yyyy" readonly="true"/>
-					<button id="btnBuscar" label="Buscar" sclass="btnCommandM" visible="false" autodisable="self" style="margin-left:10px" image="/resources/mp_buscarEnabled.png" />
-				</row>
-			</rows>
-		</grid>
-	</groupbox>
-	<groupbox closable="false" mold="3d">
-		<caption label="CÁLCULO DE EXCESO" style="color: #ffffff;"/>
-		<grid style="border:none">
-			<columns>
-				<column width="665px"/>
-				<column/>
-			</columns>
-			<rows>
-				<row>
-					<listbox id="ltbxBoletos" rows="4">
-						<listhead>
-							<listheader label="N° COMPROBANTE" width="120px" style="color: #ffffff;" />
-							<listheader label="PASAJERO" width="300px" style="color: #ffffff;" />
-							<listheader label="EMBARQUE" width="170px" style="color: #ffffff;" />
-							<listheader label="ASIENTO" width="60px" align="center" style="color: #ffffff;" />
-						</listhead>					
-					</listbox>
-					<label/>
-					<!--<vbox align="left">
-						<hbox align="center">
-							<label value="KLG LIBRES : " style="margin-left:20px;font-size:13px !important"/>
-							<label id="lblKilosLibres" style="font-weight:bold;font-size:14px !important"/>							
+<window id="wndEquipaje" title="" border="none" use="pe.itsb.vyrbus.view.ctrl.WndEquipaje">	
+	<tabbox>
+		<tabs>
+			<tab label="Recección" />
+			<tab label="Listado de Tickets" />
+		</tabs>
+		<tabpanels>
+			<tabpanel width="680px">
+				<groupbox closable="false" mold="3d">
+					<caption label="INFORMACIÓN BOLETOS" style="color: #ffffff;" />
+					<grid style="border:none">
+						<columns>
+							<column width="80px"/>
+							<column width="150px"/>
+							<column width="100px" align="right"/>
+							<column width="120px"/>
+							<column/>
+						</columns>
+						<rows>
+							<row>
+								<label value="N° BOLETO :" />
+								<textbox id="txtNumeroBoleto" width="90%" focus="true" style="font-size:12px !important" placeholder="N° BOLETO" />
+								<label value="FECHA PARTIDA :" />
+								<datebox id="dtbxFechaPartida" width="115px" format="dd/MM/yyyy" readonly="true"/>
+								<button id="btnBuscar" label="Buscar" sclass="btnCommandM" visible="false" autodisable="self" style="margin-left:10px" image="/resources/mp_buscarEnabled.png" />
+							</row>
+						</rows>
+					</grid>
+				</groupbox>
+				<groupbox closable="false" mold="3d">
+					<caption label="CÁLCULO DE EXCESO" style="color: #ffffff;"/>
+					<grid style="border:none">
+						<columns>
+							<column width="665px"/>
+							<column/>
+						</columns>
+						<rows>
+							<row>
+								<listbox id="ltbxBoletos" rows="4">
+									<listhead>
+										<listheader label="N° COMPROBANTE" width="120px" style="color: #ffffff;" />
+										<listheader label="PASAJERO" width="300px" style="color: #ffffff;" />
+										<listheader label="EMBARQUE" width="170px" style="color: #ffffff;" />
+										<listheader label="ASIENTO" width="60px" align="center" style="color: #ffffff;" />
+									</listhead>					
+								</listbox>
+								<label/>
+								<!--<vbox align="left">
+									<hbox align="center">
+										<label value="KLG LIBRES : " style="margin-left:20px;font-size:13px !important"/>
+										<label id="lblKilosLibres" style="font-weight:bold;font-size:14px !important"/>							
+									</hbox>
+									<hbox align="center">
+										<label value="FECHA PARTIDA :" style="font-size:13px !important"/>
+										<label id="lblFechaPartida" style="font-weight:bold;font-size:14px !important"/>
+									</hbox>
+								</vbox>-->					
+							</row>				
+						</rows>
+					</grid>
+					<div style="background: #FFBA0D" height="16px" >
+						<hbox>
+							<label value="KLG LIBRES : " style="margin-left:70px; font-weight:bold; font-size:12px !important; color: white"/>
+							<label id="lblKilosLibres" style="font-weight:bold; font-size:12px !important; color: white"/>
+							<label value="FECHA PARTIDA :" style="margin-left:150px; font-weight:bold; font-size:12px !important; color: white"/>
+							<label id="lblFechaPartida" style="font-weight:bold; font-size:12px !important; color: white"/>
 						</hbox>
-						<hbox align="center">
-							<label value="FECHA PARTIDA :" style="font-size:13px !important"/>
-							<label id="lblFechaPartida" style="font-weight:bold;font-size:14px !important"/>
-						</hbox>
-					</vbox>-->					
-				</row>				
-			</rows>
-		</grid>
-		<div style="background: #FFBA0D" height="16px" >
-			<hbox>
-				<label value="KLG LIBRES : " style="margin-left:70px; font-weight:bold; font-size:12px !important; color: white"/>
-				<label id="lblKilosLibres" style="font-weight:bold; font-size:12px !important; color: white"/>
-				<label value="FECHA PARTIDA :" style="margin-left:150px; font-weight:bold; font-size:12px !important; color: white"/>
-				<label id="lblFechaPartida" style="font-weight:bold; font-size:12px !important; color: white"/>
-			</hbox>
-		</div>
-		<separator height="2px"/>
-		<grid style="border:none">
-			<columns>
-				<column width="120px" align="right"/>
-				<column width="135px" />
-				<column width="100px" align="right"/>
-				<column width="135px" />
-				<column width="90px" align="right"/>
-				<column/>
-			</columns>
-			<rows>
-				<row spans="6">
-					<div style="text-align:center">
-						<textbox id="txtNumeroComprobante" readonly="true" style="color:#4285F4; font-weight:bold; background-color: transparent; border:none; font-size:13px !important"/>
-					</div>					
-				</row>
-				<row>
-					<label value="SERVICIO : " />
-					<label id="lblServicio" style="font-weight:bold !important;font-size:13px !important;color:red" />
-					<label value="RUTA : " />
-					<label id="lblRuta" style="font-weight:bold !important;font-size:13px !important;color:red" />
-					<label value="H.SALIDA : " />
-					<label id="lblHoraSalida" style="font-weight:bold !important;font-size:14px !important;color:red" />
-				</row>
-				<row>
-					<label value="N° MALETAS :" />
-					<intbox id="itbxNumeroMaletas" width="40px" onOK="itbxTotalKilos.setFocus(true)" style="font-size:13px !important;text-align:right"/>
-					<label value="TOTAL KG :" />
-					<intbox id="itbxTotalKilos" width="40px" style="font-size:13px !important;text-align:right"/>
-					<label value="TOTAL PAGO :" />
-					<doublebox id="dbxTotalPago" format="###,##0.00" disabled="true" width="70px" style="font-size:13px !important"/>
-				</row>
-				<row id="rowExceso" visible="false">
-					<label value="TIPO COMPROBANTE :"/>
-					<combobox id="cmbTipoComprobante" readonly="true" width="130px" placeholder="TIPO COMPROBANTE"/>
-					<label value="FORMA PAGO :"/>
-					<combobox id="cmbTipoPago" readonly="true" width="120px" placeholder="FORMA PAGO"/>
-					<label/>
-					<label/>					
-				</row>
-				<row id="rowExcesoTarjeta"  visible="false" spans="1,1,1,2,1">
-					<label value="OPERADOR :"/>
-					<combobox id="cmbOperadorTarjeta" readonly="true" width="120px" placeholder="OPERADOR TARJETA" />
-					<label value="TARJETA :"/>
-					<combobox id="cmbTarjetaCredito" readonly="true" width="158px" placeholder="TARJETA CREDITO" />
-					<label/>
-				</row>
-				<row id="rowRuc" spans="6" visible="false">
-					<div style="text-align:left">
-						<textbox id="txtNumeroRUC" width="100px" placeholder="N° RUC"  />
-						<button id="btnBuscarCliente" image="/resources/mp_buscarEnabled.png"/>
-						<textbox id="txtRazonSocial" width="235px" placeholder="RAZÓN SOCIAL" readonly="true"/>
-						<textbox id="txtDireccionFiscal" width="235px" placeholder="DIRECCIÓN FISCAL" readonly="true"/>
 					</div>
-				</row>
-				<row spans="6">
-					<div style="text-align:left">
-						<textbox id="txtGlosa" rows="4" readonly="true" placeholder="GLOSA" width="630px" maxlength="255"/>
+					<separator height="2px"/>
+					<grid style="border:none">
+						<columns>
+							<column width="120px" align="right"/>
+							<column width="135px" />
+							<column width="100px" align="right"/>
+							<column width="135px" />
+							<column width="90px" align="right"/>
+							<column/>
+						</columns>
+						<rows>
+							<row spans="6">
+								<div style="text-align:center">
+									<textbox id="txtNumeroComprobante" readonly="true" style="color:#4285F4; font-weight:bold; background-color: transparent; border:none; font-size:13px !important"/>
+								</div>					
+							</row>
+							<row>
+								<label value="SERVICIO : " />
+								<label id="lblServicio" style="font-weight:bold !important;font-size:13px !important;color:red" />
+								<label value="RUTA : " />
+								<label id="lblRuta" style="font-weight:bold !important;font-size:13px !important;color:red" />
+								<label value="H.SALIDA : " />
+								<label id="lblHoraSalida" style="font-weight:bold !important;font-size:14px !important;color:red" />
+							</row>
+							<row>
+								<label value="N° MALETAS :" />
+								<intbox id="itbxNumeroMaletas" width="40px" onOK="itbxTotalKilos.setFocus(true)" style="font-size:13px !important;text-align:right"/>
+								<label value="TOTAL KG :" />
+								<intbox id="itbxTotalKilos" width="40px" style="font-size:13px !important;text-align:right"/>
+								<label value="TOTAL PAGO :" />
+								<doublebox id="dbxTotalPago" format="###,##0.00" disabled="true" width="70px" style="font-size:13px !important"/>
+							</row>
+							<row id="rowExceso" visible="false">
+								<label value="TIPO COMPROBANTE :"/>
+								<combobox id="cmbTipoComprobante" readonly="true" width="130px" placeholder="TIPO COMPROBANTE"/>
+								<label value="FORMA PAGO :"/>
+								<combobox id="cmbTipoPago" readonly="true" width="120px" placeholder="FORMA PAGO"/>
+								<label/>
+								<label/>					
+							</row>
+							<row id="rowExcesoTarjeta"  visible="false" spans="1,1,1,2,1">
+								<label value="OPERADOR :"/>
+								<combobox id="cmbOperadorTarjeta" readonly="true" width="120px" placeholder="OPERADOR TARJETA" />
+								<label value="TARJETA :"/>
+								<combobox id="cmbTarjetaCredito" readonly="true" width="158px" placeholder="TARJETA CREDITO" />
+								<label/>
+							</row>
+							<row id="rowRuc" spans="6" visible="false">
+								<div style="text-align:left">
+									<textbox id="txtNumeroRUC" width="100px" placeholder="N° RUC"  />
+									<button id="btnBuscarCliente" image="/resources/mp_buscarEnabled.png"/>
+									<textbox id="txtRazonSocial" width="235px" placeholder="RAZÓN SOCIAL" readonly="true"/>
+									<textbox id="txtDireccionFiscal" width="235px" placeholder="DIRECCIÓN FISCAL" readonly="true"/>
+								</div>
+							</row>
+							<row spans="6">
+								<div style="text-align:left">
+									<textbox id="txtGlosa" rows="4" readonly="true" placeholder="GLOSA" width="630px" maxlength="255"/>
+								</div>
+							</row>
+							<row spans="6">
+								<div style="text-align:left">
+									<textbox id="txtobservaciones" rows="3" placeholder="OBSERVACIONES" width="630px" maxlength="255"/>
+								</div>
+							</row>
+						</rows>
+					</grid>
+					<div style="text-align:center;margin-top:10px">
+						<hbox align="center" style="margin-left:140px">
+							<button id="btnGuardar" label="Guardar" sclass="btnCommandL" autodisable="self" image="resources/mp_guardarEnabled.png"/>
+							<button id="btnCancelar" label="Cancelar" sclass="btnCommandL" autodisable="self" image="resources/mp_cancelarEnabled.png"/>
+						</hbox>		
 					</div>
-				</row>
-				<row spans="6">
-					<div style="text-align:left">
-						<textbox id="txtobservaciones" rows="3" placeholder="OBSERVACIONES" width="630px" maxlength="255"/>
-					</div>
-				</row>
-			</rows>
-		</grid>
-		<div style="text-align:center;margin-top:10px">
-			<hbox align="center" style="margin-left:140px">
-				<button id="btnGuardar" label="Guardar" sclass="btnCommandL" autodisable="self" image="resources/mp_guardarEnabled.png"/>
-				<button id="btnCancelar" label="Cancelar" sclass="btnCommandL" autodisable="self" image="resources/mp_cancelarEnabled.png"/>
-			</hbox>		
-		</div>
-	</groupbox>
+				</groupbox>		
+			</tabpanel>
+			<tabpanel>
+				<grid>
+					<columns>
+						<column width="110px" align="right" />
+						<column width="170px" />
+						<column width="110px" align="right" />
+						<column/>
+					</columns>
+					<rows>
+						<row>
+							<label value="FECHA INICIO :" />
+							<datebox id="dtbxFechaInicio" format="dd/MM/yyyy" width="110px" readonly="true" />
+							<label value="FECHA FIN :" />
+							<datebox id="dtbxFechaFin" format="dd/MM/yyyy" width="110px" readonly="true" />
+						</row>
+						<row>
+							<label value="ORIGEN :" />
+							<combobox id="cmbOrigen" readonly="true" width="100%"/>
+							<label value="DESTINO :" />
+							<combobox id="cmbDestino" readonly="true" width="180px"/>
+						</row>
+						<row>
+							<label value="EMBARQUE :" />
+							<combobox id="cmbAgenciaEmbarque" readonly="true" width="100%"/>
+							<separator/>
+							<hbox align="center">
+								<button id="btnBuscarEquipajes" label="Buscar" sclass="btnCommandM" autodisable="self" image="/resources/mp_buscarEnabled.png" />
+								<separator width="60px" orient="vertical"/>
+								<button id="btnAnularTk" label="Anular Ticket" visible="false" sclass="btnCommandM" width="130px" autodisable="self" image="/resources/mp_anular.png" />
+							</hbox>							
+						</row>
+					</rows>
+				</grid>
+				<listbox id = "ltbxEquipajes" width="100%" height="400px">
+<!-- 					<frozen  /> -->
+					<listhead>
+						<listheader label="F.PARTIDA" width="70px" tooltiptext="Fecha Partida"/>
+						<listheader label="H.PARTIDA" width="70px" tooltiptext="Hora Partida"/>
+						<listheader label="EMBARQUE" width="120px" />
+						<listheader label="ORIGEN" width="110px" />
+						<listheader label="DESTINO" width="110px" />
+						<listheader label="SERVICIO" width="120px" />
+						<listheader label="COMPROBANTE" width="95px" />
+						<listheader label="ATO." width="40px" tooltiptext="Asiento"/>
+						<listheader label="PISO" width="40px" />
+						<listheader label="EXCESO" width="60px" align="center"/>
+						<listheader label="TICKET" width="80px" />
+						<listheader label="NRO" width="35px" align="center"/>
+						<listheader label="PESO" width="60px" />
+						<listheader label="PASAJERO" width="200px" />						
+						<listheader label="DETALLE" width="230px"/>											
+					</listhead>
+				</listbox>
+			</tabpanel>
+		</tabpanels>
+	</tabbox>
+	
 </window>
 </zk>

@@ -5,6 +5,7 @@
 		<listbox id="listboxLista" rows="15">
 			<listhead sizable="true">
 				<listheader label="#" width="50px" style="color: #ffffff;"/>
+				<listheader label="EMPRESA" width="160px" sort="auto" style="color: #ffffff;"/>
 				<listheader label="FECHA" width="100px" sort="auto" style="color: #ffffff;"/>
 				<listheader label="AGENCIA" width="150px" sort="auto" style="color: #ffffff;"/>
 				<listheader label="USUARIO" width="100px" sort="auto" style="color: #ffffff;"/>
@@ -12,7 +13,7 @@
 				<listheader label="COMP./OPER." width="100px" sort="auto" style="color: #ffffff;"/>
 				<listheader label="MONTO" width="90px" sort="auto" style="color: #ffffff;" />
 				<listheader label="TIPO" width="90px" sort="auto" style="color: #ffffff;" />
-				<listheader label="OBSERVACIONES" sort="auto" style="color: #ffffff;"/>
+				<listheader label="OBSERVACIONES" width="300px" sort="auto" style="color: #ffffff;"/>
 			</listhead>
 		</listbox>	
 	</div>
@@ -33,6 +34,12 @@
 						<radio id="rbGasto" label="GASTO"/>
 						<radio id="rbIngreso" label="OTROS INGRESOS"/>
 					</radiogroup>
+				</row>
+				<row>
+					<label value = "EMPRESA :" />
+					<combobox id="cmbEmpresa" readonly="true" width="100%" />
+					<separator/>
+					<separator/>
 				</row>
 				<row>
 					<div>

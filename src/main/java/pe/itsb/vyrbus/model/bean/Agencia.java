@@ -41,6 +41,10 @@ public class Agencia extends GenericBean implements java.io.Serializable {
 		super();
 		this.id = id;
 	}
+	
+	public Agencia(String denominacion) {
+		this.denominacion = denominacion;
+	}
 
 	public Agencia(TipoAgencia tipoAgencia, Concesionario concesionario,Localidad localidad,
 			String denominacion, String nombreCorto,Boolean esTerminal) {

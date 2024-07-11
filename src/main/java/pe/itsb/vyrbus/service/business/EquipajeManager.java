@@ -1,8 +1,8 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	:
- * Autor		: José Abanto
+ * Descripciï¿½n	:
+ * Autor		: Josï¿½ Abanto
  * Fecha		: 14 jul. 2021
  * Hora			: 12:04:36
  */
@@ -49,4 +49,14 @@ public interface EquipajeManager {
 	 * @param equipaje
 	 */
 	public void actualizar(Equipaje equipaje);
+	/**
+	 * Busque equipajes
+	 * @param fechaInicio : Fecha inicio de la busqueda
+	 * @param fechaFin : Fecha fin de la busqueda
+	 * @param agenciaIdEmbaruqe : Identificador de la agencia que realiza el embaruqe
+	 * @param localidadIdOrigen : Identificador de la localidad origen
+	 * @param localidadIdDestino : Identificador de la localidad destino
+	 * @return Lista de equipajes
+	 */
+	public List<Equipaje> buscar(String fechaInicio, String fechaFin, Integer agenciaIdEmbaruqe, Integer localidadIdOrigen, Integer localidadIdDestino);
 }

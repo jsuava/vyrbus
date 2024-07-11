@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	:
+ * Descripciï¿½n	:
  * Autor		: jM
  * Fecha		: 04/05/2012
  */
@@ -49,5 +49,15 @@ public interface EquipajeDAO extends GenericDAO {
 	 * @param equipaje
 	 */
 	public void actualizar(Equipaje equipaje);
+	/**
+	 * Busque equipajes
+	 * @param fechaInicio : Fecha inicio de la busqueda
+	 * @param fechaFin : Fecha fin de la busqueda
+	 * @param agenciaIdEmbarque : Identificador de la agencia que realiza el embaruqe
+	 * @param localidadIdOrigen : Identificador de la localidad origen
+	 * @param localidadIdDestino : Identificador de la localidad destino
+	 * @return Lista de equipajes
+	 */
+	public List<Equipaje> buscar(String fechaInicio, String fechaFin, Integer agenciaIdEmbarque, Integer localidadIdOrigen, Integer localidadIdDestino);
 
 }

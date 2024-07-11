@@ -26,6 +26,7 @@ public class Equipaje extends GenericBean implements java.io.Serializable{
 
 	private UsuarioHardware usuarioHardware;
 	private Empresa empresa;
+	private DetalleEquipaje detalleEquipaje;
 
 	public Equipaje() {
 		super();
@@ -122,6 +123,20 @@ public class Equipaje extends GenericBean implements java.io.Serializable{
 	 */
 	public void setEmpresa(Empresa empresa) {
 		this.empresa = empresa;
+	}
+
+	/**
+	 * @return the detalleEquipaje
+	 */
+	public DetalleEquipaje getDetalleEquipaje() {
+		return detalleEquipaje;
+	}
+
+	/**
+	 * @param detalleEquipaje the detalleEquipaje to set
+	 */
+	public void setDetalleEquipaje(DetalleEquipaje detalleEquipaje) {
+		this.detalleEquipaje = detalleEquipaje;
 	}
 
 
