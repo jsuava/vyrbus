@@ -17,7 +17,7 @@
 				</columns>
 				<rows>
 					<row style="border:none; background:#4285F4" height="40px" >
-						<image src="/resources/mp_isotipo.png" height="35px" style="border-radius: 10px;"/>
+						<image src="/resources/empresa_3.png" height="35px" style="border-radius: 10px;"/>
 						<label/>
 <!--  						<label value="Sistema de Ventas y Reservas" style="color: white; " height="24px" />  -->
 						<image src="/resources/titulo_principal.png" height="28px" />

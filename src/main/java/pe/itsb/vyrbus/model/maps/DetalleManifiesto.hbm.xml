@@ -4,7 +4,7 @@
 <!-- Generated 24/05/2012 11:51:01 AM by Hibernate Tools 3.4.0.CR1 -->
 <hibernate-mapping>
  <class name="pe.itsb.vyrbus.model.bean.DetalleManifiesto"
-  schema="VYRBUSME" table="VRTDETMAN">
+  schema="VRANTEZANA" table="VRTDETMAN">
   <comment>Entidad que almacena la relacion estre las especies valoradas y las cajas por agencia.</comment>
   <composite-id
    class="pe.itsb.vyrbus.model.bean.DetalleManifiestoID"

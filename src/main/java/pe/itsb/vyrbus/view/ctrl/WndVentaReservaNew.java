@@ -8410,7 +8410,7 @@ public class WndVentaReservaNew  extends WndBase {
 		final Window win = new Window("", "normal", true);
 		win.setWidth("1030px");
 		
-		String titleWin = "MANIFIESTO DE PASAJEROS";
+		String titleWin = "MANIFIESTO DE USUARIOS";
 		String imageTitleWin = "resources/buttons/mp_manifiesto-pax.png";
 		if(isManifiesto) {
 			if(manifiesto == null)

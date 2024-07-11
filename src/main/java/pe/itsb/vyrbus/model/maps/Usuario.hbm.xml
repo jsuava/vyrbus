@@ -2,7 +2,7 @@
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping>
-	<class name="pe.itsb.vyrbus.model.bean.Usuario" table="VRMUSUARIO" schema="VYRBUSME">
+	<class name="pe.itsb.vyrbus.model.bean.Usuario" table="VRMUSUARIO" schema="VRANTEZANA">
 		<id name="id" type="java.lang.Integer">
 			<column name="USUARIO_ID" precision="10"/>
 			<generator class="sequence">
