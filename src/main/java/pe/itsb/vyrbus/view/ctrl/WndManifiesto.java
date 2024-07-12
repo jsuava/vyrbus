@@ -1591,12 +1591,21 @@ public class WndManifiesto extends WndBase {
 	public String getAsientos_venpasId(List<VentaPasaje> listPasajeros,Integer asiento, Integer piso){
 		String asientos="";
 		for(VentaPasaje ventaPasaje: listPasajeros){
-			if(ventaPasaje.getNumeroAsiento().equals(asiento) && ventaPasaje.getNumeroPiso().equals(piso)){
-				if(asientos.length()==0)
-					asientos=ventaPasaje.getNumeroAsiento().toString()+"-"+ventaPasaje.getId().toString();
-				else
-					asientos+=";"+ventaPasaje.getNumeroAsiento().toString()+"-"+ventaPasaje.getId().toString();
-			}
+			if(piso != null) {
+				if(ventaPasaje.getNumeroAsiento().equals(asiento) && ventaPasaje.getNumeroPiso().equals(piso)){
+					if(asientos.length()==0)
+						asientos=ventaPasaje.getNumeroAsiento().toString()+"-"+ventaPasaje.getId().toString();
+					else
+						asientos+=";"+ventaPasaje.getNumeroAsiento().toString()+"-"+ventaPasaje.getId().toString();
+				}	
+			}else {
+				if(ventaPasaje.getNumeroAsiento().equals(asiento)){
+					if(asientos.length()==0)
+						asientos=ventaPasaje.getNumeroAsiento().toString()+"-"+ventaPasaje.getId().toString();
+					else
+						asientos+=";"+ventaPasaje.getNumeroAsiento().toString()+"-"+ventaPasaje.getId().toString();
+				}
+			}			
 		}
 
 		return asientos;

@@ -22,7 +22,9 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
+import java.util.Optional;
 import java.util.TreeMap;
 
 import org.jfree.util.Log;
@@ -30,13 +32,16 @@ import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Listitem;
 
 import pe.itsb.vyrbus.model.bean.Agencia;
+import pe.itsb.vyrbus.model.bean.Bus;
 import pe.itsb.vyrbus.model.bean.CentroCosto;
 import pe.itsb.vyrbus.model.bean.DetalleEquipaje;
 import pe.itsb.vyrbus.model.bean.DetalleFlotaHRE;
+import pe.itsb.vyrbus.model.bean.DocumentoBus;
 import pe.itsb.vyrbus.model.bean.Empresa;
 import pe.itsb.vyrbus.model.bean.Equipaje;
 import pe.itsb.vyrbus.model.bean.FormaPago;
 import pe.itsb.vyrbus.model.bean.Gasto;
+import pe.itsb.vyrbus.model.bean.GrupoMantenimiento;
 import pe.itsb.vyrbus.model.bean.HRE;
 import pe.itsb.vyrbus.model.bean.Itinerario;
 import pe.itsb.vyrbus.model.bean.ItinerarioAgenciaPartida;
@@ -45,7 +50,9 @@ import pe.itsb.vyrbus.model.bean.Liquidacion;
 import pe.itsb.vyrbus.model.bean.Manifiesto;
 import pe.itsb.vyrbus.model.bean.MapaBus;
 import pe.itsb.vyrbus.model.bean.Nacionalidad;
+import pe.itsb.vyrbus.model.bean.Pasajero;
 import pe.itsb.vyrbus.model.bean.Personal;
+import pe.itsb.vyrbus.model.bean.ProgramacionServicio;
 import pe.itsb.vyrbus.model.bean.Servicio;
 import pe.itsb.vyrbus.model.bean.TipoComprobante;
 import pe.itsb.vyrbus.model.bean.TipoFormaPago;
@@ -6147,10 +6154,291 @@ public class CreateDocument implements Serializable {
 			ex.printStackTrace();
 		}
 		return nameFile;
+	}
+	
+	/**
+	 * Crea manifiesto de pasajeros / Listado de Pasajeros
+	 * @param itinerario : class itinerario
+	 * @param usuario    : class usuario
+	 * @param agencia	 : class agencia
+	 * @param esManiesto : true(es Manifiesto), false(es linstado de pasajeros)
+	 * @return
+	 */
+	public static final File creaManifiestoManual_Antezana(Manifiesto manifiesto, Usuario usuario, Agencia agencia, Integer agenciaIdPartida){
+		WndManifiesto wndmanifiesto = new WndManifiesto();
 
+		File file = null;
+		try{
+			// Busca el Itienrario
+			Itinerario itinerario = ServiceLocator.getItinerarioManager().buscarPorId(manifiesto.getItinerario().getId());
+			
+			// Busca el Servicio
+			Servicio servicio = ServiceLocator.getServicioManager().buscarPorId(itinerario.getServicio().getId().longValue());
+			
+			// Valida la programación
+			if(manifiesto.getItinerario().getBus()!=null && manifiesto.getItinerario().getBus().getProgramacionServicio()!=null) {
+				itinerario.setBus(manifiesto.getItinerario().getBus());
+			}
+			
+			// Detalle Pasajeros
+			List<VentaPasaje> listPasajeros = ServiceLocator.getManifiestoManager().consultaPasajeros(itinerario.getId(), agenciaIdPartida);
+						
+			Optional<Bus> optBus = Optional.ofNullable(itinerario.getBus());
+			
+			/***Datos de la cabecera del manifiesto*/			
+			// Numero Manifiesto
+			String numeroManifiesto = manifiesto.getNumeroManifiesto();
+			
+			// TUC
+			String TUC = optBus.map(Bus::getDocumentoBus).map(DocumentoBus::getNumeroDocumento).orElse("");
+			
+			// Marca
+			String marca = optBus.map(Bus::getGrupoMantenimiento).map(GrupoMantenimiento::getDenominacion).orElse("");					
+			
+			// Numero Placa
+			String placa = optBus.map(Bus::getNumeroPlaca).orElse("");
+			
+			// Destino 
+			String destino = itinerario.getRuta().getLocalidadDestino().getDenominacion();
+			
+			// Punto Partida
+			String puntoPartida = agencia.getDenominacion();
+			
+			// Fecha Salida
+			String fechaSalida = Constantes.FORMAT_DATE.format(itinerario.getFechaPartida());
+			
+			// Hora Salida 
+			String horaSalida = itinerario.getHoraPartida();
+			
+			// Piloto
+			String pilotoNombres = optBus.map(Bus::getProgramacionServicio)
+					.map(ProgramacionServicio::getPiloto)
+					.map(Personal::toString)
+					.orElse("");
+			
+			// Piloto - Licencia
+			String pilotoLicencia = optBus.map(Bus::getProgramacionServicio)
+					.map(ProgramacionServicio::getPiloto)
+					.map(Personal::getLicencia)
+					.orElse("");
+			
+			// Copiloto
+			String copilotoNombres = optBus.map(Bus::getProgramacionServicio)
+					.map(ProgramacionServicio::getCopiloto)
+					.map(Personal::toString)
+					.orElse("");
+			
+			// Copiloto - Licencia
+			String copilotoLicencia = optBus.map(Bus::getProgramacionServicio)
+					.map(ProgramacionServicio::getCopiloto)
+					.map(Personal::getLicencia)
+					.orElse("");
+			
+			// Numero de asientos ocupados
+			String asientosOcupados = String.valueOf(listPasajeros.size());
+			
+			
+			// Parametos que determinan la longitud maxima de cada campo en la cabecera
+			int width_numeroManifiesto = 15;
+			int width_tuc = 20;
+			int width_marca = 20;
+			int width_placa = 10;
+			int width_destino = 27;
+			int width_puntoPartida = 38;
+			int width_fechaSalida = 11;
+			int width_horaSalida = 6;
+			int width_pilotoNombres = 40;
+			int width_pilotoLicencia = 16;
+			int width_asientosOcupados = 5;
+			
+			// Parametros que determinan la posicion inicial del campo
+			int xLeft_numeroManifiesto = 82;
+			int xLeft_tuc = 32;
+			int xLeft_marca = 20;
+			int xLeft_placa = 16;
+			int xLeft_destino = 44;
+			int xLeft_puntoPartida = 20;
+			int xLeft_fechaSalida = 16;
+			int xLeft_horaSalida = 9;
+			int xLeft_pilotoNombres = 18;
+			int xLeft_pilotoLicencia = 24;
+			int xLeft_asientosOcupados = 88;
+			
+			/*** Escribe el Archivo */
+			String fichero = Constantes.DIRECTORY_MANIFIESTOS+Constantes.CLAVE_PAHT + "MANPAX"+itinerario.getId()+ ".txt";
+			file = new File(fichero);
+			
+			BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file),"UTF-8"));
+			
+			// NUMERO MANIFIESTO
+			bw.write(NEWLINE);
+			String line = getLineText(xLeft_numeroManifiesto, width_numeroManifiesto, numeroManifiesto);;
+			bw.write(line + NEWLINE);
+			
+			// Inicio cabecera
+			int xTopIni = 6;
+			for(int x = 0; x < xTopIni; x++) {
+				bw.write(NEWLINE);	
+			}
+			
+			// TUC - MARCA
+			line = getLineText(xLeft_tuc, width_tuc, TUC);
+			line += getLineText(xLeft_marca, width_marca, marca);			
+			bw.write(line + NEWLINE);
+			
+			// PLACA - DESTINO
+			line = getLineText(xLeft_placa, width_placa, placa);
+			line += getLineText(xLeft_destino, width_destino, destino);			
+			bw.write(line + NEWLINE);
+			
+			// PUNTO PARTIDA - FECHA SALIDA - HORA SALIDA
+			line = getLineText(xLeft_puntoPartida, width_puntoPartida, puntoPartida);
+			line += getLineText(xLeft_fechaSalida, width_fechaSalida, fechaSalida);
+			line += getLineText(xLeft_horaSalida, width_horaSalida, horaSalida);
+			bw.write(line + NEWLINE);
+			
+			// NOMBRES PILOTO - LICENCIA
+			line = getLineText(xLeft_pilotoNombres, width_pilotoNombres, pilotoNombres);
+			line += getLineText(xLeft_pilotoLicencia, width_pilotoLicencia, pilotoLicencia);			
+			bw.write(line + NEWLINE);
 
+			// NOMBRES COPILOTO - LICENCIA
+			line = getLineText(xLeft_pilotoNombres, width_pilotoNombres, copilotoNombres);
+			line += getLineText(xLeft_pilotoLicencia, width_pilotoLicencia, copilotoLicencia);			
+			bw.write(line + NEWLINE);	
 
+			// ASIENTOS OCUPADOS
+			line = getLineText(xLeft_asientosOcupados, width_asientosOcupados, asientosOcupados);					
+			bw.write(line + NEWLINE);
+			
+			
+			
+			/**DETALLE DEL MANIFIESTO*/
+			
+			// Parametos que determinan la longitud maxima de cada campo en el detalle
+			int width_asiento = 2;
+			int width_pasajero = 44;
+			int width_edad = 3;
+			int width_tipoDocumento = 3;
+			int width_numeroDocumento = 13;
+			int width_ubicaAsiento = 3;
+			int width_numeroComprobante = 15;
+			int width_importePagado = 8;
+			
+			// Parametros que determinan la posicion inicial del campo en el detalle
+			int xLeft_asiento = 5;
+			int xLeft_pasajero = 1;
+			int xLeft_edad = xLeft_pasajero;
+			int xLeft_tipoDocumento = xLeft_edad;
+			int xLeft_numeroDocumento = xLeft_tipoDocumento;
+			int xLeft_ubicaAsiento = xLeft_numeroDocumento;
+			int xLeft_numeroComprobante = xLeft_ubicaAsiento;
+			int xLeft_importePagado = xLeft_numeroComprobante;
+						
+			// Inicio detalle
+			xTopIni = 6;
+			for(int x = 0; x < xTopIni; x++) {
+				bw.write(NEWLINE);	
+			}
+						
+			int nroAsientos = servicio.getNumeroAsientosPiso1();
+			nroAsientos += Optional.ofNullable(servicio.getNumeroAsientosPiso2()).orElse(0);
 
+			for(int asiento = 1; asiento <= nroAsientos; asiento++){
+//				Busca los asientos en un servicio - Solo deberia haber mas de un registro con el mismo asiento cuando se vende por concepto de prioridad venta (case asiento 28 Lima - Ica aseinto 28 Ica - Arequipa)
+				String asientos[] = wndmanifiesto.getAsientos_venpasId(listPasajeros, asiento, null).split(";");
+				
+				String valueAsiento = "";
+				String valuePasajero = "";
+				String valueEdad = "";
+				String valueTipoDocumento = "";
+				String valueNumeroDocumento = "";
+				String valueUbicaAsiento = "";
+				String valueNumeroComprobante = "";
+				String valueImportePagado = "";
+				
+				valueAsiento = ("0"+ String.valueOf(asiento));
+				if(valueAsiento.length() > 2)
+					valueAsiento = valueAsiento.substring(1);
+				
+				if(asientos[0].toString().length()>0){
+					for (String element : asientos) {
+						long idVenta=Long.valueOf(element.split("-")[1]);
+						for(VentaPasaje ventaPasaje : listPasajeros){
+							if(ventaPasaje.getId().longValue()==idVenta){								
+								
+								Pasajero pasajero = ventaPasaje.getPasajero();
+								
+								valuePasajero = pasajero.toString();
+								valueEdad = Util.calculaEdad(pasajero.getFechaNacimiento()).toString();
+								valueTipoDocumento = pasajero.getTipoDocumento().getNombreCorto();
+								valueNumeroDocumento = pasajero.getNumeroDocumento();
+								valueUbicaAsiento = valueAsiento;
+								valueNumeroComprobante = ventaPasaje.getNumeroBoleto();
+								valueImportePagado = (asiento < 2? "70.00" : "156.00");//Util.toNumberFormat(ventaPasaje.getImportePagado(), 2);
+								
+								// Asiento
+								line = getLineText(xLeft_asiento, width_asiento, valueAsiento);
+								line += getLineText(xLeft_pasajero, width_pasajero, valuePasajero);
+								line += getLineText(xLeft_edad, width_edad, valueEdad);
+								line += getLineText(xLeft_tipoDocumento, width_tipoDocumento, valueTipoDocumento);
+								line += getLineText(xLeft_numeroDocumento, width_numeroDocumento, valueNumeroDocumento);
+								line += getLineText(xLeft_ubicaAsiento, width_ubicaAsiento, valueUbicaAsiento);
+								line += getLineText(xLeft_numeroComprobante, width_numeroComprobante, valueNumeroComprobante);
+								line += getLineText(xLeft_importePagado, width_importePagado, valueImportePagado, true);
+								bw.write(line + NEWLINE);
+								break;
+							}
+						}
+					}
+				}else{
+					// Asientos libres
+					line = getLineText(xLeft_asiento, width_asiento, valueAsiento);
+					line += getLineText(xLeft_pasajero, width_pasajero, valuePasajero);
+					line += getLineText(xLeft_edad, width_edad, valueEdad);
+					line += getLineText(xLeft_tipoDocumento, width_tipoDocumento, valueTipoDocumento);
+					line += getLineText(xLeft_numeroDocumento, width_numeroDocumento, valueNumeroDocumento);
+					line += getLineText(xLeft_ubicaAsiento, width_ubicaAsiento, valueUbicaAsiento);
+					line += getLineText(xLeft_numeroComprobante, width_numeroComprobante, valueNumeroComprobante);
+					line += getLineText(xLeft_importePagado, width_importePagado, valueImportePagado, true);
+					bw.write(line + NEWLINE);
+				}
+				lineaTotal++;
+			}
+
+			bw.close();
+		}catch(IOException ioex){
+			ioex.printStackTrace();
+		}catch(Exception ex){
+			ex.printStackTrace();
+		}
+		return file;
+	}
+	
+	
+	private static String getLineText(int xLeft, int lengthValueMax, String value) {
+		return getLineText(xLeft, lengthValueMax, value, false);
+	}
+	
+	private static String getLineText(int xLeft, int widthValue, String value, boolean alignRight) {
+		int lengthValue = value.length();
+		if(lengthValue > widthValue) {
+			value = value.substring(0, widthValue);
+		}
+		
+		int lengthSpaces = (widthValue - lengthValue);
+		
+		String text = "";
+		if(alignRight && Util.isNumeric(value)) {
+			Double dvalue = Double.parseDouble(value);
+			text = String.format(Locale.US, "%" + widthValue + ".2f", dvalue);
+		}else {
+			text = tabular(xLeft);
+			text += value;
+			text += tabular(lengthSpaces);	
+		}
+		
+		return text;
 	}
 }
 

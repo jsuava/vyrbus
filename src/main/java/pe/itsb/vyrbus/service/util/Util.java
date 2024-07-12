@@ -1323,7 +1323,12 @@ public class Util {
 	 	    	Long.parseLong(cadena);
 	 	    	return true;
 	 	    } catch (NumberFormatException nfe1){
-	 	    	return false;
+	 	    	try {
+	 	    		Double.parseDouble(cadena);
+		 	    	return true;
+				} catch (Exception e) {
+					return false;
+				}
 	 	    }
 	    }
     }

@@ -8099,7 +8099,7 @@ public class WndVentaReservaNew  extends WndBase {
 						ServiceLocator.getProgramacionServiciosManager().updateItinerarioBus(itinerario.getId(), programacionServicio.getBus().getId().longValue());
 						
 						//Actualiza los datos del bus que se muestra en el mapa
-						if(itinerario.getId().longValue()==detalleItinerarioIda.getItinerario().getId().longValue())
+						if(itinerario.getId().longValue() == detalleItinerarioIda.getItinerario().getId().longValue())
 							loadDatosBusMapa(programacionServicio.getBus(), capVtaIdaMapa);
 						else if(isVtaIdaVuelta && itinerario.getId().longValue()==detalleItinerarioVuelta.getItinerario().getId().longValue())
 							loadDatosBusMapa(programacionServicio.getBus(), capVtaRetornoMapa);
@@ -8495,7 +8495,13 @@ public class WndVentaReservaNew  extends WndBase {
 			rdManPaxPrintLaser.setDisabled(btnManPaxPrint.isDisabled());
 			rdManPaxPrintMatricial.setDisabled(btnManPaxPrint.isDisabled());
 			btnManPaxAnular.setVisible(true);
-			btnManPaxGuardar.setVisible(true);			
+			btnManPaxGuardar.setVisible(true);		
+			
+			// Solamente se habilita si la agencia esta habilitada para emitir Manifiestos electrónicos.
+			if(!rdManPaxPrintLaser.isDisabled() && !UtilFlag.isEnabledManifiestoElectronico(getAgencia().getId())) {
+				rdManPaxPrintLaser.setChecked(false);
+				rdManPaxPrintLaser.setDisabled(true);
+			}
 			
 			if(programacionServicio!=null) {
 				Bus bus = itinerario.getBus();
@@ -8572,6 +8578,7 @@ public class WndVentaReservaNew  extends WndBase {
 				try {					
 					if(isManifiesto) {
 						manifiesto.setItinerario(itinerario);
+						
 						onClick_btnManPaxPrint(manifiesto ,rdManPaxPrintMatricial.isChecked());
 					}else
 						onClick_btnCarDesPrint(itinerario, rdManPaxPrintMatricial.isChecked(), cmbCardesPuntoControl);
@@ -8903,19 +8910,30 @@ public class WndVentaReservaNew  extends WndBase {
 	 * @throws Exception
 	 */
 	private void onClick_btnManPaxPrint(Manifiesto manifiesto, boolean isPrintMatricial)throws Exception{
-		File fileSunat= CreateDocument.creaManifiesto_ListPax(manifiesto,getUsuario(),getAgencia(),true,ROTULO_SUNAT, null);
-		final File fileTransp=CreateDocument.creaManifiesto_ListPax(manifiesto,getUsuario(),getAgencia(),true,ROTULO_TRANSPORTISTA, null);
-		final File fileArchivo=CreateDocument.creaManifiesto_ListPax(manifiesto,getUsuario(),getAgencia(),true,ROTULO_ARCHIVO, null);
-
-		File fileDestino=new File(fileSunat.getPath().replaceAll(".txt", "")+"COMP.txt");
-		FileInputStream inputSunat= new FileInputStream(fileSunat);
-		FileInputStream inputTransp= new FileInputStream(fileTransp);
-		FileInputStream inputArchivo= new FileInputStream(fileArchivo);
-
-		OutputStream Salida = new FileOutputStream(fileDestino);
 		
 		//Valida el tipo de impresion
 		if(isPrintMatricial){
+			File fileSunat = null;
+			FileInputStream inputSunat= null;
+			FileInputStream inputTransp= null;
+			FileInputStream inputArchivo= null;
+			
+			// Valida si la agencia esta habilitada para generar manifiestos electrónicos
+			if(UtilFlag.isEnabledManifiestoElectronico(getAgencia().getId())) {
+				fileSunat = CreateDocument.creaManifiesto_ListPax(manifiesto,getUsuario(),getAgencia(),true,ROTULO_SUNAT, null);
+				File fileTransp = CreateDocument.creaManifiesto_ListPax(manifiesto,getUsuario(),getAgencia(),true,ROTULO_TRANSPORTISTA, null);
+				File fileArchivo = CreateDocument.creaManifiesto_ListPax(manifiesto,getUsuario(),getAgencia(),true,ROTULO_ARCHIVO, null);
+				inputTransp= new FileInputStream(fileTransp);
+				inputArchivo= new FileInputStream(fileArchivo);	
+			}else {
+				// Se generara el manual de existeir formato configurado
+				fileSunat = CreateDocument.creaManifiestoManual_Antezana(manifiesto, getUsuario(), getAgencia(), null);				
+			}			
+			
+			File fileDestino = new File(fileSunat.getPath().replaceAll(".txt", "")+"COMP.txt");						
+			OutputStream Salida = new FileOutputStream(fileDestino);
+			inputSunat = new FileInputStream(fileSunat);
+			
 			byte[] buffer = new byte[1024];
             int tamanio;
             //lee el fichero sunat a copiar cada 1MB
@@ -8925,16 +8943,20 @@ public class WndVentaReservaNew  extends WndBase {
             inputSunat.close();
 
             //lee el fichero transportista a copiar cada 1MB
-            while ((tamanio = inputTransp.read(buffer)) > 0) {                
-            	Salida.write(buffer, 0, tamanio);//Escribe el MB en el fichero destino
-            }
-             inputTransp.close();
+            if(inputTransp !=null) {
+            	while ((tamanio = inputTransp.read(buffer)) > 0) {                
+                	Salida.write(buffer, 0, tamanio);//Escribe el MB en el fichero destino
+                }
+                 inputTransp.close();	
+            }            
 
            //lee el fichero Archivo a copiar cada 1MB
-             while ((tamanio = inputArchivo.read(buffer)) > 0) {                 
-            	 Salida.write(buffer, 0, tamanio);//Escribe el MB en el fichero destino
-             }
-             inputArchivo.close();
+            if(inputArchivo !=null) {
+            	while ((tamanio = inputArchivo.read(buffer)) > 0) {                 
+               	 Salida.write(buffer, 0, tamanio);//Escribe el MB en el fichero destino
+                }
+                inputArchivo.close();	
+            }             
 
              Salida.close();
              Util.descargarArchivo(fileDestino);
