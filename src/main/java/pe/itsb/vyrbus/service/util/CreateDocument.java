@@ -2782,29 +2782,35 @@ public class CreateDocument implements Serializable {
 
 
 			lineaTotal = 12;
+			
+			Servicio servicio = itinerario.getServicio();
+			Integer numeroAsientos = servicio.getNumeroAsientosPiso1();
+			numeroAsientos += Optional.ofNullable(servicio.getNumeroAsientosPiso2()).orElse(0);
+			
+			creaDetalleManifiesto(numeroAsientos, wndmanifiesto, list, bw, null, 0, itinerario.getServicio(), esManiesto);
 
 			//BEGIN 02/01/23 CASUISTICA PARA EL PRESIDENCIAL VIP TRANSMAR
-			Integer piso=0;
-			if(itinerario.getServicio().getId()==Constantes.ID_SERVICIO_VIP_PRESIDENCIAL) {
-				piso = 1;
-				creaDetalleManifiesto(itinerario.getServicio().getNumeroAsientosPiso2(), wndmanifiesto, list, bw, piso, 0, itinerario.getServicio(), esManiesto);
-			}else {
-				piso = 0;
-				creaDetalleManifiesto(itinerario.getServicio().getNumeroAsientosPiso1(), wndmanifiesto, list, bw, piso, 0, itinerario.getServicio(), esManiesto);
-			}
+//			Integer piso=0;
+//			if(itinerario.getServicio().getId()==Constantes.ID_SERVICIO_VIP_PRESIDENCIAL) {
+//				piso = 1;
+//				creaDetalleManifiesto(itinerario.getServicio().getNumeroAsientosPiso2(), wndmanifiesto, list, bw, piso, 0, itinerario.getServicio(), esManiesto);
+//			}else {
+//				piso = 0;
+//				creaDetalleManifiesto(itinerario.getServicio().getNumeroAsientosPiso1(), wndmanifiesto, list, bw, piso, 0, itinerario.getServicio(), esManiesto);
+//			}
 
 			//Bengin 09/11/2021 - Jabanto - Muestra los pasajeros de ambos pisos en una sola lista (Solicitud de transmar)
 			//creaDetalleManifiesto(itinerario.getServicio().getNumeroAsientosPiso1(), wndmanifiesto, list, bw, piso, 0);
 			/*Cuando el es de dos pisos*/
-			if(itinerario.getServicio().getNumeroPisos()==2){
-				if(itinerario.getServicio().getId()==Constantes.ID_SERVICIO_VIP_PRESIDENCIAL) {
-					piso--;
-					creaDetalleManifiesto(itinerario.getServicio().getNumeroAsientosPiso1()+itinerario.getServicio().getNumeroAsientosPiso2(), wndmanifiesto, list, bw,piso, itinerario.getServicio().getNumeroAsientosPiso2(),itinerario.getServicio(), esManiesto);
-				}else {
-					piso++;
-					creaDetalleManifiesto(itinerario.getServicio().getNumeroAsientosPiso2()+itinerario.getServicio().getNumeroAsientosPiso1(), wndmanifiesto, list, bw,piso, itinerario.getServicio().getNumeroAsientosPiso1(),itinerario.getServicio(), esManiesto);
-				}
-			}
+//			if(itinerario.getServicio().getNumeroPisos()==2){
+//				if(itinerario.getServicio().getId()==Constantes.ID_SERVICIO_VIP_PRESIDENCIAL) {
+//					piso--;
+//					creaDetalleManifiesto(itinerario.getServicio().getNumeroAsientosPiso1()+itinerario.getServicio().getNumeroAsientosPiso2(), wndmanifiesto, list, bw,piso, itinerario.getServicio().getNumeroAsientosPiso2(),itinerario.getServicio(), esManiesto);
+//				}else {
+//					piso++;
+//					creaDetalleManifiesto(itinerario.getServicio().getNumeroAsientosPiso2()+itinerario.getServicio().getNumeroAsientosPiso1(), wndmanifiesto, list, bw,piso, itinerario.getServicio().getNumeroAsientosPiso1(),itinerario.getServicio(), esManiesto);
+//				}
+//			}
 
 			//END BEGIN 09/11/2021 - Solicitud de Transmar (Margarita)
 //			creaDetalleManifiesto(itinerario.getServicio().getNumeroAsientosPiso1(), wndmanifiesto, list, bw, piso, 0);
@@ -3052,19 +3058,19 @@ public class CreateDocument implements Serializable {
 		 *
 		 *
 		 */
-		int nroAsientos=0;
+		int nroAsientos = 0;
 
-		if(piso == Constantes.PISO_UNO){
+		if(piso !=null && piso == Constantes.PISO_UNO){
 			if(servicio.getId()==Constantes.ID_SERVICIO_VIP_PRESIDENCIAL)
 				nroAsientos = numeroAsientosPiso1;
 			else
 				nroAsientos = 0;
 		}
 		else{
-			nroAsientos= numeroAsientosPiso1;
+			nroAsientos = numeroAsientosPiso1;
 		}
 
-		for(int i=nroAsientos; i<numeroAsientos; i++){
+		for(int i = nroAsientos; i < numeroAsientos; i++){
 			String boleto="";
 			String nombre="";
 			String edad="";
