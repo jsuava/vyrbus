@@ -2616,7 +2616,7 @@ public class CreateDocument implements Serializable {
 
 			//---> line 1:	TITULO DEL REPORTE
 			String title="";
-			String strDocumento=(esManiesto?"MANIFIESTO DE PASAJEROS":"INFORMACION DE PASAJEROS");
+			String strDocumento=(esManiesto?"MANIFIESTO DE USUARIOS":"INFORMACION DE PASAJEROS");
 //			if(esManiesto==true){
 			title= (esManiesto?"NUMERO DE MANIFIESTO":"LISTADO");
 			String nombreEmpresa = itinerario.getEmpresa().getRazonSocial(); 
