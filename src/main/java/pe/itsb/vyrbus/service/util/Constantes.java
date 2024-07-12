@@ -166,14 +166,15 @@ public class Constantes {
 
 	public static final String CLAVE_PAHT="TPSPSJS-";
 	/*	Path para la creacion de los documentos Boleto, Manifiesto	*/
-	public static final String SERVER_PROTOCOL = Executions.getCurrent().getScheme();
+//	public static final String SERVER_PROTOCOL = Executions.getCurrent().getScheme();
+	public static final String SERVER_PROTOCOL = "https";
 //	public static final String SERVER_HOST = Executions.getCurrent().getHeader("host");
 //	public static final String SERVER_HOST = "ventas.tepsa.com.pe/";
 
-	public static final String SERVER_HOST = "localhost:8080";
+//	public static final String SERVER_HOST = "localhost:8080";
 	//Demo Wars
 //	public static final String SERVER_HOST = "170.0.233.156:8080";
-//	public static final String SERVER_HOST = "https://pasajes.itsb.pe/";
+	public static final String SERVER_HOST = "pasajes.itsb.pe";
 
 //	public static final String SERVER_HOST = "119.8.145.122:8080";
 
