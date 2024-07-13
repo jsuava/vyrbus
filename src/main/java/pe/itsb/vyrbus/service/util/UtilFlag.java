@@ -30,10 +30,23 @@ public class UtilFlag {
 	final static int FLAG_IDTIEMPO_POSTERGACION_FA = 11;
 	final static int FLAG_IDTIEMPO_CAMBIO_NOMBRE = 12;
 	final static int FLAG_IDCONECTION_TRANSCAR = 13;
+	final static int FLAG_IDMANIFIESTO_ELECTRONICO = 17;
 
 	final static String LLAVE_ENABLED = "S";
 	final static String LLAVE_DISABLED = "N";
 
+	/**
+	 * Valida si esta activo el flag para la generación de manifiesto electrono.
+	 * @param agenciaId : Identificador de la agencia que genera el Manifiesto
+	 * @return true: Activo; false: Inactivo
+	 * @throws Exception
+	 */
+	public static boolean isEnabledManifiestoElectronico(Integer agenciaId) throws Exception {
+		boolean estado = getConfigFlagById_paramAgencia(FLAG_IDMANIFIESTO_ELECTRONICO, agenciaId);
+		
+		return estado;
+	}
+	
 	/**
 	 * Valida si esta activo el flag para la coneción con transcar web
 	 * @return
@@ -193,7 +206,7 @@ public class UtilFlag {
 		boolean estado = false;
 
 		Flag flag = ServiceLocator.getFlagManager().buscarPorId(flagId.longValue());
-		if(flag !=null && flag.getLlave()!=null && flag.getEstadoRegistro().equals(Constantes.VALUE_ACTIVO)) {
+		if(flag !=null && flag.getLlave()!=null && !flag.getLlave().equals(LLAVE_DISABLED) && flag.getEstadoRegistro().equals(Constantes.VALUE_ACTIVO)) {
 			if(flag.getLlave().equals("*"))
 				estado = true;
 			else {

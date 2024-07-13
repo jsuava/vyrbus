@@ -369,7 +369,7 @@ public class Constantes {
 	public static final int ID_SERVICIO_TEPSACAMASUITE=5;
 	public static final int ID_SERVICIO_POOL_CRUZDELSUR=99;
 	public static final int ID_SERVICIO_POOL_EXCLUCIVA=98;
-	public static final int ID_SERVICIO_VIP_PRESIDENCIAL=6;
+	public static final int ID_SERVICIO_VIP_PRESIDENCIAL=-1;
 
 
 	/*	Para saber si es una venta o reserva DB	*/
