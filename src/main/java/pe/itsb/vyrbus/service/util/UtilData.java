@@ -3052,12 +3052,13 @@ public class UtilData extends Window {
 	/**
 	 * Crea el Tracking de la venta (GPS)
 	 * @param ventaPasaje : Instancia VentaPasaje
-	 * @param motivoMovimiento : Descripción del tipo de movimiento
+	 * @param motivoMovimiento : Descripcion del tipo de movimiento
 	 * @return Instance MovimientoPasaje
 	 * @throws Exception
 	 */
 	public static MovimientoPasajes createTracking(VentaPasaje ventaPasaje, String motivoMovimiento)throws Exception{
 		// Recupera el identificador de la venta original
+		System.out.println(ventaPasaje.getTipoTransaccion());
 		VentaPasaje ventaPasajeOriginal = Optional.ofNullable(ventaPasaje.getVentaOriginal())
 				.map(id -> new VentaPasaje(id))
 				.orElseGet(() -> {					

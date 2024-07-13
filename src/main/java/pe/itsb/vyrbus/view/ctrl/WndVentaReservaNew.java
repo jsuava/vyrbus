@@ -3766,7 +3766,7 @@ public class WndVentaReservaNew  extends WndBase {
 					ventaPasaje_x.setTipoTransaccion(Constantes.TIPO_OPERACION_VENTA);
 					ventaPasaje_x.setImportePagado(importePagado);
 				}
-				ventaPasaje_x.setVentaOriginal(ventaPasajeRef!=null?ventaPasajeRef.getId():null);
+				ventaPasaje_x.setVentaOriginal(ventaPasajeRef!=null && !isConfirmaReserva?ventaPasajeRef.getId():null);
 				ventaPasaje_x.setVentaPasaje(ventaPasajeRef);
 				ventaPasaje_x.setEsFechaAbierta(Constantes.FALSE_VALUE);
 				ventaPasaje_x.setIdaRetorno(isVtaIdaVuelta?Constantes.TRUE_VALUE:Constantes.FALSE_VALUE);
@@ -6781,7 +6781,7 @@ public class WndVentaReservaNew  extends WndBase {
 		row.appendChild(label);		
 		rows.appendChild(row);
 		row = new Row();
-		row.appendChild(new Label("N° COMPROBANTE :"));
+		row.appendChild(new Label("No COMPROBANTE :"));
 		label = new Label(ventaOriginal.getNumeroBoleto());
 		label.setStyle("font-size:12px !important");
 		row.appendChild(label);

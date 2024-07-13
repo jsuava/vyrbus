@@ -76,7 +76,7 @@ public class ItinerarioDAOImpl extends GenericDAOImpl implements ItinerarioDAO {
 					"INNER JOIN VRTITIAGEPAR iap ON (iap.itinerario_id = i.itinerario_id) "+
 					"INNER JOIN VRMAGENCIA app ON (app.agencia_id=iap.agencia_id) " +
 				"WHERE di.d_fecpar=to_date('"+fechaPartida+"','dd/mm/yyyy') AND r.c_origen LIKE '"+origen+"%' AND r.c_destino LIKE '"+destino+"%' " +
-					"AND n_esanulado=0 AND e.c_numdoc LIKE '" + empresaRUC + "%' " +
+					"AND n_esanulado=0 AND e.c_numdoc LIKE '" + empresaRUC + "%' AND i.tipiti_id=1 " +
 				"ORDER BY di.d_fecpar, to_date(iap.c_horpar,'HH24:MI'), s.c_denominacion, di.d_feclle, to_date(di.c_horlle,'HH24:MI')";
 
 		List<?> result = getSession().createSQLQuery(sql).list();

@@ -35,6 +35,7 @@ import org.zkoss.zul.Textbox;
 import org.zkoss.zul.Window;
 
 import pe.itsb.vyrbus.model.bean.Agencia;
+import pe.itsb.vyrbus.model.bean.MovimientoPasajes;
 import pe.itsb.vyrbus.model.bean.VentaPasaje;
 import pe.itsb.vyrbus.service.exceptions.LiquidacionNullException;
 import pe.itsb.vyrbus.service.exceptions.ManifiestoImpresoException;
@@ -441,7 +442,7 @@ public class WndPerdidaServicio extends WndBase {
 	}
 
 	private void guardarPerdida(VentaPasaje venta) {
-		Messagebox.show("Se va marcar el boleto como perdida de servicio, esta acciï¿½n no se puede deshacer, ï¿½Seguro que desea continuar?", DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_YESNO, Messagebox.QUESTION, new EventListener<Event>() {
+		Messagebox.show("Se va marcar el boleto como perdida de servicio, esta acción no se puede deshacer, ¿Seguro que desea continuar?", DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_YESNO, Messagebox.QUESTION, new EventListener<Event>() {
 			@Override
 			public void onEvent(Event ev) throws Exception{
 				try {
@@ -453,6 +454,14 @@ public class WndPerdidaServicio extends WndBase {
 						venta.setObservaciones(txtMotivo.getText().trim().toUpperCase());
 						UtilData.auditarRegistro(venta, true, getUsuario(), Executions.getCurrent());
 						ServiceLocator.getVentaPasajesManager().guardarPerdidaServicio(venta);
+						
+						/************** Tracking (GPS) **********************/
+						VentaPasaje vtaPasaje = ServiceLocator.getVentaPasajesManager().buscarVentaById(venta.getId());
+						String motivoMovimiento = "TRANSBORDO";
+						MovimientoPasajes movimientoPasajes = UtilData.createTracking(vtaPasaje, motivoMovimiento);
+						ServiceLocator.getMovimientoPasajesManager().guardar(movimientoPasajes);
+						/****************************************************/
+						
 					}
 					DlgMessage.information(Messages.getString("WndPerdidaServicio.information.exitoPerdidaServicio")+" "+venta.getNumeroControl());
 					wndPerdidaServicio.onClose();
