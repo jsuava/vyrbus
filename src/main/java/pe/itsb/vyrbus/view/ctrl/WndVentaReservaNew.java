@@ -3272,12 +3272,22 @@ public class WndVentaReservaNew  extends WndBase {
 	 */
 	private void onClick_btnVtaPostergar()throws Exception{
 		VentaIdaRetorno venta = ltbxVtaAsientosSeleccionados.getSelectedItem().getValue();
+		
 		VentaPasaje ventaPasaje = ServiceLocator.getVentaPasajesManager().buscarPorId(venta.getDetalleItinerarioIDA().getObjAsiento().getVentaPasaje().getId());
+		
+		if(ventaPasaje.getCliente() != null) {
+			ventaPasaje.setCliente(ServiceLocator.getClienteManager().buscarPorId(ventaPasaje.getCliente().getId()));
+		}
+		
 		boletoManifestado = ServiceLocator.getDetalleManifiestoManager().validarVentaManifiesto(ventaPasaje.getId());
+		
 		TipoNota penalidad = ServiceLocator.getTipoNotaManager().buscarPorId(Long.valueOf(Constantes.ID_TIPNOTA_POSTERGACION));
+		
 		Double montoPenalidad = .00;
-		if(penalidad!=null && penalidad.getEstadoRegistro().equals(Constantes.VALUE_ACTIVO))
+		if(penalidad!=null && penalidad.getEstadoRegistro().equals(Constantes.VALUE_ACTIVO)) {
 			montoPenalidad = penalidad.getGastoAdminEfectivo();
+		}
+			
 			
 		wndModal = createWindowPostergacion(ventaPasaje, montoPenalidad);
 		this.appendChild(wndModal);
@@ -6660,7 +6670,7 @@ public class WndVentaReservaNew  extends WndBase {
 		gpbxPostMapa.setClosable(false);
 		gpbxPostMapa.setMold("3d");
 		gpbxPostMapa.setWidth("710px");
-		gpbxPostMapa.setHeight("206px");
+		gpbxPostMapa.setHeight("209px");
 		caption = new Caption("MAPA DE ASIENTOS");
 		caption.setStyle("color: #ffffff;");
 		gpbxPostMapa.appendChild(caption);
@@ -6711,7 +6721,7 @@ public class WndVentaReservaNew  extends WndBase {
 		row.appendChild(lblPostAsiento);
 		rows.appendChild(row);
 		row = new Row();
-		row.appendChild(new Label("TARIFA "));
+		row.appendChild(new Label("TARIFA ACTUAL"));
 		dbxPostTarifa = new Doublebox(.00);
 		dbxPostTarifa.setSclass("label-size11-bold");
 		dbxPostTarifa.setStyle("font-size:12px !important;");
@@ -6722,8 +6732,9 @@ public class WndVentaReservaNew  extends WndBase {
 		row.appendChild(dbxPostTarifa);
 		rows.appendChild(row);
 		row = new Row();
-		row.appendChild(new Label("MONTO ANTERIOR "));
-		dbxPostMontoAnterior = new Doublebox(ventaOriginal.getImportePagado());
+		row.appendChild(new Label("TARIFA ANTERIOR "));
+		
+		dbxPostMontoAnterior = new Doublebox(ventaOriginal.getTarifa());
 		dbxPostMontoAnterior.setSclass("label-size11-bold");
 		dbxPostMontoAnterior.setStyle("font-size:12px !important;");
 		dbxPostMontoAnterior.setFormat("#,##0.00");
@@ -6917,13 +6928,28 @@ public class WndVentaReservaNew  extends WndBase {
 		hboxPost_2.appendChild(vbox);		
 		win.appendChild(hboxPost_2);
 		
+		// Carga datos de la empresa
 		UtilData.cargarEmpresa(cmbPostEmpresa, false);
+		
+		// Carga las localidades para el Origen
 		UtilData.cargarDataCombo(cmbPostOrigen, Localidad.class, false);
+		
+		// Carga las localidades para el destino
 		UtilData.cargarDataCombo(cmbPostDestino, Localidad.class, false);
+		
+		// Selecciona la empresa
 		Util.seleccionarValorItemCombo(Empresa.class, cmbPostEmpresa, ventaOriginal.getEmpresa().getId());
+		
+		// Selecciona la localida origen en funcion a la venta 
 		Util.seleccionarValorItemCombo(Localidad.class, cmbPostOrigen, ventaOriginal.getRuta().getLocalidadOrigen().getId());
+		
+		// Selecciona la localida destino en funcion a la venta 
 		Util.seleccionarValorItemCombo(Localidad.class, cmbPostDestino, ventaOriginal.getRuta().getLocalidadDestino().getId());
+		
+		// Carga los tipo de formas de pago
 		loadTipoFormaPago(new FormaPago(Constantes.ID_FORPAG_CONTADO), cmbPostTipoFormaPago);
+		
+		// Limpia controles de la prostergacion
 		cleanDatosPagoPost();
 		
 		//Carlos itinerarios por defecto
@@ -7496,16 +7522,16 @@ public class WndVentaReservaNew  extends WndBase {
 	 * @throws Exception
 	 */
 	private void calcularTotalPagoPost()throws Exception{
-		Double tarifaActual = (dbxPostTarifa.getValue()!=null?dbxPostTarifa.getValue():.00);
-		Double montoAnterior = (dbxPostMontoAnterior.getValue()!=null?dbxPostMontoAnterior.getValue():.00);
-		Double penalidad = (dbxPostPenalidad.getValue()!=null?dbxPostPenalidad.getValue():.00);
+		Double tarifaActual = Optional.ofNullable(dbxPostTarifa.getValue()).orElse(.00);
+		Double tarifaAnterior = Optional.ofNullable(dbxPostMontoAnterior.getValue()).orElse(.00);
+		Double penalidad = Optional.ofNullable(dbxPostPenalidad.getValue()).orElse(.00);
 		
 		Double totalPagar = .00;
 		
-		if(tarifaActual >.00) {
+		if(tarifaActual >.00) {						
 			totalPagar = penalidad;			
-			if(tarifaActual > montoAnterior)
-				totalPagar += (tarifaActual - montoAnterior);
+			if(tarifaActual > tarifaAnterior)
+				totalPagar += (tarifaActual - tarifaAnterior);
 		}
 		
 		dbxPostTotalPagar.setValue(totalPagar);
