@@ -264,6 +264,7 @@ public class WndCierreCaja extends WndBase {
 						}
 						String nameFile = CreateDocument.creaRptLiquidacionByEspecieValorada(liquidacion, true);
 						String src=Constantes.URL_FORMATOS_LIQUIDACION +Constantes.CLAVE_PAHT+ nameFile;
+						System.out.println(src);
 						/*Carga el iframe*/
 //							String src=Constantes.URL_FORMATOS_LIQUIDACION +Constantes.CLAVE_PAHT+ liquidacion.getId()+".txt";
 

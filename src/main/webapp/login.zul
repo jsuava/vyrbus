@@ -1,5 +1,5 @@
 
-<?page title="Control de Acceso" contentType="text/html;charset=UTF-8"?>
+<?page title="Login" contentType="text/html;charset=UTF-8"?>
 <?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
 <?link rel="shortcut icon" href="resources/favicon_1.ico" ?>
 <zk xmlns:c="client">

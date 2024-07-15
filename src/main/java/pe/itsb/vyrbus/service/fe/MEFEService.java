@@ -36,8 +36,8 @@ public class MEFEService extends Service {
 			URL baseUrl;
 			baseUrl = pe.itsb.vyrbus.service.fe.MEFEService.class.getResource(".");
 			
-//			url = new URL(baseUrl, "http://10.0.2.18:8099/MEFEService.svc?wsdl"); // Privado
-			url = new URL(baseUrl, "http://170.0.233.156:8099/MEFEService.svc?wsdl"); //Publico
+			url = new URL(baseUrl, "http://10.0.2.18:8099/MEFEService.svc?wsdl"); // Privado
+//			url = new URL(baseUrl, "http://170.0.233.156:8099/MEFEService.svc?wsdl"); //Publico
 		} catch (MalformedURLException e) {
 			logger.warning(
 					"Failed to create URL for the wsdl Location: 'http://170.0.233.156:8099/MEFEService.svc?wsdl', retrying as a local file");

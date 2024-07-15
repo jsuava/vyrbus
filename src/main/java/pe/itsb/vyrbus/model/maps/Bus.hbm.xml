@@ -27,7 +27,7 @@
             </column>
         </many-to-one>
         <many-to-one name="empresa" class="pe.itsb.vyrbus.model.bean.Empresa" fetch="select">
-            <column name="EMPRESA_ID" precision="5" scale="0" not-null="true">
+            <column name="EMPRESA_ID" precision="5" scale="0" not-null="false">
                 <comment>Identificador unico de la entidad, tamanio de la clave primaria 5.</comment>
             </column>
         </many-to-one>

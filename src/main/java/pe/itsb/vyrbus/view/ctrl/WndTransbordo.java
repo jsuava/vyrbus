@@ -956,12 +956,12 @@ public class WndTransbordo extends WndBase implements Serializable{
 											}else{
 												//Consulta al usuario si desea continuar o cancelar con el transbordo.
 												final ArrayList<Asiento> listAsientosOcupadosF=listAsientosOcupados;
-												Messagebox.show("Los siguientes asientos del Bus donde se realizarï¿½ el transbordo estï¿½n ocupados: ("+asientosOcupados+"). ï¿½Desea omitir estos asientos y continuar con el resto ?", DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_YESNO, Messagebox.QUESTION, new EventListener<Event>() {
+												Messagebox.show("Los siguientes asientos del Bus donde se realizará el transbordo están ocupados: ("+asientosOcupados+"). ¿Desea omitir estos asientos y continuar con el resto ?", DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_YESNO, Messagebox.QUESTION, new EventListener<Event>() {
 													@Override
 													public void onEvent(Event event) throws Exception {
 														if(event.getName().equals("onYes")){
 															if(aseintosExedenCapBus > 0){
-																Messagebox.show("Existe(n) "+aseintosExedenCapBus+" asiento(s) mayor(es) a la capacidad del Bus donde se realizarï¿½ el transbordo. ï¿½Desea omitir y continuar con el transbordo de los demas asientos?", DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_YESNO, Messagebox.QUESTION, new EventListener<Event>() {
+																Messagebox.show("Existe(n) "+aseintosExedenCapBus+" asiento(s) mayor(es) a la capacidad del Bus donde se realizará el transbordo. ¿Desea omitir y continuar con el transbordo de los demas asientos?", DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_YESNO, Messagebox.QUESTION, new EventListener<Event>() {
 																	@Override
 																	public void onEvent(Event event)throws Exception {
 																		if(event.getName().equals("onYes")){

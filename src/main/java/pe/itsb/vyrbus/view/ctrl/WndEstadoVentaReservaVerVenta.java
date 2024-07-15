@@ -25,6 +25,7 @@ import pe.itsb.vyrbus.model.bean.VentaPasaje;
 import pe.itsb.vyrbus.service.locator.ServiceLocator;
 import pe.itsb.vyrbus.service.util.Constantes;
 import pe.itsb.vyrbus.service.util.Util;
+import pe.itsb.vyrbus.service.util.UtilData;
 import pe.itsb.vyrbus.view.ui.WndBase;
 
 
@@ -46,6 +47,7 @@ public class WndEstadoVentaReservaVerVenta extends WndBase {
 	private Label lblFechaPartida;
 	private Label lblFechaLlegada;
 	private Label lblHoraPartida;
+	private Label lblHoraEmbarque;
 	private Label lblHoraLlegada;
 	private Label lblNroAsiento;
 	private Label lblLabelTarifa;
@@ -153,6 +155,7 @@ public class WndEstadoVentaReservaVerVenta extends WndBase {
 		lblFechaPartida=(Label)this.getFellow("lblFechaPartida");
 		lblFechaLlegada=(Label)this.getFellow("lblFechaLlegada");
 		lblHoraPartida=(Label)this.getFellow("lblHoraPartida");
+		lblHoraEmbarque=(Label)this.getFellow("lblHoraEmbarque");
 		lblHoraLlegada=(Label)this.getFellow("lblHoraLlegada");
 		lblNroAsiento=(Label)this.getFellow("lblNroAsiento");
 		lblLabelTarifa=(Label)this.getFellow("lblLabelTarifa");
@@ -249,6 +252,7 @@ public class WndEstadoVentaReservaVerVenta extends WndBase {
 		lblOrigen.setValue(ventaPasaje.getRuta()!=null?ventaPasaje.getRuta().getOrigen():"");
 		lblDestino.setValue(ventaPasaje.getRuta()!=null?ventaPasaje.getRuta().getDestino():"");
 		lblPtoEmbarque.setValue(ventaPasaje.getAgenciaPartida()!=null?ventaPasaje.getAgenciaPartida().getNombreCorto():"");
+		lblHoraEmbarque.setValue(ventaPasaje.getAgenciaPartida()!=null? UtilData.obtenerHoraEmbarque(ventaPasaje.getItinerario().getId(), ventaPasaje.getAgenciaPartida().getId()):"");
 		lblPtoLlegada.setValue(ventaPasaje.getAgenciaLlegada()!=null?ventaPasaje.getAgenciaLlegada().getNombreCorto():"");
 		lblFechaPartida.setValue(ventaPasaje.getItinerario().getId().intValue()!=1?Constantes.FORMAT_DATE.format(ventaPasaje.getItinerario().getFechaPartida()):"");
 		lblFechaLlegada.setValue(ventaPasaje.getItinerario().getId().intValue()!=1?Constantes.FORMAT_DATE.format(ventaPasaje.getItinerario().getFechaLlegada()):"");

@@ -11,6 +11,7 @@ package pe.itsb.vyrbus.model.dao;
 import java.util.List;
 
 import pe.itsb.vyrbus.model.bean.TarifaRegular;
+import pe.itsb.vyrbus.service.mappers.HistorialTarifa;
 
 /**
  * @author Marco
@@ -31,5 +32,10 @@ public interface TarifaRegularDAO extends GenericDAO {
 	public void delete (Long idTarifaRegular) throws Exception;
 
 	public List<TarifaRegular> buscarTarifasAReemplazar(Integer empresaID,Integer canalVentaID, Integer servicioID, Integer origenID, Integer destinoID, Integer piso, Integer zona, String fechaInicio, String fechaFin, String horaPartida, Integer PorServicio)throws Exception;
+	
+	public List<HistorialTarifa> buscarHistorialTarifa(Integer canalVentaID,
+			Long tarifaID,
+			String fechaTarifa,
+			String horaPartida)throws Exception;
 
 }
