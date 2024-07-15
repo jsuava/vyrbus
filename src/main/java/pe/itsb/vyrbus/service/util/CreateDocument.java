@@ -6181,7 +6181,7 @@ public class CreateDocument implements Serializable {
 			// Busca el Servicio
 			Servicio servicio = ServiceLocator.getServicioManager().buscarPorId(itinerario.getServicio().getId().longValue());
 			
-			// Valida la programaciÃ³n
+			// Valida la programación
 			if(manifiesto.getItinerario().getBus()!=null && manifiesto.getItinerario().getBus().getProgramacionServicio()!=null) {
 				itinerario.setBus(manifiesto.getItinerario().getBus());
 			}
@@ -6258,17 +6258,17 @@ public class CreateDocument implements Serializable {
 			int width_asientosOcupados = 5;
 			
 			// Parametros que determinan la posicion inicial del campo
-			int xLeft_numeroManifiesto = 82;
-			int xLeft_tuc = 32;
-			int xLeft_marca = 20;
-			int xLeft_placa = 16;
-			int xLeft_destino = 44;
-			int xLeft_puntoPartida = 20;
-			int xLeft_fechaSalida = 16;
-			int xLeft_horaSalida = 9;
-			int xLeft_pilotoNombres = 18;
-			int xLeft_pilotoLicencia = 24;
-			int xLeft_asientosOcupados = 88;
+			int xLeft_numeroManifiesto = 60;
+			int xLeft_tuc = 35;
+			int xLeft_marca = 34;
+			int xLeft_placa = 26;
+			int xLeft_destino = 53;
+			int xLeft_puntoPartida = 26;
+			int xLeft_fechaSalida = 30;
+			int xLeft_horaSalida = 14;
+			int xLeft_pilotoNombres = 26;
+			int xLeft_pilotoLicencia = 35;
+			int xLeft_asientosOcupados = 104;
 			
 			/*** Escribe el Archivo */
 			String fichero = Constantes.DIRECTORY_MANIFIESTOS+Constantes.CLAVE_PAHT + "MANPAX"+itinerario.getId()+ ".txt";
@@ -6276,16 +6276,15 @@ public class CreateDocument implements Serializable {
 			
 			BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file),"UTF-8"));
 			
-			// NUMERO MANIFIESTO
-			bw.write(NEWLINE);
-			String line = getLineText(xLeft_numeroManifiesto, width_numeroManifiesto, numeroManifiesto);;
-			bw.write(line + NEWLINE);
-			
 			// Inicio cabecera
 			int xTopIni = 6;
 			for(int x = 0; x < xTopIni; x++) {
 				bw.write(NEWLINE);	
 			}
+			
+			// NUMERO MANIFIESTO
+			String line = getLineText(xLeft_numeroManifiesto, width_numeroManifiesto, numeroManifiesto);;
+			bw.write(line + NEWLINE);
 			
 			// TUC - MARCA
 			line = getLineText(xLeft_tuc, width_tuc, TUC);
@@ -6317,8 +6316,6 @@ public class CreateDocument implements Serializable {
 			line = getLineText(xLeft_asientosOcupados, width_asientosOcupados, asientosOcupados);					
 			bw.write(line + NEWLINE);
 			
-			
-			
 			/**DETALLE DEL MANIFIESTO*/
 			
 			// Parametos que determinan la longitud maxima de cada campo en el detalle
@@ -6333,16 +6330,16 @@ public class CreateDocument implements Serializable {
 			
 			// Parametros que determinan la posicion inicial del campo en el detalle
 			int xLeft_asiento = 5;
-			int xLeft_pasajero = 1;
-			int xLeft_edad = xLeft_pasajero;
-			int xLeft_tipoDocumento = xLeft_edad;
-			int xLeft_numeroDocumento = xLeft_tipoDocumento;
+			int xLeft_pasajero = 3;
+			int xLeft_edad = 15;
+			int xLeft_tipoDocumento = xLeft_pasajero-2;
+			int xLeft_numeroDocumento = xLeft_pasajero;
 			int xLeft_ubicaAsiento = xLeft_numeroDocumento;
 			int xLeft_numeroComprobante = xLeft_ubicaAsiento;
-			int xLeft_importePagado = xLeft_numeroComprobante;
+			int xLeft_importePagado = xLeft_numeroComprobante-1;
 						
 			// Inicio detalle
-			xTopIni = 6;
+			xTopIni = 4;
 			for(int x = 0; x < xTopIni; x++) {
 				bw.write(NEWLINE);	
 			}
@@ -6351,7 +6348,8 @@ public class CreateDocument implements Serializable {
 			nroAsientos += Optional.ofNullable(servicio.getNumeroAsientosPiso2()).orElse(0);
 
 			for(int asiento = 1; asiento <= nroAsientos; asiento++){
-//				Busca los asientos en un servicio - Solo deberia haber mas de un registro con el mismo asiento cuando se vende por concepto de prioridad venta (case asiento 28 Lima - Ica aseinto 28 Ica - Arequipa)
+//				Busca los asientos en un servicio - Solo deberia haber mas de un registro con el mismo asiento 
+//				cuando se vende por concepto de prioridad venta (case asiento 28 Lima - Ica aseinto 28 Ica - Arequipa)
 				String asientos[] = wndmanifiesto.getAsientos_venpasId(listPasajeros, asiento, null).split(";");
 				
 				String valueAsiento = "";
@@ -6381,7 +6379,8 @@ public class CreateDocument implements Serializable {
 								valueNumeroDocumento = pasajero.getNumeroDocumento();
 								valueUbicaAsiento = valueAsiento;
 								valueNumeroComprobante = ventaPasaje.getNumeroBoleto();
-								valueImportePagado = (asiento < 2? "70.00" : "156.00");//Util.toNumberFormat(ventaPasaje.getImportePagado(), 2);
+								//valueImportePagado = (asiento < 2? "70.00" : "156.00");
+								valueImportePagado = Util.toNumberFormat(ventaPasaje.getImportePagado(), 2);
 								
 								// Asiento
 								line = getLineText(xLeft_asiento, width_asiento, valueAsiento);

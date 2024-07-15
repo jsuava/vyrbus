@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import pe.itsb.vyrbus.model.bean.TarifaRegular;
 import pe.itsb.vyrbus.model.dao.TarifaRegularDAO;
 import pe.itsb.vyrbus.service.business.TarifaRegularManager;
+import pe.itsb.vyrbus.service.mappers.HistorialTarifa;
 import pe.itsb.vyrbus.service.util.Constantes;
 
 /**
@@ -91,6 +92,16 @@ public class TarifaRegularManagerImpl implements TarifaRegularManager{
 	@Override
 	public List<TarifaRegular> buscarTarifasAReemplazar(Integer empresaID, Integer canalVentaID, Integer servicioID, Integer origenID, Integer destinoID, Integer piso, Integer zona, String fechaInicio, String fechaFin, String horaPartida, Integer PorServicio) throws Exception {
 		return getTarifaRegularDAO().buscarTarifasAReemplazar(empresaID, canalVentaID, servicioID, origenID, destinoID, piso, zona, fechaInicio, fechaFin, horaPartida, PorServicio);
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.itsb.vyrbus.service.business.TarifaRegularManager#buscarHistorialTarifa(java.lang.Integer, java.lang.Long, java.lang.String, java.lang.String)
+	 */
+	@Override
+	public List<HistorialTarifa> buscarHistorialTarifa(Integer canalVentaID, Long tarifaID, String fechaTarifa,
+			String horaPartida) throws Exception {
+		// TODO Auto-generated method stub
+		return getTarifaRegularDAO().buscarHistorialTarifa(canalVentaID, tarifaID, fechaTarifa, horaPartida);
 	}
 
 

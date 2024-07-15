@@ -28,6 +28,35 @@ public class TarifaRegularAud extends GenericBean implements java.io.Serializabl
 	private Date fechaTarifa;
 	private String horaPartida;
 	private Double monto;
+	
+	private Date fechaCreacion;
+	private String usuarioCreacion;
+	private String ipCreacion;
+	
+	public Date getFechaCreacion() {
+		return fechaCreacion;
+	}
+
+	public void setFechaCreacion(Date fechaCreacion) {
+		this.fechaCreacion = fechaCreacion;
+	}
+
+	public String getUsuarioCreacion() {
+		return usuarioCreacion;
+	}
+
+	public void setUsuarioCreacion(String usuarioCreacion) {
+		this.usuarioCreacion = usuarioCreacion;
+	}
+
+	public String getIpCreacion() {
+		return ipCreacion;
+	}
+
+	public void setIpCreacion(String ipCreacion) {
+		this.ipCreacion = ipCreacion;
+	}
+	
 
 	public TarifaRegularAud(){
 
