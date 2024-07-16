@@ -608,6 +608,8 @@ public class WndVentaReserva extends WndBase {
 			rolAcceso.add(new Rol(Constantes.ID_ROL_FISCALIZACION));
 			rolAcceso.add(new Rol(Constantes.ID_ROL_ADMIN));
 			rolAcceso.add(new Rol(Constantes.ID_ROL_FINANZAS));
+			rolAcceso.add(new Rol(Constantes.ID_ROL_ADMINISTRADOR));
+			rolAcceso.add(new Rol(Constantes.ID_ROL_COUNTER));
 			accesoControlsByRol(components, rolAcceso);
 
 
