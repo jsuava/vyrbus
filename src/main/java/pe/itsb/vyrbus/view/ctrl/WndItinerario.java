@@ -1238,7 +1238,7 @@ public class WndItinerario extends WndOpcionesMantenimiento {
 				Messagebox.show(Messages.getString("WndItinerario.information.TramosDuplicados")+
 						" Nro.Itinerario:" + detalleItinerario.getItinerario().getId()  +
 						", Fecha:" + Constantes.FORMAT_DATE.format(detalleItinerario.getFechaPartida()) +
-						",  Hora:"+ detalleItinerario.getHoraPartida()+". Â¿Desa continuar?",DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_YESNO, Messagebox.QUESTION,DlgMessage.BTN_DEFAULT_NO, new EventListener<Event>() {
+						",  Hora:"+ detalleItinerario.getHoraPartida()+". ¿Desa continuar?",DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_YESNO, Messagebox.QUESTION,DlgMessage.BTN_DEFAULT_NO, new EventListener<Event>() {
 					@Override
 					public void onEvent(Event e) throws Exception {
 						if(e.getName().equals("onYes")){
@@ -2948,7 +2948,7 @@ public class WndItinerario extends WndOpcionesMantenimiento {
 
 					long hrs=(dateFTSale.getTime()-dateITLlega.getTime())/Constantes.MILISEGUNDOS_X_MINUTO;
 					//Valida que la diferencia no sea mayor a 60 minutos, segun conversado con Marco - 04/01/2017 - jabanto
-					if(hrs>60){
+					if(hrs>90){
 						isCorrect=false;
 						DlgMessage.information("No puede continuar, debido a que existe demasiada diferencia entre la hora de llegada y salida de la ciudad de "+detallIT.getRuta().getDestino()+".");
 						break;
@@ -2970,7 +2970,7 @@ public class WndItinerario extends WndOpcionesMantenimiento {
 
 				long hrs=(dateFTSale.getTime()-dateITLlega.getTime())/Constantes.MILISEGUNDOS_X_MINUTO;
 				//Valida que la diferencia no sea mayor a 60 minutos, segun conversado con Marco - 04/01/2017 - jabanto
-				if(hrs>60){
+				if(hrs>90){
 					isCorrect=false;
 					DlgMessage.information("No puede continuar, debido a que existe demasiada diferencia entre la hora de llegada y salida de la ciudad de "+detallUT.getRuta().getDestino()+".");
 				}
