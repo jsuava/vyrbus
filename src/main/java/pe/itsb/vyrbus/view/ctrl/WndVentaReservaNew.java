@@ -2878,15 +2878,15 @@ public class WndVentaReservaNew  extends WndBase {
 			disabled_btnGuardar(btnVtaGuardar, false);
 		}
 		
-		if(asiento.getVentaPasaje()!=null) {
-			loadDatosinfoComprobante(asiento.getVentaPasaje());
-			loadDatosViaje(true, asiento.getVentaPasaje());
+		if(asiento.getVentaPasaje()!=null) {			
 			loadDatosPasajero(asiento.getVentaPasaje().getPasajero());
 			if(asiento.getVentaPasaje().getCliente()!=null) {
 				chbxVtaFactura.setChecked(true);
 				onCheck_chbxVtaFactura();
 				loadDatosCliente(asiento.getVentaPasaje().getCliente());
 			}
+			loadDatosViaje(true, asiento.getVentaPasaje());
+			loadDatosinfoComprobante(asiento.getVentaPasaje());
 			
 			Date fechaActual = Constantes.FORMAT_DATE.parse(Constantes.FORMAT_DATE.format(new Date()));
 			Date fechaPartida = asiento.getVentaPasaje().getFechaPartida();

@@ -2029,7 +2029,7 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 						      ",cl.cliente_id as idCliente,cl.c_numdoc as numeroruc,cl.c_razsoc as razonsocial,r.n_kilometros as kilometros "+ //35-38
 						      ",NVL(vp.c_estdoc,'PENDIENTE') c_estdoc  "+ //39
 						      ",NVL(vp.N_TARIFAEQU,0) tarifaEquibalente, NVL(vp.N_DESEQU,0) desctEquibalente, NVL(vp.N_IMPPAGEQU,0) netoEquibalente  "+ //40-42
-						      ",vp.tipmon_id tipoMoneda, cs.concesionario_id, vp.tipcom_id "+//43-45
+						      ",vp.tipmon_id tipoMoneda, cs.concesionario_id, vp.tipcom_id, vp.empresa_id "+//43-46
 						"FROM VRTVENPAS vp "+
 						    "INNER JOIN VRTVENPAS vp_ref ON (vp_ref.venpas_id=vp.venpas_idref) "+
 						    "INNER JOIN VRMUSUARIO u ON (u.usuario_id=vp.usuario_id) " +
@@ -2062,7 +2062,7 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 						      ",cl.cliente_id as idCliente,cl.c_numdoc as numeroruc,cl.c_razsoc as razonsocial,r.n_kilometros as kilometros "+ //35-38
 						      ",NVL(vp.c_estdoc,'PENDIENTE') c_estdoc  "+ //39
 						      ",NVL(vp.N_TARIFAEQU,0) tarifaEquibalente, NVL(vp.N_DESEQU,0) desctEquibalente, NVL(vp.N_IMPPAGEQU,0) netoEquibalente  "+ //40-42
-						      ",vp.tipmon_id tipoMoneda, cs.concesionario_id, vp.tipcom_id "+//43-45
+						      ",vp.tipmon_id tipoMoneda, cs.concesionario_id, vp.tipcom_id, vp.empresa_id "+//43-46
 						"FROM VRTVENPAS vp "+
 						    "INNER JOIN VRMUSUARIO u ON (u.usuario_id=vp.usuario_id) " +
 						    "INNER JOIN VRMPASAJERO p ON (p.pasajero_id=vp.pasajero_id) " +
@@ -2100,7 +2100,7 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 						      ",cl.cliente_id as idCliente,cl.c_numdoc as numeroruc,cl.c_razsoc as razonsocial,r.n_kilometros as kilometros "+ //35-38
 						      ",NVL(vprefbol.c_estdoc,'ACT') c_estdoc  "+ //39
 						      ",NVL(vp.N_TARIFAEQU,0) tarifaEquibalente, NVL(vp.N_DESEQU,0) desctEquibalente, NVL(vp.N_IMPPAGEQU,0) netoEquibalente  "+ //40-42
-						      ",vp.tipmon_id tipoMoneda,cs.concesionario_id, vp.tipcom_id "+//43-45
+						      ",vp.tipmon_id tipoMoneda,cs.concesionario_id, vp.tipcom_id, vp.empresa_id "+//43-46
 						"FROM VRTVENPAS vp "+
 							  "INNER JOIN (SELECT MIN(VENPAS_ID)VENPAS_ID FROM VRTVENPAS GROUP BY C_NUMCONTROL )VENPAS_MIN " +
 							  		 "ON (VENPAS_MIN.venpas_id=vp.venpas_id) "+
@@ -2137,7 +2137,7 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 						      ",cl.cliente_id as idCliente,cl.c_numdoc as numeroruc,cl.c_razsoc as razonsocial,r.n_kilometros as kilometros "+ //35-38
 						      ",NVL(vp.c_estdoc,'PENDIENTE') c_estdoc  "+ //39
 						      ",NVL(vp.N_TARIFAEQU,0) tarifaEquibalente, NVL(vp.N_DESEQU,0) desctEquibalente, NVL(vp.N_IMPPAGEQU,0) netoEquibalente  "+ //40-42
-						      ",vp.tipmon_id tipoMoneda, cs.concesionario_id, vp.tipcom_id "+//43-45
+						      ",vp.tipmon_id tipoMoneda, cs.concesionario_id, vp.tipcom_id, vp.empresa_id "+//43-46
 						"FROM VRTVENPAS vp "+
 						    "INNER JOIN VRMUSUARIO u ON (u.usuario_id=vp.usuario_id) " +
 						    "INNER JOIN VRMPASAJERO p ON (p.pasajero_id=vp.pasajero_id) " +
@@ -2271,6 +2271,7 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 			}
 			ventaPasaje.setTipoComprobante(new TipoComprobante(((BigDecimal)obj[45]).intValue()));
 			ventaPasaje.setId(((BigDecimal)obj[12]).longValue());
+			ventaPasaje.setEmpresa(new Empresa(((BigDecimal)obj[46]).intValue()));
 
 			lstResult.add(ventaPasaje);
 		}

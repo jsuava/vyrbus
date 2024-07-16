@@ -514,7 +514,7 @@ public class WndAnulacionDocumentos extends WndBase{
 
 		div= new Div();
 		div.setAlign("center");
-		btnProcesarAnulacion= new Button("Procesar Anulaci�n","/resources/mp_anular.png");
+		btnProcesarAnulacion= new Button("Procesar Anulacion","/resources/mp_anular.png");
 		btnProcesarAnulacion.setClass("btn-vyrbus");
 		btnProcesarAnulacion.setAutodisable("self");
 		div.appendChild(btnProcesarAnulacion);
@@ -630,6 +630,7 @@ public class WndAnulacionDocumentos extends WndBase{
 		List<VentaPasaje>lstVentas= new ArrayList<>();
 		if(ventaPasaje!=null){
 			VentaPasaje anulacion= ServiceLocator.getVentaPasajesManager().buscarVentaById(ventaPasaje.getId());
+			anulacion.getItinerario().setEmpresa(anulacion.getEmpresa());
 			anulacion.setObservaciones(txtMotivoAnulacion.getText().trim().toUpperCase());
 			anulacion.setFechaAnulacion(new Date());
 			anulacion.setUsuarioAnulacion(getUsuario());
@@ -637,6 +638,11 @@ public class WndAnulacionDocumentos extends WndBase{
 		}else{
 			for(Listitem item:ltbxAnulacionComprobantes.getSelectedItems()){
 				VentaPasaje anulacion= ServiceLocator.getVentaPasajesManager().buscarVentaById(((VentaPasaje)item.getValue()).getId());
+				if(anulacion.getVentaPasaje() != null && rdNCNuevoComprobante.isChecked()) {
+					VentaPasaje _ventaPasaje = ServiceLocator.getVentaPasajesManager().buscarPorId(anulacion.getVentaPasaje().getId());
+					anulacion.setVentaPasaje(_ventaPasaje);
+				}
+				anulacion.getItinerario().setEmpresa(anulacion.getEmpresa());
 				anulacion.setObservaciones(txtMotivoAnulacion.getText().trim().toUpperCase());
 				anulacion.setFechaAnulacion(new Date());
 				anulacion.setUsuarioAnulacion(getUsuario());
@@ -667,6 +673,7 @@ public class WndAnulacionDocumentos extends WndBase{
 			VentaPasaje envioVenta=ServiceLocator.getVentaPasajesManager().buscarVentaById(venta.getId());
 			lstVentasenviar.add(envioVenta);
 		}
+		
 		if(lstVentasenviar.size()>0)
 			WSFE.sendVenta(lstVentasenviar, window, false, null, null);
 

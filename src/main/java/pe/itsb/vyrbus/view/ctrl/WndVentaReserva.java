@@ -296,7 +296,7 @@ public class WndVentaReserva extends WndBase {
 //	private Toolbarbutton tlbbtnLimpiarPax;
 //	private Toolbarbutton tlbbtnNuevoClient;
 //	private Toolbarbutton tlbbtnModificarClient;
-//	private Toolbarbutton tlbbtnCancelarClient;
+	private Toolbarbutton tlbbtnCancelarClient;
 //	private Toolbarbutton tlbbtnGuardarClient;
 //	private Toolbarbutton tlbbtnLimpiarClient;
 	private Button btnNextTabAsientos;
@@ -782,7 +782,7 @@ public class WndVentaReserva extends WndBase {
 //		tlbbtnNuevoClient = (Toolbarbutton) this.getFellow("tlbbtnNuevoClient");
 //		tlbbtnLimpiarClient = (Toolbarbutton) this.getFellow("tlbbtnLimpiarClient");
 //		tlbbtnModificarClient = (Toolbarbutton) this.getFellow("tlbbtnModificarClient");
-//		tlbbtnCancelarClient = (Toolbarbutton) this.getFellow("tlbbtnCancelarClient");
+		tlbbtnCancelarClient = (Toolbarbutton) this.getFellow("tlbbtnCancelarClient");
 //		tlbbtnGuardarClient = (Toolbarbutton) this.getFellow("tlbbtnGuardarClient");
 		txtRubro = (Textbox)this.getFellow("txtRubro");
 		ibxCantidadTrabajadores = (Intbox)this.getFellow("ibxCantidadTrabajadores");
@@ -1473,20 +1473,26 @@ public class WndVentaReserva extends WndBase {
 						if(detalleItinerario.getItinerario().getTipoItinerario().getId().equals(Constantes.ID_TIPITI_REGULAR)){
 							item = new Listitem();
 							
-							if(detalleItinerario.getItinerario().getOperadoPor()==null)
-								item.setImage("/resources/mp_tepsa.png");
+//							if(detalleItinerario.getItinerario().getOperadoPor()==null)
+//								item.setImage("/resources/mp_tepsa.png");
 //							else if(detalleItinerario.getItinerario().getOperadoPor().equals(Constantes.OPERADO_POR_CRUZ_DEL_SUR))
 //								item.setImage("/resources/mp_cruzdelsur.png");
 //							else if (detalleItinerario.getItinerario().getOperadoPor().equals(Constantes.OPERADO_CIVA))
 //								item.setImage("/resources/mp_excluciva.png");
 //							cell = new Listcell(detalleItinerario.getItinerario().getOperadoPor()==null?"TEPSA":detalleItinerario.getItinerario().getOperadoPor());
 //							cell.setStyle("font-size:9px !important");
+//							item.appendChild(new Listcell());							
+								
+//							cell = new Listcell();
+//							String logo = detalleItinerario.getItinerario().getEmpresa().getLogo();
+//							Image imgEmpresa = new Image("resources/"+logo);
+//							imgEmpresa.setTooltiptext("Empresa operadora");
+//							cell.appendChild(imgEmpresa);
 //							item.appendChild(cell);
 							cell = new Listcell();
-							String logo = detalleItinerario.getItinerario().getEmpresa().getLogo();
-							Image imgEmpresa = new Image("resources/"+logo);
-							imgEmpresa.setTooltiptext("Empresa operadora");
-							cell.appendChild(imgEmpresa);
+							item.appendChild(cell);
+							
+							cell = new Listcell(detalleItinerario.getItinerario().getEmpresa().getNombreCorto());
 							item.appendChild(cell);
 							
 							cell = new Listcell(detalleItinerario.getAgenciaPartida().getNombreCorto());
@@ -4356,7 +4362,7 @@ public class WndVentaReserva extends WndBase {
 		actionc = Constantes.ACTION_NEW;
 //		tlbbtnNuevoClient.setDisabled(true);
 //		tlbbtnModificarClient.setDisabled(true);
-//		tlbbtnCancelarClient.setDisabled(false);
+		tlbbtnCancelarClient.setDisabled(false);
 //		tlbbtnGuardarClient.setDisabled(false);
 		txtDocumentoCliente.setFocus(true);
 
@@ -4424,7 +4430,7 @@ public class WndVentaReserva extends WndBase {
 		disabledControlsClient(false);
 //		tlbbtnNuevoClient.setDisabled(true);
 //		tlbbtnModificarClient.setDisabled(true);
-//		tlbbtnCancelarClient.setDisabled(false);
+		tlbbtnCancelarClient.setDisabled(false);
 //		tlbbtnGuardarClient.setDisabled(false);
 		txtDocumentoCliente.setFocus(true);
 
@@ -4437,7 +4443,7 @@ public class WndVentaReserva extends WndBase {
 		disabledControlsPax(true);
 //		tlbbtnNuevoClient.setDisabled(false);
 //		tlbbtnModificarClient.setDisabled(true);
-//		tlbbtnCancelarClient.setDisabled(true);
+		tlbbtnCancelarClient.setDisabled(true);
 //		tlbbtnGuardarClient.setDisabled(true);
 //		tlbbtnLimpiarClient.setDisabled(false);
 		actionc = Constantes.FAILURE;
@@ -4834,7 +4840,7 @@ public class WndVentaReserva extends WndBase {
 
 //			tlbbtnNuevoClient.setDisabled(false);
 //			tlbbtnModificarClient.setDisabled(false);
-//			tlbbtnCancelarClient.setDisabled(true);
+			tlbbtnCancelarClient.setDisabled(true);
 //			tlbbtnGuardarClient.setDisabled(true);
 //			action = Constantes.FAILURE;
 //			disabledControlsClient(true);
@@ -4914,7 +4920,7 @@ public class WndVentaReserva extends WndBase {
 						}
 //						tlbbtnNuevoClient.setDisabled(false);
 //						tlbbtnModificarClient.setDisabled(false);
-//						tlbbtnCancelarClient.setDisabled(true);
+						tlbbtnCancelarClient.setDisabled(true);
 //						tlbbtnGuardarClient.setDisabled(true);
 						actionc = Constantes.FAILURE;
 						disabledControlsClient(true);
@@ -5516,11 +5522,11 @@ public class WndVentaReserva extends WndBase {
 				return;
 
 			//Valida los datos del Cliente - 20/04/2022
-//			if(!tlbbtnCancelarClient.isDisabled()) {
+			if(!tlbbtnCancelarClient.isDisabled()) {
 				isCorrect = onSaveClient();
 				if(!isCorrect)
 					return;
-//			}
+			}
 
 			else if(oPasajero==null)
 				throw new PasajeroException();
@@ -5775,11 +5781,11 @@ public class WndVentaReserva extends WndBase {
 //			}
 
 			//Valida los datos del Cliente - 20/04/2022
-//			if(!tlbbtnCancelarClient.isDisabled()) {
+			if(!tlbbtnCancelarClient.isDisabled()) {
 				isCorrect = onSaveClient();
 				if(!isCorrect)
 					return null;
-//			}
+			}
 
 			if(txtNumeroBoleto.getText().trim().equals("") && ((String)cmbTipoOperacion.getSelectedItem().getValue()).equals(Constantes.TIPO_OPERACION_VENTA))
 				throw new NumeroBoletoNullException();
