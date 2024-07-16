@@ -698,6 +698,7 @@
 														<toolbarbutton id="tlbbtnGuardarClient" autodisable = "self" label="Guardar" image="resources/toolbar/mp_toolbarGuardar.png" onClick="wndVentaReserva.onSaveClient()" disabled="true"/>
 													</toolbar>
 													 -->
+													 <toolbarbutton id="tlbbtnCancelarClient" label="Cancelar" image="resources/toolbar/mp_toolbarCancelar.png" onClick="wndVentaReserva.onCancelClient()" disabled="true"/>
 													<grid sclass="grid-no-border">
 														<columns>
 															<column width="15%" align="right"/>
