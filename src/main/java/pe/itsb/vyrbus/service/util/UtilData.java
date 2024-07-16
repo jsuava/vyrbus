@@ -2878,7 +2878,7 @@ public class UtilData extends Window {
 				}				
 			}				
 		}catch(EspecieValoradaNotAvailableException evnaex){
-			throw new EspecieValoradaNotAvailableException();
+			throw new Exception("No tiene especies valoradas asignadas.(tipcom_id:"+ tipoComprobante + ")");
 		}catch(Exception ex){
 			throw new Exception(ex);
 		}
