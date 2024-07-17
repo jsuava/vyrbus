@@ -6264,8 +6264,8 @@ public class CreateDocument implements Serializable {
 			int xLeft_placa = 26;
 			int xLeft_destino = 53;
 			int xLeft_puntoPartida = 26;
-			int xLeft_fechaSalida = 30;
-			int xLeft_horaSalida = 14;
+			int xLeft_fechaSalida = 25;
+			int xLeft_horaSalida = 10;
 			int xLeft_pilotoNombres = 26;
 			int xLeft_pilotoLicencia = 35;
 			int xLeft_asientosOcupados = 104;
@@ -6329,9 +6329,9 @@ public class CreateDocument implements Serializable {
 			int width_importePagado = 8;
 			
 			// Parametros que determinan la posicion inicial del campo en el detalle
-			int xLeft_asiento = 5;
+			int xLeft_asiento = 4;
 			int xLeft_pasajero = 3;
-			int xLeft_edad = 15;
+			int xLeft_edad = 8;
 			int xLeft_tipoDocumento = xLeft_pasajero-2;
 			int xLeft_numeroDocumento = xLeft_pasajero;
 			int xLeft_ubicaAsiento = xLeft_numeroDocumento;
@@ -6339,7 +6339,7 @@ public class CreateDocument implements Serializable {
 			int xLeft_importePagado = xLeft_numeroComprobante-1;
 						
 			// Inicio detalle
-			xTopIni = 4;
+			xTopIni = 5;
 			for(int x = 0; x < xTopIni; x++) {
 				bw.write(NEWLINE);	
 			}
