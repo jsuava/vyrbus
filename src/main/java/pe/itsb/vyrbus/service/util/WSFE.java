@@ -394,12 +394,18 @@ public class WSFE implements Serializable{
 		reimprimirComprobante(listVentaPasaje, window, numCopias, true);
 		
 	}
+	
 	/**
 	 * Realiza la reimpresion del comprobante
 	 * @param ventaPasaje
 	 * @param window
 	 */
 	public static void reimprimirComprobante(List<VentaPasaje> listVentaPasaje, Window window, int numCopias, boolean isReimpresion){
+		reimprimirComprobante(listVentaPasaje, window, numCopias, isReimpresion, false);
+	}
+	
+	public static void reimprimirComprobante(List<VentaPasaje> listVentaPasaje, Window window, int numCopias, boolean isReimpresion, boolean forceShowPdf){
+		
 		try {
 			List<VentaPasaje> ventasEnviadasSFE= new ArrayList<>();
 
@@ -442,7 +448,7 @@ public class WSFE implements Serializable{
 			/*Crea y descarga el Archivo xml para la impresion*/
 			XmlVentaPasaje fileXmlPrint=createXmlVenta(ventasEnviadasSFE, isReimpresion, numCopias);
 			if(fileXmlPrint!=null)
-				descargarFileXml(fileXmlPrint, window);
+				descargarFileXml(fileXmlPrint, window, forceShowPdf);
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -454,7 +460,9 @@ public class WSFE implements Serializable{
 			}
 			sendMail("metod reimprimirComprobante : "+numerosComp+" \n "+e.getMessage());
 		}
+		
 	}
+	
 
 	/**
 	 * Realiza la impresion del Ticket de Equipaje
@@ -873,14 +881,17 @@ public class WSFE implements Serializable{
 		}
 	}
 
+	private static byte[] descargarFileXml(XmlVentaPasaje xmlVentaPasaje, Window window){
+		return descargarFileXml(xmlVentaPasaje, window, false);
+	}
+	
 	/**
 	 * Descarga el archivo xml para la impresion
 	 * @param xmlVentaPasaje	: Instancia de la clase xmlventaPasaje
 	 * @param window : Instacia de la venta de donde es invocado el metodo
 	 * @param result :
 	 */
-//	@SuppressWarnings("restriction")
-	private static byte[] descargarFileXml(XmlVentaPasaje xmlVentaPasaje, Window window){
+	private static byte[] descargarFileXml(XmlVentaPasaje xmlVentaPasaje, Window window, boolean forceShowPdf){
 		String nameFile="";
 		byte[] filePdfZip = null;
 
@@ -936,7 +947,10 @@ public class WSFE implements Serializable{
 			//************************************************************************************
 			//Consulta la version de impresi�n configurada para la agencia - jabanto 16/11/2022
 			Agencia agencia = (Agencia)Executions.getCurrent().getSession().getAttribute(Constantes.ATRIBUTO_AGENCIA);
-			if(UtilFlag.isFormatPrintDownload(agencia.getId())) {
+			
+			
+			
+			if(!forceShowPdf && UtilFlag.isFormatPrintDownload(agencia.getId())) {
 				String nameFileZip = nameFile + ".zip";
 				File file= new File(pZipFile);
 				byte[] fileXmlZip = java.nio.file.Files.readAllBytes(file.toPath());
@@ -945,7 +959,7 @@ public class WSFE implements Serializable{
 				if(filePdfZip !=null)
 					Filedownload.save(filePdfZip, "multipart/form-data", nameFileZip);
 
-			}else if(UtilFlag.isFormatPrintViewPdf(agencia.getId())) {
+			}else if(forceShowPdf || UtilFlag.isFormatPrintViewPdf(agencia.getId())) {
 				String nameFileZip = nameFile + ".zip";
 				File file= new File(pZipFile);
 				byte[] fileXmlZip = java.nio.file.Files.readAllBytes(file.toPath());

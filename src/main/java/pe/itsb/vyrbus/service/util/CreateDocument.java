@@ -3510,7 +3510,7 @@ public class CreateDocument implements Serializable {
 	 * @param espacios	: Numero de espacios en blanco.
 	 * @return String
 	 */
-	private static final String tabular(int espacios){
+	public static final String tabular(int espacios){
 		String cadena = "";
 		for(int i=0; i<espacios; i++){
 			cadena = cadena + " ";
@@ -6181,7 +6181,7 @@ public class CreateDocument implements Serializable {
 			// Busca el Servicio
 			Servicio servicio = ServiceLocator.getServicioManager().buscarPorId(itinerario.getServicio().getId().longValue());
 			
-			// Valida la programación
+			// Valida la programaciï¿½n
 			if(manifiesto.getItinerario().getBus()!=null && manifiesto.getItinerario().getBus().getProgramacionServicio()!=null) {
 				itinerario.setBus(manifiesto.getItinerario().getBus());
 			}
@@ -6421,7 +6421,7 @@ public class CreateDocument implements Serializable {
 	}
 	
 	
-	private static String getLineText(int xLeft, int lengthValueMax, String value) {
+	public static String getLineText(int xLeft, int lengthValueMax, String value) {
 		return getLineText(xLeft, lengthValueMax, value, false);
 	}
 	

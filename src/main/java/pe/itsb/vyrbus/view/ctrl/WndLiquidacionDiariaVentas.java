@@ -12,6 +12,7 @@ import java.io.File;
 import java.io.InputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -953,14 +954,15 @@ public class WndLiquidacionDiariaVentas extends WndBase implements Serializable 
 
 					Button btnPrevioPdf = new Button();
 					//roles que tiene acceso al control cmbagencia
-					List<Component>components=new ArrayList<>();
-					components.add(btnPrevioPdf);
-					List<Rol>rolAcceso=new ArrayList<>();
-					rolAcceso.add(new Rol(Constantes.ID_ROL_SUPER_USUARIO));
-					rolAcceso.add(new Rol(Constantes.ID_ROL_FINANZAS));
-					rolAcceso.add(new Rol(Constantes.ID_ROL_FISCALIZACION));
-					rolAcceso.add(new Rol(Constantes.ID_ROL_COUNTER_WSP));
-					accesoControlsByRol(components, rolAcceso);
+					//#End begin 17/07/2024 - jabanto (solicitud e MOE)
+//					List<Component>components=new ArrayList<>();
+//					components.add(btnPrevioPdf);
+//					List<Rol>rolAcceso=new ArrayList<>();
+//					rolAcceso.add(new Rol(Constantes.ID_ROL_SUPER_USUARIO));
+//					rolAcceso.add(new Rol(Constantes.ID_ROL_FINANZAS));
+//					rolAcceso.add(new Rol(Constantes.ID_ROL_FISCALIZACION));
+//					rolAcceso.add(new Rol(Constantes.ID_ROL_COUNTER_WSP));
+//					accesoControlsByRol(components, rolAcceso);
 
 					btnPrevioPdf.setImage("resources/mp_pdf.png");
 					btnPrevioPdf.setClass("btnImage");
@@ -971,7 +973,12 @@ public class WndLiquidacionDiariaVentas extends WndBase implements Serializable 
 							@Override
 							public void onEvent(Event e) throws Exception{
 								VentaPasaje oventa = (VentaPasaje) e.getTarget().getAttribute(VentaPasaje.class.getName());
-								showWindowPrevioPDF(isCarga, oventa);
+								if(isCarga) {
+									showWindowPrevioPDF(isCarga, oventa);	
+								}else {
+									WSFE.reimprimirComprobante(Arrays.asList(oventa), wndLiquidacionDiariaVentas, 1, true, true);
+								}
+								
 							}
 						});
 					}else {
@@ -2225,6 +2232,7 @@ public class WndLiquidacionDiariaVentas extends WndBase implements Serializable 
 		window.setHeight("700px");
 		
 		comprobantePrevio = WSFE.representacionImpresa(ventaPasaje);
+		
 		if(comprobantePrevio != null) {
 			String numeroComprobante = ventaPasaje.getNumeroBoleto();
 			InputStream inputStream = new ByteArrayInputStream(comprobantePrevio);

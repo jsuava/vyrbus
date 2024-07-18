@@ -2897,10 +2897,13 @@ public class WndVentaReservaNew  extends WndBase {
 //				btnVtaReimpresion.setDisabled(false);
 			
 			//Habilita la anulación
-			if((estadoAsiento==Constantes.ASIENTO_VENDIDO || estadoAsiento==Constantes.ASIENTO_RESERVADO) && getRol().getId().intValue()==Constantes.ID_ROL_SUPER_USUARIO)
-				btnVtaAnular.setDisabled(false); //Super Usuario
-			else if(estadoAsiento==Constantes.ASIENTO_RESERVADO && asiento.getVentaPasaje().getUsuario().getId().intValue()==getUsuario().getId().intValue())
-				btnVtaAnular.setDisabled(false); //Solamente para el usuario que realizó la reserva
+			if(estadoAsiento==Constantes.ASIENTO_VENDIDO || estadoAsiento==Constantes.ASIENTO_RESERVADO) {
+				btnVtaAnular.setDisabled(false);
+			}
+//			if((estadoAsiento==Constantes.ASIENTO_VENDIDO || estadoAsiento==Constantes.ASIENTO_RESERVADO) && getRol().getId().intValue()==Constantes.ID_ROL_SUPER_USUARIO)
+//				btnVtaAnular.setDisabled(false); //Super Usuario
+//			else if(estadoAsiento==Constantes.ASIENTO_RESERVADO && asiento.getVentaPasaje().getUsuario().getId().intValue()==getUsuario().getId().intValue())
+//				btnVtaAnular.setDisabled(false); //Solamente para el usuario que realizó la reserva
 			
 			//habilita otras opciones disponibles para el asiento
 			if(estadoAsiento==Constantes.ASIENTO_VENDIDO) {
@@ -3141,18 +3144,18 @@ public class WndVentaReservaNew  extends WndBase {
 						WSFE.reimprimirComprobante(listVentasReimpresion, wndVentaReservaNew, Constantes.NUMERO_COPIAS_COMPROBANTE_PASAJES);
 												
 						/************** Tracking (GPS) **********************/
-						listVentasReimpresion.forEach(vta -> {
-							try {	
-								VentaPasaje ventaPasaje = ServiceLocator.getVentaPasajesManager().buscarVentaById(vta.getId());
-								String motivoMovimiento = "REIMPRESION";										
-								MovimientoPasajes movimientoPasajes = UtilData.createTracking(ventaPasaje, motivoMovimiento);
-								ServiceLocator.getMovimientoPasajesManager().guardar(movimientoPasajes);
-							} catch (Exception e1) {
-								e1.printStackTrace();
-								log.error(e1);
-								DlgMessage.error(e1.getMessage());
-							}								
-						});
+//						listVentasReimpresion.forEach(vta -> {
+//							try {	
+//								VentaPasaje ventaPasaje = ServiceLocator.getVentaPasajesManager().buscarVentaById(vta.getId());
+//								String motivoMovimiento = "REIMPRESION";										
+//								MovimientoPasajes movimientoPasajes = UtilData.createTracking(ventaPasaje, motivoMovimiento);
+//								ServiceLocator.getMovimientoPasajesManager().guardar(movimientoPasajes);
+//							} catch (Exception e1) {
+//								e1.printStackTrace();
+//								log.error(e1);
+//								DlgMessage.error(e1.getMessage());
+//							}								
+//						});
 						/****************************************************/
 					}
 				}catch(Exception ex) {
@@ -3244,16 +3247,24 @@ public class WndVentaReservaNew  extends WndBase {
 						DlgMessage.information(Messages.getString("Generales.information.manifiestoImpreso"));
 						return;
 					}
-
-					if (getRol().getId().intValue()!=Constantes.ID_ROL_SUPER_USUARIO && !(ventaOriginal.getUsuario().getId().equals(getUsuario().getId())))
+					
+					Integer rolId = getRol().getId();
+					Integer usuarioId = getUsuario().getId();
+					Integer usuarioIdVenta = ventaOriginal.getUsuario().getId();
+					
+//					if (getRol().getId().intValue()!=Constantes.ID_ROL_SUPER_USUARIO && !(ventaOriginal.getUsuario().getId().equals(getUsuario().getId())))
+//						DlgMessage.information(Messages.getString("WndLiquidacionDiariaVentas.information.otroUsuario"));
+//					else if(getRol().getId().intValue()!=Constantes.ID_ROL_SUPER_USUARIO &&
+//							!(Constantes.FORMAT_DATE.format(ventaOriginal.getFechaInsercion()).equals(Constantes.FORMAT_DATE.format(new Date()))))
+//						DlgMessage.information(Messages.getString("WndLiquidacionDiariaVentas.information.fechaPasada"));
+//					else 
+					
+					if(!rolId.equals(Constantes.ID_ROL_SUPER_USUARIO) && !usuarioId.equals(usuarioIdVenta)) {
 						DlgMessage.information(Messages.getString("WndLiquidacionDiariaVentas.information.otroUsuario"));
-					else if(getRol().getId().intValue()!=Constantes.ID_ROL_SUPER_USUARIO &&
-							!(Constantes.FORMAT_DATE.format(ventaOriginal.getFechaInsercion()).equals(Constantes.FORMAT_DATE.format(new Date()))))
-						DlgMessage.information(Messages.getString("WndLiquidacionDiariaVentas.information.fechaPasada"));
-					else if(ventaOriginal.getLiquidacion()==null){
-							wndModal = createWindowAnulacion(ventaOriginal);
-							this.appendChild(wndModal);
-							wndModal.setMode("modal");
+					}else if(ventaOriginal.getLiquidacion() == null){
+						wndModal = createWindowAnulacion(ventaOriginal);
+						this.appendChild(wndModal);
+						wndModal.setMode("modal");
 					}else
 						DlgMessage.information(Messages.getString("WndLiquidacionDiariaVentas.information.boletoLiquidado"));
 					
@@ -4711,7 +4722,10 @@ public class WndVentaReservaNew  extends WndBase {
 									asiento.setSrc(Constantes.ICON_RESERVADO+venta.getNumeroAsiento()+Constantes.IMAGE_EXTENSION);
 								asiento.setEstadoAsiento(Constantes.ASIENTO_RESERVADO);
 							}
-							asiento.setTooltiptext(venta.getRuta().getOrigen()+"-"+venta.getRuta().getDestino());
+							
+							String tooltiptextAsiento = getTooltiptextAsiento(venta);
+							asiento.setTooltiptext(tooltiptextAsiento);
+//							asiento.setTooltiptext(venta.getRuta().getOrigen()+"-"+venta.getRuta().getDestino());
 							asiento.setVentaPasaje(venta);
 //							nOcupados++;
 							break;
@@ -7216,6 +7230,15 @@ public class WndVentaReservaNew  extends WndBase {
 			if(!txtPostNumeroOperacion.getText().trim().isEmpty())
 				postergacion.setNumeroOperacionBancaria(txtPostNumeroOperacion.getText().trim().toUpperCase());
 		}
+		
+		// Asigna el tipo de comprobante cuando se va a postergar un BOLETO DE VIAJE
+		if(ventaOriginal.getTipoComprobante().getId().equals(Constantes.ID_TIPCOM_BOLETO_VIAJE)) {
+			if(ventaOriginal.getCliente() != null) {
+				postergacion.setTipoComprobante(new TipoComprobante(Constantes.ID_TIPCOM_FACTURA));
+			}else {
+				postergacion.setTipoComprobante(new TipoComprobante(Constantes.ID_TIPCOM_BOLETA_VENTA));
+			}
+		}
 		postergacion.setItinerario(detalleItinerario.getItinerario());
 		postergacion.setRuta(detalleItinerario.getRuta());
 		postergacion.setServicio(detalleItinerario.getItinerario().getServicio());
@@ -9710,7 +9733,72 @@ public class WndVentaReservaNew  extends WndBase {
 			onClick_btnVtaActualizarMapa();
 			enabledAllBtnOptionsByAsiento();
 			chbxVtaIdaVuelta.setDisabled(true);
+		}		
+	}
+	
+	private String getTooltiptextAsiento(VentaPasaje venta) {
+		int width = 20;
+		String tooltiptextAsiento = "";
+		tooltiptextAsiento += CreateDocument.getLineText(0, width, "ASIENTO");		
+		tooltiptextAsiento += ": "+ venta.getNumeroAsiento();
+		tooltiptextAsiento += "\r\n";
+		tooltiptextAsiento += CreateDocument.getLineText(0, width-1, "PASAJERO");
+		tooltiptextAsiento += ": "+ venta.getPasajero().toString();
+		if(venta.getNumeroBoleto() != null) {
+			tooltiptextAsiento += "\r\n";
+			tooltiptextAsiento += CreateDocument.getLineText(0, width-7, "COMPROBANTE");
+			tooltiptextAsiento += ": "+ venta.getNumeroBoleto();
 		}
+		tooltiptextAsiento += "\r\n";
+		tooltiptextAsiento += CreateDocument.getLineText(0, width+4, "RUTA");
+		tooltiptextAsiento += ": "+ venta.getRuta().toString();
+		if(venta.getAgenciaPartida() !=null) {
+			tooltiptextAsiento += "\r\n";
+			tooltiptextAsiento += CreateDocument.getLineText(0, width-2, "EMBARQUE");
+			tooltiptextAsiento += ": "+ venta.getAgenciaPartida().getNombreCorto();
+		}		
+		if(venta.getAgenciaLlegada() !=null) {
+			tooltiptextAsiento += "\r\n";
+			tooltiptextAsiento += CreateDocument.getLineText(0, width-5, "DESEMBARQUE");
+			tooltiptextAsiento += ": "+ venta.getAgenciaLlegada().getDenominacion();
+		}
+		tooltiptextAsiento += "\r\n";
+		tooltiptextAsiento += CreateDocument.getLineText(0, width+1, "AG. VENTA");
+		tooltiptextAsiento += ": "+ venta.getAgencia().getDenominacion();
+		tooltiptextAsiento += "\r\n";
+		tooltiptextAsiento += CreateDocument.getLineText(0, width-5, "USUARIO VENTA");
+		tooltiptextAsiento += ": "+ venta.getUsuario().getLogin().toUpperCase();				
+		if(venta.getFechaInsercion() !=null) {
+			tooltiptextAsiento += "\r\n";
+			tooltiptextAsiento += CreateDocument.getLineText(0, width-3, "FECHA VENTA");
+			tooltiptextAsiento += ": "+ Constantes.FORMAT_DATE_TIME_24H.format(venta.getFechaInsercion());			
+		}
+		if(venta.getPasajero().getTelefono() != null) {
+			tooltiptextAsiento += "\r\n";
+			tooltiptextAsiento += CreateDocument.getLineText(0, width-1, "TELEFONO");
+			tooltiptextAsiento += ": "+ venta.getPasajero().getTelefono();
+		}
+		if(venta.getObservaciones() != null) {
+			tooltiptextAsiento += "\r\n";
+			tooltiptextAsiento += CreateDocument.getLineText(0, width-6, "OBSERVACIONES");
+			tooltiptextAsiento += ": "+ venta.getObservaciones();
+		}
+			
 		
+//		tooltiptextAsiento += "ASIENTO	   :	" + venta.getNumeroAsiento().toString();
+//		tooltiptextAsiento += "\r\nPASAJERO 	:	" + venta.getPasajero().toString();
+//		if(venta.getNumeroBoleto() != null)
+//			tooltiptextAsiento += "\r\nCOMPROBANTE:	" + venta.getNumeroBoleto();
+//		tooltiptextAsiento += "\r\nRUTA 		:	" + venta.getRuta().toString();
+//		if(venta.getAgenciaPartida() !=null)
+//			tooltiptextAsiento += "\r\nEMBARQUE   : 	" + venta.getAgenciaPartida().getNombreCorto();
+//		if(venta.getAgenciaLlegada() !=null)
+//			tooltiptextAsiento += "\r\nDESEMBARQUE:	" + venta.getAgenciaLlegada().getDenominacion();
+//		tooltiptextAsiento += "\r\nAG.VENTA	:	" + venta.getAgencia().getDenominacion();
+//		tooltiptextAsiento += "\r\nUSUARIO	:	" + venta.getUsuario().getLogin().toUpperCase();
+//		if(venta.getFechaInsercion() !=null)
+//			tooltiptextAsiento += "\r\nFECHA VENTA:	" + Constantes.FORMAT_DATE_TIME_24H.format(venta.getFechaInsercion());
+		
+		return tooltiptextAsiento;
 	}
 }
