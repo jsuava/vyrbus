@@ -26,7 +26,7 @@ public class Constantes {
 	 * Vension actual del Sistema
 	 */
 
-	public static final String SYSTEM_VERSION = "Versión 3.5.1";
+	public static final String SYSTEM_VERSION = "Versión 3.5.2";
 
 	/**
 	 * Constante para la Accion Nuevo
@@ -115,7 +115,7 @@ public class Constantes {
 	public static final int VALIDAR_APPLET = 1;
 	/* Guarda el valor del IGV actual */
 	public static final double IGV=18;
-	public static final double TARIFA_MINIMA=10;
+	public static final double TARIFA_MINIMA=5;
 
 	/*	Para los tipos de venta	*/
 	public static final int TIPO_VENTA_NORMAL = 1;

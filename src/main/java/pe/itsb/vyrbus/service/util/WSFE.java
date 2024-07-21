@@ -1204,8 +1204,8 @@ public class WSFE implements Serializable{
 
 					}
 					xmlVenta.setV6_FechaPartida(ventaPasaje.getFechaPartida()!=null?Constantes.FORMAT_DATE.format(ventaPasaje.getFechaPartida()):null);
-//					xmlVenta.setV7_HoraPartida(getHoraRealEmbarque(ventaPasaje));
-					xmlVenta.setV7_HoraPartida(ventaPasaje.getHoraPartida());
+					xmlVenta.setV7_HoraPartida(getHoraRealEmbarque(ventaPasaje));
+//					xmlVenta.setV7_HoraPartida(ventaPasaje.getHoraPartida());
 					xmlVenta.setV8_Asiento(ventaPasaje.getNumeroAsiento()!=null?ventaPasaje.getNumeroAsiento().toString():null);
 					xmlVenta.setV90_Piso(ventaPasaje.getNumeroPiso()!=null?ventaPasaje.getNumeroPiso().intValue()<=0?"1":String.valueOf(ventaPasaje.getNumeroPiso()+1):null);
 					xmlVenta.setV91_Pasajero(xmlPasajero);
@@ -1269,7 +1269,7 @@ public class WSFE implements Serializable{
 
 					//jabanto - 11/08/2022
 					if(isReimpresion) {
-						String reimpresion = (xmlVenta.getV0_ObserImport()!=null? xmlVenta.getV0_ObserImport() + " - REIMPRESIÓN" : "REIMPRESIÓN" );
+						String reimpresion = (xmlVenta.getV0_ObserImport()!=null? xmlVenta.getV0_ObserImport() + " - REIMPRESION" : "REIMPRESION" );
 						xmlVenta.setV0_ObserImport(reimpresion);
 					}
 					

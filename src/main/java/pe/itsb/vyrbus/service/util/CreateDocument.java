@@ -6193,7 +6193,9 @@ public class CreateDocument implements Serializable {
 			
 			/***Datos de la cabecera del manifiesto*/			
 			// Numero Manifiesto
-			String numeroManifiesto = manifiesto.getNumeroManifiesto();
+//			String numeroManifiesto = manifiesto.getNumeroManifiesto();
+			//Se imprimira u subrayado
+			String numeroManifiesto = "**********";
 			
 			// TUC
 			String TUC = optBus.map(Bus::getDocumentoBus).map(DocumentoBus::getNumeroDocumento).orElse("");
@@ -6339,7 +6341,7 @@ public class CreateDocument implements Serializable {
 			int xLeft_importePagado = xLeft_numeroComprobante-1;
 						
 			// Inicio detalle
-			xTopIni = 5;
+			xTopIni = 6;
 			for(int x = 0; x < xTopIni; x++) {
 				bw.write(NEWLINE);	
 			}
