@@ -305,7 +305,10 @@
 														<hbox align="center">
 															<label value="OBSERVACIONES :" />
 															<textbox id="txtVtaIdaObservaciones" maxlength="120" width="420px" />
-														</hbox>														
+															<separator width="295px" orient="vertical" />
+															<label value="RECARGO :"/>
+															<doublebox id="dbxVtaIdaRecargo" onFocus="self.select()" format="#,##0.00" sclass="label-size11-bold" width="60px" style="font-size:14px !important"/>																															
+														</hbox>
 													</row>
 												</rows>
 											</grid>
@@ -349,6 +352,9 @@
 														<hbox align="center">
 															<label value="OBSERVACIONES :" />
 															<textbox id="txtVtaVueltaObservaciones" maxlength="120" width="420px" />
+															<separator width="295px" orient="vertical" />
+															<label value="RECARGO :"/>
+															<doublebox id="dbxVtaVueltaRecargo" onFocus="self.select()" format="#,##0.00" sclass="label-size11-bold" width="60px" style="font-size:14px !important"/>
 														</hbox>														
 													</row>
 												</rows>
