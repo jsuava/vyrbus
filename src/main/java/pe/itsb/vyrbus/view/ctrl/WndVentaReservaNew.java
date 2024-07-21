@@ -40,6 +40,7 @@ import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
+import org.zkoss.zk.ui.event.InputEvent;
 import org.zkoss.zk.ui.util.Clients;
 import org.zkoss.zul.A;
 import org.zkoss.zul.Bandbox;
@@ -227,6 +228,7 @@ public class WndVentaReservaNew  extends WndBase {
 	private Label lblVtaIdaAsiento;
 	private Doublebox dbxVtaIdaTarifa;
 	private Textbox txtVtaIdaObservaciones;
+	private Doublebox dbxVtaIdaRecargo;
 	private Column columnVtaInfoViajeIda;
 	private Column columnVtaInfoViajeVuelta;
 	private Grid gridVtaInfoViajeVuelta;
@@ -236,6 +238,7 @@ public class WndVentaReservaNew  extends WndBase {
 	private Label lblVtaVueltaAsiento;
 	private Doublebox dbxVtaVueltaTarifa;
 	private Textbox txtVtaVueltaObservaciones;
+	private Doublebox dbxVtaVueltaRecargo;
 	private Listbox ltbxVtaAsientosSeleccionados;
 	private Textbox txtVtaPaxBusqueda;
 	private Combobox cmbVtaPaxTipoDocumento;
@@ -298,6 +301,7 @@ public class WndVentaReservaNew  extends WndBase {
 	private Map<String, Asiento> mapaAsientosRetorno = null;	
 	private Timer timerRefreshMapa = null;
 	private boolean isVtaIdaVuelta = false;
+	private boolean isEnabledVenta = false;
 	private int minutosEdicionAsiento;
 	
 	private DetalleItinerario detalleItinerarioIda = null;
@@ -424,7 +428,9 @@ public class WndVentaReservaNew  extends WndBase {
 			lblBusqTitleSelectViajeIda.setValue("SELECCION DEL VIAJE :::: ");
 			
 			dbxVtaIdaTarifa.setLocale(Locale.US);
+			dbxVtaIdaRecargo.setLocale(Locale.US);
 			dbxVtaVueltaTarifa.setLocale(Locale.US);
+			dbxVtaVueltaRecargo.setLocale(Locale.US);
 			dbxVtaTotalPagar.setLocale(Locale.US);
 						
 			canalVenta = (CanalVenta)this.getDesktop().getSession().getAttribute(Constantes.ATRIBUTO_CANAL_VENTA);
@@ -508,6 +514,7 @@ public class WndVentaReservaNew  extends WndBase {
 			lblVtaIdaAsiento = (Label)this.getFellow("lblVtaIdaAsiento");
 			dbxVtaIdaTarifa = (Doublebox)this.getFellow("dbxVtaIdaTarifa");
 			txtVtaIdaObservaciones = (Textbox)this.getFellow("txtVtaIdaObservaciones");
+			dbxVtaIdaRecargo = (Doublebox)this.getFellow("dbxVtaIdaRecargo");
 			columnVtaInfoViajeIda = (Column)this.getFellow("columnVtaInfoViajeIda");
 			columnVtaInfoViajeVuelta = (Column)this.getFellow("columnVtaInfoViajeVuelta");
 			gridVtaInfoViajeVuelta = (Grid)this.getFellow("gridVtaInfoViajeVuelta");
@@ -517,6 +524,7 @@ public class WndVentaReservaNew  extends WndBase {
 			lblVtaVueltaAsiento = (Label)this.getFellow("lblVtaVueltaAsiento");
 			dbxVtaVueltaTarifa = (Doublebox)this.getFellow("dbxVtaVueltaTarifa");
 			txtVtaVueltaObservaciones = (Textbox)this.getFellow("txtVtaVueltaObservaciones");
+			dbxVtaVueltaRecargo = (Doublebox)this.getFellow("dbxVtaVueltaRecargo");
 			ltbxVtaAsientosSeleccionados = (Listbox)this.getFellow("ltbxVtaAsientosSeleccionados");
 			txtVtaPaxBusqueda = (Textbox)this.getFellow("txtVtaPaxBusqueda");
 			cmbVtaPaxTipoDocumento = (Combobox)this.getFellow("cmbVtaPaxTipoDocumento");
@@ -742,10 +750,9 @@ public class WndVentaReservaNew  extends WndBase {
 			cmbVtaIdaEmbarque_hora.addEventListener(Events.ON_CHANGE, new EventListener<Event>() {
 				@Override
 				public void onEvent(Event event) throws Exception {
-					// TODO Auto-generated method stub
 					try {
 						
-						onChange_cmbVtaIdaEmbarque_hora();						
+						onChange_cmbVtaIdaEmbarque_hora();
 						
 					} catch (Exception ex) {
 						ex.printStackTrace();
@@ -757,11 +764,9 @@ public class WndVentaReservaNew  extends WndBase {
 			cmbVtaVueltaEmbarque_hora.addEventListener(Events.ON_CHANGE, new EventListener<Event>() {
 				@Override
 				public void onEvent(Event event) throws Exception {
-					// TODO Auto-generated method stub
-					// TODO Auto-generated method stub
 					try {
 						
-						onChange_cmbVtaVueltaEmbarque_hora();						
+						onChange_cmbVtaVueltaEmbarque_hora();
 						
 					} catch (Exception ex) {
 						ex.printStackTrace();
@@ -770,6 +775,97 @@ public class WndVentaReservaNew  extends WndBase {
 					}
 				}
 			});
+			
+			dbxVtaIdaRecargo.addEventListener(Events.ON_CHANGING, new EventListener<Event>() {
+				@Override
+				public void onEvent(Event event) throws Exception {
+					try {
+						
+						onChanging_dbxVtaIdaRecargo(event);
+						
+					} catch (Exception ex) {
+						ex.printStackTrace();
+						log.error(ex);
+						DlgMessage.error(this.getClass().getName() + " "+ex.getMessage());
+					}
+				}
+			});
+			
+			dbxVtaIdaRecargo.addEventListener(Events.ON_BLUR, new EventListener<Event>() {
+				@Override
+				public void onEvent(Event event) throws Exception {
+					try {
+						
+						onChanging_dbxVtaIdaRecargo(event);
+						
+					} catch (Exception ex) {
+						ex.printStackTrace();
+						log.error(ex);
+						DlgMessage.error(this.getClass().getName() + " "+ex.getMessage());
+					}
+				}
+			});
+			
+			dbxVtaIdaRecargo.addEventListener(Events.ON_OK, new EventListener<Event>() {
+				@Override
+				public void onEvent(Event event) throws Exception {
+					try {
+						
+						focusCursorByTipoOperacion(event);
+						
+					} catch (Exception ex) {
+						ex.printStackTrace();
+						log.error(ex);
+						DlgMessage.error(this.getClass().getName() + " "+ex.getMessage());
+					}
+				}
+			});
+			
+			dbxVtaVueltaRecargo.addEventListener(Events.ON_CHANGE, new EventListener<Event>() {
+				@Override
+				public void onEvent(Event event) throws Exception {
+					try {
+						
+						onChanging_dbxVtaVueltaRecargo(event);
+						
+					} catch (Exception ex) {
+						ex.printStackTrace();
+						log.error(ex);
+						DlgMessage.error(this.getClass().getName() + " "+ex.getMessage());
+					}
+				}
+			});
+			
+			dbxVtaVueltaRecargo.addEventListener(Events.ON_BLUR, new EventListener<Event>() {
+				@Override
+				public void onEvent(Event event) throws Exception {
+					try {
+						
+						onChanging_dbxVtaVueltaRecargo(event);
+						
+					} catch (Exception ex) {
+						ex.printStackTrace();
+						log.error(ex);
+						DlgMessage.error(this.getClass().getName() + " "+ex.getMessage());
+					}
+				}
+			});
+			
+			dbxVtaVueltaRecargo.addEventListener(Events.ON_OK, new EventListener<Event>() {
+				@Override
+				public void onEvent(Event event) throws Exception {
+					try {
+						
+						focusCursorByTipoOperacion(event);
+						
+					} catch (Exception ex) {
+						ex.printStackTrace();
+						log.error(ex);
+						DlgMessage.error(this.getClass().getName() + " "+ex.getMessage());
+					}
+				}
+			});
+			
 			cmbVtaIdaDesembarque_hora.addEventListener(Events.ON_OK, new EventListener<Event>() {
 				@Override
 				public void onEvent(Event event) throws Exception {
@@ -1875,15 +1971,17 @@ public class WndVentaReservaNew  extends WndBase {
 	 * @throws Exception
 	 */
 	private void onChange_clBusqIda(Event event)throws Exception{
+		isEnabledVenta = true;
+		rdBusqIdaVuelta.setDisabled(false);
 		Date fechaActual = Constantes.FORMAT_DATE.parse(new MyTime().dateServer());
-//		rdBusqIdaVuelta.setDisabled(false);
-		if(clrBusqIda.getValue().getTime() < fechaActual.getTime()) {	
-//			rdBusqIdaVuelta.setDisabled(true);
-//			rdBusqIda.setChecked(true);
-//			onCheck_rdBusqIda();
-			clrBusqIda.setValue(fechaActual);
-			DlgMessage.information(Messages.getString("WndVentaReserva.information.FechaViajeNoValida"));
-			return;
+		if(clrBusqIda.getValue().getTime() < fechaActual.getTime()) {			
+			rdBusqIdaVuelta.setDisabled(true);
+			rdBusqIda.setChecked(true);
+			onCheck_rdBusqIda();
+			isEnabledVenta = false;
+//			clrBusqIda.setValue(fechaActual);
+//			DlgMessage.information(Messages.getString("WndVentaReserva.information.FechaViajeNoValida"));
+//			return;
 		}
 		
 		if(isVtaIdaVuelta) {
@@ -1893,9 +1991,9 @@ public class WndVentaReservaNew  extends WndBase {
 			
 			if(sugerirFechaVuelta)
 				clrBusqIdaVuelta.setValue(getFechaSugerenciaVuelta(fechaIda));
-		}			
-		buscarItinerarios();
+		}	
 		
+		buscarItinerarios();
 	}
 	
 	
@@ -2356,7 +2454,7 @@ public class WndVentaReservaNew  extends WndBase {
 			}
 			
 			Date dFechHorActual = Constantes.FORMAT_DATE_TIME_24H.parse(new MyTime().dateServer());
-			if(dFecHoraPart.getTime() < dFechHorActual.getTime()){
+			if(isEnabledVenta && dFecHoraPart.getTime() < dFechHorActual.getTime()){
 				Messagebox.show(Messages.getString("WndVentaReserva.information.noHoraMenorServicio"), DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_YESNO, Messagebox.QUESTION, DlgMessage.BTN_DEFAULT_NO, new EventListener<Event>() {
 					@Override
 					public void onEvent(Event e){
@@ -2384,7 +2482,7 @@ public class WndVentaReservaNew  extends WndBase {
 	 */
 	private void onClick_btnSeleccionItinerarioConfirm(Event event)throws Exception{		
 		detalleItinerarioIda = ltbxBusqIda.getSelectedItem().getValue();
-		crearEstructura(detalleItinerarioIda.getItinerario().getServicio().getId(), gpbxVtaIdaMapa, false, detalleItinerarioIda, mapaAsientosIda, null, false);
+		createEstructura(detalleItinerarioIda.getItinerario().getServicio().getId(), gpbxVtaIdaMapa, false, detalleItinerarioIda, mapaAsientosIda, null, false);
 		
 //		/*	Si se trata de un ida y vuelta	*/
 //		if(isVtaIdaVuelta){
@@ -2403,6 +2501,7 @@ public class WndVentaReservaNew  extends WndBase {
 			cmbVtaIdaDesembarque_hora.setSelectedIndex(1);
 		lblVtaIdaAsiento.setValue("-");
 		dbxVtaIdaTarifa.setValue(.00);
+		dbxVtaIdaRecargo.setValue(.00);
 		columnVtaInfoViajeIda.setLabel("INFORMACION DEL VIAJE ::: ");
 		columnVtaInfoViajeIda.getChildren().clear();
 		Label lblVtainfoViajeEmpresaIda = new Label(detalleItinerarioIda.getItinerario().getEmpresa().getNombreCorto());
@@ -2416,7 +2515,7 @@ public class WndVentaReservaNew  extends WndBase {
 		
 		if(isVtaIdaVuelta) {
 			detalleItinerarioVuelta = ltbxBusqVuelta.getSelectedItem().getValue();
-			crearEstructura(detalleItinerarioVuelta.getItinerario().getServicio().getId(), gpbxVtaVueltaMapa, true, detalleItinerarioVuelta, mapaAsientosRetorno, null, false);
+			createEstructura(detalleItinerarioVuelta.getItinerario().getServicio().getId(), gpbxVtaVueltaMapa, true, detalleItinerarioVuelta, mapaAsientosRetorno, null, false);
 			
 			columnVtaInfoViajeIda.setLabel("INFORMACION DEL VIAJE DE IDA ::: ");
 			capVtaIdaMapa.setLabel("SELECCION DE ASIENTO(S) DE IDA");
@@ -2439,32 +2538,33 @@ public class WndVentaReservaNew  extends WndBase {
 				cmbVtaVueltaEmbarque_hora.setSelectedIndex(0);			
 			lblVtaVueltaAsiento.setValue("-");
 			dbxVtaVueltaTarifa.setValue(.00);
+			dbxVtaVueltaRecargo.setValue(.00);
 			chbxVtaIdaVuelta.setChecked(true);
 			chbxVtaIdaVuelta.setDisabled(false);
 		}
 		
 				
 		resertOperacionAsiento();		
-		btnVtaActualizarMapa.setDisabled(false);
-		
+				
 		tabVtaIdaMapa.setSelected(true);
 		divPaso_1.setVisible(false);
 		divPaso_2.setVisible(true);
 		
+		habilitarBtnActualizarMapa();
 		habilitarUpdateMapaAutomaticamente();
 		habilitarSelectAsientoVendido();
 		enabledAllBtnOptionsByAsiento();
 
 		//**********************************************************************
-		chbxVtaUpdateMapAuto.setChecked(false);
-		chbxVtaUpdateMapAuto.setDisabled(true);
-		Date fechaActual = Constantes.FORMAT_DATE.parse(Constantes.FORMAT_DATE.format(new Date()));
-		Date fechaSalida = detalleItinerarioIda.getFechaPartida();		
-		if(fechaSalida.getTime() >= fechaActual.getTime()) {
-			chbxVtaUpdateMapAuto.setChecked(true);
-			onCheck_chbxVtaUpdateMapAuto();	
-			chbxVtaUpdateMapAuto.setDisabled(false);
-		}
+//		chbxVtaUpdateMapAuto.setChecked(false);
+//		chbxVtaUpdateMapAuto.setDisabled(true);
+//		Date fechaActual = Constantes.FORMAT_DATE.parse(Constantes.FORMAT_DATE.format(new Date()));
+//		Date fechaSalida = detalleItinerarioIda.getFechaPartida();		
+//		if(fechaSalida.getTime() >= fechaActual.getTime()) {
+//			chbxVtaUpdateMapAuto.setChecked(true);
+//			onCheck_chbxVtaUpdateMapAuto();	
+//			chbxVtaUpdateMapAuto.setDisabled(false);
+//		}
 		//**********************************************************************
 		
 		
@@ -2523,6 +2623,69 @@ public class WndVentaReservaNew  extends WndBase {
 		}
 	}
 	
+	/**
+	 * 
+	 * @throws Exception
+	 */
+	private void onChanging_dbxVtaIdaRecargo(Event event)throws Exception{
+		try {
+			Double recargoIda = Optional.ofNullable(((InputEvent)event).getValue())
+					.map(val -> val.toString().isEmpty()? .00 : Double.valueOf(val))
+					.orElse(.00);
+			
+			if(recargoIda < 0) {
+				recargoIda = .00;
+				((Doublebox)event.getTarget()).setValue(.00);
+			}
+			
+			// Habilita/Deshabilita el descuento						
+			cleanDatosDescuento();
+			
+			Double recargoVuelta = Optional.ofNullable(dbxVtaVueltaRecargo.getValue())
+					.orElse(.00);
+			
+			if(recargoIda > 0 || recargoVuelta > 0) {
+				disabledControlsDescuento(true);
+			}else {
+				disabledControlsDescuento(false);
+			}
+			
+			calcularTotalPago(recargoIda);
+			
+		} catch (Exception e) {}		
+	}
+	
+	/**
+	 * 
+	 * @throws Exception
+	 */
+	private void onChanging_dbxVtaVueltaRecargo(Event event)throws Exception{
+		try {
+			Double recargoVuelta = Optional.ofNullable(((InputEvent)event).getValue())
+					.map(val -> val.toString().isEmpty()? .00 : Double.valueOf(val))
+					.orElse(.00);
+			
+			if(recargoVuelta < 0) {
+				recargoVuelta = .00;
+				((Doublebox)event.getTarget()).setValue(.00);
+			}
+			
+			// Habilita/Deshabilita el descuento
+			cleanDatosDescuento();
+			
+			Double recargoIda = Optional.ofNullable(dbxVtaIdaRecargo.getValue())
+					.orElse(.00);
+			
+			if(recargoVuelta > 0 || recargoIda > 0) {
+				disabledControlsDescuento(true);
+			}else {
+				disabledControlsDescuento(false);
+			}
+			
+			calcularTotalPago(recargoVuelta);
+			
+		} catch (Exception e) {}
+	}
 	
 	/**
 	 * 
@@ -2570,16 +2733,20 @@ public class WndVentaReservaNew  extends WndBase {
 	 * @throws Exception
 	 */
 	private void onBlur_txtVtaAutorizaDescuentoCodigo()throws Exception{
-		
+		dbxVtaIdaRecargo.setDisabled(false);		
 		VentaIdaRetorno venta = ltbxVtaAsientosSeleccionados.getSelectedItem().getValue();		
 		dbxVtaIdaTarifa.setValue(venta.getDetalleItinerarioIDA().getTarifa());
-		if(isVtaIdaVuelta)
+		if(isVtaIdaVuelta) {
 			dbxVtaVueltaTarifa.setValue(venta.getDetalleItinerarioRETORNO().getTarifa());
+			dbxVtaVueltaRecargo.setDisabled(false);
+		}			
 
 		calcularTotalPago();
 		
-		if(txtVtaAutorizaDescuentoCodigo.getText().trim().isEmpty())
+		if(txtVtaAutorizaDescuentoCodigo.getText().trim().isEmpty()) {
 			return;
+		}
+			
 		
 		if(ltbxVtaAsientosSeleccionados.getSelectedCount()==0) {
 			DlgMessage.information(Messages.getString("WndVentaReservaNew.information.noSelectAsiento"));
@@ -2592,7 +2759,7 @@ public class WndVentaReservaNew  extends WndBase {
 		
 		Descuento descuento = validarCodigoDescuento(cmbVtaAutorizaDescuento, txtVtaAutorizaDescuentoCodigo, isVtaIdaVuelta);
 		
-		if(descuento !=null) {			
+		if(descuento != null) {			
 			Double valorInicial = descuento.getValorMinimo();
 			Double valorFinal = descuento.getValorMaximo();
 			
@@ -2605,8 +2772,7 @@ public class WndVentaReservaNew  extends WndBase {
 				this.appendChild(wndModal);
 				wndModal.setMode("modal");
 			}
-		}
-				
+		}				
 	}
 	
 	/**
@@ -2684,6 +2850,7 @@ public class WndVentaReservaNew  extends WndBase {
 		cleanDatosPago(event);
 		cleanDatosInfoComprobante();
 		disabledControlsPago(true);
+		disabledControlsDescuento(true);
 		onSelect_ltbxVtaAsientosSeleccionados(event);
 		loadDatosPostergacionFA();
 	}
@@ -2781,8 +2948,10 @@ public class WndVentaReservaNew  extends WndBase {
 			cleanDatosInfoComprobante();
 		lblVtaIdaAsiento.setValue("-");
 		dbxVtaIdaTarifa.setValue(.00);
+		dbxVtaIdaRecargo.setValue(.00);
 		lblVtaVueltaAsiento.setValue("-");
 		dbxVtaVueltaTarifa.setValue(.00);
+		dbxVtaVueltaRecargo.setValue(.00);
 		if(!rdVtaConfirmacionFA.isChecked())
 			cleanDatosPasajero(true);
 		cleanDatosInfante();
@@ -2801,22 +2970,26 @@ public class WndVentaReservaNew  extends WndBase {
 			DetalleItinerario detalleItinerarioIda = (venta.getDetalleItinerarioIDA()!=null?venta.getDetalleItinerarioIDA():null);
 			DetalleItinerario detalleItinerarioVuelta = (venta.getDetalleItinerarioRETORNO()!=null?venta.getDetalleItinerarioRETORNO():null);
 			if(detalleItinerarioIda!=null) {
+				String numeroAsiento =  getFormatAsiento(Integer.valueOf(detalleItinerarioIda.getAsiento()));
+				
 				lblVtaIdaDestino_fecha.setValue(detalleItinerarioIda.getRuta().toString() +" - "+ Constantes.FORMAT_DATE.format(detalleItinerarioIda.getFechaPartida()));
-				lblVtaIdaAsiento.setValue(detalleItinerarioIda.getAsiento());
+				lblVtaIdaAsiento.setValue(numeroAsiento);
 				dbxVtaIdaTarifa.setValue(detalleItinerarioIda.getTarifa());
 				
 				//Valida si es una confirmacion de FA
 				if(rdVtaConfirmacionFA.isChecked()) {
 					disabledControlsInfoViaje(false);							
-//					disabledControlsPago(false);
-				}else
+				}else {
 					habilitarOperacionAsiento(detalleItinerarioIda.getObjAsiento());
+				}
 				
 			}
 			
-			if(detalleItinerarioVuelta!=null) {		
+			if(detalleItinerarioVuelta!=null) {
+				String numeroAsiento = getFormatAsiento(Integer.valueOf(detalleItinerarioVuelta.getAsiento()));
+				
 				lblVtaVueltaDestino_fecha.setValue(detalleItinerarioVuelta.getRuta().toString() +" - "+ Constantes.FORMAT_DATE.format(detalleItinerarioVuelta.getFechaPartida()));
-				lblVtaVueltaAsiento.setValue(detalleItinerarioVuelta.getAsiento());
+				lblVtaVueltaAsiento.setValue(numeroAsiento);
 				dbxVtaVueltaTarifa.setValue(detalleItinerarioVuelta.getTarifa());
 			}
 			
@@ -2842,6 +3015,7 @@ public class WndVentaReservaNew  extends WndBase {
 		//Habilita los datos del pago si es total a pagar es mayo que cero
 		if(dbxVtaTotalPagar.getValue()!=null && dbxVtaTotalPagar.getValue()>.00) {
 			disabledControlsPago(false);
+			disabledControlsDescuento(false);
 			
 			//cuando es una confirmacion FA, deshabilita el ingreso de descuentos.
 			if(rdVtaConfirmacionFA.isChecked()) {
@@ -2875,6 +3049,7 @@ public class WndVentaReservaNew  extends WndBase {
 			disabledControlsPasajero(false);
 			disabledControlsCliente(false);
 			disabledControlsPago(false);
+			disabledControlsDescuento(false);
 			disabled_btnGuardar(btnVtaGuardar, false);
 		}
 		
@@ -2888,25 +3063,22 @@ public class WndVentaReservaNew  extends WndBase {
 			loadDatosViaje(true, asiento.getVentaPasaje());
 			loadDatosinfoComprobante(asiento.getVentaPasaje());
 			
-			Date fechaActual = Constantes.FORMAT_DATE.parse(Constantes.FORMAT_DATE.format(new Date()));
-			Date fechaPartida = asiento.getVentaPasaje().getFechaPartida();
-			
+//			Date fechaActual = Constantes.FORMAT_DATE.parse(Constantes.FORMAT_DATE.format(new Date()));
+//			Date fechaPartida = asiento.getVentaPasaje().getFechaPartida();
+						
 			//Habilita la reimpresión
-			if(estadoAsiento==Constantes.ASIENTO_VENDIDO && fechaPartida.getTime() >= fechaActual.getTime())
+//			if(estadoAsiento == Constantes.ASIENTO_VENDIDO && fechaPartida.getTime() >= fechaActual.getTime()) {
+			if(estadoAsiento == Constantes.ASIENTO_VENDIDO) {
 				habilitarBtnReimpresion(asiento.getVentaPasaje(), btnVtaReimpresion);
-//				btnVtaReimpresion.setDisabled(false);
+			}
 			
 			//Habilita la anulación
-			if(estadoAsiento==Constantes.ASIENTO_VENDIDO || estadoAsiento==Constantes.ASIENTO_RESERVADO) {
-				btnVtaAnular.setDisabled(false);
+			if(estadoAsiento == Constantes.ASIENTO_VENDIDO || estadoAsiento == Constantes.ASIENTO_RESERVADO) {
+				habilitarBtnAnulacion();
 			}
-//			if((estadoAsiento==Constantes.ASIENTO_VENDIDO || estadoAsiento==Constantes.ASIENTO_RESERVADO) && getRol().getId().intValue()==Constantes.ID_ROL_SUPER_USUARIO)
-//				btnVtaAnular.setDisabled(false); //Super Usuario
-//			else if(estadoAsiento==Constantes.ASIENTO_RESERVADO && asiento.getVentaPasaje().getUsuario().getId().intValue()==getUsuario().getId().intValue())
-//				btnVtaAnular.setDisabled(false); //Solamente para el usuario que realizó la reserva
 			
 			//habilita otras opciones disponibles para el asiento
-			if(estadoAsiento==Constantes.ASIENTO_VENDIDO) {
+			if(estadoAsiento == Constantes.ASIENTO_VENDIDO) {
 				habilitarOpcionPostergacion(asiento.getVentaPasaje());
 				habilitarOpcionPostergacionFA(asiento.getVentaPasaje());
 				habilitarOpcionCambioNombre(asiento.getVentaPasaje());
@@ -3217,6 +3389,7 @@ public class WndVentaReservaNew  extends WndBase {
 								disabledControlsPasajero(true);
 								disabledControlsCliente(true);
 								disabledControlsPago(true);
+								disabledControlsDescuento(true);
 								disabledAllBtnOptionsByAsiento();
 								DlgMessage.information(Messages.getString("WndConfirmarReserva.information.reservaAnulada"));
 								
@@ -3423,7 +3596,8 @@ public class WndVentaReservaNew  extends WndBase {
 		tabBusqIda.setSelected(true);
 		txtBusqBy.setText("");
 		cleanBusquedaSeleccionHp();
-		onClick_btnBuscar();
+		onChange_clBusqIda(null);
+//		onClick_btnBuscar();
 	}
 	
 	
@@ -3725,6 +3899,7 @@ public class WndVentaReservaNew  extends WndBase {
 				ItinerarioAgenciaLlegada itinerarioAgenciaLlegada = null;
 				String observaciones = null;
 				Double importePagado = .00;
+				Double recargo = .00;
 				Date fechaExpiraReserva = null;
 				boolean isConfirmaReserva = false;
 				
@@ -3746,7 +3921,8 @@ public class WndVentaReservaNew  extends WndBase {
 					observaciones = (txtVtaIdaObservaciones.getText().trim().length()>0 ? txtVtaIdaObservaciones.getText().trim().toUpperCase(): null);
 					if(isVenta) {
 						// Venta
-						importePagado = dbxVtaIdaTarifa.getValue();	
+						importePagado = dbxVtaIdaTarifa.getValue();
+						recargo = Optional.ofNullable(dbxVtaIdaRecargo.getValue()).orElse(.00);
 					}else {
 						// Reserva
 						fechaExpiraReserva = dtbxVtaIdaExpiraReserva.getValue();
@@ -3757,7 +3933,8 @@ public class WndVentaReservaNew  extends WndBase {
 					observaciones = (txtVtaVueltaObservaciones.getText().trim().length()>0 ? txtVtaVueltaObservaciones.getText().trim().toUpperCase(): null);
 					if(isVenta) {
 						// Venta
-						importePagado = dbxVtaVueltaTarifa.getValue();	
+						importePagado = dbxVtaVueltaTarifa.getValue();
+						recargo = Optional.ofNullable(dbxVtaVueltaRecargo.getValue()).orElse(.00);
 					}else {
 						// Reserva
 						fechaExpiraReserva = dtbxVtaVueltaExpiraReserva.getValue();
@@ -3826,10 +4003,10 @@ public class WndVentaReservaNew  extends WndBase {
 				//*******************************************
 				ventaPasaje_x.setCodigoDescuento(txtVtaAutorizaDescuentoCodigo.getText().trim().toUpperCase());
 				ventaPasaje_x.setTarifa(detalleItinerario.getTarifa());
-				ventaPasaje_x.setRecargo(.00);
+				ventaPasaje_x.setRecargo(recargo);
 				ventaPasaje_x.setDescuento(.00);
 				if(ventaPasaje_x.getCodigoDescuento()!=null)
-					ventaPasaje_x.setDescuento(ventaPasaje_x.getTarifa()-ventaPasaje_x.getImportePagado());
+					ventaPasaje_x.setDescuento(ventaPasaje_x.getTarifa() - ventaPasaje_x.getImportePagado());
 				ventaPasaje_x.setPenalidad(.00);
 				ventaPasaje_x.setAcuenta(.00);
 				ventaPasaje_x.setImportePagadoByDiferencia(.00);
@@ -3974,7 +4151,7 @@ public class WndVentaReservaNew  extends WndBase {
 				confirmacionFA.setPreferenciaAlimentaria(new PreferenciaAlimentaria(Constantes.ID_PREALIM_MENU_DEL_DIA)); //Valor por default
 				confirmacionFA.setSecuencial(ventaPasaje_x.getSecuencial());
 				confirmacionFA.setTarifa(dbxVtaIdaTarifa.getValue());
-				confirmacionFA.setRecargo(.00);
+				confirmacionFA.setRecargo(Optional.ofNullable(dbxVtaIdaRecargo.getValue()).orElse(.00));
 				confirmacionFA.setDescuento(.00);
 				confirmacionFA.setPenalidad(0.0);
 				confirmacionFA.setAcuenta(ventaPasaje_x.getImportePagado());
@@ -3995,11 +4172,6 @@ public class WndVentaReservaNew  extends WndBase {
 				confirmacionFA.setIdaRetorno(ventaPasaje_x.getIdaRetorno());
 				confirmacionFA.setEsFechaAbierta(Constantes.FALSE_VALUE);
 				confirmacionFA.setEsRemoto(false);
-//				//Para el caso de las cortesias que tienen descuento del 100%
-//				if(confirmacionFA.getFormaPago().getId().intValue()!=Constantes.ID_FORPAG_CONTADO && dblImporte.getValue()==0.00){
-//					confirmacionFA.setDescuento(0.00);
-//					confirmacionFA.setImportePagado(confirmacionFA.getTarifa());
-//				}
 				
 				if(confirmacionFA.getImportePagado()==.00) {
 					//No emite un nuevo comprobante
@@ -4142,6 +4314,7 @@ public class WndVentaReservaNew  extends WndBase {
 						disabledControlsPasajero(true);
 						disabledControlsCliente(true);
 						disabledControlsPago(true);
+						disabledControlsDescuento(true);
 						onSelect_ltbxVtaAsientosSeleccionados(e);
 						onRefreshMap();
 						
@@ -4296,6 +4469,7 @@ public class WndVentaReservaNew  extends WndBase {
 		disabledControlsPasajero(true);
 		disabledControlsCliente(true);
 		disabledControlsPago(true);
+		disabledControlsDescuento(true);
 		
 		disabled_btnGuardar(btnVtaGuardar, true);
 	}
@@ -4324,6 +4498,7 @@ public class WndVentaReservaNew  extends WndBase {
 			}			
 			lblVtaIdaAsiento.setValue("");
 			dbxVtaIdaTarifa.setValue(.00);
+			dbxVtaIdaRecargo.setValue(.00);
 			txtVtaIdaObservaciones.setText("");
 		}else {			
 			if(cleanPuntoEmbarque) {				
@@ -4341,6 +4516,7 @@ public class WndVentaReservaNew  extends WndBase {
 			}			
 			lblVtaVueltaAsiento.setValue("");
 			dbxVtaVueltaTarifa.setValue(.00);
+			dbxVtaVueltaRecargo.setValue(.00);
 			txtVtaVueltaObservaciones.setText("");
 		}
 	}
@@ -4418,8 +4594,8 @@ public class WndVentaReservaNew  extends WndBase {
 			Util.limpiarCombobox(cmbVtaTarjeta);
 			cmbVtaTarjeta.setText("");
 			txtVtaNumeroOperacion.setText("");
-			cmbVtaAutorizaDescuento.setSelectedIndex(-1);
-			txtVtaAutorizaDescuentoCodigo.setText("");
+			
+			cleanDatosDescuento();
 			
 			cmbVtaOperadorTarjeta.setDisabled(true);
 			cmbVtaTarjeta.setDisabled(true);
@@ -4427,6 +4603,17 @@ public class WndVentaReservaNew  extends WndBase {
 			cmbVtaAutorizaDescuento.setDisabled(true);
 			txtVtaAutorizaDescuentoCodigo.setDisabled(true);
 		}
+	}
+	
+	/**
+	 * Limpia los datos del descuento
+	 * @throws Exception
+	 */
+	private void cleanDatosDescuento()throws Exception{
+		if(cmbVtaAutorizaDescuento.getItemCount() > 0) {
+			cmbVtaAutorizaDescuento.setSelectedIndex(-1);	
+		}		
+		txtVtaAutorizaDescuentoCodigo.setText("");
 	}
 	
 	/**
@@ -4463,7 +4650,7 @@ public class WndVentaReservaNew  extends WndBase {
 	 * @param gridOcupabilidad	: grilla para la ocupabilidad.
 	 */
 //	@SuppressWarnings("deprecation")
-	private void crearEstructura(Integer idServicio, Groupbox grpbxParent, boolean esRetorno,
+	private void createEstructura(Integer idServicio, Groupbox grpbxParent, boolean esRetorno,
 								 DetalleItinerario detalleItinerario, Map<String, Asiento> mapaAsientos, Grid gridOcupabilidad, boolean isMapaPostergacion){
 		try{
 			Servicio servicio = null;
@@ -4554,9 +4741,9 @@ public class WndVentaReservaNew  extends WndBase {
 
 								HashMap<String, String> propiedades = new HashMap<>();
 								numeroAsiento++;
-
+																
 								/*	Verificamos que el objeto sea del tipo Asiento	*/
-								if(objetoBus.getTipoObjeto().intValue()==TIPO_ASIENTO){
+								if(objetoBus.getTipoObjeto().intValue() == TIPO_ASIENTO){
 									Asiento asiento = new Asiento();
 									asiento.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
 										@Override
@@ -4845,10 +5032,12 @@ public class WndVentaReservaNew  extends WndBase {
 		cmbVtaIdaDesembarque_hora.setDisabled(disabled);
 		dbxVtaIdaTarifa.setDisabled(disabled);
 		txtVtaIdaObservaciones.setDisabled(disabled);
+		dbxVtaIdaRecargo.setDisabled(disabled);
 		if(isVtaIdaVuelta) {
 			cmbVtaVueltaEmbarque_hora.setDisabled(disabled);
 			cmbVtaVueltaDesembarque_hora.setDisabled(disabled);
 			dbxVtaVueltaTarifa.setDisabled(disabled);
+			dbxVtaVueltaRecargo.setDisabled(disabled);
 			txtVtaVueltaObservaciones.setDisabled(disabled);
 		}	
 	}
@@ -4895,6 +5084,14 @@ public class WndVentaReservaNew  extends WndBase {
 	 */
 	private void disabledControlsPago(boolean disabled)throws Exception{
 		cmbVtaTipoFormaPago.setDisabled(disabled);
+	}
+	
+	/**
+	 * Habilita/Deshabilita los controles del Descuento
+	 * @param disabled: (True) deshabilita controles; (false)Habilita controles
+	 * @throws Exception
+	 */
+	private void disabledControlsDescuento(boolean disabled)throws Exception{
 		cmbVtaAutorizaDescuento.setDisabled(disabled);
 		txtVtaAutorizaDescuentoCodigo.setDisabled(disabled);
 	}
@@ -4957,7 +5154,14 @@ public class WndVentaReservaNew  extends WndBase {
 			Asiento asientoSeleccionado = (Asiento)e.getTarget();
 			key = asientoSeleccionado.getKey();
 			
-			//Valida que cuando es una confirmacion de FA no se seleccione mas de un asiento
+			// Valida si esta habilitada la seleccion de asientos disponibles
+			if(asientoSeleccionado.getEstadoAsiento().equals(Constantes.ASIENTO_DISPONIBLE)) {
+				if(!habilitarSelectAsientoDisponible()) {
+					return;	
+				}				
+			}
+			
+			//Valida que en una confirmacion de FA no se seleccione mas de un asiento
 			if(rdVtaConfirmacionFA.isChecked() && ltbxVtaAsientosSeleccionados.getItemCount()==1) {				
 				String _piso = key.split("\\-")[1];
 				String _asiento = key.split("\\-")[0];
@@ -4982,6 +5186,7 @@ public class WndVentaReservaNew  extends WndBase {
 				cleanDatosInfoViaje(false, false);					
 			disabledControlsInfoViaje(true);
 			disabledControlsPago(true);
+			disabledControlsDescuento(true);
 			disabledAllBtnOptionsByAsiento();
 			if(!rdVtaConfirmacionFA.isChecked()) {				
 				disabledControlsPasajero(true);
@@ -5443,12 +5648,20 @@ public class WndVentaReservaNew  extends WndBase {
 		}
 	}
 	
-	
 	/**
 	 * Calcula el monto total a pagar
 	 * @throws Exception
 	 */
 	private void calcularTotalPago()throws Exception{
+		calcularTotalPago(.00);
+	}
+	
+	/**
+	 * Calcula el monto total a pagar
+	 * @param recargo : valor del recargo
+	 * @throws Exception
+	 */
+	private void calcularTotalPago(Double recargo)throws Exception{
 		Double totalPago = .00;
 		if(rdVtaVenta.isChecked() || rdVtaConfirmacionFA.isChecked()) {
 			for(Listitem item: ltbxVtaAsientosSeleccionados.getItems()) {
@@ -5468,13 +5681,17 @@ public class WndVentaReservaNew  extends WndBase {
 			}else if(rdVtaConfirmacionFA.isChecked()){
 				Double tarifaVtaFA = ventaPasaje_x.getTarifa();
 				Double importePagoVtaFA = ventaPasaje_x.getImportePagado();
-				Double importeValida = (importePagoVtaFA>=tarifaVtaFA? importePagoVtaFA: tarifaVtaFA);
+				Double importeValida = (importePagoVtaFA >= tarifaVtaFA? importePagoVtaFA: tarifaVtaFA);
 				
 				if(importeValida < totalPago)
 					totalPago += - importeValida;
 				else
 					totalPago = .00;
-			}			
+			}
+			
+			// Recargo
+			totalPago += recargo;
+			
 		}		
 		
 		dbxVtaTotalPagar.setValue(totalPago);
@@ -5547,19 +5764,29 @@ public class WndVentaReservaNew  extends WndBase {
 	 */
 	private void loadDatosViaje(boolean isIda, VentaPasaje ventaPasaje)throws Exception{		
 		if(isIda) {
+			String numeroAsiento = getFormatAsiento(ventaPasaje.getNumeroAsiento());
+			
 			seleccionarPuntoEmbarque(cmbVtaIdaEmbarque_hora, ventaPasaje.getAgenciaPartida());
-			seleccionarPuntoDesembarque(cmbVtaIdaDesembarque_hora, ventaPasaje.getAgenciaLlegada());
-			lblVtaIdaAsiento.setValue(ventaPasaje.getNumeroAsiento().toString());
+			seleccionarPuntoDesembarque(cmbVtaIdaDesembarque_hora, ventaPasaje.getAgenciaLlegada());			
+			lblVtaIdaAsiento.setValue(numeroAsiento);
 			txtVtaIdaObservaciones.setText(Optional.ofNullable(ventaPasaje.getObservaciones()).orElse(""));
-			if(!ventaPasaje.getTipoTransaccion().equals(Constantes.TIPO_OPERACION_RESERVA))
-			    dbxVtaIdaTarifa.setValue(ventaPasaje.getImportePagado());	
+			if(!ventaPasaje.getTipoTransaccion().equals(Constantes.TIPO_OPERACION_RESERVA)) {
+				dbxVtaIdaTarifa.setValue(ventaPasaje.getImportePagado());
+				dbxVtaIdaRecargo.setValue(ventaPasaje.getRecargo());
+			}
+			    	
 		}else {
+			String numeroAsiento = getFormatAsiento(ventaPasaje.getNumeroAsiento());
+			
 			seleccionarPuntoEmbarque(cmbVtaVueltaEmbarque_hora, ventaPasaje.getAgenciaPartida());
 			seleccionarPuntoDesembarque(cmbVtaVueltaDesembarque_hora, ventaPasaje.getAgenciaLlegada());
-			lblVtaVueltaAsiento.setValue(ventaPasaje.getNumeroAsiento().toString());
+			lblVtaVueltaAsiento.setValue(numeroAsiento);
 			txtVtaVueltaObservaciones.setText(Optional.ofNullable(ventaPasaje.getObservaciones()).orElse(""));
-			if(!ventaPasaje.getTipoTransaccion().equals(Constantes.TIPO_OPERACION_RESERVA))
+			if(!ventaPasaje.getTipoTransaccion().equals(Constantes.TIPO_OPERACION_RESERVA)) {
 				dbxVtaVueltaTarifa.setValue(ventaPasaje.getImportePagado());
+				dbxVtaVueltaRecargo.setValue(ventaPasaje.getRecargo());
+			}
+				
 		}
 	}
 	
@@ -5730,8 +5957,10 @@ public class WndVentaReservaNew  extends WndBase {
 			Double totalPago = (penalidad * countItem);
 			dbxVtaTotalPagar.setValue(totalPago);			
 		}
-		if(dbxVtaTotalPagar.getValue() >.00)
+		if(dbxVtaTotalPagar.getValue() >.00) {
 			disabledControlsPago(false);
+			disabledControlsDescuento(false);
+		}
 		disabledControlsPasajero(false);
 		cleanDatosPasajero(false);
 		disabled_btnGuardar(btnVtaGuardar, false);
@@ -5774,7 +6003,7 @@ public class WndVentaReservaNew  extends WndBase {
 		this.appendChild(wndModal);
 		wndModal.setMode("modal");
 		
-		if(manifiesto!=null)
+		if(manifiesto != null && isEnabledVenta)
 			DlgMessage.information("El Manifiesto ya está emitido, no podrá realizar cambios en la Programación.");
 	}
 	
@@ -6015,15 +6244,18 @@ public class WndVentaReservaNew  extends WndBase {
 			cmbVtaIdaEmbarque_hora.setFocus(true);
 		}else if(!cmbVtaIdaDesembarque_hora.isDisabled() && cmbVtaIdaDesembarque_hora.getSelectedIndex()==0) {
 			cmbVtaIdaDesembarque_hora.setFocus(true);
-		}else if(!txtVtaIdaObservaciones.isDisabled() && txtVtaIdaObservaciones.getText().trim().isEmpty() && 
-				event != null && !event.getTarget().getId().equals(txtVtaIdaObservaciones.getId())) {
+		}else if(!txtVtaIdaObservaciones.isDisabled() && txtVtaIdaObservaciones.getText().trim().isEmpty() && event != null && 
+				!event.getTarget().getId().equals(txtVtaIdaObservaciones.getId()) && 
+				!event.getTarget().getId().equals(dbxVtaIdaRecargo.getId()) ) {
 			txtVtaIdaObservaciones.setFocus(true);
 		}else if(gridVtaInfoViajeVuelta.isVisible() && !cmbVtaVueltaEmbarque_hora.isDisabled() && cmbVtaVueltaEmbarque_hora.getSelectedIndex()==0) {
 			cmbVtaVueltaEmbarque_hora.setFocus(true);
 		}else if(gridVtaInfoViajeVuelta.isVisible() && !cmbVtaVueltaDesembarque_hora.isDisabled() && cmbVtaVueltaDesembarque_hora.getSelectedIndex()==0) {
 			cmbVtaVueltaDesembarque_hora.setFocus(true);
 		}else if(gridVtaInfoViajeVuelta.isVisible() && !txtVtaVueltaObservaciones.isDisabled() && 
-				txtVtaVueltaObservaciones.getText().trim().isEmpty() && event != null && !event.getTarget().getId().equals(txtVtaVueltaObservaciones.getId())) {
+				txtVtaVueltaObservaciones.getText().trim().isEmpty() && event != null && 
+				!event.getTarget().getId().equals(txtVtaVueltaObservaciones.getId()) &&
+				!event.getTarget().getId().equals(dbxVtaVueltaRecargo.getId())) {
 			txtVtaVueltaObservaciones.setFocus(true);
 		}else if(event!=null && event.getTarget().getId().equals(rdVtaVenta.getId())) {				
 			if(!txtVtaPaxNumeroDocumento.isDisabled() && txtVtaPaxNumeroDocumento.getText().trim().isEmpty()) {
@@ -6100,12 +6332,14 @@ public class WndVentaReservaNew  extends WndBase {
 	 * @throws Exception
 	 */
 	private void habilitarOpcionPostergacion(VentaPasaje ventaPasajeEdicion)throws Exception{
-		Integer minutos = UtilFlag.getTiempoPostergacion();
-		if(minutos !=null) {
-			boolean permiteEdicion = validarEdicionAsiento(ventaPasajeEdicion, minutos);
-			if(permiteEdicion)
-				btnVtaPostergar.setDisabled(false);			
-		}		
+		if(isEnabledVenta) {
+			Integer minutos = UtilFlag.getTiempoPostergacion();
+			if(minutos !=null) {
+				boolean permiteEdicion = validarEdicionAsiento(ventaPasajeEdicion, minutos);
+				if(permiteEdicion)
+					btnVtaPostergar.setDisabled(false);			
+			}
+		}			
 	}
 
 	/**
@@ -6140,8 +6374,18 @@ public class WndVentaReservaNew  extends WndBase {
 	 * @throws Exception
 	 */
 	private void habilitarUpdateMapaAutomaticamente()throws Exception{
+		chbxVtaUpdateMapAuto.setChecked(false);
+		chbxVtaUpdateMapAuto.setDisabled(true);
 		
-		
+		if(isEnabledVenta) {			
+			Date fechaActual = Constantes.FORMAT_DATE.parse(Constantes.FORMAT_DATE.format(new Date()));
+			Date fechaSalida = detalleItinerarioIda.getFechaPartida();		
+			if(fechaSalida.getTime() >= fechaActual.getTime()) {
+				chbxVtaUpdateMapAuto.setChecked(true);
+				onCheck_chbxVtaUpdateMapAuto();	
+				chbxVtaUpdateMapAuto.setDisabled(false);
+			}
+		}		
 	}
 	
 	/**
@@ -6150,8 +6394,16 @@ public class WndVentaReservaNew  extends WndBase {
 	 * @throws Exception
 	 */
 	private void habilitarSelectAsientoVendido()throws Exception{
-		
-		
+				
+	}
+	
+	/**
+	 * Determina el estado de la selección de un asiento disponible
+	 * @return (true) Desabilita, (false) habilita
+	 * @throws Exception
+	 */
+	private boolean habilitarSelectAsientoDisponible()throws Exception{
+		return isEnabledVenta;
 	}
 	
 	/**
@@ -6207,16 +6459,17 @@ public class WndVentaReservaNew  extends WndBase {
 	 */
 	private void habilitarBtnReimpresion(VentaPasaje ventaPasaje, Button btnReimpresion)throws Exception{
 		btnReimpresion.setDisabled(true);
-		if(ventaPasaje!=null && ventaPasaje.getNumeroBoleto()!=null && !ventaPasaje.getNumeroBoleto().trim().isEmpty()){
-			if(ventaPasaje.getFechaPartida()!=null) {
-				Date fechaPartida = ventaPasaje.getFechaPartida();
-				Date fechaActual = Constantes.FORMAT_DATE.parse(Constantes.FORMAT_DATE.format(new Date()));
-				if(fechaPartida.getTime()>=fechaActual.getTime())
-					btnReimpresion.setDisabled(false);	
-			}else //son los F.A.
-				btnReimpresion.setDisabled(false);			
-		}
-		
+		if(isEnabledVenta) {
+			if(ventaPasaje!=null && ventaPasaje.getNumeroBoleto()!=null && !ventaPasaje.getNumeroBoleto().trim().isEmpty()){
+				if(ventaPasaje.getFechaPartida()!=null) {
+					Date fechaPartida = ventaPasaje.getFechaPartida();
+					Date fechaActual = Constantes.FORMAT_DATE.parse(Constantes.FORMAT_DATE.format(new Date()));
+					if(fechaPartida.getTime() >= fechaActual.getTime())
+						btnReimpresion.setDisabled(false);	
+				}else //son los F.A.
+					btnReimpresion.setDisabled(false);			
+			}	
+		}		
 	}
 	
 	/**
@@ -6225,8 +6478,22 @@ public class WndVentaReservaNew  extends WndBase {
 	 * @throws Exception
 	 */
 	private void habilitarBtnAnulacion()throws Exception{
-		
-		
+		btnVtaAnular.setDisabled(true);
+		if(isEnabledVenta) {
+			btnVtaAnular.setDisabled(false);
+		}
+	}
+	
+	/**
+	 * Determina el estado del button Anulación.
+	 * @return (true) Desabilita, (false) habilita
+	 * @throws Exception
+	 */
+	private void habilitarBtnActualizarMapa()throws Exception{
+		btnVtaActualizarMapa.setDisabled(true);
+		if(isEnabledVenta) {
+			btnVtaActualizarMapa.setDisabled(false);
+		}
 	}
 	
 	/**
@@ -6237,17 +6504,17 @@ public class WndVentaReservaNew  extends WndBase {
 	 */
 	private boolean validarEdicionAsiento(VentaPasaje ventaPasajeEdicion, int minutosEdicion)throws Exception{
 		boolean permiteEdicion = false;
-		
-		if(ventaPasajeEdicion.getFechaPartida()!=null && ventaPasajeEdicion.getHoraPartida()!=null) {
-			String fechaPartida = Constantes.FORMAT_DATE.format(ventaPasajeEdicion.getFechaPartida());
-			String horaPartida = ventaPasajeEdicion.getHoraPartida();
-			Date fechaHoraPartida = Util.convertirLocalDateTimeToDate(convertirStringToLocalDateTime(fechaPartida+" "+horaPartida));				
-			Date fechaHoraPostergacion = Util.convertirLocalDateTimeToDate(LocalDateTime.now().plusMinutes(minutosEdicion));
-			
-			if(fechaHoraPartida.getTime() > fechaHoraPostergacion.getTime())
-				permiteEdicion = true;
-		}
-		
+		if(isEnabledVenta) {
+			if(ventaPasajeEdicion.getFechaPartida()!=null && ventaPasajeEdicion.getHoraPartida()!=null) {
+				String fechaPartida = Constantes.FORMAT_DATE.format(ventaPasajeEdicion.getFechaPartida());
+				String horaPartida = ventaPasajeEdicion.getHoraPartida();
+				Date fechaHoraPartida = Util.convertirLocalDateTimeToDate(convertirStringToLocalDateTime(fechaPartida+" "+horaPartida));				
+				Date fechaHoraPostergacion = Util.convertirLocalDateTimeToDate(LocalDateTime.now().plusMinutes(minutosEdicion));
+				
+				if(fechaHoraPartida.getTime() > fechaHoraPostergacion.getTime())
+					permiteEdicion = true;
+			}	
+		}		
 		return permiteEdicion;
 	}
 	
@@ -6363,6 +6630,11 @@ public class WndVentaReservaNew  extends WndBase {
 			}else if(showMessageDescuento)
 				DlgMessage.information(Messages.getString("WndVentaReservaNew.information.descuento.porcentaje")
 														.replace("@porcentaje", Util.toNumberFormat(valorAplica, 2)), btnVtaGuardar);
+		}
+		
+		dbxVtaIdaRecargo.setDisabled(true);
+		if(isVentaIdaVuelta) {
+			dbxVtaVueltaRecargo.setDisabled(true);	
 		}
 		
 		calcularTotalPago();
@@ -6592,6 +6864,7 @@ public class WndVentaReservaNew  extends WndBase {
 			disabledControlsPasajero(true);
 			disabledControlsCliente(true);
 			disabledControlsPago(true);
+			disabledControlsDescuento(true);
 			if(ltbxVtaAsientosSeleccionados.getItemCount()==0)
 				disabledAllBtnOptionsByAsiento();
 		}
@@ -7341,6 +7614,7 @@ public class WndVentaReservaNew  extends WndBase {
 						disabledControlsPasajero(true);
 						disabledControlsCliente(true);
 						disabledControlsPago(true);
+						disabledControlsDescuento(true);
 						onSelect_ltbxVtaAsientosSeleccionados(e);
 						onRefreshMap();
 						wndModal.onClose();
@@ -7500,7 +7774,7 @@ public class WndVentaReservaNew  extends WndBase {
 			seleccionarPuntoDesembarque(cmbPostDesembarque_hora, ventaPasaje.getAgenciaLlegada());
 			lblPostAsiento.setValue("-");
 			dbxPostTarifa.setValue(.00);
-			crearEstructura(postDetalleItinerario.getItinerario().getServicio().getId(), gpbxMapa, false, postDetalleItinerario, postMapaAsientos, null, true);
+			createEstructura(postDetalleItinerario.getItinerario().getServicio().getId(), gpbxMapa, false, postDetalleItinerario, postMapaAsientos, null, true);
 			hboxPost_1.setVisible(true);
 			hboxPost_2.setVisible(true);
 		}
@@ -7851,14 +8125,11 @@ public class WndVentaReservaNew  extends WndBase {
 		div.setStyle("text-align:center;");
 		btnPbEditar = new Button("Editar");
 		btnPbEditar.setAutodisable("self");
-		disabled_btnModificar(btnPbEditar, (programacionServicio==null || manifiesto!=null));		
+				
 		btnPbGuardar = new Button("Guardar");
-		btnPbGuardar.setAutodisable("self");
-		disabled_btnGuardar(btnPbGuardar, programacionServicio!=null);
+		btnPbGuardar.setAutodisable("self");		
 		btnPbAnular = new Button("Anular");		
-		btnPbAnular.setAutodisable("self");
-		disabled_btnAnular(btnPbAnular, (programacionServicio==null || manifiesto!=null));
-		validarEdicionPb(itinerario);
+		btnPbAnular.setAutodisable("self");		
 		btnPbCerrar = new Button("Cerrar");
 		btnPbCerrar.setImage("resources/mp_cerrar.png");		
 		btnPbCerrar.setSclass("btnCommandL");
@@ -7892,7 +8163,27 @@ public class WndVentaReservaNew  extends WndBase {
 				Util.seleccionarValorItemCombo(Personal.class, cmbPbTripulante, programacionServicio.getTripulante().getId());
 		}	
 		
-		disabledControlsPb(programacionServicio!=null);
+		boolean isDisabledBtnModificar = true;
+		boolean isDisabledBtnGuardar = true;
+		boolean isDisabledBtnAnular = true;
+		boolean isDisabledCtrls = true;
+		
+		if(isEnabledVenta) {
+			isDisabledBtnModificar = (programacionServicio == null || manifiesto != null);
+			isDisabledBtnGuardar = (programacionServicio != null);
+			isDisabledBtnAnular = (programacionServicio == null || manifiesto != null);
+			isDisabledCtrls = (programacionServicio != null);
+		}
+		
+//		disabled_btnModificar(btnPbEditar, (programacionServicio == null || manifiesto != null));
+//		disabled_btnGuardar(btnPbGuardar, programacionServicio != null);
+//		disabled_btnAnular(btnPbAnular, (programacionServicio == null || manifiesto != null));		
+		disabled_btnModificar(btnPbEditar, isDisabledBtnModificar);
+		disabled_btnGuardar(btnPbGuardar, isDisabledBtnGuardar);
+		disabled_btnAnular(btnPbAnular, isDisabledBtnAnular);
+		validarEdicionPb(itinerario);
+		disabledControlsPb(isDisabledCtrls);
+//		disabledControlsPb(programacionServicio != null);
 		
 		cmbPbBus.addEventListener(Events.ON_CHANGE, new EventListener<Event>() {
 			@Override
@@ -8652,7 +8943,8 @@ public class WndVentaReservaNew  extends WndBase {
 	 */
 	private Window createWindowDescuentoByRango(Descuento descuento)throws Exception{
 		final Window win = new Window("", "normal", true);
-		win.setWidth("605px");		
+		win.setWidth("605px");
+//		win.setWidth("500px");
 		Caption caption = new Caption("DESCUENTO POR RANGO", null);
 		win.appendChild(caption);
 		
@@ -8809,7 +9101,13 @@ public class WndVentaReservaNew  extends WndBase {
 		btnCancelar.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
 			@Override
 			public void onEvent(Event e){
-				win.onClose();
+				try {
+					cleanDatosDescuento();
+					win.onClose();
+				} catch (Exception e1) {
+					log.error(e1);
+					e1.printStackTrace();
+				}				
 			}
 		});
 		
@@ -9800,5 +10098,16 @@ public class WndVentaReservaNew  extends WndBase {
 //			tooltiptextAsiento += "\r\nFECHA VENTA:	" + Constantes.FORMAT_DATE_TIME_24H.format(venta.getFechaInsercion());
 		
 		return tooltiptextAsiento;
+	}
+	
+	/**
+	 * Da formato al numero de asiento
+	 * @param numeroAsiento : Numero de asiento
+	 * @return
+	 */
+	private String getFormatAsiento(Integer numeroAsiento) {
+		String fnumeroAsiento = String.format("%0" + 2 + "d", numeroAsiento);
+		
+		return fnumeroAsiento;
 	}
 }
