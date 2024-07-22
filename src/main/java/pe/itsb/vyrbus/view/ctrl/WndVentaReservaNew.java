@@ -2063,6 +2063,13 @@ public class WndVentaReservaNew  extends WndBase {
 		//Carga itinerarios de para la vuelta
 		if(isVtaIdaVuelta)
 			loadItienrariosBusqueda(lstItinerariosVuelta, false, fechaVuelta);
+		
+		// Valida la venta del itienerario
+		isEnabledVenta = true;		
+		Date fechaActual = Constantes.FORMAT_DATE.parse(new MyTime().dateServer());
+		if(clrBusqIda.getValue().getTime() < fechaActual.getTime()) {			
+			isEnabledVenta = false;
+		}
 	}
 	
 	
