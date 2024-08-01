@@ -41,6 +41,7 @@ import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zk.ui.event.InputEvent;
+import org.zkoss.zk.ui.select.Selectors;
 import org.zkoss.zk.ui.util.Clients;
 import org.zkoss.zul.A;
 import org.zkoss.zul.Bandbox;
@@ -706,7 +707,7 @@ public class WndVentaReservaNew  extends WndBase {
 					// TODO Auto-generated method stub							
 					try {
 						
-						onChange_clBusqIda(event);
+						onChange_clBusqIda(event);	
 						
 					} catch (Exception ex) {
 						ex.printStackTrace();
@@ -1540,6 +1541,7 @@ public class WndVentaReservaNew  extends WndBase {
 			hbox = new Hbox();
 			hbox.setAlign("center");
 			btnHpReimprimir = new Button();
+			btnHpReimprimir.setId("btnHpReimprimir");
 			btnHpReimprimir.setDisabled(true);
 			btnHpReimprimir.setLabel("Reimprimir");
 			btnHpReimprimir.setImage("resources/buttons/mp_print-termico.png");
@@ -6466,7 +6468,7 @@ public class WndVentaReservaNew  extends WndBase {
 	 */
 	private void habilitarBtnReimpresion(VentaPasaje ventaPasaje, Button btnReimpresion)throws Exception{
 		btnReimpresion.setDisabled(true);
-		if(isEnabledVenta) {
+		if(isEnabledVenta || btnReimpresion.getId().equals("btnHpReimprimir")) {
 			if(ventaPasaje!=null && ventaPasaje.getNumeroBoleto()!=null && !ventaPasaje.getNumeroBoleto().trim().isEmpty()){
 				if(ventaPasaje.getFechaPartida()!=null) {
 					Date fechaPartida = ventaPasaje.getFechaPartida();

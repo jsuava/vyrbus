@@ -1,10 +1,10 @@
 <?page title="Ventas y Reservas" contentType="text/html;charset=UTF-8"?>
-<zk  xmlns:c="client">
+<zk  xmlns:c="client" xmlns="http://www.zkoss.org/2005/zul">
 <style>
     .maxHeightLsbxBusqServicio .z-listbox-body {
 	  height: 46vh;
       overflow: auto;
-    }   
+    }
 </style>
 <window id="wndVentaReservaNew" title="" border="none" width="970px" use="pe.itsb.vyrbus.view.ctrl.WndVentaReservaNew">
 	<div id="divPaso_1">	
@@ -56,6 +56,7 @@
 							<vbox>
 								<label value="FECHA DE IDA" sclass="label-size11" />
 								<calendar id="clrBusqIda" height="133px"/>
+														 
 							</vbox>
 							<vbox id="vboxCalendarVuelta">
 								<label value="FECHA DE VUELTA" sclass="label-size11" />
