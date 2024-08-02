@@ -1647,18 +1647,18 @@ public class WndVentaReservaNew  extends WndBase {
 										WSFE.reimprimirComprobante(listVentasReimpresion, wndVentaReservaNew, Constantes.NUMERO_COPIAS_COMPROBANTE_PASAJES);
 										
 										/************** Tracking (GPS) **********************/
-										listVentasReimpresion.forEach(vta -> {
-											try {	
-												VentaPasaje ventaPasaje = ServiceLocator.getVentaPasajesManager().buscarVentaById(vta.getId());
-												String motivoMovimiento = "REIMPRESION";										
-												MovimientoPasajes movimientoPasajes = UtilData.createTracking(ventaPasaje, motivoMovimiento);
-												ServiceLocator.getMovimientoPasajesManager().guardar(movimientoPasajes);
-											} catch (Exception e1) {
-												e1.printStackTrace();
-												log.error(e1);
-												DlgMessage.error(e1.getMessage());
-											}								
-										});
+//										listVentasReimpresion.forEach(vta -> {
+//											try {	
+//												VentaPasaje ventaPasaje = ServiceLocator.getVentaPasajesManager().buscarVentaById(vta.getId());
+//												String motivoMovimiento = "REIMPRESION";										
+//												MovimientoPasajes movimientoPasajes = UtilData.createTracking(ventaPasaje, motivoMovimiento);
+//												ServiceLocator.getMovimientoPasajesManager().guardar(movimientoPasajes);
+//											} catch (Exception e1) {
+//												e1.printStackTrace();
+//												log.error(e1);
+//												DlgMessage.error(e1.getMessage());
+//											}								
+//										});
 										/****************************************************/
 									}
 								}catch(Exception ex) {
