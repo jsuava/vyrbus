@@ -3930,7 +3930,8 @@ public class WndVentaReservaNew  extends WndBase {
 					observaciones = (txtVtaIdaObservaciones.getText().trim().length()>0 ? txtVtaIdaObservaciones.getText().trim().toUpperCase(): null);
 					if(isVenta) {
 						// Venta
-						importePagado = dbxVtaIdaTarifa.getValue();
+//						importePagado = dbxVtaIdaTarifa.getValue();
+						importePagado = dbxVtaTotalPagar.getValue();
 						recargo = Optional.ofNullable(dbxVtaIdaRecargo.getValue()).orElse(.00);
 					}else {
 						// Reserva
@@ -3942,7 +3943,8 @@ public class WndVentaReservaNew  extends WndBase {
 					observaciones = (txtVtaVueltaObservaciones.getText().trim().length()>0 ? txtVtaVueltaObservaciones.getText().trim().toUpperCase(): null);
 					if(isVenta) {
 						// Venta
-						importePagado = dbxVtaVueltaTarifa.getValue();
+//						importePagado = dbxVtaVueltaTarifa.getValue();
+						importePagado = dbxVtaTotalPagar.getValue();
 						recargo = Optional.ofNullable(dbxVtaVueltaRecargo.getValue()).orElse(.00);
 					}else {
 						// Reserva
@@ -4013,6 +4015,9 @@ public class WndVentaReservaNew  extends WndBase {
 				ventaPasaje_x.setCodigoDescuento(txtVtaAutorizaDescuentoCodigo.getText().trim().toUpperCase());
 				ventaPasaje_x.setTarifa(detalleItinerario.getTarifa());
 				ventaPasaje_x.setRecargo(recargo);
+				// cuando existe un recargo a la tarifa, el valor de la tarifa real es reemplazado por el Importe pagado (tarifa + recargo)
+				if(ventaPasaje_x.getRecargo() != null && ventaPasaje_x.getRecargo().doubleValue() > .00)
+					ventaPasaje_x.setTarifa(ventaPasaje_x.getImportePagado());
 				ventaPasaje_x.setDescuento(.00);
 				if(ventaPasaje_x.getCodigoDescuento()!=null)
 					ventaPasaje_x.setDescuento(ventaPasaje_x.getTarifa() - ventaPasaje_x.getImportePagado());
@@ -4036,6 +4041,8 @@ public class WndVentaReservaNew  extends WndBase {
 				ventaPasaje_x.setObservaciones(observaciones);
 				UtilData.auditarRegistro(ventaPasaje_x, false, getUsuario(), Executions.getCurrent());
 				
+				System.out.println("Tarifa => "+ ventaPasaje_x.getTarifa());
+				System.out.println("Importe Pagado => "+ ventaPasaje_x.getImportePagado());
 				/************** Tracking (GPS) **********************/
 				String motivoMovimiento = (isReserva? "RESERVA" : "VENTA");
 				if(isConfirmaReserva) {
