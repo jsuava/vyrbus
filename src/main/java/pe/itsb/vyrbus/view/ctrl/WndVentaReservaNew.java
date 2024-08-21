@@ -6516,7 +6516,8 @@ public class WndVentaReservaNew  extends WndBase {
 		if(isEnabledVenta) {
 			if(ventaPasajeEdicion.getFechaPartida()!=null && ventaPasajeEdicion.getHoraPartida()!=null) {
 				String fechaPartida = Constantes.FORMAT_DATE.format(ventaPasajeEdicion.getFechaPartida());
-				String horaPartida = ventaPasajeEdicion.getHoraPartida();
+//				String horaPartida = ventaPasajeEdicion.getHoraPartida();
+				String horaPartida = UtilData.obtenerHoraEmbarque(detalleItinerarioIda.getItinerario().getId(), ventaPasajeEdicion.getAgenciaPartida().getId());
 				Date fechaHoraPartida = Util.convertirLocalDateTimeToDate(convertirStringToLocalDateTime(fechaPartida+" "+horaPartida));				
 				Date fechaHoraPostergacion = Util.convertirLocalDateTimeToDate(LocalDateTime.now().plusMinutes(minutosEdicion));
 				
