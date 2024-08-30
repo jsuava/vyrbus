@@ -273,14 +273,14 @@ public class WSFE implements Serializable{
 				}
 
 				/*crea el objeto venta*/
-				Venta oventa=createVenta(ventaPasaje, isReemvioBySoporte);
-				if(oventa==null)
+				Venta oventa = createVenta(ventaPasaje, isReemvioBySoporte);
+				if(oventa == null)
 					return null;
 
 				if(notaCredito!=null){
 					/*crea el objeto Nota*/
-					Nota nota=createNota(notaCredito,isReemvioBySoporte);
-					if(nota==null)
+					Nota nota = createNota(notaCredito,isReemvioBySoporte);
+					if(nota == null)
 						return null;
 					/*Envia la nota la venta a nuestro ws*/
 					result= getSoap().setNotaVenta(TOKEN, nota, oventa);
@@ -294,7 +294,7 @@ public class WSFE implements Serializable{
 					notaCredito=null;
 				}else{
 					/*Envia la venta a nuestro ws*/
-					result= getSoap().setVenta(TOKEN, oventa); //comentado temporalmento - 09/09/2021 - jabanto
+					result = getSoap().setVenta(TOKEN, oventa); //comentado temporalmento - 09/09/2021 - jabanto
 				}
 
 				/*Agrega a la lista para la impresion - 06/12/2016 - jabanto*/
@@ -1199,7 +1199,10 @@ public class WSFE implements Serializable{
 							Agencia agenciaLlegada=ventaPasaje.getAgenciaLlegada();
 							if(agenciaLlegada.getDireccion()==null)
 								agenciaLlegada=ServiceLocator.getAgenciaManager().buscarPorId(agenciaLlegada.getId().longValue());
-							xmlVenta.setV5_Desembarque(agenciaLlegada.getDireccion());
+							String desembaque = agenciaLlegada.getDireccion();
+							if(agenciaLlegada.getTelefono() != null)
+								desembaque += " - TELF: "+ agenciaLlegada.getTelefono();
+							xmlVenta.setV5_Desembarque(desembaque);
 						}
 
 					}

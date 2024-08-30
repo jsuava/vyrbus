@@ -61,6 +61,11 @@
                 <comment>Identificador unico de la entidad, tamanio de la clave primaria 5.</comment>
             </column>
         </many-to-one>
+		<property name="telefono" type="java.lang.String">
+            <column name="C_TELEFONO" length="15">
+                <comment>Numero de telefono.</comment>
+            </column>
+        </property>
 <!--         <many-to-one name="tipoMoneda" class="pe.itsb.vyrbus.model.bean.TipoMoneda" fetch="select"> -->
 <!--             <column name="TIPMON_ID" precision="5" scale="0" not-null="true" > -->
 <!--                 <comment>Identificador unico de la entidad, tamanio de la clave primaria 5.</comment> -->

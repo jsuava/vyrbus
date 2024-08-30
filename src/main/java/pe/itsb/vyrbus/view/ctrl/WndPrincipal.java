@@ -407,6 +407,8 @@ public class WndPrincipal extends WndBase {
 	 * @param urlZul
 	 */
 	public void mostrarVentana(String titulo, String urlZul){
+		String ATTRIBUTE_URL = "URL";
+		
 		Tab oTab = new Tab();
 		oTab.setClosable(true);
 		Tabpanel oTabpanel = new Tabpanel();
@@ -423,6 +425,27 @@ public class WndPrincipal extends WndBase {
 		tabpanelsVentana.appendChild(oTabpanel);
 
 		oTab.setSelected(true);
+		oTab.setAttribute(ATTRIBUTE_URL, urlZul);
+		
+		oTab.addEventListener(Events.ON_CLOSE, new EventListener<Event>() {
+			@Override
+			public void onEvent(Event event) throws Exception {			
+				try {
+					// Desbloquea asientos seleccionados - jabanto 30/08/2024
+					if(event.getTarget().getAttribute(ATTRIBUTE_URL) != null) {
+						String url = (String) event.getTarget().getAttribute(ATTRIBUTE_URL);
+						int index = url.indexOf("ventaReservaNew.zul");
+						if(index >= 0)							
+							ServiceLocator.getTmpOcupacionAsientosManager().desbloquearAsientoByUsuarioHardware(getUsuarioHardware().getId());						
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				
+				System.out.println("Se ha cerrado la ventana" );								
+			}
+		});
+				
 	}
 
 	public void obtenerOpcionesMenu(){
@@ -508,7 +531,7 @@ public class WndPrincipal extends WndBase {
 	}
 
 	public void cerrarSesion(){
-		Messagebox.show("�Desea Salir del Sistema?", Messages.getString("System.title"), Messagebox.YES | Messagebox.NO, Messagebox.QUESTION,
+		Messagebox.show("¿Desea Salir del Sistema?", Messages.getString("System.title"), Messagebox.YES | Messagebox.NO, Messagebox.QUESTION,
 				new EventListener<Event>() {
 
 					@Override
