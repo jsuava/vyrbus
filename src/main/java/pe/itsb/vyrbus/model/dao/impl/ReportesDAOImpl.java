@@ -1586,35 +1586,60 @@ public class ReportesDAOImpl extends GenericDAOImpl implements ReportesDAO {
 	 * @see com.tepsa.sisvyr.model.dao.ReportesDAO#ventasPromocion(java.lang.String, java.lang.String, java.lang.Long)
 	 */
 	@Override
-	public ArrayList<Promocion> ventasPromocion(String fechaInicio,String fechaFin, Long idPromocion,String tipoDescuento, Integer agencia_id, Integer usuario_id) throws Exception {
-		String sql="SELECT NVL(pro.promocion_id,-1) promocion_id, NVL(pro.c_denominacion,'CORTESIA') as Promocion "+
-					      ",DECODE(vp.FORPAG_ID,3,'100 %', DECODE(pro.c_tipdes,'S',pro.n_valdes||' S/',pro.n_valdes||' %')) as ValDesct "+
-					      ",COUNT(*)as Cantidad "+
-					      ",DECODE(NVL(pro.promocion_id,-1),-1,SUM(vp.n_imppag),SUM(vp.n_descuento)) as TotalDest "+
-					      ",SUM(vp.n_imppag)as TotalVenta "+
-					"FROM VRTVENPAS vp "+
-					     "INNER JOIN (SELECT MIN(v.venpas_id)venpas_id FROM VRTVENPAS v GROUP BY v.venpas_idoriginal "+
-					                ")mvenpas_id ON (mvenpas_id.venpas_id=vp.venpas_id) "+
-					     "LEFT JOIN VRMPROMOCION pro ON (vp.promocion_id=pro.promocion_id) "+
-					     "LEFT JOIN VRMFORPAG fp ON (fp.forpag_id=vp.forpag_id)  " +
-					     "INNER JOIN VRMUSUARIO us ON (us.usuario_id=vp.usuario_id) "+
-					"WHERE vp.d_fecliq BETWEEN to_date('"+fechaInicio+"','dd/MM/yyyy') AND to_date('"+fechaFin+"','dd/MM/yyyy') "+
-					     "AND vp.tipmov_id IN (1,8,10) "+
-					     "AND vp.c_tiptra='1' "+
-					     "AND vp.tipcom_id in (1,2,7) "+
-					     "AND vp.c_estreg='A' "+
-					     "AND (vp.forpag_id="+Constantes.ID_FORPAG_CORTESIA+" OR pro.promocion_id IS NOT NULL ) " +
-					     "AND vp.agencia_id=nvl("+agencia_id+", vp.agencia_id) "+
-					     "AND vp.usuario_id=nvl("+usuario_id+", vp.usuario_id) ";
-//					     "AND pro.promocion_id=NVL("+idPromocion+",pro.promocion_id) ";
-					     if(tipoDescuento!=null)
-					    	 sql+="AND pro.c_tipdes='"+tipoDescuento+"' ";
-					     if(idPromocion!=null)
-					    	 sql+="AND pro.promocion_id='"+idPromocion+"' ";
-					sql+="GROUP BY NVL(pro.promocion_id,-1) "
-							+ ",DECODE(vp.FORPAG_ID,3,'100 %', DECODE(pro.c_tipdes,'S',pro.n_valdes||' S/',pro.n_valdes||' %')) "
-							+ ",NVL(pro.c_denominacion,'CORTESIA'), pro.c_tipdes,pro.n_valdes "+
-					"ORDER BY SUM(vp.n_imppag) desc";
+	public ArrayList<Promocion> ventasPromocion(String fechaInicio,String fechaFin, String idPromocion,String tipoDescuento, Integer agencia_id, Integer usuario_id) throws Exception {
+//		String sql="SELECT NVL(pro.promocion_id,-1) promocion_id, NVL(pro.c_denominacion,'CORTESIA') as Promocion "+
+//					      ",DECODE(vp.FORPAG_ID,3,'100 %', DECODE(pro.c_tipdes,'S',pro.n_valdes||' S/',pro.n_valdes||' %')) as ValDesct "+
+//					      ",COUNT(*)as Cantidad "+
+//					      ",DECODE(NVL(pro.promocion_id,-1),-1,SUM(vp.n_imppag),SUM(vp.n_descuento)) as TotalDest "+
+//					      ",SUM(vp.n_imppag)as TotalVenta "+
+//					"FROM VRTVENPAS vp "+
+//					     "INNER JOIN (SELECT MIN(v.venpas_id)venpas_id FROM VRTVENPAS v GROUP BY v.venpas_idoriginal "+
+//					                ")mvenpas_id ON (mvenpas_id.venpas_id=vp.venpas_id) "+
+//					     "LEFT JOIN VRMPROMOCION pro ON (vp.promocion_id=pro.promocion_id) "+
+//					     "LEFT JOIN VRMFORPAG fp ON (fp.forpag_id=vp.forpag_id)  " +
+//					     "INNER JOIN VRMUSUARIO us ON (us.usuario_id=vp.usuario_id) "+
+//					"WHERE vp.d_fecliq BETWEEN to_date('"+fechaInicio+"','dd/MM/yyyy') AND to_date('"+fechaFin+"','dd/MM/yyyy') "+
+//					     "AND vp.tipmov_id IN (1,8,10) "+
+//					     "AND vp.c_tiptra='1' "+
+//					     "AND vp.tipcom_id in (1,2,7) "+
+//					     "AND vp.c_estreg='A' "+
+//					     "AND (vp.forpag_id="+Constantes.ID_FORPAG_CORTESIA+" OR pro.promocion_id IS NOT NULL ) " +
+//					     "AND vp.agencia_id=nvl("+agencia_id+", vp.agencia_id) "+
+//					     "AND vp.usuario_id=nvl("+usuario_id+", vp.usuario_id) ";
+////					     "AND pro.promocion_id=NVL("+idPromocion+",pro.promocion_id) ";
+//					     if(tipoDescuento!=null)
+//					    	 sql+="AND pro.c_tipdes='"+tipoDescuento+"' ";
+//					     if(idPromocion!=null)
+//					    	 sql+="AND pro.promocion_id='"+idPromocion+"' ";
+//					sql+="GROUP BY NVL(pro.promocion_id,-1) "
+//							+ ",DECODE(vp.FORPAG_ID,3,'100 %', DECODE(pro.c_tipdes,'S',pro.n_valdes||' S/',pro.n_valdes||' %')) "
+//							+ ",NVL(pro.c_denominacion,'CORTESIA'), pro.c_tipdes,pro.n_valdes "+
+//					"ORDER BY SUM(vp.n_imppag) desc";
+					
+		String sql= "SELECT pro.C_CODIGO promocion_id, NVL(pro.c_tipdes||' : DESDE '||pro.n_valmin||' HASTA '||pro.n_valmax,'CORTESIA') as Promocion \r\n" + 
+				"                ,DECODE(vp.FORPAG_ID,3,'100 %', DECODE(pro.c_tipdes,'DS',' S/',' %')) as ValDesct \r\n" + 
+				"                ,COUNT(*)as Cantidad \r\n" + 
+				"                ,SUM(vp.n_descuento) as TotalDest \r\n" + 
+				"                ,SUM(vp.n_imppag)as TotalVenta \r\n" + 
+				"          FROM VRTVENPAS vp \r\n" + 
+				"               INNER JOIN (SELECT MIN(v.venpas_id)venpas_id FROM VRTVENPAS v where v.n_descuento>0 GROUP BY v.venpas_idoriginal \r\n" + 
+				"                          )mvenpas_id ON (mvenpas_id.venpas_id=vp.venpas_id) \r\n" + 
+				"               INNER JOIN VRMDESCUENTO pro ON (vp.c_coddes=pro.c_codigo) \r\n" + 
+				"               LEFT JOIN VRMFORPAG fp ON (fp.forpag_id=vp.forpag_id)  \r\n" + 
+				"               INNER JOIN VRMUSUARIO us ON (us.usuario_id=vp.usuario_id) \r\n" + 
+				"          WHERE vp.d_fecliq BETWEEN to_date('"+fechaInicio+"','dd/MM/yyyy') AND to_date('"+fechaFin+"','dd/MM/yyyy') \r\n" + 
+				"               AND vp.tipmov_id IN (1,8) \r\n" + 
+				"               AND vp.c_tiptra='1' \r\n" + 
+				"               AND vp.tipcom_id in (1,2,7) \r\n" + 
+				"               AND vp.c_estreg='A' \r\n" + 
+				"               AND vp.agencia_id=nvl("+agencia_id+", vp.agencia_id) \r\n" + 
+				"               AND vp.usuario_id=nvl("+usuario_id+", vp.usuario_id) \r\n" + 
+				"               AND pro.c_codigo='"+idPromocion+"' \r\n" + 
+				"          GROUP BY pro.C_CODIGO \r\n" + 
+				"               ,DECODE(vp.FORPAG_ID,3,'100 %', DECODE(pro.c_tipdes,'DS',' S/',' %')) \r\n" + 
+				"               ,NVL(pro.c_tipdes||' : DESDE '||pro.n_valmin||' HASTA '||pro.n_valmax,'CORTESIA'), pro.c_tipdes\r\n" + 
+				"          ORDER BY SUM(vp.n_imppag) desc ";			
+					
 		log.info(sql);
 		List<?>lstResult=getSession().createSQLQuery(sql).list();
 		ArrayList<Promocion> lstVentPromo=new ArrayList<>();
@@ -1622,9 +1647,10 @@ public class ReportesDAOImpl extends GenericDAOImpl implements ReportesDAO {
 			Object[] obj=(Object[])element;
 
 			Promocion promocion=new Promocion();
-			promocion.setId(((BigDecimal)obj[0]).longValue());
+//			promocion.setId(((BigDecimal)obj[0]).longValue());
+			promocion.setTipoDescuento(obj[0].toString());
 			promocion.setDenominacion(obj[1].toString());
-			promocion.setTipoDescuento(obj[2].toString());
+			promocion.setBeneficio(obj[2].toString());
 			promocion.setCantidadViajesPasajero(obj[3].toString());
 			promocion.setTotalDescuento(((BigDecimal)obj[4]).doubleValue());
 			promocion.setTotalVenta(((BigDecimal)obj[5]).doubleValue());
@@ -1645,18 +1671,34 @@ public class ReportesDAOImpl extends GenericDAOImpl implements ReportesDAO {
 		ArrayList<Object> listResult = new ArrayList<>();
 
 		//Lista de promociones
-		String sql="SELECT pro.promocion_id, pro.c_denominacion as Promocion "+
-					"FROM VRTVENPAS vp "+
-					     "INNER JOIN (SELECT MIN(v.venpas_id)venpas_id FROM VRTVENPAS v GROUP BY v.venpas_idoriginal "+
-					                ")mvenpas_id ON (mvenpas_id.venpas_id=vp.venpas_id) "+
-					     "INNER JOIN VRMPROMOCION pro ON (vp.promocion_id=pro.promocion_id) "+
-					"WHERE vp.d_fecliq BETWEEN to_date('"+fechaInicio+"','dd/MM/yyyy') AND to_date('"+fechaFin+"','dd/MM/yyyy') "+
-					     "AND vp.tipmov_id IN (1,8) "+
-					     "AND vp.c_tiptra='1' "+
-					     "AND vp.tipcom_id IN (1,2,7) "+
-					     "AND vp.c_estreg='A' "+
-					"GROUP BY pro.promocion_id,pro.c_Denominacion "+
-					"ORDER BY pro.c_Denominacion";
+//		String sql="SELECT pro.promocion_id, pro.c_denominacion as Promocion "+
+//					"FROM VRTVENPAS vp "+
+//					     "INNER JOIN (SELECT MIN(v.venpas_id)venpas_id FROM VRTVENPAS v GROUP BY v.venpas_idoriginal "+
+//					                ")mvenpas_id ON (mvenpas_id.venpas_id=vp.venpas_id) "+
+//					     "INNER JOIN VRMPROMOCION pro ON (vp.promocion_id=pro.promocion_id) "+
+//					"WHERE vp.d_fecliq BETWEEN to_date('"+fechaInicio+"','dd/MM/yyyy') AND to_date('"+fechaFin+"','dd/MM/yyyy') "+
+//					     "AND vp.tipmov_id IN (1,8) "+
+//					     "AND vp.c_tiptra='1' "+
+//					     "AND vp.tipcom_id IN (1,2,7) "+
+//					     "AND vp.c_estreg='A' "+
+//					"GROUP BY pro.promocion_id,pro.c_Denominacion "+
+//					"ORDER BY pro.c_Denominacion";
+		String sql="SELECT \r\n" + 
+				"       pro.c_codigo, pro.c_tipdes||' : DESDE '||pro.n_valmin||' HASTA '||pro.n_valmax as Promocion \r\n" + 
+				"FROM VRTVENPAS vp \r\n" + 
+				"     INNER JOIN (SELECT MIN(v.venpas_id)venpas_id \r\n" + 
+				"                FROM VRTVENPAS v GROUP BY v.venpas_idoriginal ) mvenpas_id \r\n" + 
+				"                ON (mvenpas_id.venpas_id=vp.venpas_id) \r\n" + 
+				"     INNER JOIN VRMDESCUENTO pro ON (vp.c_coddes=pro.c_codigo) \r\n" + 
+				"WHERE \r\n" + 
+				"     vp.d_fecliq BETWEEN to_date('"+fechaInicio+"','dd/MM/yyyy') AND to_date('"+fechaFin+"','dd/MM/yyyy') \r\n" + 
+				"     AND vp.tipmov_id IN (1,8) \r\n" + 
+				"     AND vp.c_tiptra='1' \r\n" + 
+				"     AND vp.tipcom_id IN (1,2,7) \r\n" + 
+				"     AND vp.c_estreg='A' \r\n" + 
+				"GROUP BY pro.c_codigo, pro.c_tipdes||' : DESDE '||pro.n_valmin||' HASTA '||pro.n_valmax\r\n" + 
+				"ORDER BY pro.c_tipdes||' : DESDE '||pro.n_valmin||' HASTA '||pro.n_valmax";
+		
 		log.info(sql);
 		List<?> result=getSession().createSQLQuery(sql).list();
 		ArrayList<Promocion>lstPromociones=new ArrayList<>();
@@ -1664,7 +1706,8 @@ public class ReportesDAOImpl extends GenericDAOImpl implements ReportesDAO {
 			Object[] obj=(Object[])  element;
 
 			Promocion promocion=new Promocion();
-			promocion.setId(((BigDecimal)obj[0]).longValue());
+//			promocion.setId(((BigDecimal)obj[0]).longValue());
+			promocion.setTipoDescuento(obj[0].toString());
 			promocion.setDenominacion(obj[1].toString());
 
 			lstPromociones.add(promocion);
@@ -1672,20 +1715,34 @@ public class ReportesDAOImpl extends GenericDAOImpl implements ReportesDAO {
 		listResult.add(lstPromociones);
 
 		//Lista de Agencias
-		sql="SELECT ag.agencia_id, ag.c_denominacion as agencia "+
-				"FROM VRTVENPAS vp "+
-				     "INNER JOIN (SELECT MIN(v.venpas_id)venpas_id FROM VRTVENPAS v GROUP BY v.venpas_idoriginal "+
-				                ")mvenpas_id ON (mvenpas_id.venpas_id=vp.venpas_id) "+
-				     "LEFT JOIN VRMPROMOCION pro ON (vp.promocion_id=pro.promocion_id) "+
-				     "INNER JOIN VRMAGENCIA ag ON (ag.agencia_id=vp.agencia_id) "+
-				"WHERE vp.d_fecliq BETWEEN to_date('"+fechaInicio+"','dd/MM/yyyy') AND to_date('"+fechaFin+"','dd/MM/yyyy') "+
-				     "AND vp.tipmov_id IN (1,8,10) "+
-				     "AND vp.c_tiptra='1' "+
-				     "AND (vp.forpag_id=3 OR pro.PROMOCION_ID IS NOT NULL) "+
-				     "AND vp.tipcom_id IN (1,2,7) "+
-				     "AND vp.c_estreg='A' "+
-				"GROUP BY ag.agencia_id, ag.c_Denominacion "+
-				"ORDER BY ag.c_Denominacion";
+//		sql="SELECT ag.agencia_id, ag.c_denominacion as agencia "+
+//				"FROM VRTVENPAS vp "+
+//				     "INNER JOIN (SELECT MIN(v.venpas_id)venpas_id FROM VRTVENPAS v GROUP BY v.venpas_idoriginal "+
+//				                ")mvenpas_id ON (mvenpas_id.venpas_id=vp.venpas_id) "+
+//				     "LEFT JOIN VRMPROMOCION pro ON (vp.promocion_id=pro.promocion_id) "+
+//				     "INNER JOIN VRMAGENCIA ag ON (ag.agencia_id=vp.agencia_id) "+
+//				"WHERE vp.d_fecliq BETWEEN to_date('"+fechaInicio+"','dd/MM/yyyy') AND to_date('"+fechaFin+"','dd/MM/yyyy') "+
+//				     "AND vp.tipmov_id IN (1,8,10) "+
+//				     "AND vp.c_tiptra='1' "+
+//				     "AND (vp.forpag_id=3 OR pro.PROMOCION_ID IS NOT NULL) "+
+//				     "AND vp.tipcom_id IN (1,2,7) "+
+//				     "AND vp.c_estreg='A' "+
+//				"GROUP BY ag.agencia_id, ag.c_Denominacion "+
+//				"ORDER BY ag.c_Denominacion";
+		sql="        SELECT ag.agencia_id, ag.c_denominacion as agencia \r\n" + 
+				"        FROM VRTVENPAS vp \r\n" + 
+				"             INNER JOIN (SELECT MIN(v.venpas_id)venpas_id FROM VRTVENPAS v where v.n_descuento>0 GROUP BY v.venpas_idoriginal \r\n" + 
+				"                        )mvenpas_id ON (mvenpas_id.venpas_id=vp.venpas_id) \r\n" + 
+				"             INNER JOIN VRMDESCUENTO pro ON (vp.c_coddes=pro.c_codigo) \r\n" + 
+				"             INNER JOIN VRMAGENCIA ag ON (ag.agencia_id=vp.agencia_id) \r\n" + 
+				"        WHERE vp.d_fecliq BETWEEN to_date('"+fechaInicio+"','dd/MM/yyyy') AND to_date('"+fechaFin+"','dd/MM/yyyy') \r\n" + 
+				"             AND vp.tipmov_id IN (1,8) \r\n" + 
+				"             AND vp.c_tiptra='1' \r\n" + 
+				"             AND vp.tipcom_id IN (1,2,7) \r\n" + 
+				"             AND vp.c_estreg='A' \r\n" + 
+				"        GROUP BY ag.agencia_id, ag.c_Denominacion \r\n" + 
+				"        ORDER BY ag.c_Denominacion";
+		
 		log.info(sql);
 		result = getSession().createSQLQuery(sql).list();
 		List<Agencia> listAgencias = new ArrayList<>();
@@ -1701,20 +1758,35 @@ public class ReportesDAOImpl extends GenericDAOImpl implements ReportesDAO {
 		listResult.add(listAgencias);
 
 		//Lista de usuarios
-		sql="SELECT us.usuario_id, us.c_apepat, us.c_apemat, us.c_nombre, vp.agencia_id "+
-				"FROM VRTVENPAS vp "+
-				     "INNER JOIN (SELECT MIN(v.venpas_id)venpas_id FROM VRTVENPAS v GROUP BY v.venpas_idoriginal "+
-				                ")mvenpas_id ON (mvenpas_id.venpas_id=vp.venpas_id) "+
-				     "LEFT JOIN VRMPROMOCION pro ON (vp.promocion_id=pro.promocion_id) "+
-				     "INNER JOIN VRMUSUARIO us ON (us.usuario_id=vp.usuario_id) "+
-				"WHERE vp.d_fecliq BETWEEN to_date('"+fechaInicio+"','dd/MM/yyyy') AND to_date('"+fechaFin+"','dd/MM/yyyy') "+
-				     "AND vp.tipmov_id IN (1,8,10) "+
-				     "AND vp.c_tiptra='1' "+
-				     "AND vp.tipcom_id IN (1,2,7) "+
-				     "AND (vp.forpag_id=3 OR pro.PROMOCION_ID IS NOT NULL) "+
-				     "AND vp.c_estreg='A' "+
-				"GROUP BY us.usuario_id, us.c_apepat, us.c_apemat, us.c_nombre, vp.agencia_id "+
-				"ORDER BY us.c_apepat, us.c_apemat, us.c_nombre";
+//		sql="SELECT us.usuario_id, us.c_apepat, us.c_apemat, us.c_nombre, vp.agencia_id "+
+//				"FROM VRTVENPAS vp "+
+//				     "INNER JOIN (SELECT MIN(v.venpas_id)venpas_id FROM VRTVENPAS v GROUP BY v.venpas_idoriginal "+
+//				                ")mvenpas_id ON (mvenpas_id.venpas_id=vp.venpas_id) "+
+//				     "LEFT JOIN VRMPROMOCION pro ON (vp.promocion_id=pro.promocion_id) "+
+//				     "INNER JOIN VRMUSUARIO us ON (us.usuario_id=vp.usuario_id) "+
+//				"WHERE vp.d_fecliq BETWEEN to_date('"+fechaInicio+"','dd/MM/yyyy') AND to_date('"+fechaFin+"','dd/MM/yyyy') "+
+//				     "AND vp.tipmov_id IN (1,8,10) "+
+//				     "AND vp.c_tiptra='1' "+
+//				     "AND vp.tipcom_id IN (1,2,7) "+
+//				     "AND (vp.forpag_id=3 OR pro.PROMOCION_ID IS NOT NULL) "+
+//				     "AND vp.c_estreg='A' "+
+//				"GROUP BY us.usuario_id, us.c_apepat, us.c_apemat, us.c_nombre, vp.agencia_id "+
+//				"ORDER BY us.c_apepat, us.c_apemat, us.c_nombre";
+		
+		sql="SELECT us.usuario_id, us.c_apepat, us.c_apemat, us.c_nombre, vp.agencia_id \r\n" + 
+				"        FROM VRTVENPAS vp \r\n" + 
+				"             INNER JOIN (SELECT MIN(v.venpas_id)venpas_id FROM VRTVENPAS v where v.n_descuento>0 GROUP BY v.venpas_idoriginal \r\n" + 
+				"                        )mvenpas_id ON (mvenpas_id.venpas_id=vp.venpas_id) \r\n" + 
+				"             INNER JOIN VRMDESCUENTO pro ON (vp.c_coddes=pro.c_codigo) \r\n" + 
+				"             INNER JOIN VRMUSUARIO us ON (us.usuario_id=vp.usuario_id) \r\n" + 
+				"        WHERE vp.d_fecliq BETWEEN to_date('"+fechaInicio+"','dd/MM/yyyy') AND to_date('"+fechaFin+"','dd/MM/yyyy') \r\n" + 
+				"             AND vp.tipmov_id IN (1,8) \r\n" + 
+				"             AND vp.c_tiptra='1' \r\n" + 
+				"             AND vp.tipcom_id IN (1,2,7) \r\n" + 
+				"             AND vp.c_estreg='A' \r\n" + 
+				"        GROUP BY us.usuario_id, us.c_apepat, us.c_apemat, us.c_nombre, vp.agencia_id \r\n" + 
+				"        ORDER BY us.c_apepat, us.c_apemat, us.c_nombre";
+		
 		log.info(sql);
 		result = getSession().createSQLQuery(sql).list();
 		List<Usuario> listUsuarios = new ArrayList<>();
@@ -1740,40 +1812,72 @@ public class ReportesDAOImpl extends GenericDAOImpl implements ReportesDAO {
 	 * @see com.tepsa.sisvyr.model.dao.ReportesDAO#ventasPromocionDeta(java.lang.String, java.lang.String, java.lang.Long)
 	 */
 	@Override
-	public ArrayList<VentaPasaje> ventasPromocionDeta(String fechaInicio,String fechafin, Long idPromocion) throws Exception {
-		String sql="SELECT vp.d_fecliq "+
-					      ",vp.c_numboleto "+
-					      ",p.c_nomape  "+
-					      ",r.c_origen "+
-					      ",r.c_Destino "+
-					      ",s.c_denominacion as servicio "+
-					      ",vp.d_fecpar "+
-					      ",vp.c_horpar "+
-					      ",vp.n_tarifa "+
-					      ",vp.n_descuento "+
-					      ",vp.n_imppag "+
-					      ",us.c_apepat "+
-					      ",us.c_apemat "+
-					      ",us.c_nombre  "+
-					      ",agv.c_Denominacion as agencia "+
-					"FROM VRTVENPAS vp "+
-					     "INNER JOIN (SELECT MIN(v.venpas_id)venpas_id FROM VRTVENPAS v GROUP BY v.venpas_idoriginal "+
-					                ")mvenpas_id ON (mvenpas_id.venpas_id=vp.venpas_id) "+
-					     "INNER JOIN VRMPASAJERO p ON (p.pasajero_id=vp.pasajero_id) "+
-					     "INNER JOIN VRMRUTA r ON (r.ruta_id=vp.ruta_id) "+
-					     "INNER JOIN VRMSERVICIO s ON (s.servicio_id=vp.servicio_id) "+
-					     "INNER JOIN VRMUSUARIO us ON (us.usuario_id=vp.usuario_id) "+
-					     "INNER JOIN VRMAGENCIA agv ON (agv.agencia_id=vp.agencia_id) "+
-					"WHERE vp.d_fecliq BETWEEN to_date('"+fechaInicio+"','dd/MM/yyyy') AND to_date('"+fechafin+"','dd/MM/yyyy') "+
-					     "AND vp.tipmov_id IN (1,8,10) "+
-					     "AND vp.c_tiptra='1' "+
-					     "AND vp.tipcom_id in (1,2,7) "+
-					     "AND vp.c_estreg='A' ";
-					if(idPromocion < 0) //-->Busqueda de cortesias
-						sql += "AND vp.forpag_id="+Constantes.ID_FORPAG_CORTESIA+" ";
-					else
-						sql += "AND vp.promocion_id="+idPromocion+" ";
-					sql += "ORDER BY vp.d_fecliq,p.c_nomape,vp.venpas_id ";
+	public ArrayList<VentaPasaje> ventasPromocionDeta(String fechaInicio,String fechafin, String idPromocion) throws Exception {
+//		String sql="SELECT vp.d_fecliq "+
+//					      ",vp.c_numboleto "+
+//					      ",p.c_nomape  "+
+//					      ",r.c_origen "+
+//					      ",r.c_Destino "+
+//					      ",s.c_denominacion as servicio "+
+//					      ",vp.d_fecpar "+
+//					      ",vp.c_horpar "+
+//					      ",vp.n_tarifa "+
+//					      ",vp.n_descuento "+
+//					      ",vp.n_imppag "+
+//					      ",us.c_apepat "+
+//					      ",us.c_apemat "+
+//					      ",us.c_nombre  "+
+//					      ",agv.c_Denominacion as agencia "+
+//					"FROM VRTVENPAS vp "+
+//					     "INNER JOIN (SELECT MIN(v.venpas_id)venpas_id FROM VRTVENPAS v GROUP BY v.venpas_idoriginal "+
+//					                ")mvenpas_id ON (mvenpas_id.venpas_id=vp.venpas_id) "+
+//					     "INNER JOIN VRMPASAJERO p ON (p.pasajero_id=vp.pasajero_id) "+
+//					     "INNER JOIN VRMRUTA r ON (r.ruta_id=vp.ruta_id) "+
+//					     "INNER JOIN VRMSERVICIO s ON (s.servicio_id=vp.servicio_id) "+
+//					     "INNER JOIN VRMUSUARIO us ON (us.usuario_id=vp.usuario_id) "+
+//					     "INNER JOIN VRMAGENCIA agv ON (agv.agencia_id=vp.agencia_id) "+
+//					"WHERE vp.d_fecliq BETWEEN to_date('"+fechaInicio+"','dd/MM/yyyy') AND to_date('"+fechafin+"','dd/MM/yyyy') "+
+//					     "AND vp.tipmov_id IN (1,8,10) "+
+//					     "AND vp.c_tiptra='1' "+
+//					     "AND vp.tipcom_id in (1,2,7) "+
+//					     "AND vp.c_estreg='A' ";
+//					if(idPromocion < 0) //-->Busqueda de cortesias
+//						sql += "AND vp.forpag_id="+Constantes.ID_FORPAG_CORTESIA+" ";
+//					else
+//						sql += "AND vp.promocion_id="+idPromocion+" ";
+//					sql += "ORDER BY vp.d_fecliq,p.c_nomape,vp.venpas_id ";
+					
+			String sql="SELECT vp.d_fecliq \r\n" + 
+					"                ,vp.c_numboleto \r\n" + 
+					"                ,p.c_nomape  \r\n" + 
+					"                ,r.c_origen \r\n" + 
+					"                ,r.c_Destino \r\n" + 
+					"                ,s.c_denominacion as servicio \r\n" + 
+					"                ,vp.d_fecpar \r\n" + 
+					"                ,vp.c_horpar \r\n" + 
+					"                ,vp.n_tarifa \r\n" + 
+					"                ,vp.n_descuento \r\n" + 
+					"                ,vp.n_imppag \r\n" + 
+					"                ,us.c_apepat \r\n" + 
+					"                ,us.c_apemat \r\n" + 
+					"                ,us.c_nombre  \r\n" + 
+					"                ,agv.c_Denominacion as agencia \r\n" + 
+					"          FROM VRTVENPAS vp \r\n" + 
+					"               INNER JOIN (SELECT MIN(v.venpas_id)venpas_id FROM VRTVENPAS v where v.n_descuento>0 GROUP BY v.venpas_idoriginal \r\n" + 
+					"                          )mvenpas_id ON (mvenpas_id.venpas_id=vp.venpas_id) \r\n" + 
+					"               INNER JOIN VRMPASAJERO p ON (p.pasajero_id=vp.pasajero_id) \r\n" + 
+					"               INNER JOIN VRMRUTA r ON (r.ruta_id=vp.ruta_id) \r\n" + 
+					"               INNER JOIN VRMSERVICIO s ON (s.servicio_id=vp.servicio_id) \r\n" + 
+					"               INNER JOIN VRMUSUARIO us ON (us.usuario_id=vp.usuario_id) \r\n" + 
+					"               INNER JOIN VRMAGENCIA agv ON (agv.agencia_id=vp.agencia_id) \r\n" + 
+					"          WHERE vp.d_fecliq BETWEEN to_date('"+fechaInicio+"','dd/MM/yyyy') AND to_date('"+fechafin+"','dd/MM/yyyy') \r\n" + 
+					"               AND vp.tipmov_id IN (1,8,10) \r\n" + 
+					"               AND vp.c_tiptra='1' \r\n" + 
+					"               AND vp.tipcom_id in (1,2,7) \r\n" + 
+					"               AND vp.c_estreg='A' \r\n" + 
+					"               AND vp.c_coddes='"+idPromocion+"' \r\n" + 
+					"           ORDER BY vp.d_fecliq,p.c_nomape,vp.venpas_id";			
+					
 		log.info(sql);
 		ArrayList<VentaPasaje>lstVentasPromo=new ArrayList<>();
 		try {

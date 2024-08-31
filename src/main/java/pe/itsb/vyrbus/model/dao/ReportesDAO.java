@@ -97,7 +97,7 @@ public interface ReportesDAO extends GenericDAO {
 	 * @return	Lista de ventas asociadas a una promocion.
 	 * @throws Exception
 	 */
-	public ArrayList<Promocion>ventasPromocion(String fechaInicio,String fechaFin, Long idPromocion, String tipoDescuento, Integer agencia_id, Integer usuario_id)throws Exception;
+	public ArrayList<Promocion>ventasPromocion(String fechaInicio,String fechaFin, String idPromocion, String tipoDescuento, Integer agencia_id, Integer usuario_id)throws Exception;
 	/**
 	 * CONSULTA: Todas las promociones emitidas en la venta, segun los parametros que se envíe
 	 * @param fechaInicio	: Fecha incio.
@@ -114,7 +114,7 @@ public interface ReportesDAO extends GenericDAO {
 	 * @return Lista de ventas
 	 * @throws Exception
 	 */
-	public ArrayList<VentaPasaje>ventasPromocionDeta(String fechaInicio, String fechafin, Long idPromocion)throws Exception;
+	public ArrayList<VentaPasaje>ventasPromocionDeta(String fechaInicio, String fechafin, String idPromocion)throws Exception;
 	/**
 	 * CONSULTA: AVANCE DE BUSES, SEGUN RANGO DE FECHAS.
 	 * @param fechaInicio	: Fecha inicio de la busqueda.

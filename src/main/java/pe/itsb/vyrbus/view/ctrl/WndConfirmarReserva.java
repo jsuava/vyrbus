@@ -117,7 +117,7 @@ public class WndConfirmarReserva extends WndBase {
 
 			List<Rol>listRolesAcceeso=new ArrayList<>();
 			listRolesAcceeso.add(new Rol(Constantes.ID_ROL_SUPER_USUARIO));
-//			listRolesAcceeso.add(new Rol(Constantes.ID_ROL_JEFE_VENTAS));
+			listRolesAcceeso.add(new Rol(Constantes.ID_ROL_FINANZAS));
 			listRolesAcceeso.add(new Rol(Constantes.ID_ROL_ADMIN));
 //			listRolesAcceeso.add(new Rol(Constantes.ID_ROL_ADMIN_COMERCIAL));
 //			listRolesAcceeso.add(new Rol(Constantes.ID_ROL_GESTION_CORPORATIVA));

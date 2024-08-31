@@ -189,12 +189,14 @@ public class WndRptVentaPromocion extends WndBase {
 			String style="font-size:11px !important";
 			String fechaInicio=Constantes.FORMAT_DATE.format(dtbxFechaInicio.getValue());
 			String fechaFin=Constantes.FORMAT_DATE.format(dtbxFechaFinal.getValue());
-			Long idPromocion=null;
+//			Long idPromocion=null;
+			String idPromocion=null;
 			String tipoDescuento=null;
 			Integer agencia_id=null, usuario_id=null;
 
 			if(cmbPromocion.getSelectedIndex()>0)
-				idPromocion=((Promocion)cmbPromocion.getSelectedItem().getValue()).getId();
+				idPromocion=((Promocion)cmbPromocion.getSelectedItem().getValue()).getTipoDescuento();
+//				idPromocion=((Promocion)cmbPromocion.getSelectedItem().getValue()).getId();
 			if(cmbTipoDescuento.getSelectedIndex()>0)
 				tipoDescuento=cmbTipoDescuento.getSelectedItem().getValue();
 			if(cmbAgencia.getSelectedItem().getValue() instanceof Agencia)
@@ -211,7 +213,7 @@ public class WndRptVentaPromocion extends WndBase {
 				item.appendChild(cell);
 				cell=new Listcell(promocion.getDenominacion());
 				item.appendChild(cell);
-				cell=new Listcell(promocion.getTipoDescuento());
+				cell=new Listcell(promocion.getBeneficio());
 				cell.setStyle(style);
 				item.appendChild(cell);
 				cell=new Listcell(promocion.getCantidadViajesPasajero().toString());
@@ -283,7 +285,7 @@ public class WndRptVentaPromocion extends WndBase {
 
 			for(Listitem itemSummary: lstVentasPromocion.getSelectedItems()){
 				Promocion promocion=itemSummary.getValue();
-				ArrayList<VentaPasaje>lstVentasPromo=ServiceLocator.getReportesManager().ventasPromocionDeta(fechaInicio, fechaFin, promocion.getId());
+				ArrayList<VentaPasaje>lstVentasPromo=ServiceLocator.getReportesManager().ventasPromocionDeta(fechaInicio, fechaFin, promocion.getTipoDescuento());
 
 				for(VentaPasaje ventaPasaje:lstVentasPromo){
 					cant++;
