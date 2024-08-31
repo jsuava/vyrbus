@@ -3646,8 +3646,8 @@ public class WndItinerario extends WndOpcionesMantenimiento {
 				String destino = null; /*Almacena el ultimo destino cargado en el listBoxdetalleItinerario, para la validacion con el origen.*/
 				String idDestino = null;
 
-				DetalleItinerario oDetalleItinerario =lstItinerariosDetalle.get(0);
-				destino =oDetalleItinerario.getRuta().getDestino();
+				DetalleItinerario oDetalleItinerario = lstItinerariosDetalle.get(0);
+				destino = oDetalleItinerario.getRuta().getDestino();
 				idDestino = oDetalleItinerario.getRuta().getLocalidadDestino().getId().toString();
 
 				for(DetalleItinerario detalle : lstItinerariosDetalle){
@@ -3870,6 +3870,7 @@ public class WndItinerario extends WndOpcionesMantenimiento {
 
 			Itinerario newItinerario = (Itinerario)oItinerario.clone();
 			newItinerario.setId(null);
+			newItinerario.setBus(null);
 			newItinerario.setServicio(servicio);
 			newItinerario.setTipoItinerario(tipoItinerario);
 			String fechaHoraPartida = Util.DatetoString(oItinerario.getFechaPartida(), Constantes.DATE_FORMAT)+" "+oItinerario.getHoraPartida();

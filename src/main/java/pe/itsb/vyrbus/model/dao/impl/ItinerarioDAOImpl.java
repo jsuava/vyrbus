@@ -1001,7 +1001,8 @@ public class ItinerarioDAOImpl extends GenericDAOImpl implements ItinerarioDAO {
 	@Override
 	public Integer validarItinerario(Integer idRuta, Integer idServicio, String fechaPartida, String horaPartida) throws Exception {
 		String sql = "SELECT * FROM vrtitinerario WHERE ruta_idMayor = " + idRuta + " AND servicio_id = " + idServicio +
-				" AND to_char(d_fecpar, 'dd/mm/yyyy') = '" + fechaPartida + "' AND c_horpar = '" + horaPartida + "'";
+				" AND to_char(d_fecpar, 'dd/mm/yyyy') = '" + fechaPartida + "' AND c_horpar = '" + horaPartida + "'"
+			  + " AND N_ESANULADO = "+ Constantes.FALSE_VALUE + " AND C_ESTREG = 'A' ";
 
 		log.info(sql);
 		List<?>result = getSession().createSQLQuery(sql).list();

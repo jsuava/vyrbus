@@ -1,7 +1,7 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	:
+ * Descripciï¿½n	:
  * Autor		: jM
  * Fecha		: 20/04/2012
  */
@@ -67,11 +67,11 @@ public abstract class WndBase extends Window implements IBase, BeforeCompose, Af
 	}
 
 	/**
-	 * Metodo ZK Framework que se ejecuta antes de componer la página.
+	 * Metodo ZK Framework que se ejecuta antes de componer la pï¿½gina.
 	 */
 	@Override
 	public void beforeCompose() {
-		/*Validacion de inicio de Sesión de Usuario*/
+		/*Validacion de inicio de Sesion de Usuario*/
 		Usuario usuario = null;
 		usuario = (Usuario) this.getDesktop().getSession().getAttribute(Constantes.ATRIBUTO_USUARIO);
 		if (usuario==null){
@@ -107,7 +107,7 @@ public abstract class WndBase extends Window implements IBase, BeforeCompose, Af
 
 
 	/**
-	 * Metodo ZK Framework que se ejecuta despues de componer la página.
+	 * Metodo ZK Framework que se ejecuta despues de componer la pï¿½gina.
 	 */
 	@Override
 	public void afterCompose() {
@@ -115,7 +115,7 @@ public abstract class WndBase extends Window implements IBase, BeforeCompose, Af
 	}
 
 	/**
-	 * Método para cerrar la ventana, incluyendo el Tab que lo contenga.
+	 * Metodo para cerrar la ventana, incluyendo el Tab que lo contenga.
 	 */
 	public void closeTabWindow () {
 		Component oComponentParent = this;

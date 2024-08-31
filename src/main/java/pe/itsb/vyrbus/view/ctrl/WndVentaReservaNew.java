@@ -4019,8 +4019,11 @@ public class WndVentaReservaNew  extends WndBase {
 				if(ventaPasaje_x.getRecargo() != null && ventaPasaje_x.getRecargo().doubleValue() > .00)
 					ventaPasaje_x.setTarifa(ventaPasaje_x.getImportePagado());
 				ventaPasaje_x.setDescuento(.00);
-				if(ventaPasaje_x.getCodigoDescuento()!=null)
+				if(ventaPasaje_x.getCodigoDescuento()!=null) {
 					ventaPasaje_x.setDescuento(ventaPasaje_x.getTarifa() - ventaPasaje_x.getImportePagado());
+					// cuando existe un descuento a la tarifa, el valor de la tarifa real es reemplazado por el Importe pagado (tarifa - descuento) - jabanto 30/08/2024
+					ventaPasaje_x.setTarifa(ventaPasaje_x.getImportePagado());
+				}					
 				ventaPasaje_x.setPenalidad(.00);
 				ventaPasaje_x.setAcuenta(.00);
 				ventaPasaje_x.setImportePagadoByDiferencia(.00);
@@ -7480,13 +7483,13 @@ public class WndVentaReservaNew  extends WndBase {
 			if(controlEspecieValorada ==null)
 				return;
 			
-			if(cmbPostTipoFormaPago.getSelectedIndex()<0) {
+			if(cmbPostTipoFormaPago.getSelectedIndex() < 0) {
 				DlgMessage.information(Messages.getString("WndVentaReserva.information.noMedioPago"), cmbPostTipoFormaPago);
 				return;
-			}else if(!cmbPostOperadorTarjeta.isDisabled() && cmbPostOperadorTarjeta.getSelectedIndex()<0) {
+			}else if(!cmbPostOperadorTarjeta.isDisabled() && cmbPostOperadorTarjeta.getSelectedIndex() <= 0) {
 				DlgMessage.information(Messages.getString("WndVentaReserva.information.noOperadorTarjetaCredito"), cmbPostOperadorTarjeta);
 				return;
-			}else if(!cmbPostTarjeta.isDisabled() && cmbPostTarjeta.getSelectedIndex()<0) {
+			}else if(!cmbPostTarjeta.isDisabled() && cmbPostTarjeta.getSelectedIndex() <= 0) {
 				DlgMessage.information(Messages.getString("WndVentaReserva.information.noTarjetaCredito"), cmbPostTarjeta);
 				return;
 			}else if(!txtPostNumeroOperacion.isDisabled() && txtPostNumeroOperacion.getText().trim().isEmpty()) {

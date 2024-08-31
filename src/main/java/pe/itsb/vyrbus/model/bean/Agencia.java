@@ -21,6 +21,7 @@ public class Agencia extends GenericBean implements java.io.Serializable {
 	private String direccion;
 	private String codigo;
 	private Nacionalidad nacionalidad;
+	private String telefono;
 //	private TipoMoneda tipoMoneda;
 
 
@@ -236,6 +237,20 @@ public class Agencia extends GenericBean implements java.io.Serializable {
 	 */
 	public void setNacionalidad(Nacionalidad nacionalidad) {
 		this.nacionalidad = nacionalidad;
+	}
+
+	/**
+	 * @return the telefono
+	 */
+	public String getTelefono() {
+		return telefono;
+	}
+
+	/**
+	 * @param telefono the telefono to set
+	 */
+	public void setTelefono(String telefono) {
+		this.telefono = telefono;
 	}
 
 
