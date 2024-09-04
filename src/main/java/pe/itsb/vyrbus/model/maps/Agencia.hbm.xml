@@ -3,7 +3,7 @@
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <!-- Generated 24/05/2012 11:51:01 AM by Hibernate Tools 3.4.0.CR1 -->
 <hibernate-mapping>
-    <class name="pe.itsb.vyrbus.model.bean.Agencia" table="VRMAGENCIA" schema="VRANTEZANA">
+    <class name="pe.itsb.vyrbus.model.bean.Agenciasss" table="VRMAGENCIA" schema="VRANTEZANA">
         <comment>Entidad que sirve para realizar reservas y ventas de pasajes, puede funcionar como un terminal permiendo embarque y desembarque de pasajeros, pueden ser: Propios,
         externos, y Agencias de Viaje.</comment>
         <id name="id" type="java.lang.Integer">

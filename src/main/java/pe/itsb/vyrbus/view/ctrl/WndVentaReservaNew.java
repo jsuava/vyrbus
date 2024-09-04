@@ -2965,6 +2965,7 @@ public class WndVentaReservaNew  extends WndBase {
 			cleanDatosPasajero(true);
 		cleanDatosInfante();
 		cleanDatosPago(event);
+		cleanDatosDescuento();
 		if(ltbxVtaAsientosSeleccionados.getItemCount()==0)
 			resertOperacionAsiento();
 		cleanDatosViaje();
@@ -3929,10 +3930,9 @@ public class WndVentaReservaNew  extends WndBase {
 					itinerarioAgenciaLlegada = cmbVtaIdaDesembarque_hora.getSelectedItem().getValue();					
 					observaciones = (txtVtaIdaObservaciones.getText().trim().length()>0 ? txtVtaIdaObservaciones.getText().trim().toUpperCase(): null);
 					if(isVenta) {
-						// Venta
-//						importePagado = dbxVtaIdaTarifa.getValue();
-						importePagado = dbxVtaTotalPagar.getValue();
+						// Venta						
 						recargo = Optional.ofNullable(dbxVtaIdaRecargo.getValue()).orElse(.00);
+						importePagado = dbxVtaIdaTarifa.getValue() + recargo;
 					}else {
 						// Reserva
 						fechaExpiraReserva = dtbxVtaIdaExpiraReserva.getValue();
@@ -3942,10 +3942,9 @@ public class WndVentaReservaNew  extends WndBase {
 					itinerarioAgenciaLlegada = cmbVtaVueltaDesembarque_hora.getSelectedItem().getValue();
 					observaciones = (txtVtaVueltaObservaciones.getText().trim().length()>0 ? txtVtaVueltaObservaciones.getText().trim().toUpperCase(): null);
 					if(isVenta) {
-						// Venta
-//						importePagado = dbxVtaVueltaTarifa.getValue();
-						importePagado = dbxVtaTotalPagar.getValue();
+						// Venta						
 						recargo = Optional.ofNullable(dbxVtaVueltaRecargo.getValue()).orElse(.00);
+						importePagado = dbxVtaVueltaTarifa.getValue() + recargo;
 					}else {
 						// Reserva
 						fechaExpiraReserva = dtbxVtaVueltaExpiraReserva.getValue();
@@ -4019,7 +4018,7 @@ public class WndVentaReservaNew  extends WndBase {
 				if(ventaPasaje_x.getRecargo() != null && ventaPasaje_x.getRecargo().doubleValue() > .00)
 					ventaPasaje_x.setTarifa(ventaPasaje_x.getImportePagado());
 				ventaPasaje_x.setDescuento(.00);
-				if(ventaPasaje_x.getCodigoDescuento()!=null) {
+				if(ventaPasaje_x.getCodigoDescuento()!=null && ventaPasaje_x.getCodigoDescuento().trim().length() > 0) {
 					ventaPasaje_x.setDescuento(ventaPasaje_x.getTarifa() - ventaPasaje_x.getImportePagado());
 					// cuando existe un descuento a la tarifa, el valor de la tarifa real es reemplazado por el Importe pagado (tarifa - descuento) - jabanto 30/08/2024
 					ventaPasaje_x.setTarifa(ventaPasaje_x.getImportePagado());
