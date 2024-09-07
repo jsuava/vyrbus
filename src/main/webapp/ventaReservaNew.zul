@@ -264,7 +264,8 @@
 										<radio id="rdVtaReserva" label="RESERVA" style="padding:10px;font-weight:bold"/>
 										<radio id="rdVtaConfirmacionFA" label="CONFIRMACION F.A." style="padding:10px;font-weight:bold"/>
 										<radio id="rdVtaPostergacionFA" label="POSTERGACION F.A." style="padding:10px;font-weight:bold"/>
-										<radio id="rdVtaCambioNombre" label="CAMBIO DE NOMBRE" style="padding:10px;font-weight:bold"/>							
+										<radio id="rdVtaCambioNombre" label="CAMBIO DE NOMBRE" style="padding:10px;font-weight:bold"/>
+										<radio id="rdVtaCambioAsiento" label="CAMBIO DE ASIENTO" style="padding:10px;font-weight:bold"/>							
 									</radiogroup>
 								</row>
 							</rows>			

@@ -31,6 +31,7 @@ public class UtilFlag {
 	final static int FLAG_IDTIEMPO_CAMBIO_NOMBRE = 12;
 	final static int FLAG_IDCONECTION_TRANSCAR = 13;
 	final static int FLAG_IDMANIFIESTO_ELECTRONICO = 17;
+	final static int FLAG_IDTIEMPO_CAMBIO_ASIENTO = 18;
 
 	final static String LLAVE_ENABLED = "S";
 	final static String LLAVE_DISABLED = "N";
@@ -60,7 +61,7 @@ public class UtilFlag {
 	}
 	
 	/**
-	 * Obtiene el tiempo, expresado en minutos para la postergación, antes de la salida
+	 * Obtiene el tiempo, expresado en minutos para el cambio de nombre, antes de la salida
 	 * @return
 	 * @throws Exception
 	 */
@@ -71,6 +72,22 @@ public class UtilFlag {
 		if(flag !=null && !flag.getLlave().equals(LLAVE_DISABLED))
 			tiempo = Integer.valueOf(flag.getLlave());
 		
+		
+		return tiempo;
+		
+	}
+	
+	/**
+	 * Obtiene el tiempo, expresado en minutos para el cambio de asiento, antes de la salida
+	 * @return
+	 * @throws Exception
+	 */
+	public static Integer getTiempoCambioAsiento()throws Exception{
+		Integer tiempo = null;
+		
+		Flag flag = getFlag(FLAG_IDTIEMPO_CAMBIO_ASIENTO);
+		if(flag !=null && !flag.getLlave().equals(LLAVE_DISABLED))
+			tiempo = Integer.valueOf(flag.getLlave());		
 		
 		return tiempo;
 		
