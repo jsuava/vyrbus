@@ -409,7 +409,7 @@ public class WSFE implements Serializable{
 		try {
 			List<VentaPasaje> ventasEnviadasSFE= new ArrayList<>();
 
-			/*Busca el comprobante en el Servorde de F.E*/
+			/*Busca el comprobante en el Servidor de F.E*/
 			for(VentaPasaje ventaPasaje: listVentaPasaje){
 				ventaPasaje = ServiceLocator.getVentaPasajesManager().buscarPorId(ventaPasaje.getId());
 				

@@ -1616,7 +1616,8 @@ public class ReportesDAOImpl extends GenericDAOImpl implements ReportesDAO {
 //							+ ",NVL(pro.c_denominacion,'CORTESIA'), pro.c_tipdes,pro.n_valdes "+
 //					"ORDER BY SUM(vp.n_imppag) desc";
 					
-		String sql= "SELECT pro.C_CODIGO promocion_id, NVL(pro.c_tipdes||' : DESDE '||pro.n_valmin||' HASTA '||pro.n_valmax,'CORTESIA') as Promocion \r\n" + 
+		String sql= "SELECT vp.agencia_id, a.c_denominacion AGENCIA, pro.C_CODIGO promocion_id, " +
+				"NVL(pro.c_tipdes||' : DESDE '||pro.n_valmin||' HASTA '||pro.n_valmax,'CORTESIA') as Promocion \r\n" + 
 				"                ,DECODE(vp.FORPAG_ID,3,'100 %', DECODE(pro.c_tipdes,'DS',' S/',' %')) as ValDesct \r\n" + 
 				"                ,COUNT(*)as Cantidad \r\n" + 
 				"                ,SUM(vp.n_descuento) as TotalDest \r\n" + 
@@ -1626,16 +1627,18 @@ public class ReportesDAOImpl extends GenericDAOImpl implements ReportesDAO {
 				"                          )mvenpas_id ON (mvenpas_id.venpas_id=vp.venpas_id) \r\n" + 
 				"               INNER JOIN VRMDESCUENTO pro ON (vp.c_coddes=pro.c_codigo) \r\n" + 
 				"               LEFT JOIN VRMFORPAG fp ON (fp.forpag_id=vp.forpag_id)  \r\n" + 
-				"               INNER JOIN VRMUSUARIO us ON (us.usuario_id=vp.usuario_id) \r\n" + 
+				"               INNER JOIN VRMUSUARIO us ON (us.usuario_id=vp.usuario_id) \r\n" +
+				"               inner join vrmagencia a on (vp.agencia_id = a.agencia_id) " +
 				"          WHERE vp.d_fecliq BETWEEN to_date('"+fechaInicio+"','dd/MM/yyyy') AND to_date('"+fechaFin+"','dd/MM/yyyy') \r\n" + 
 				"               AND vp.tipmov_id IN (1,8) \r\n" + 
 				"               AND vp.c_tiptra='1' \r\n" + 
 				"               AND vp.tipcom_id in (1,2,7) \r\n" + 
 				"               AND vp.c_estreg='A' \r\n" + 
 				"               AND vp.agencia_id=nvl("+agencia_id+", vp.agencia_id) \r\n" + 
-				"               AND vp.usuario_id=nvl("+usuario_id+", vp.usuario_id) \r\n" + 
-				"               AND pro.c_codigo='"+idPromocion+"' \r\n" + 
-				"          GROUP BY pro.C_CODIGO \r\n" + 
+				"               AND vp.usuario_id=nvl("+usuario_id+", vp.usuario_id) \r\n";
+		if(!(idPromocion==null))
+				sql += "               AND pro.c_codigo='"+idPromocion+"' \r\n"; 
+				sql += "          GROUP BY vp.agencia_id, a.c_denominacion, pro.C_CODIGO \r\n" + 
 				"               ,DECODE(vp.FORPAG_ID,3,'100 %', DECODE(pro.c_tipdes,'DS',' S/',' %')) \r\n" + 
 				"               ,NVL(pro.c_tipdes||' : DESDE '||pro.n_valmin||' HASTA '||pro.n_valmax,'CORTESIA'), pro.c_tipdes\r\n" + 
 				"          ORDER BY SUM(vp.n_imppag) desc ";			
@@ -1648,12 +1651,16 @@ public class ReportesDAOImpl extends GenericDAOImpl implements ReportesDAO {
 
 			Promocion promocion=new Promocion();
 //			promocion.setId(((BigDecimal)obj[0]).longValue());
-			promocion.setTipoDescuento(obj[0].toString());
-			promocion.setDenominacion(obj[1].toString());
-			promocion.setBeneficio(obj[2].toString());
-			promocion.setCantidadViajesPasajero(obj[3].toString());
-			promocion.setTotalDescuento(((BigDecimal)obj[4]).doubleValue());
-			promocion.setTotalVenta(((BigDecimal)obj[5]).doubleValue());
+			Agencia agencia = new Agencia();
+			agencia.setId(((BigDecimal)obj[0]).intValue());
+			agencia.setDenominacion(obj[1].toString());
+			promocion.setAgencia(agencia);
+			promocion.setTipoDescuento(obj[2].toString());
+			promocion.setDenominacion(obj[3].toString());
+			promocion.setBeneficio(obj[4].toString());
+			promocion.setCantidadViajesPasajero(obj[5].toString());
+			promocion.setTotalDescuento(((BigDecimal)obj[6]).doubleValue());
+			promocion.setTotalVenta(((BigDecimal)obj[7]).doubleValue());
 
 			lstVentPromo.add(promocion);
 		}
@@ -1812,7 +1819,7 @@ public class ReportesDAOImpl extends GenericDAOImpl implements ReportesDAO {
 	 * @see com.tepsa.sisvyr.model.dao.ReportesDAO#ventasPromocionDeta(java.lang.String, java.lang.String, java.lang.Long)
 	 */
 	@Override
-	public ArrayList<VentaPasaje> ventasPromocionDeta(String fechaInicio,String fechafin, String idPromocion) throws Exception {
+	public ArrayList<VentaPasaje> ventasPromocionDeta(String fechaInicio,String fechafin, String idPromocion, Integer idAgencia) throws Exception {
 //		String sql="SELECT vp.d_fecliq "+
 //					      ",vp.c_numboleto "+
 //					      ",p.c_nomape  "+
@@ -1876,6 +1883,7 @@ public class ReportesDAOImpl extends GenericDAOImpl implements ReportesDAO {
 					"               AND vp.tipcom_id in (1,2,7) \r\n" + 
 					"               AND vp.c_estreg='A' \r\n" + 
 					"               AND vp.c_coddes='"+idPromocion+"' \r\n" + 
+					"				AND vp.agencia_id= " +idAgencia+" " +
 					"           ORDER BY vp.d_fecliq,p.c_nomape,vp.venpas_id";			
 					
 		log.info(sql);

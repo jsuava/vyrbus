@@ -96,6 +96,11 @@ public class WndRptVentaPromocion extends WndBase {
 	@SuppressWarnings("unchecked")
 	public void cargarPromociones() throws Exception{
 		try{
+			if(lstVentasPromocion.getItemCount()>0)
+				Util.limpiarListbox(lstVentasPromocion);
+			if(lstVentasPromocionDeta.getItemCount()>0)
+				Util.limpiarListbox(lstVentasPromocionDeta);
+			
 			Util.limpiarCombobox(cmbPromocion);
 			String fechaInicio=Constantes.FORMAT_DATE.format(dtbxFechaInicio.getValue());
 			String fechaFin=Constantes.FORMAT_DATE.format(dtbxFechaFinal.getValue());
@@ -211,6 +216,8 @@ public class WndRptVentaPromocion extends WndBase {
 				Listitem item=new Listitem();
 				Listcell cell=new Listcell();
 				item.appendChild(cell);
+				cell=new Listcell(promocion.getAgencia().getDenominacion());
+				item.appendChild(cell);
 				cell=new Listcell(promocion.getDenominacion());
 				item.appendChild(cell);
 				cell=new Listcell(promocion.getBeneficio());
@@ -285,7 +292,9 @@ public class WndRptVentaPromocion extends WndBase {
 
 			for(Listitem itemSummary: lstVentasPromocion.getSelectedItems()){
 				Promocion promocion=itemSummary.getValue();
-				ArrayList<VentaPasaje>lstVentasPromo=ServiceLocator.getReportesManager().ventasPromocionDeta(fechaInicio, fechaFin, promocion.getTipoDescuento());
+				ArrayList<VentaPasaje>lstVentasPromo=ServiceLocator.getReportesManager().ventasPromocionDeta(
+													fechaInicio, fechaFin, promocion.getTipoDescuento(),
+													promocion.getAgencia().getId());
 
 				for(VentaPasaje ventaPasaje:lstVentasPromo){
 					cant++;

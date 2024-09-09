@@ -6,7 +6,8 @@
 			<listbox id="lstVentasPromocion" rows="6" width="555px" multiple="true" checkmark="true">
 				<listhead>
 					<listheader width="30px" />
-					<listheader label="NOMBRE DESCUENTO"  sort="auto" style="color: #ffffff;"/>
+					<listheader label="OFICINA"  sort="auto" style="color: #ffffff;"/>
+					<listheader label="NOMBRE DESCUENTO"  style="color: #ffffff;"/>
 					<listheader label="VAL.DESC" width="50px" align="center" sort="auto" tooltiptext="Valor del descuento" style="color: #ffffff;"/>
 					<listheader label="CANT." width="50px" align="right" sort="auto" tooltiptext="Cantidad ventas" style="color: #ffffff;"/>
 					<listheader label="T.DESC." width="80px" align="right" sort="auto" tooltiptext="Total descuento" style="color: #ffffff;"/>

@@ -114,7 +114,7 @@ public interface ReportesDAO extends GenericDAO {
 	 * @return Lista de ventas
 	 * @throws Exception
 	 */
-	public ArrayList<VentaPasaje>ventasPromocionDeta(String fechaInicio, String fechafin, String idPromocion)throws Exception;
+	public ArrayList<VentaPasaje>ventasPromocionDeta(String fechaInicio, String fechafin, String idPromocion, Integer idAgencia)throws Exception;
 	/**
 	 * CONSULTA: AVANCE DE BUSES, SEGUN RANGO DE FECHAS.
 	 * @param fechaInicio	: Fecha inicio de la busqueda.

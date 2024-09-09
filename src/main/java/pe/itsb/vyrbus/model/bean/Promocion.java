@@ -45,6 +45,7 @@ public class Promocion extends GenericBean implements Serializable, Cloneable {
     private List<FormaPago> listFormaPago;					//No mapeado
     private List<TipoFormaPago> listTipoFormaPago;			//No mapeado
     private List<TarjetaCredito> listTarjetaCredito;		//No mapeado
+    private Agencia agencia;								//No mapeado
     private Integer cantidad;								//No mapeado
     private Double totalDescuento;							//No mapeado
     private Double totalVenta;								//No mapeado
@@ -103,6 +104,20 @@ public class Promocion extends GenericBean implements Serializable, Cloneable {
 	 */
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	/**
+	 * @return the agencia
+	 */
+	public Agencia getAgencia() {
+		return agencia;
+	}
+
+	/**
+	 * @param agencia the agencia to set
+	 */
+	public void setAgencia(Agencia agencia) {
+		this.agencia = agencia;
 	}
 
 	/**
