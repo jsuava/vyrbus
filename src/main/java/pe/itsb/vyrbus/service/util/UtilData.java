@@ -3092,7 +3092,7 @@ public class UtilData extends Window {
 		Integer numeroPiso = Optional.ofNullable(ventaPasaje.getNumeroPiso())
 				.orElse(null);
 		
-		// Tipo Forma d ePago (cuando es Reserva este valor llega Null, se envia con efectivo ya que la estructura no permite nullos.
+		// Tipo Forma de Pago (cuando es Reserva este valor llega Null, se envia con efectivo ya que la estructura no permite nullos.
 		TipoFormaPago tipoFormaPago = Optional.ofNullable(ventaPasaje.getTipoFormaPago())
 				.orElse(new TipoFormaPago(Constantes.ID_TIPFORPAG_EFECTIVO));
 
