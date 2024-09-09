@@ -6827,9 +6827,11 @@ public class WndVentaReservaNew  extends WndBase {
 			else
 				DlgMessage.information(Messages.getString("WndVentaReservaNew.information.descuento.noExistCodigo")
 						.replace("@codigo", codigoDescuento), txtVtaAutorizaDescuentoCodigo);				
-		}else
+		}else {
 			DlgMessage.information(Messages.getString("WndVentaReservaNew.information.descuento.noExistCodigo")
 					.replace("@codigo", codigoDescuento), txtVtaAutorizaDescuentoCodigo);
+			txtVtaAutorizaDescuentoCodigo.setText("");
+		}
 		
 		return descuento;
 	}
