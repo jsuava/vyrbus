@@ -2845,6 +2845,12 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 			venta.setNumeroAsiento(ventaPasaje.getNumeroAsiento()!=null?ventaPasaje.getNumeroAsiento():null);
 			venta.setImportePagado(ventaPasaje.getImportePagado());
 			venta.setFechaInsercion(ventaPasaje.getFechaInsercion());
+			Itinerario itinerario = new Itinerario();
+			itinerario.setId(ventaPasaje.getItinerario().getId());
+			venta.setItinerario(itinerario);
+//			Agencia agPartida = new Agencia();
+//			agPartida.setId(ventaPasaje.getAgenciaPartida().getId());
+			venta.setAgenciaPartida(ventaPasaje.getAgenciaPartida());
 			TipoMovimiento tipoMovimiento = new TipoMovimiento();
 			tipoMovimiento.setId(ventaPasaje.getTipoMovimiento().getId());
 			tipoMovimiento.setDenominacion(ventaPasaje.getTipoMovimiento().getDenominacion());
