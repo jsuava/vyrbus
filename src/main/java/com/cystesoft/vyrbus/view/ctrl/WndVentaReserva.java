@@ -1895,7 +1895,7 @@ public class WndVentaReserva extends WndBase {
 				   getAgencia().getId().intValue()==Constantes.ID_AGENCIA_SUPERMERCADOS_PERUANOS){
 					ConfiguracionImpresora configuracionImpresora= UtilData.getConfiguracionImpresora(getUsuarioHardware().getId());
 					if(configuracionImpresora==null){
-						DlgMessage.information("No puede continuar debido a que no tiene configurada la impresiï¿½n.");
+						DlgMessage.information("No puede continuar debido a que no tiene configurada la impresión.");
 						return;
 					}
 				}
@@ -1925,7 +1925,7 @@ public class WndVentaReserva extends WndBase {
 				/*	Si es una venta remota	*/
 				if(chkVentaRemota.isChecked()){
 					if(rdVentaIdaVuelta.isChecked() && !rdElectronicoRemoto.isChecked()){
-						DlgMessage.information("No es posible realizar una venta remota de Ida y Vuelta, cuando los comprobantes a emitir no son Electrï¿½nicos.");
+						DlgMessage.information("No es posible realizar una venta remota de Ida y Vuelta, cuando los comprobantes a emitir no son Electrónicos.");
 						return;
 					}
 
@@ -3630,6 +3630,7 @@ public class WndVentaReserva extends WndBase {
 			ArrayList<Pasajero> lstPasajeros = null;
 			if(criterio.intValue()==SEARCH_BY_DOCUMENTO){
 				criterioBusqueda.put("numeroDocumento", txtDocumentoPax.getText().toUpperCase()+"%");
+				criterioBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
 				List<String> criteriosOrdenar = new ArrayList<>();
 				criteriosOrdenar.add("apellidoPaterno");
 				criteriosOrdenar.add("apellidoMaterno");
@@ -3640,9 +3641,10 @@ public class WndVentaReserva extends WndBase {
 						(txtApeMat.getText().trim().equals("")?"":(" " + txtApeMat.getText().trim().toUpperCase())) +
 						" " + txtNombres.getText().trim().toUpperCase();
 				String[] str1 = nombres.trim().split(" ");
+				criterioBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
 				lstPasajeros = ServiceLocator.getPasajeroManager().buscarPorFullTextIndex(str1);
 			}
-
+			
 			listarRegistrosPax(lstPasajeros);
 		}catch(Exception ex){
 			ex.printStackTrace();
@@ -8080,6 +8082,6 @@ public class WndVentaReserva extends WndBase {
 		this.appendChild(oWndSeleccionaItinerario);
 		oWndSeleccionaItinerario.setMode("modal");
 	}
-
+	
 
 }
