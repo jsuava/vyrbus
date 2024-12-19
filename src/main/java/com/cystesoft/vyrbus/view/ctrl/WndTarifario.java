@@ -206,8 +206,8 @@ public class WndTarifario extends WndBase implements Serializable {
 		UtilData.cargarDataCombo(cmbDestinoBus, Localidad.class,true);
 		UtilData.cargarDataCombo(cmbTipoItinerario, TipoItinerario.class,true);
 
-		dtbxFecInicioBus.setConstraint("after "+fecha);
-		dtbxFecFinBus.setConstraint("after "+fecha);
+//		dtbxFecInicioBus.setConstraint("after "+fecha);
+//		dtbxFecFinBus.setConstraint("after "+fecha);
 		dtbxFecInicioBus.setValue(new Date());
 		dtbxFecFinBus.setValue(new Date());
 
@@ -280,7 +280,7 @@ public class WndTarifario extends WndBase implements Serializable {
 			@Override
 			public void onEvent(Event event) throws Exception {
 				String fecha = Util.DatetoString(dtbxFecInicioBus.getValue(), "yyyyMMdd");
-				dtbxFecFinBus.setConstraint("after "+fecha);
+//				dtbxFecFinBus.setConstraint("after "+fecha);
 				/*Asigna a fecha fin el valor de la fecha inicio*/
 				dtbxFecFinBus.setValue(dtbxFecInicioBus.getValue());
 			}
@@ -335,6 +335,18 @@ public class WndTarifario extends WndBase implements Serializable {
 			Integer index = lsbxRutas.getSelectedIndex();
 			if (index >= 0){
 				Listitem itemTarifa = lsbxRutas.getItemAtIndex(index);
+				
+				Date fechaActual=Constantes.FORMAT_DATE.parse(Constantes.FORMAT_DATE.format(new Date()));
+				Date fechaTarifa =  Constantes.FORMAT_DATE.parse(Constantes.FORMAT_DATE.format(((TarifaRegular)itemTarifa.getValue()).getFechaTarifa()));
+				
+				System.out.println(fechaActual);
+				System.out.println(fechaTarifa);
+				//Validar que la fecha actual sea de hoy en adelante para poder modificar
+				if( fechaTarifa.getTime() < fechaActual.getTime()){
+					DlgMessage.information(Messages.getString("No puede modificar tarifas de fechas pasadas"));
+					onClick_btnCancelar();
+					return;
+				}
 
 				//Canal de venta
 				String strCanalVenta = ((TarifaRegular) itemTarifa.getValue()).getTarifa().getCanalVenta().getDenominacion();
@@ -638,6 +650,8 @@ public class WndTarifario extends WndBase implements Serializable {
 	 */
 	public void onClick_btnCopiarTarifa(){
 		try{
+			
+			
 			if(!chkTarifaFA.isChecked()){
 				if(lsbxRutas.getItemCount()>0){
 					CanalVenta canalVenta = null;
@@ -706,9 +720,46 @@ public class WndTarifario extends WndBase implements Serializable {
 			e.printStackTrace();
 			DlgMessage.error(e.getMessage());
 		}
+				
 	}
 
 
+	public void onClick_btnEliminar(){
+		
+		
+		/*
+		if(!chkTarifaFA.isChecked()){
+			Integer index = lsbxRutas.getSelectedIndex();
+			if (index >= 0){
+				final Integer idCanal, idServicio, idOrigen, idDestino, zona;
+				Long seleccionado;
+				Servicio oServicio;
+				Listitem itemTarifa = lsbxRutas.getItemAtIndex(index);
+				//Salvar la tarifa a eliminar
+				idCanal = ((CanalVenta)cmbCanal.getSelectedItem().getValue()).getId();
+				idServicio = ((Servicio)cmbServicio.getSelectedItem().getValue()).getId();
+				idOrigen = ((Localidad)cmbOrigen.getSelectedItem().getValue()).getId();
+				idDestino = ((Localidad)cmbDestino.getSelectedItem().getValue()).getId();
+				zona = cmbZona.getSelectedIndex();
+				String strHoraServicio = tmbxHoraPartida.getText();
+				String fechaInicio=Constantes.FORMAT_DATE.format(dtbxFecInicio.getValue());
+				String fechaFinal=Constantes.FORMAT_DATE.format(dtbxFecFinal.getValue());
+				Integer porServicio = (chkPorServicio.isChecked() ? 1 : 0);
+				Integer piso=0;
+				
+				//Actualizar la tarifa con valor 0.00 inhabilitando la tarifa
+				
+			}
+			else {
+				DlgMessage.information("No se encontraron tarifas a eliminar en la lista de busqueda.");
+				return;
+			}
+				
+		}
+		
+		*/
+	}
+	
 	public boolean validar(){
 		boolean bRet=true;
 

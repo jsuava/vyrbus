@@ -10,6 +10,7 @@ import com.cystesoft.vyrbus.model.bean.Agencia;
 import com.cystesoft.vyrbus.model.bean.EspecieValorada;
 import com.cystesoft.vyrbus.model.bean.Itinerario;
 import com.cystesoft.vyrbus.model.bean.Manifiesto;
+import com.cystesoft.vyrbus.model.bean.Usuario;
 import com.cystesoft.vyrbus.model.bean.VentaPasaje;
 import com.cystesoft.vyrbus.model.dao.ManifiestoDAO;
 import com.cystesoft.vyrbus.service.business.ManifiestoManager;
@@ -128,8 +129,8 @@ public class ManifiestoManagerImpl implements ManifiestoManager{
 	 * @see com.tepsa.sisvyr.service.business.ManifiestoManager#inactivar(java.lang.Long)
 	 */
 	@Override
-	public void inactivar(Long id) {
-		getManifiestoDAO().inactivar(id);
+	public void inactivar(Long id, Usuario usuario) {
+		getManifiestoDAO().inactivar(id, usuario);
 
 	}
 

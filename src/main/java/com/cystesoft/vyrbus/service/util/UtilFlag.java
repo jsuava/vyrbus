@@ -8,6 +8,10 @@
  */
 package com.cystesoft.vyrbus.service.util;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
+
 import com.cystesoft.vyrbus.model.bean.Flag;
 import com.cystesoft.vyrbus.service.locator.ServiceLocator;
 
@@ -25,6 +29,7 @@ public class UtilFlag {
 	final static int FLAG_IDACTIVA_IMPPAG_VENTAREMOTA = 7;
 	final static int FLAG_IDSEARCH_DNI_RENIEC = 8;
 	final static int FLAG_IDSEARCH_RUC_SUNAT = 9;
+	final static int FLAG_IDVTA_ANULACION_USERS = 10;
 	
 	final static String LLAVE_ENABLED = "S";
 	final static String LLAVE_DISABLED = "N";
@@ -194,5 +199,25 @@ public class UtilFlag {
 		
 		return url;
 	}
+	
+	/**
+	 * Formato de impresion desde un nuevo navegador 
+	 * @param agenciaId : Identificador de la agencia
+	 * @return True, si la configuración esta activa: False, lo contrario.
+	 * @throws Exception
+	 */
+	public static boolean isEnabledUserAnulacion(Integer usuario_id)throws Exception{
+		// Obtiene la lista de identificadores desde la función getFlag
+		Flag flag = ServiceLocator.getFlagManager().buscarPorId((long)FLAG_IDVTA_ANULACION_USERS);
+		List<String> params = Optional.ofNullable(flag)
+			.map(fg -> Arrays.asList(fg.getLlave().split(",")))
+			.orElseGet(Arrays::asList);
+		
+		// Verifica si el identificador está en la lista
+        return params.stream()
+            .anyMatch(id -> id.equals("*") || id.trim().equals(usuario_id.toString()));
+	}
+	
+
 	
 }

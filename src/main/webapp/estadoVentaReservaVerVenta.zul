@@ -325,8 +325,8 @@
 						<listheader label="PASAJERO" width="250px" style="color: #ffffff;"/>
 						<listheader label="DOC. IDE." width="60px" style="color: #ffffff;"/>
 						<listheader label="FEC. OPE." width="100px" style="color: #ffffff;"/>
-						<listheader label="USUARIO" width="60px" style="color: #ffffff;"/>
-						<listheader label="ESTADO" width="250px" style="color: #ffffff;"/>
+						<listheader label="USUARIO" width="80px" style="color: #ffffff;"/>
+						<listheader label="ESTADO" width="200px" style="color: #ffffff;"/>
 					</listhead>
 				</listbox>			
 			</tabpanel>

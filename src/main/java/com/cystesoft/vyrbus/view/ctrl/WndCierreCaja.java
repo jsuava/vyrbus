@@ -324,12 +324,13 @@ public class WndCierreCaja extends WndBase {
 			toolbarbutton =new Toolbarbutton();
 			toolbarbutton.setAttribute(ATRIBUTTE_LIQUIDACION, liquidacion);
 			toolbarbutton.setImage("/resources/windows/window_aperturaCaja.png");
-			toolbarbutton.setTooltiptext("Reaperturar liquidaciÃ³n.");
+			toolbarbutton.setTooltiptext("Reaperturar liquidación.");
 			toolbarbutton.setAutodisable("self");
 			toolbarbutton.setDisabled(true);
 			/*Valida si es rol admin. punto venta y la fecha de la liquidacion es la misma al dia actual*/
-			if( (getRol().getId().intValue()==Constantes.ID_ROL_ADMINISTRADOR)
-					&& Constantes.FORMAT_DATE.format(liquidacion.getFechaLiquidacion()).equals(Constantes.FORMAT_DATE.format(new Date()))){
+			if( (getRol().getId().intValue()==Constantes.ID_ROL_ADMINISTRADOR 
+				|| getRol().getId().intValue()==Constantes.ID_ROL_ADMIN )
+				&& Constantes.FORMAT_DATE.format(liquidacion.getFechaLiquidacion()).equals(Constantes.FORMAT_DATE.format(new Date()))){
 				toolbarbutton.setDisabled(false);
 			}else if (getRol().getId().intValue()==Constantes.ID_ROL_SUPER_USUARIO)
 				toolbarbutton.setDisabled(false);

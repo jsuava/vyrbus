@@ -25,6 +25,9 @@ public class Manifiesto extends GenericBean implements java.io.Serializable {
 	private Integer mee;
 	private Agencia agencia;
 
+	//Variables no mapeadas para reporte
+	private String loginUsuarioEmision;
+	private String loginUsuarioAnulacion;
 	//Variables para la devolucion del ISC
 	private String ruc;
 	private String per4949;
@@ -37,6 +40,22 @@ public class Manifiesto extends GenericBean implements java.io.Serializable {
 	private Double importe2;
 	private Integer cantidadPasajeros;
 	
+	public String getLoginUsuarioAnulacion() {
+		return loginUsuarioAnulacion;
+	}
+
+	public void setLoginUsuarioAnulacion(String loginUsuarioAnulacion) {
+		this.loginUsuarioAnulacion = loginUsuarioAnulacion;
+	}
+
+	public String getLoginUsuarioEmision() {
+		return loginUsuarioEmision;
+	}
+
+	public void setLoginUsuarioEmision(String loginUsuarioEmision) {
+		this.loginUsuarioEmision = loginUsuarioEmision;
+	}
+
 	//Se agrego esta variable para el conteo de pasajeros en el reporte de Liqudacion de Bus	
 	//MAOE 17/08/2022
 	public Integer getCantidadPasajeros() {

@@ -27,6 +27,7 @@ import com.cystesoft.vyrbus.model.bean.TipoComprobante;
 import com.cystesoft.vyrbus.model.bean.TipoDocumento;
 import com.cystesoft.vyrbus.model.bean.TipoFormaPago;
 import com.cystesoft.vyrbus.model.bean.TipoItinerario;
+import com.cystesoft.vyrbus.model.bean.Usuario;
 import com.cystesoft.vyrbus.model.bean.VentaPasaje;
 import com.cystesoft.vyrbus.model.dao.ManifiestoDAO;
 import com.cystesoft.vyrbus.service.util.Constantes;
@@ -585,8 +586,8 @@ public class ManisfiestoDAOImpl extends GenericDAOImpl implements ManifiestoDAO 
 		String sql ="SELECT  m.manifiesto_id, m.c_numman, m.c_codbus, m.itinerario_id, m.c_piloto as piloto, "+ //0-4
 							"m.c_copiloto as copiloto, i.d_fecpar as fechaPartida, m.c_estreg as estado, "+ //5-7
 							"i.c_horpar as horaPartida,lo.c_denominacion as origen, ld.c_denominacion as destino, "+ //8-10
-							"i.ruta_idmayor, "+ //11-11
-							"m.audfecins, s.c_denominacion servicio,m.c_copilotoAux, m.c_tripulante,m.audfecmod "+//12-16
+							"i.ruta_idmayor, m.audfecins, s.c_denominacion servicio,m.c_copilotoAux, "+ //11-14
+							" m.c_tripulante,m.audfecmod, m.audusuins, m.audusumod  "+//15-18
 					"FROM vrtitinerario i "+
 						"INNER JOIN vrmservicio s ON (s.servicio_id=i.servicio_id) "+
 						"INNER JOIN vrtmanifiesto m ON (m.itinerario_id=i.itinerario_id) "+
@@ -642,6 +643,9 @@ public class ManisfiestoDAOImpl extends GenericDAOImpl implements ManifiestoDAO 
 			manifiesto.setCopilotoAuxiliar(obj[14]!=null?obj[14].toString():null);
 			manifiesto.setTripulante(obj[15]!=null?obj[15].toString():null);
 			manifiesto.setFechaModificacion(obj[16]!=null?(Date)obj[16]:null);
+			
+			manifiesto.setLoginUsuarioEmision(obj[17]!=null?obj[17].toString():"");
+			manifiesto.setLoginUsuarioAnulacion(obj[18]!=null?obj[18].toString():"");
 
 			lstResult.add(manifiesto);
 		}
@@ -655,8 +659,13 @@ public class ManisfiestoDAOImpl extends GenericDAOImpl implements ManifiestoDAO 
 	 * @see com.tepsa.sisvyr.model.dao.ManifiestoDAO#inactivar(java.lang.Long)
 	 */
 	@Override
-	public void inactivar(Long id) {
-		super.inactivate(Manifiesto.class, id);
+	public void inactivar(Long id, Usuario usuario) {
+		//Se hizo de la forma manual para no tocar el bean generico
+		//super.inactivate(Manifiesto.class, id);
+		//Inactivar el manifiesto
+		//MAOE 10/12/2024
+		String sqlMan="UPDATE vrtmanifiesto SET c_estreg='I', audusumod='"+usuario.getLogin()+"' where manifiesto_id="+id;
+		getSession().createSQLQuery(sqlMan).executeUpdate();
 		/*Actualiza las ventas del itinerario con el idManifiesto*/
 		String sql="UPDATE vrtvenpas SET Manifiesto_ID=null"+
 			" WHERE Manifiesto_ID="+id;

@@ -553,14 +553,14 @@ public class WndLiquidacionDiariaVentas extends WndBase implements Serializable 
 //				if(lbxVentas.getChildren().get(j) instanceof Listfoot)
 //					lbxVentas.getChildren().get(j).detach();
 //			}
-//			Integer idAgencia = null;
+			Integer idAgencia = null;
 //			Integer idUsuario = null;
 //			Integer criterio = 0;
 //			String fechaInicio = Util.DatetoString(dtbxFechaInicio.getValue(), Constantes.DATE_FORMAT);
 //			String fechaFin = Util.DatetoString(dtbxFechaFin.getValue(), Constantes.DATE_FORMAT);
 //
-//			if(cmbAgencia.getSelectedItem().getValue() instanceof Agencia)
-//				idAgencia = ((Agencia)cmbAgencia.getSelectedItem().getValue()).getId();
+			if(cmbAgencia.getSelectedItem().getValue() instanceof Agencia)
+				idAgencia = ((Agencia)cmbAgencia.getSelectedItem().getValue()).getId();
 //			if(cmbCounter.getItemCount()>0 && cmbCounter.getSelectedItem().getValue() instanceof Usuario)
 //				idUsuario = ((Usuario)cmbCounter.getSelectedItem().getValue()).getId();
 //			if(cmbTipoMovimiento.getSelectedIndex()>=0)
@@ -920,10 +920,12 @@ public class WndLiquidacionDiariaVentas extends WndBase implements Serializable 
 //					hlayout.appendChild(btnDuplicado);
 
 					Button btnAnular = new Button();
-					if(isCarga || venta.getId()==null || rubroCarga.isChecked())
-						btnAnular.setVisible(false);
-					else
-						btnAnular.setId(venta.getId().toString());
+					//Comentado por MAOE 09/11/2024, la anulación se hace ahora desde el estado de Ventas y Reservas 
+//					if(isCarga || venta.getId()==null || rubroCarga.isChecked())
+//						btnAnular.setVisible(false);
+//					else
+					btnAnular.setVisible(false);
+					btnAnular.setId(venta.getId().toString());
 					btnAnular.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
 						@Override
 						public void onEvent(Event e) throws Exception{
@@ -948,6 +950,11 @@ public class WndLiquidacionDiariaVentas extends WndBase implements Serializable 
 					rolAcceso.add(new Rol(Constantes.ID_ROL_FINANZAS));
 					rolAcceso.add(new Rol(Constantes.ID_ROL_FISCALIZACION));
 					rolAcceso.add(new Rol(Constantes.ID_ROL_COUNTER_WSP));
+					
+					//Para controlar el acceso al rol admin para la venta web
+					//MAOE 05/12/2024
+					if(idAgencia==26)
+						rolAcceso.add(new Rol(Constantes.ID_ROL_ADMIN));
 					accesoControlsByRol(components, rolAcceso);
 					
 					btnPrevioPdf.setImage("resources/mp_pdf.png");
