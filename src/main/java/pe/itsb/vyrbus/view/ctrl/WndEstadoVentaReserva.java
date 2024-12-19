@@ -1,20 +1,26 @@
 
 package pe.itsb.vyrbus.view.ctrl;
 
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.zkoss.util.media.AMedia;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
+import org.zkoss.zul.Button;
 import org.zkoss.zul.Checkbox;
 import org.zkoss.zul.Combobox;
 import org.zkoss.zul.Comboitem;
 import org.zkoss.zul.Datebox;
+import org.zkoss.zul.Hlayout;
+import org.zkoss.zul.Iframe;
 import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Listcell;
 import org.zkoss.zul.Listitem;
@@ -83,7 +89,7 @@ public class WndEstadoVentaReserva extends WndBase {
 	private Window wndEstadoVyR;
 	private Menupopup menupopup= new Menupopup();
 
-
+	private Window wndViewModal = null;
 
 //	private Window wndAnular;
 
@@ -110,7 +116,6 @@ public class WndEstadoVentaReserva extends WndBase {
 		cmbOrigen=(Combobox)this.getFellow("cmbOrigen");
 		cmbDestino=(Combobox)this.getFellow("cmbDestino");
 		lstbxListaMovimientos=(Listbox)this.getFellow("lstbxListaMovimientos");
-
 		lstbxHistorial=(Listbox)this.getFellow("lstbxHistorial");
 		tabEstado = (Tab)this.getFellow("tabEstado");
 		tabHistorial = (Tab)this.getFellow("tabHistorial");
@@ -288,12 +293,14 @@ public class WndEstadoVentaReserva extends WndBase {
 						}
 					});
 
+					Hlayout hlayout = new Hlayout();
 					Toolbarbutton tbverVenta= new Toolbarbutton("Ver venta");
 					tbverVenta.setStyle("text-transform:uppercase; color:blue;");
 					x++;
 					tbverVenta.setId(String.valueOf(x));
 					cell= new Listcell();
 					cell.appendChild(tbverVenta);
+					hlayout.appendChild(tbverVenta);
 					item.appendChild(cell);
 					tbverVenta.addEventListener(Events.ON_CLICK,new EventListener<Event>() {
 						@Override
@@ -311,6 +318,25 @@ public class WndEstadoVentaReserva extends WndBase {
 					item.setValue(ventaPasaje);
 					item.setTooltiptext("Haga doble click para ver la información de la Venta ");
 					item.setContext(getMenucontex(ventaPasaje));
+					
+					Button btnPrevioPdf = new Button();
+					btnPrevioPdf.setImage("resources/mp_pdf.png");
+					btnPrevioPdf.setClass("btnImage");
+					btnPrevioPdf.setTooltiptext("Visualizar en formato pdf");
+					btnPrevioPdf.setAttribute(VentaPasaje.class.getName(), ventaPasaje);
+					btnPrevioPdf.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+						@Override
+						public void onEvent(Event e) throws Exception{
+							VentaPasaje oventa = (VentaPasaje) e.getTarget().getAttribute(VentaPasaje.class.getName());
+							showWindowPrevioPDF(oventa);
+						}
+					});
+					hlayout.appendChild(btnPrevioPdf);
+					cell.appendChild(hlayout);
+					item.appendChild(cell);
+					
+					//Agregar el descargar xml
+					
 					lstbxListaMovimientos.appendChild(item);
 				}
 			}
@@ -339,7 +365,35 @@ public class WndEstadoVentaReserva extends WndBase {
 
 	}
 
-
+	private void showWindowPrevioPDF( VentaPasaje ventaPasaje) throws Exception{
+		wndViewModal = createWindowViewPrevioPDF(ventaPasaje);
+		wndEstadoVyR.appendChild(wndViewModal);
+		wndViewModal.setMode("modal");		
+	}
+	
+	private Window createWindowViewPrevioPDF(VentaPasaje ventaPasaje) throws Exception{
+		byte[] comprobantePrevio = null;
+//		if(isCarga) {
+//			
+//		}else
+		comprobantePrevio = WSFE.representacionImpresa(ventaPasaje);
+		
+		final Window window = new Window(".", "normal", true);
+		window.setWidth("770px");	
+		window.setHeight("700px");
+		
+		String numeroComprobante = ventaPasaje.getNumeroBoleto();
+		InputStream inputStream = new ByteArrayInputStream(comprobantePrevio);
+		AMedia amedia = new AMedia(numeroComprobante + ".pdf", "pdf","application/pdf", inputStream);
+		
+		Iframe iframe = new Iframe();
+		iframe.setStyle("width:100%; height:100%;");
+		iframe.setScrolling("none");		
+		iframe.setContent(amedia);
+		window.appendChild(iframe);
+				
+		return window;
+	}
 	public void listarHistorial(List<VentaPasaje> lstHistorial){
 		String styleActivo_11px="font-size:11px !important";
 		String styleActivo_9px="font-size:9px !important";

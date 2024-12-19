@@ -374,6 +374,7 @@ public class WSFE implements Serializable{
 			tipoComprobante = FE_TIPCOM_NOTA_DEBITO;
 		
 		// Busca la Empresa
+		
 		Empresa empresa = ServiceLocator.getEmpresaManager().buscarPorId(ventaPasaje.getEmpresa().getId().longValue());
 
 		// Consulta el Pdf en el WSFE

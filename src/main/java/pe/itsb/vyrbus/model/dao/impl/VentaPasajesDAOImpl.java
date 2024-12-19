@@ -2548,7 +2548,7 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 					      ",vp.audfecins "+//13
 					      ",tc.tipcom_id, tc.c_denominacion tipoComprobante " + //14-15
 					      ",vp.n_esfe "+//16
-					      ",vp.venpas_idoriginal, vp.forpag_id "+//17 -18
+					      ",vp.venpas_idoriginal, vp.forpag_id, vp.empresa_id "+//17 -19
 					"FROM VRTVENPAS vp ";
 
 		//Omite el MAX venpas_id Cunado la busqueda es por numero de control o numero de boleto.
@@ -2650,6 +2650,10 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 			ventaPasaje.setTipoComprobante(tipoComprobante);
 			ventaPasaje.setEnviadoSFE(obj[16]!=null?((BigDecimal)obj[16]).intValue():null);
 			ventaPasaje.setVentaOriginal(obj[17]!=null?((BigDecimal)obj[17]).longValue():null);
+			
+			Empresa empresa = new Empresa();
+			empresa.setId(obj[19]!=null?((BigDecimal)obj[19]).intValue():null);
+			ventaPasaje.setEmpresa(empresa);
 
 			lstResult.add(ventaPasaje);
 		}
