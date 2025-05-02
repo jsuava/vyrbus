@@ -1656,7 +1656,7 @@ public class WSFE implements Serializable{
 //				Date date = Constantes.FORMAT_DATE_TIME_24H.parse(MyTime.dateTimeServer());
 //				fechaEmision = FORMAT_DATE.format(date);	
 //			}
-			
+			String motivoSustento = notaCredito.getObservaciones();
 			
 			/*Instancia la nota*/
 			Nota nota=new Nota();
@@ -1669,11 +1669,12 @@ public class WSFE implements Serializable{
 			nota.setCodigoTipoNota(new JAXBElement<String>(new QName(NAMESPACE, "codigoTipoNota"), String.class,notaCredito.getTipoNota().getCodigoEquivalenteSunat()));
 			nota.setDescripcionTipoNota(new JAXBElement<String>(new QName(NAMESPACE, "descripcionTipoNota"), String.class,notaCredito.getTipoNota().getEquivalenteSunat()));
 			nota.setTipoComprobanteID(new JAXBElement<String>(new QName(NAMESPACE, "tipoComprobanteID"), String.class,(notaCredito.getTipoComprobante().getId().intValue()==Constantes.ID_TIPCOM_NOTA_CREDITO?FE_TIPCOM_NOTA_CREDITO:FE_TIPCOM_NOTA_DEBITO)));
-			nota.setDescripcionSustento(new JAXBElement<String>(new QName(NAMESPACE, "descripcionSustento"), String.class,notaCredito.getTipoNota().getMovimiento()));
+//			nota.setDescripcionSustento(new JAXBElement<String>(new QName(NAMESPACE, "descripcionSustento"), String.class,notaCredito.getTipoNota().getMovimiento()));
+			nota.setDescripcionSustento(new JAXBElement<String>(new QName(NAMESPACE, "descripcionSustento"), String.class, motivoSustento));
 			nota.setIgv(notaCredito.getIgv()!=null && notaCredito.getIgv()>0.00? notaCredito.getIgv():.00);
 			nota.setTotal(notaCredito.getImportePagado());
-			nota.setSubtotal(nota.getTotal()-nota.getIgv());
-			nota.setTipoMonedaSoles(true);
+			nota.setSubtotal(nota.getTotal()- nota.getIgv());
+			nota.setTipoMonedaSoles(isMonedaSoles);
 			nota.setAgenciaID(notaCredito.getAgencia().getId().longValue());
 			nota.setUsuarioID(notaCredito.getUsuario().getId().longValue());
 			nota.setUsuarioInsercion(new JAXBElement<String>(new QName(NAMESPACE, "usuarioInsercion"), String.class,notaCredito.getUsuarioInsercion()));

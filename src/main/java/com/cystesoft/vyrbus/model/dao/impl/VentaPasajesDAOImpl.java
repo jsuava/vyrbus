@@ -596,7 +596,7 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 			tipoMoneda.setId(((BigDecimal)obj[85]).intValue());
 			tipoMoneda.setUnidadMonetaria(obj[86]!=null?obj[86].toString():"");
 			tipoMoneda.setSimboloMonetario(obj[87]!=null?obj[87].toString():"");
-			ventaPasaje.setImportePagadoEquibalente(((BigDecimal)obj[88]).doubleValue());
+			ventaPasaje.setImportePagadoEquibalente(obj[88] != null? ((BigDecimal)obj[88]).doubleValue(): null);
 			ventaPasaje.setTipoMoneda(tipoMoneda);
 			ventaPasaje.setTarifaEquibalente(obj[90]!=null?((BigDecimal)obj[90]).doubleValue():null);
 			ventaPasaje.setDescuentoEquibalente(obj[91]!=null?((BigDecimal)obj[91]).doubleValue():null);

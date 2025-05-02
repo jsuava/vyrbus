@@ -2187,12 +2187,13 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 //			fechaLiquidacion=liquidacion.getFechaLiquidacion();
 //		}
 
-
 		CanalVenta canalVenta = (CanalVenta)Executions.getCurrent().getDesktop().getSession().getAttribute(Constantes.ATRIBUTO_CANAL_VENTA);
 		UsuarioHardware usuarioHardware= (UsuarioHardware)Executions.getCurrent().getDesktop().getSession().getAttribute(Constantes.ATRIBUTO_USUARIO_HARDWARE);
 
 		if(fechaNota==null)
 			fechaNota =Constantes.FORMAT_DATE.parse(MyTime.dateTimeServer());
+		else
+			fechaNota = Constantes.FORMAT_DATE.parse(Constantes.FORMAT_DATE.format(fechaNota));
 
 		VentaPasaje ventaOriginal= ServiceLocator.getVentaPasajesManager().buscarPorId(ventaAplica.getId());//.getVentaOriginal());
 
@@ -2247,11 +2248,12 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 		notaCredito.setCanalVenta(copyCanalOriginal?ventaOriginal.getCanalVenta():usuarioHardware.getCanalVenta());
 		notaCredito.setIdaRetorno(Constantes.FALSE_VALUE);
 		notaCredito.setEsFechaAbierta(Constantes.FALSE_VALUE);
-		notaCredito.setObservaciones(tipoNota.getMovimiento());
+		notaCredito.setObservaciones(ventaAplica.getObservaciones() != null? ventaAplica.getObservaciones(): tipoNota.getMovimiento());
 		notaCredito.setTipoNota(tipoNota);
 		notaCredito.setEstadoRegistro(Constantes.VALUE_ACTIVO);
 		notaCredito.setRucClienteCredito(ventaOriginal.getRucClienteCredito()!=null?ventaOriginal.getRucClienteCredito():null);
 		notaCredito.setUsuarioHardware(usuarioHardware);
+		notaCredito.setTipoMoneda(ventaAplica.getTipoMoneda());
 		UtilData.auditarRegistro(notaCredito, usuario, Executions.getCurrent());
 
 		//Recuperando el correlativo
