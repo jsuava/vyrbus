@@ -1,8 +1,8 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripción	:
- * Autor		: José Abanto
+ * Descripciï¿½n	:
+ * Autor		: Josï¿½ Abanto
  * Fecha		: 11 abr. 2022
  * Hora			: 14:56:10
  */
@@ -14,6 +14,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.TreeMap;
 import java.util.Map.Entry;
+import java.util.Optional;
 
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
@@ -140,7 +141,7 @@ public class WndRptLiquidacionVentas extends WndBase{
 	}		
 	
 	/**
-	 * Evento Click del botón buscar
+	 * Evento Click del botï¿½n buscar
 	 */
 	public void onClick_btnBuscar() {
 		try {
@@ -178,7 +179,7 @@ public class WndRptLiquidacionVentas extends WndBase{
 	}
 
 	/**
-	 * Evento Click del botón Detalle ventas
+	 * Evento Click del botï¿½n Detalle ventas
 	 */
 	public void viewDetalleVentas(Liquidacion liquidacion) {
 		try {
@@ -242,7 +243,7 @@ public class WndRptLiquidacionVentas extends WndBase{
 	}
 	
 	/**
-	 * Evento Click del botón Resumen de Saldos
+	 * Evento Click del botï¿½n Resumen de Saldos
 	 */
 	public void onClick_btnResumenSaldos() {
 		try {
@@ -416,9 +417,9 @@ public class WndRptLiquidacionVentas extends WndBase{
 				item.appendChild(cell);
 				cell =new Listcell(liquidacion.getAgencia().toString());
 				item.appendChild(cell);
-				cell =new Listcell(liquidacion.getUsuario().toString());
+				cell =new Listcell(liquidacion.getUsuario()!= null?liquidacion.getUsuario().toString(): "");
 				item.appendChild(cell);
-				cell =new Listcell(liquidacion.getUsuario().getLogin());
+				cell =new Listcell(Optional.ofNullable(liquidacion.getUsuario()).map(Usuario::getLogin).orElse(""));
 				item.appendChild(cell);
 				
 				Double saldoLiquidacion = buscarEfectivoLiquidacion(liquidacion);
@@ -432,7 +433,7 @@ public class WndRptLiquidacionVentas extends WndBase{
 				cell = new Listcell();
 				if(liquidacion.getestadoLiquidacion()==null) {
 					cell = new Listcell("-------------");
-					cell.setTooltiptext("No se encontró liquidación en Pasajes");
+					cell.setTooltiptext("No se encontrï¿½ liquidaciï¿½n en Pasajes");
 				}else if (liquidacion.getestadoLiquidacion().equals(Constantes.LIQUI_ESTA_CERRADO)) {
 					cell = new Listcell(Constantes.LIQUI_ESTA_CERRADO_LABEL);
 					cell.setStyle("font-size:11px !important");
@@ -451,7 +452,7 @@ public class WndRptLiquidacionVentas extends WndBase{
 						cell = new Listcell(Constantes.LIQUI_ESTA_ABIERTO_LABEL);
 				}else {
 					cell = new Listcell("-------------");
-					cell.setTooltiptext("No se encontró liquidación en Carga");
+					cell.setTooltiptext("No se encontrï¿½ liquidaciï¿½n en Carga");
 				}
 				
 				item.appendChild(cell);

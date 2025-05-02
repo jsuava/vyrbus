@@ -45,13 +45,13 @@
 							<radio id="rdRegular" 
 									label="Anulación regular" 
 									onCheck="ckbxGeneraMovimientoSistema.setChecked(true);ckbxGeneraMovimientoSistema.setDisabled(true)" 
-									checked="true"/> 
+									checked="true" visible = "false"/> 
 							<space width="10px"/>
-							<radio id="rdSoloNC" 
+							<radio id="rdSoloNC" checked="true"
 									label="Aplicar N.C" 
 									onCheck="ckbxGeneraMovimientoSistema.setDisabled(false)" /> 
 							<space width="10px"/>
-							<radio id="rdNCNuevoComprobante" 
+							<radio id="rdNCNuevoComprobante" visible = "false"
 									onCheck="ckbxGeneraMovimientoSistema.setChecked(true);ckbxGeneraMovimientoSistema.setDisabled(true)" 
 									label="Aplicar N.C y emitir un nuevo Comprobante"/>
 						</hbox>

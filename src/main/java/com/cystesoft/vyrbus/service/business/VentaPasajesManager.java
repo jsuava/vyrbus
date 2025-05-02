@@ -1,6 +1,7 @@
 package com.cystesoft.vyrbus.service.business;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -480,7 +481,7 @@ public interface VentaPasajesManager {
 	 * @return notaCredito generada
 	 * @throws Exception
 	 */
-	public VentaPasaje generarNotaCredito(VentaPasaje ventaAplica, TipoNota tipoNota,boolean anularMovimiento,boolean copyCanalOriginal, boolean ejecutarSeqByCorrelativo)throws Exception;
+	public VentaPasaje generarNotaCredito(VentaPasaje ventaAplica, TipoNota tipoNota,boolean anularMovimiento,boolean copyCanalOriginal, boolean ejecutarSeqByCorrelativo, Date fechaNota)throws Exception;
 	/**
 	 * Genera una nota de credito a un determinado comprobante
 	 * @param ventaAplica : Instancia de la venta a quien se va aplicar la nota de credito
@@ -491,7 +492,8 @@ public interface VentaPasajesManager {
 	 * @return NotaCredito generada
 	 * @throws Exception
 	 */
-	public VentaPasaje generarNotaCredito(VentaPasaje ventaAplica, TipoNota tipoNota,boolean anularMovimiento,boolean copyCanalOriginal, Liquidacion liquidacion, boolean ejecutarSeqByCorrelativo)throws Exception;
+	public VentaPasaje generarNotaCredito(VentaPasaje ventaAplica, TipoNota tipoNota,boolean anularMovimiento,boolean copyCanalOriginal, 
+			Liquidacion liquidacion, boolean ejecutarSeqByCorrelativo, Date fechaNota)throws Exception;
 	/**
 	 *
 	 * @param gastoAdministrativo
@@ -518,7 +520,7 @@ public interface VentaPasajesManager {
 	 * @return Class con la ventas y notas de credito generadas
 	 * @throws Exception
 	 */
-	public VentasNotas procesarAnulacionBy(List<VentaPasaje> lstVentas, int tipoAnulacion, boolean anularMovimiento, Liquidacion liquidacion, boolean ejecutarSeqByCorrelativo)throws Exception;
+	public VentasNotas procesarAnulacionBy(List<VentaPasaje> lstVentas, int tipoAnulacion, boolean anularMovimiento, Liquidacion liquidacion, boolean ejecutarSeqByCorrelativo, Date fechaNota)throws Exception;
 	/**
 	 * Realiza la busqueda del avance de ventas
 	 * @param idOrigen		: Origen de los Itinerarios

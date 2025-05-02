@@ -8,6 +8,8 @@
  */
 package com.cystesoft.vyrbus.view.ctrl;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -88,6 +90,7 @@ public class WndAnulacionDocumentos extends WndBase{
 	private Label lblAdvertencia= null;
 	private Combobox cmbUsuarioLiq= null;
 	private Combobox cmbAgenciaLiq=null;
+	private Datebox dtbxFechaNc = null;
 	private Liquidacion liquidacion=null;
 	private Button btnProcesarAnulacion=null;
 	private Textbox txtMotivoAnulacion=null;
@@ -199,6 +202,7 @@ public class WndAnulacionDocumentos extends WndBase{
 				Util.limpiarListbox(ltbxAnulacionComprobantes);
 				habilitarAnulacionPersonalizada(rdAnulacionPersonalizada.isChecked());
 				limpiarControlesAnulacionPersonalizada();
+				rdSoloNC.setChecked(true);
 		} catch (Exception e) {
 			e.printStackTrace();
 			DlgMessage.error(e.getMessage());
@@ -407,7 +411,7 @@ public class WndAnulacionDocumentos extends WndBase{
 				DlgMessage.information("Debe de seleccionar el comprobante que desea Anular");
 				return;
 			}else if (ltbxAnulacionComprobantes.getSelectedItems().size()>20){
-				DlgMessage.information("El modo Anulaci髇 Masiva solamente se puede aplicar a un m醲imo de 20 Comprobantes");
+				DlgMessage.information("El modo Anulaci贸n Masiva solamente se puede aplicar a un m谩ximo de 20 Comprobantes");
 				return;
 			}else if(((VentaPasaje)ltbxAnulacionComprobantes.getSelectedItem().getValue()).getTipoTransaccion().equals(Constantes.TIPO_OPERACION_PERDIDA_SERVICIO)) {
 				DlgMessage.information("No se puede anular un comprobante marcado como Perdida de Servicio.");
@@ -432,7 +436,7 @@ public class WndAnulacionDocumentos extends WndBase{
 	 */
 	@SuppressWarnings("deprecation")
 	private void createWindowAnulacion(final VentaPasaje ventaPasaje)throws Exception{
-		final boolean isAnulacionSinNC=isAnulacionSinNC(ventaPasaje);
+//		final boolean isAnulacionSinNC = isAnulacionSinNC(ventaPasaje);
 
 		final Window win = new Window("", "normal", true);
 		win.setWidth("500px");
@@ -459,36 +463,54 @@ public class WndAnulacionDocumentos extends WndBase{
 		row.setSpans("2");
 		Div div= new Div();
 		div.setAlign("left");
-		Label lblinfo= new Label("Datos de la Liquidacion a quien se asignaran los comprobantes que se tengan que generar");
+//		Label lblinfo= new Label("Datos de la Liquidacion a quien se asignaran los comprobantes que se tengan que generar");
+		Label lblinfo= new Label("");
 		lblinfo.setStyle("color:blue;font-size:12px !important;text-transform:none;");
 		div.appendChild(lblinfo);
 		row.appendChild(div);
 		rows.appendChild(row);
 
+//		row= new Row();
+//		row.appendChild(new Label("AGENCIA : "));
+//		cmbAgenciaLiq= new Combobox();
+//		cmbAgenciaLiq.setReadonly(true);
+//		cmbAgenciaLiq.setWidth("250px");
+//		UtilData.cargarAgenciaXtipoAgencia(cmbAgenciaLiq, Constantes.ID_TIPAGE_TEPSA, false);
+//		Util.seleccionarValorItemCombo(Agencia.class, cmbAgenciaLiq, getAgencia().getId());
+////		cmbAgenciaLiq.setDisabled(getRol().getId().intValue()!=Constantes.ID_ROL_SUPER_USUARIO);
+//		row.appendChild(cmbAgenciaLiq);
+//		row.setVisible(isAnulacionSinNC?false:true);
+//		rows.appendChild(row);
+
+//		row= new Row();
+//		row.appendChild(new Label("USUARIO : "));
+//		cmbUsuarioLiq= new Combobox();
+//		cmbUsuarioLiq.setReadonly(true);
+//		cmbUsuarioLiq.setWidth("250px");
+////		cmbUsuarioLiq.setDisabled(getRol().getId().intValue()!=Constantes.ID_ROL_SUPER_USUARIO);
+//		row.appendChild(cmbUsuarioLiq);
+//		row.setVisible(isAnulacionSinNC?false:true);
+//		rows.appendChild(row);
+		
+		DateFormat DATE_FORMAT = new SimpleDateFormat("yyyyMMdd");
+		Date fechaHastaNC = new Date();
+		Date fechaDesdeNC = new Date(fechaHastaNC.getTime() - (Constantes.MILISEGUNDOS_X_DIA *2));
+		String constraintFechaNC = "between "+DATE_FORMAT.format(fechaDesdeNC)+ " and "+DATE_FORMAT.format(fechaHastaNC)+" ";
 		row= new Row();
-		row.appendChild(new Label("AGENCIA : "));
-		cmbAgenciaLiq= new Combobox();
-		cmbAgenciaLiq.setReadonly(true);
-		cmbAgenciaLiq.setWidth("250px");
-		UtilData.cargarAgenciaXtipoAgencia(cmbAgenciaLiq, Constantes.ID_TIPAGE_TEPSA, false);
-		Util.seleccionarValorItemCombo(Agencia.class, cmbAgenciaLiq, getAgencia().getId());
-		cmbAgenciaLiq.setDisabled(getRol().getId().intValue()!=Constantes.ID_ROL_SUPER_USUARIO);
-		row.appendChild(cmbAgenciaLiq);
-		row.setVisible(isAnulacionSinNC?false:true);
+		row.appendChild(new Label("FECHA N.C. : "));
+		dtbxFechaNc = new Datebox();
+		dtbxFechaNc.setValue(new Date());
+		dtbxFechaNc.setReadonly(true);
+		dtbxFechaNc.setWidth("150px");
+		dtbxFechaNc.setFormat("dd/MM/yyyy");
+		dtbxFechaNc.setConstraint(constraintFechaNC);
+//		dtbxFechaNc.setDisabled(getRol().getId().intValue()!=Constantes.ID_ROL_SUPER_USUARIO);
+		row.appendChild(dtbxFechaNc);
+		row.setVisible(rdSoloNC.isChecked());
 		rows.appendChild(row);
 
 		row= new Row();
-		row.appendChild(new Label("USUARIO : "));
-		cmbUsuarioLiq= new Combobox();
-		cmbUsuarioLiq.setReadonly(true);
-		cmbUsuarioLiq.setWidth("250px");
-		cmbUsuarioLiq.setDisabled(getRol().getId().intValue()!=Constantes.ID_ROL_SUPER_USUARIO);
-		row.appendChild(cmbUsuarioLiq);
-		row.setVisible(isAnulacionSinNC?false:true);
-		rows.appendChild(row);
-
-		row= new Row();
-		row.appendChild(new Label("MOTIVO ANULACION (*) : "));
+		row.appendChild(new Label("MOTIVO (*) : "));
 		txtMotivoAnulacion= new Textbox();
 		txtMotivoAnulacion.setMultiline(true);
 		txtMotivoAnulacion.setRows(3);
@@ -514,58 +536,59 @@ public class WndAnulacionDocumentos extends WndBase{
 
 		div= new Div();
 		div.setAlign("center");
-		btnProcesarAnulacion= new Button("Procesar Anulaci髇","/resources/mp_anular.png");
+		btnProcesarAnulacion= new Button("Procesar Anulaci贸n","/resources/mp_anular.png");
 		btnProcesarAnulacion.setClass("btn-vyrbus");
 		btnProcesarAnulacion.setAutodisable("self");
 		div.appendChild(btnProcesarAnulacion);
 		win.appendChild(div);
 
 		/*Realiza la busqueda de una liquidacion del usuario que esta realizando la anulacion*/
-		if(!isAnulacionSinNC){
-			btnProcesarAnulacion.setDisabled(true);
-			liquidacion=UtilData.estadoLiquidacionUsuario(getUsuario(), getAgencia());
-			String fechaLiquidacion=Constantes.FORMAT_DATE.format(new Date());
-			UtilData.cargarUsuariosLiquidacion(cmbUsuarioLiq, fechaLiquidacion,fechaLiquidacion, false,((Agencia)cmbAgenciaLiq.getSelectedItem().getValue()).getId());
-			validarLiquidacion(liquidacion);
-			if(liquidacion!=null)
-				Util.seleccionarValorItemCombo(Usuario.class, cmbUsuarioLiq, liquidacion.getUsuario().getId());
-		}
+//		if(!isAnulacionSinNC){
+//			btnProcesarAnulacion.setDisabled(true);
+//			liquidacion = UtilData.estadoLiquidacionUsuario(getUsuario(), getAgencia());
+//			String fechaLiquidacion = Constantes.FORMAT_DATE.format(new Date());
+//			UtilData.cargarUsuariosLiquidacion(cmbUsuarioLiq, fechaLiquidacion,fechaLiquidacion, false,((Agencia)cmbAgenciaLiq.getSelectedItem().getValue()).getId());
+//			validarLiquidacion(liquidacion);
+//			if(liquidacion != null)
+//				Util.seleccionarValorItemCombo(Usuario.class, cmbUsuarioLiq, liquidacion.getUsuario().getId());
+//		}
 
-		cmbAgenciaLiq.addEventListener(Events.ON_CHANGE, new EventListener<Event>() {
-			@Override
-			public void onEvent(Event event) throws Exception {
-				Util.limpiarCombobox(cmbUsuarioLiq);
-				if(cmbAgenciaLiq.getSelectedItem().getValue() instanceof Agencia){
-					String fechaLiquidacion=Constantes.FORMAT_DATE.format(Constantes.FORMAT_DATE.parse(MyTime.dateTimeServer()));
-					UtilData.cargarUsuariosLiquidacion(cmbUsuarioLiq, fechaLiquidacion,fechaLiquidacion, false,((Agencia)cmbAgenciaLiq.getSelectedItem().getValue()).getId());
-				}else
-					UtilData.cargarGenericData(cmbUsuarioLiq, false);
-			}
-		});
-
-		cmbUsuarioLiq.addEventListener(Events.ON_CHANGE, new EventListener<Event>() {
-			@Override
-			public void onEvent(Event event) throws Exception {
-				liquidacion=UtilData.estadoLiquidacionUsuario((Usuario)cmbUsuarioLiq.getSelectedItem().getValue(), (Agencia)cmbAgenciaLiq.getSelectedItem().getValue());
-				validarLiquidacion(liquidacion);
-			}
-		});
+//		cmbAgenciaLiq.addEventListener(Events.ON_CHANGE, new EventListener<Event>() {
+//			@Override
+//			public void onEvent(Event event) throws Exception {
+//				Util.limpiarCombobox(cmbUsuarioLiq);
+//				if(cmbAgenciaLiq.getSelectedItem().getValue() instanceof Agencia){
+//					String fechaLiquidacion=Constantes.FORMAT_DATE.format(Constantes.FORMAT_DATE.parse(MyTime.dateTimeServer()));
+//					UtilData.cargarUsuariosLiquidacion(cmbUsuarioLiq, fechaLiquidacion,fechaLiquidacion, false,((Agencia)cmbAgenciaLiq.getSelectedItem().getValue()).getId());
+//				}else
+//					UtilData.cargarGenericData(cmbUsuarioLiq, false);
+//			}
+//		});
+//
+//		cmbUsuarioLiq.addEventListener(Events.ON_CHANGE, new EventListener<Event>() {
+//			@Override
+//			public void onEvent(Event event) throws Exception {
+//				liquidacion = UtilData.estadoLiquidacionUsuario((Usuario)cmbUsuarioLiq.getSelectedItem().getValue(), (Agencia)cmbAgenciaLiq.getSelectedItem().getValue());
+//				validarLiquidacion(liquidacion);
+//			}
+//		});
 
 		btnProcesarAnulacion.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
 			@Override
 			public void onEvent(Event event) throws Exception {
 				try {
-					if(!isAnulacionSinNC && !(cmbUsuarioLiq.getSelectedItem().getValue() instanceof Usuario)){
-						DlgMessage.information("Debe de seleccionar el usuario",cmbUsuarioLiq);
-						return;
-					}else if(txtMotivoAnulacion.getText().trim().isEmpty()){
-						DlgMessage.information("Debe de ingresar el Motivo de la anulaci髇.",txtMotivoAnulacion);
+//					if(!isAnulacionSinNC && !(cmbUsuarioLiq.getSelectedItem().getValue() instanceof Usuario)){
+//						DlgMessage.information("Debe de seleccionar el usuario",cmbUsuarioLiq);
+//						return;
+//					}else 
+					if(txtMotivoAnulacion.getText().trim().isEmpty()){
+						DlgMessage.information("Debe de ingresar el Motivo de la anulaci贸n.",txtMotivoAnulacion);
 						return;
 					}else if (txtMotivoAnulacion.getText().trim().length()<5){
-						DlgMessage.information("El Motivo que ha ingresado no es v醠ido.",txtMotivoAnulacion);
+						DlgMessage.information("El Motivo que ha ingresado no es v谩lido.",txtMotivoAnulacion);
 						return;
 					}
-					Messagebox.show("Este proceso puede tardar varios minutos. \n 縍ealmente desea continual con la Anulaci髇 de los Comprobantes Seleccionados?", DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_YESNO, Messagebox.QUESTION,DlgMessage.BTN_DEFAULT_NO, new EventListener<Event>() {
+					Messagebox.show("驴Realmente desea continuar con la Anulaci贸n?", DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_YESNO, Messagebox.QUESTION,DlgMessage.BTN_DEFAULT_NO, new EventListener<Event>() {
 						@Override
 						public void onEvent(Event e){
 							try {
@@ -602,7 +625,7 @@ public class WndAnulacionDocumentos extends WndBase{
 				}else
 					btnProcesarAnulacion.setDisabled(false);
 			}else{
-				lblAdvertencia.setValue("El Usuario Seleccionado no tiene una Liquidaci锟絥 aperturada, esta es necesaria para continuar con el proceso de Anulaci锟絥.");
+				lblAdvertencia.setValue("El Usuario Seleccionado no tiene una Liquidaci贸n aperturada, esta es necesaria para continuar con el proceso de Anulaci贸n.");
 				lblAdvertencia.setVisible(true);
 			}
 		}
@@ -628,7 +651,7 @@ public class WndAnulacionDocumentos extends WndBase{
 	 */
 	private void procesarAnulacion(VentaPasaje ventaPasaje, Window window)throws Exception{
 		List<VentaPasaje>lstVentas= new ArrayList<>();
-		if(ventaPasaje!=null){
+		if(ventaPasaje != null){
 			VentaPasaje anulacion= ServiceLocator.getVentaPasajesManager().buscarVentaById(ventaPasaje.getId());
 			anulacion.setObservaciones(txtMotivoAnulacion.getText().trim().toUpperCase());
 			anulacion.setFechaAnulacion(new Date());
@@ -647,20 +670,34 @@ public class WndAnulacionDocumentos extends WndBase{
 		int tipoAnulacion=0;
 		boolean anularMovimiento=true;
 		if(rdAnulacionRegular.isChecked())
-			tipoAnulacion=Constantes.TIPO_ANULACION_REGULAR;
+			tipoAnulacion = Constantes.TIPO_ANULACION_REGULAR;
 		else{
 			if(rdRegular.isChecked())
-				tipoAnulacion=Constantes.TIPO_ANULACION_REGULAR;
+				tipoAnulacion = Constantes.TIPO_ANULACION_REGULAR;
 			else if (rdSoloNC.isChecked())
-				tipoAnulacion=Constantes.TIPO_ANULACION_NC;
+				tipoAnulacion = Constantes.TIPO_ANULACION_NC;
 			else if (rdNCNuevoComprobante.isChecked())
-				tipoAnulacion=Constantes.TIPO_ANULACION_NC_NEW_COMPROBANTE;
+				tipoAnulacion = Constantes.TIPO_ANULACION_NC_NEW_COMPROBANTE;
 
 			if(!ckbxGeneraMovimientoSistema.isDisabled())
-				anularMovimiento=ckbxGeneraMovimientoSistema.isChecked();
+				anularMovimiento = ckbxGeneraMovimientoSistema.isChecked();
+		}
+		
+		Date fechaNota = null;
+		// Cuando es una anulacion con NC, valida la existencia de especies valoradas
+		if(tipoAnulacion == Constantes.TIPO_ANULACION_NC) {
+			int tipocomprobanteId = lstVentas.get(0).getTipoComprobante().getId();
+			Integer aplicarA = 0;
+			if(tipocomprobanteId == Constantes.ID_TIPCOM_BOLETA_VENTA)
+				aplicarA = Constantes.APLICAR_NC_A_BOLETA;
+			else if(tipocomprobanteId == Constantes.ID_TIPCOM_FACTURA)
+				aplicarA = Constantes.APLICAR_NC_A_FACTURA;
+			
+			UtilData.buscarEspecieValoradaByCaja(Constantes.ID_TIPCOM_NOTA_CREDITO, getAgencia(), false, getUsuarioHardware(), aplicarA);
+			fechaNota = dtbxFechaNc.getValue();
 		}
 
-		VentasNotas ventasNotas= ServiceLocator.getVentaPasajesManager().procesarAnulacionBy(lstVentas, tipoAnulacion, anularMovimiento, this.liquidacion, false);
+		VentasNotas ventasNotas= ServiceLocator.getVentaPasajesManager().procesarAnulacionBy(lstVentas, tipoAnulacion, anularMovimiento, this.liquidacion, false, fechaNota);
 		/*Realiza el envio de las nuevas ventas generadas al Servidor F.E.*/
 		List<VentaPasaje> lstVentasenviar= new ArrayList<>();
 		for(VentaPasaje venta:ventasNotas.getListVentas()){
@@ -693,7 +730,7 @@ public class WndAnulacionDocumentos extends WndBase{
 		}else
 			buscarComprobantesByFechas();
 
-		DlgMessage.information("El Proceso de anulaci髇 termino correctamente");
+		DlgMessage.information("El Proceso de anulaci锟絥 termino correctamente");
 
 		window.onClose();
 	}
