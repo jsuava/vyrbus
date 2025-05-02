@@ -2790,8 +2790,9 @@ public class UtilData extends Window {
 			}else
 				throw new EspecieValoradaNotAvailableException();
 		}catch(EspecieValoradaNotAvailableException evnaex){
-			throw new EspecieValoradaNotAvailableException();
+//			throw new EspecieValoradaNotAvailableException();
 //			DlgMessage.information(Messages.getString("UtilData.information.notAvailableEspecieValorada"));
+			throw new Exception(Messages.getString("UtilData.information.notAvailableEspecieValorada"));
 		}catch(Exception ex){
 			throw new Exception(ex);
 //			DlgMessage.information(ex.getMessage());

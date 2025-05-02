@@ -272,7 +272,7 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 					throw new TiempoExpiracionBloqueoException();
 			}
 
-			/*	Si la operación a realizar es una venta generar boleto.	*/
+			/*	Si la operaciï¿½n a realizar es una venta generar boleto.	*/
 			/* Valida si no es un servicio especial*/
 			if(!(ventaPasaje.getServicioEspecialFactura())){
 				if(ventaPasaje.getTipoTransaccion().equals(Constantes.TIPO_OPERACION_VENTA) ||
@@ -289,7 +289,7 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 						ventaPasaje.setNumeroBoleto(controlEspecieValorada.toString());
 					}
 					/*	Validando que el numero del comprobante no exista en la DB 	*/
-					if(!(ventaPasaje.getServicioEspecialFactura())){ //Solo se omite esta validación en el caso de los servicios especiales con Factura.
+					if(!(ventaPasaje.getServicioEspecialFactura())){ //Solo se omite esta validaciï¿½n en el caso de los servicios especiales con Factura.
 						if(isBoletoDuplicado(ventaPasaje.getNumeroBoleto(), ventaPasaje.getTipoComprobante().getId()))
 							throw new NumeroBoletoDuplicadoException();
 					}
@@ -306,7 +306,7 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 					ventaPasaje.setNumeroBoleto(null);
 			}
 			
-			//Valida si es una confirmación de una reserva - jabanto - 23/02/2023
+			//Valida si es una confirmaciï¿½n de una reserva - jabanto - 23/02/2023
 			if(ventaPasaje.getVentaPasaje()!=null && ventaPasaje.getVentaPasaje().getTipoTransaccion().equals(Constantes.TIPO_OPERACION_RESERVA)) {
 				//Anula la reserva
 				VentaPasaje ventaReserva = getVentaPasajesDAO().buscarPorId(ventaPasaje.getVentaPasaje().getId());
@@ -355,7 +355,7 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 				getTmpOcupacionAsientosDAO().desbloquearAsiento(tmp);
 			}
 
-			/*	Si se trata de un PAXFREE y es una Venta -- no entra cuando es una emisión de cortesia por puntos o cumpleaños desde el modulo "beneficios paxfree"	*/
+			/*	Si se trata de un PAXFREE y es una Venta -- no entra cuando es una emisiï¿½n de cortesia por puntos o cumpleaï¿½os desde el modulo "beneficios paxfree"	*/
 			if(ventaPasaje.getPasajero().isPaxFree() && ventaPasaje.getTipoTransaccion().equals(Constantes.TIPO_OPERACION_VENTA)){
 				PasajeroFrecuente paxfree = getPasajeroFrecuenteDAO().buscarPaxFree(ventaPasaje.getPasajero().getId(), Constantes.TRUE_VALUE);
 				Ruta ruta = getRutaDAO().buscarPorId(new Long(ventaPasaje.getRuta().getId()));
@@ -399,7 +399,7 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 				}
 			}
 
-			/* Valida si el DNI del pasajero es o no valido según validacion previa con el reniec  02/06/2015*/
+			/* Valida si el DNI del pasajero es o no valido segï¿½n validacion previa con el reniec  02/06/2015*/
 			Util.validarValidacionDNIReniec(ventaPasaje);
 
 			result = Constantes.CORRECT;
@@ -853,7 +853,8 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 				/*Este debe ser anulado, pero con una nota de credito*/
 				TipoNota tipoNota=ServiceLocator.getTipoNotaManager().buscarPorId((long)Constantes.ID_TIPNOTA_ANULACION);
 				tipoNota.setMovimiento(movimiento.getObservaciones());
-				notaCredito = generarNotaCredito(movimiento, tipoNota, true, false, ejecutarSeqByCorrelativo);
+				Date fechaNota = Constantes.FORMAT_DATE.parse(MyTime.dateTimeServer());
+				notaCredito = generarNotaCredito(movimiento, tipoNota, true, false, ejecutarSeqByCorrelativo, fechaNota);
 			}
 		}
 		if (movimiento.getFormaPago().getId().intValue()==Constantes.ID_FORPAG_CORTESIA &&
@@ -1387,7 +1388,7 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 				int canalVanetaId=boletoOriginal.getCanalVenta().getId();
 				
 				//Realiza una devolucion si es una Boleto de Viaje o si este fue emitido por un canal de Agencia de Viajes o Web - 15/12/2016 - jabanto
-				//Se retiro la venta web, para Transmar no aplica y no se hace devolución MAOE 30/04/2024
+				//Se retiro la venta web, para Transmar no aplica y no se hace devoluciï¿½n MAOE 30/04/2024
 				if(boletoOriginal.getTipoComprobante().getId().intValue()==Constantes.ID_TIPCOM_BOLETO_VIAJE
 						|| canalVanetaId==Constantes.ID_CANVEN_AGENCIA_VIAJES
 //						|| canalVanetaId==Constantes.ID_CANVEN_WEB
@@ -1441,8 +1442,11 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 
 			/*Generando la Nota de credito si el boleto original no es boleto de viaje - 04/11/2016 - jabanto*/
 			VentaPasaje notaCredito=null;
-			if(emitirNotaCredito)
-				notaCredito = generarNotaCredito(boletoPostergar.getVentaPasaje(), boletoPostergar.getTipoNota(), false, false, ejecutarSeqByCorrelativo);
+			if(emitirNotaCredito) {
+				Date fechaNota = Constantes.FORMAT_DATE.parse(MyTime.dateTimeServer());
+				notaCredito = generarNotaCredito(boletoPostergar.getVentaPasaje(), boletoPostergar.getTipoNota(), false, false, ejecutarSeqByCorrelativo, fechaNota);
+			}
+				
 
 			/**Begin 04/11/2016 - jabanto**/
 			/*Vuelve a realizar la busqueda del correlativo y lo actualiza, a exception de los boletos, ya que no son necesarios pues son manuales*/
@@ -1474,7 +1478,7 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 				}
 			}
 			
-			// Completar información del tracking MAOE 19/02/2024
+			// Completar informaciï¿½n del tracking MAOE 19/02/2024
 			
 			/*	Generando el nuevo boleto	*/
 			boletoPostergar.setTipoNota(null);
@@ -1752,7 +1756,8 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 			/***********************************************/
 
 			if(emitirNota){
-				notaCredito=generarNotaCredito(venta.getVentaPasaje(), venta.getTipoNota(),false, false, ejecutarSeqByCorrelativo);
+				Date fechaNota = Constantes.FORMAT_DATE.parse(MyTime.dateTimeServer());
+				notaCredito=generarNotaCredito(venta.getVentaPasaje(), venta.getTipoNota(),false, false, ejecutarSeqByCorrelativo, fechaNota);
 				if(notaCredito==null)
 					throw new Exception("Ha ocurrido un error al emitir la Nota de Crï¿½dito...");
 			}
@@ -2166,27 +2171,28 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 
 	@Transactional
 	@Override
-	public VentaPasaje generarNotaCredito(VentaPasaje ventaAplica, TipoNota tipoNota, boolean anularMovimiento, boolean copyCanalOriginal, Liquidacion liquidacion, boolean ejecutarSeqByCorrelativo) throws Exception {
-		Agencia agencia=null;
-		Usuario usuario=null;
-		Date fechaLiquidacion=null;
+	public VentaPasaje generarNotaCredito(VentaPasaje ventaAplica, TipoNota tipoNota, boolean anularMovimiento, boolean copyCanalOriginal, 
+			Liquidacion liquidacion, boolean ejecutarSeqByCorrelativo, Date fechaNota) throws Exception {
+		Agencia agencia = (Agencia) Executions.getCurrent().getDesktop().getSession().getAttribute(Constantes.ATRIBUTO_AGENCIA);
+		Usuario usuario = (Usuario) Executions.getCurrent().getDesktop().getSession().getAttribute(Constantes.ATRIBUTO_USUARIO);
+//		Date fechaLiquidacion=null;
 
-		if(liquidacion==null){
-			agencia = (Agencia) Executions.getCurrent().getDesktop().getSession().getAttribute(Constantes.ATRIBUTO_AGENCIA);
-			usuario = (Usuario) Executions.getCurrent().getDesktop().getSession().getAttribute(Constantes.ATRIBUTO_USUARIO);
-			fechaLiquidacion=(Date)Executions.getCurrent().getDesktop().getSession().getAttribute(Constantes.ATRIBUTO_FECHA_LIQUIDACION);
-		}else{
-			agencia=liquidacion.getAgencia();
-			usuario=ServiceLocator.getUsuarioManager().buscarPorId(liquidacion.getUsuario().getId().longValue());
-			fechaLiquidacion=liquidacion.getFechaLiquidacion();
-		}
+//		if(liquidacion == null){
+//			agencia = (Agencia) Executions.getCurrent().getDesktop().getSession().getAttribute(Constantes.ATRIBUTO_AGENCIA);
+//			usuario = (Usuario) Executions.getCurrent().getDesktop().getSession().getAttribute(Constantes.ATRIBUTO_USUARIO);
+//			fechaLiquidacion=(Date)Executions.getCurrent().getDesktop().getSession().getAttribute(Constantes.ATRIBUTO_FECHA_LIQUIDACION);
+//		}else{
+//			agencia = liquidacion.getAgencia();
+//			usuario = ServiceLocator.getUsuarioManager().buscarPorId(liquidacion.getUsuario().getId().longValue());
+//			fechaLiquidacion=liquidacion.getFechaLiquidacion();
+//		}
 
 
 		CanalVenta canalVenta = (CanalVenta)Executions.getCurrent().getDesktop().getSession().getAttribute(Constantes.ATRIBUTO_CANAL_VENTA);
 		UsuarioHardware usuarioHardware= (UsuarioHardware)Executions.getCurrent().getDesktop().getSession().getAttribute(Constantes.ATRIBUTO_USUARIO_HARDWARE);
 
-		if(fechaLiquidacion==null)
-			fechaLiquidacion =Constantes.FORMAT_DATE.parse(MyTime.dateTimeServer());
+		if(fechaNota==null)
+			fechaNota =Constantes.FORMAT_DATE.parse(MyTime.dateTimeServer());
 
 		VentaPasaje ventaOriginal= ServiceLocator.getVentaPasajesManager().buscarPorId(ventaAplica.getId());//.getVentaOriginal());
 
@@ -2194,7 +2200,7 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 			/*Primero realizando la anulaciÃ³n de la Boleta o Factura*/
 			VentaPasaje ventaAnulacion = (VentaPasaje)ventaOriginal.clone();
 			ventaAnulacion.setId(null);
-			ventaAnulacion.setFechaLiquidacion(fechaLiquidacion);
+			ventaAnulacion.setFechaLiquidacion(fechaNota);
 			ventaAnulacion.setAgencia(agencia);
 			ventaAnulacion.setUsuario(usuario);
 			ventaAnulacion.setCanalVenta(copyCanalOriginal?ventaOriginal.getCanalVenta():canalVenta);
@@ -2235,7 +2241,7 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 		notaCredito.setTipoTransaccion(Constantes.TIPO_OPERACION_VARIOS);
 		notaCredito.setImportePagado(ventaOriginal.getImportePagado());
 		notaCredito.setFechaCaducidad(new Date());
-		notaCredito.setFechaLiquidacion(fechaLiquidacion);
+		notaCredito.setFechaLiquidacion(fechaNota);
 		notaCredito.setAgencia(agencia);
 		notaCredito.setUsuario(usuario);
 		notaCredito.setCanalVenta(copyCanalOriginal?ventaOriginal.getCanalVenta():usuarioHardware.getCanalVenta());
@@ -2245,6 +2251,7 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 		notaCredito.setTipoNota(tipoNota);
 		notaCredito.setEstadoRegistro(Constantes.VALUE_ACTIVO);
 		notaCredito.setRucClienteCredito(ventaOriginal.getRucClienteCredito()!=null?ventaOriginal.getRucClienteCredito():null);
+		notaCredito.setUsuarioHardware(usuarioHardware);
 		UtilData.auditarRegistro(notaCredito, usuario, Executions.getCurrent());
 
 		//Recuperando el correlativo
@@ -2301,8 +2308,8 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 	 */
 	@Transactional
 	@Override
-	public VentaPasaje generarNotaCredito(VentaPasaje ventaAplica, TipoNota tipoNota, boolean anularMovimiento, boolean copyCanalOriginal, boolean ejecutarSeqByCorrelativo) throws Exception {
-		return generarNotaCredito(ventaAplica, tipoNota, anularMovimiento, copyCanalOriginal, null, ejecutarSeqByCorrelativo);
+	public VentaPasaje generarNotaCredito(VentaPasaje ventaAplica, TipoNota tipoNota, boolean anularMovimiento, boolean copyCanalOriginal, boolean ejecutarSeqByCorrelativo, Date fechaNota) throws Exception {
+		return generarNotaCredito(ventaAplica, tipoNota, anularMovimiento, copyCanalOriginal, null, ejecutarSeqByCorrelativo, fechaNota);
 	}
 	/*
 	 * (non-Javadoc)
@@ -2444,7 +2451,8 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 	 */
 	@Override
 	@Transactional
-	public VentasNotas procesarAnulacionBy(List<VentaPasaje> lstVentas,int tipoAnulacion, boolean anularMovimiento, Liquidacion liquidacion, boolean ejecutarSeqByCorrelativo) throws Exception {
+	public VentasNotas procesarAnulacionBy(List<VentaPasaje> lstVentas,int tipoAnulacion, boolean anularMovimiento, 
+			Liquidacion liquidacion, boolean ejecutarSeqByCorrelativo, Date fechaNota) throws Exception {
 		VentasNotas ventasNotas= new VentasNotas();
 		List<VentaPasaje>notasCredito= new ArrayList<>();
 		List<VentaPasaje>nuevosComprobantes= new ArrayList<>();
@@ -2463,12 +2471,12 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 						//MAOE 19/02/2024
 						//Primero anula en el WSFE
 						Result result=WSFE.anularComprobante(ventaPasaje);
-						//Comentar estas dos lineas para producción, solo sirve para pruebas
+						//Comentar estas dos lineas para producciï¿½n, solo sirve para pruebas
 //						Result result = new Result();
 //						result.setIsCorrect(true);
 						if(result.isIsCorrect()){
 							VentaPasaje anulacion=buscarPorId(ventaPasaje.getId());
-							//Inserta el tracking de anulación aqui
+							//Inserta el tracking de anulaciï¿½n aqui
 							MovimientoPasajes trackingIda = new MovimientoPasajes();
 							
 							trackingIda.setVentaPasaje(anulacion);
@@ -2537,9 +2545,9 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 							ServiceLocator.getMovimientoPasajesManager().guardar(trackingIda);
 							
 						}else
-							throw new Exception("No se puedo continuar con la anulación, el comprobante Nro "+ventaPasaje.getNumeroBoleto()+" No existe en el S.F.E.");
+							throw new Exception("No se puedo continuar con la anulaciÃ³n, el comprobante Nro "+ventaPasaje.getNumeroBoleto()+" No existe en el S.F.E.");
 					}else
-						aplicarNotaCredito=true;
+						throw new Exception("No es posible realizar la anualciÃ³n del comprobante, ha exedido la fecha lÃ­mite.");
 					break;
 				case Constantes.TIPO_ANULACION_NC:
 					aplicarNotaCredito=true;
@@ -2555,7 +2563,7 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 			/*Valida si debe o no aplicar una nota de credito al comprobante*/
 			if(aplicarNotaCredito){
 				TipoNota tipoNota=ServiceLocator.getTipoNotaManager().buscarPorId((long)Constantes.ID_TIPNOTA_ANULACION);
-				VentaPasaje notaCredito = generarNotaCredito(ventaPasaje, tipoNota, anularMovimiento, true,liquidacion, ejecutarSeqByCorrelativo);
+				VentaPasaje notaCredito = generarNotaCredito(ventaPasaje, tipoNota, anularMovimiento, true,liquidacion, ejecutarSeqByCorrelativo, fechaNota);
 				notasCredito.add(notaCredito);
 
 				/*Coloca al comprobante en estado pagado*/
@@ -2746,7 +2754,8 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 			/*Valida si debe o no aplicar una nota de credito al comprobante*/
 			if(aplicarNotaCredito){
 				TipoNota tipoNota=ServiceLocator.getTipoNotaManager().buscarPorId((long)Constantes.ID_TIPNOTA_ANULACION);
-				VentaPasaje notaCredito = generarNotaCredito(ventaPasaje, tipoNota, anularMovimiento, true,liquidacion, ejecutarSeqByCorrelativo);
+				Date fechaNota = Constantes.FORMAT_DATE.parse(MyTime.dateTimeServer()); 
+				VentaPasaje notaCredito = generarNotaCredito(ventaPasaje, tipoNota, anularMovimiento, true,liquidacion, ejecutarSeqByCorrelativo, fechaNota);
 				notasCredito.add(notaCredito);
 
 				/*Coloca al comprobante en estado pagado*/
@@ -2976,6 +2985,7 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 		
 		/* Valida si no es un servicio especial*/
 		if(ventaPasaje.getTipoTransaccion().equals(Constantes.TIPO_OPERACION_VENTA) ||
+				ventaPasaje.getTipoTransaccion().equals(Constantes.TIPO_OPERACION_VARIOS) ||
 				ventaPasaje.getTipoTransaccion().equals(Constantes.TIPO_OPERACION_VENTA_POOL) ||
 				ventaPasaje.getTipoTransaccion().equals(Constantes.TIPO_OPERACION_EXCESO) ||
 				ventaPasaje.getTipoTransaccion().equals(Constantes.TIPO_OPERACION_VENTA_ESPECIAL) ){
@@ -2991,14 +3001,14 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 				
 				controlEspecieValorada = UtilData.buscarEspecieValoradaByCaja(ventaPasaje.getTipoComprobante().getId(), ventaPasaje.getAgencia(), executeSequecer, ventaPasaje.getUsuarioHardware(), aplicarA);				
 				String numCompSeq = controlEspecieValorada.toString();				
-				
+								
 				//Si existe una duplicidad vuelve a consultar el correlativo.
 				if(isDuplicateBoleto(numCompSeq, ventaPasaje.getTipoComprobante().getId(), ventaPasaje.getId())) {
 					controlEspecieValorada = UtilData.buscarEspecieValoradaByCaja(ventaPasaje.getTipoComprobante().getId(), ventaPasaje.getAgencia(), executeSequecer, ventaPasaje.getUsuarioHardware(), aplicarA);				
 					numCompSeq = controlEspecieValorada.toString();
 				}
 				
-				//Actualiza el correlativo de la venta, según el Seq
+				//Actualiza el correlativo de la venta, segï¿½n el Seq
 				ventaPasaje = buscarPorId(ventaPasaje.getId());
 				ventaPasaje.setNumeroBoleto(numCompSeq);
 				getVentaPasajesDAO().update(ventaPasaje);				

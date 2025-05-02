@@ -1648,13 +1648,13 @@ public class WSFE implements Serializable{
 			
 			
 //			Date date=Constantes.FORMAT_DATE_TIME_24H.parse(MyTime.dateTimeServer());
-			String fechaEmision= ""; //FORMAT_DATE.format(date);
-			if(isReembioSoporte)
-				fechaEmision=FORMAT_DATE.format(notaCredito.getFechaLiquidacion());
-			else{
-				Date date=Constantes.FORMAT_DATE_TIME_24H.parse(MyTime.dateTimeServer());
-				fechaEmision=FORMAT_DATE.format(date);	
-			}
+			String fechaEmision = FORMAT_DATE.format(notaCredito.getFechaLiquidacion());
+//			if(isReembioSoporte)
+//				fechaEmision = FORMAT_DATE.format(notaCredito.getFechaLiquidacion());
+//			else{
+//				Date date = Constantes.FORMAT_DATE_TIME_24H.parse(MyTime.dateTimeServer());
+//				fechaEmision = FORMAT_DATE.format(date);	
+//			}
 			
 			
 			/*Instancia la nota*/
