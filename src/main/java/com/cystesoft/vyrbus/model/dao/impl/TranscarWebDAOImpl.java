@@ -720,17 +720,18 @@ public class TranscarWebDAOImpl implements TranscarWebDAO{
 	@Override
 	public TreeMap<String, Manifiesto> buscarLiquidacionBus(String fechaInicio, String fechaFin, String codigoBus)throws Exception {
 		
-		String sql = "SELECT gt.d_fecsal fecha_salida, ut.c_numuni bus_codigo, ut.c_placa bus_placa, pt.c_apepat piloto_apePat " + 
+		String sql = "SELECT " +
+				"		gt.d_fecsal fecha_salida, ut.c_numuni bus_codigo, ut.c_placa bus_placa, pt.c_apepat piloto_apePat " + 
 				"      ,pt.c_apemat piloto_apeMat, pt.c_nombre piloto_nombres, SUM(ec.n_total) total_soles " + 
 				"FROM tctguitra gt " + 
-				"  INNER JOIN tctdetguitra dgt ON (dgt.guitra_id=gt.guitra_id) " + 
-				"	INNER JOIN tcmunitra ut ON (ut.unitra_id=gt.unitra_id) " + 
-				"	INNER JOIN tcmpiloto pt ON (pt.piloto_id=gt.piloto_id) " + 
-				"	INNER JOIN tctenvcon ec ON (ec.envcon_id=dgt.envio_id AND dgt.tipcom_id IN (2,1,3)) " + 
+				"  	  INNER JOIN tctdetguitra dgt ON (dgt.guitra_id=gt.guitra_id) " + 
+				"	  INNER JOIN tcmunitra ut ON (ut.unitra_id=gt.unitra_id) " + 
+				"	  INNER JOIN tcmpiloto pt ON (pt.piloto_id=gt.piloto_id) " + 
+				"	  INNER JOIN tctenvcon ec ON (ec.envcon_id=dgt.envio_id AND dgt.tipcom_id IN (2,1,3)) " + 
 				"WHERE gt.d_fecsal BETWEEN to_date('"+fechaInicio+"', 'dd/MM/yyyy') AND to_date('"+fechaFin+"', 'dd/MM/yyyy') " + 
-				"  AND gt.c_estreg = 'A' " + 
-				"	AND dgt.c_estreg = 'A' " + 
-				"	AND gt.c_numunitra = COALESCE(null, gt.c_numunitra) " + 
+				"      AND gt.c_estreg = 'A' and gt.c_tiplis ='M' " + 
+				"	   AND dgt.c_estreg = 'A' and gt.servicio_id <> 4 " + 
+				"	   AND gt.c_numunitra = COALESCE(null, gt.c_numunitra) " + 
 				"GROUP BY gt.d_fecsal, ut.c_numuni, ut.c_placa, pt.c_apepat, pt.c_apemat, pt.c_nombre " + 
 				"ORDER BY gt.d_fecsal, ut.c_numuni, ut.c_placa, pt.c_apepat, pt.c_apemat, pt.c_nombre";
 

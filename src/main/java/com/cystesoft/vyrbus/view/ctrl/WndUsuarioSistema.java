@@ -454,9 +454,6 @@ public class WndUsuarioSistema extends WndOpcionesMantenimiento {
 			if(cmbUsuarioHardware.getSelectedItem().getValue() instanceof UsuarioHardware)
 				transcarUsuarioPersonal.setUsuarioHardware(cmbUsuarioHardware.getSelectedItem().getValue());
 
-//			transcarUsuarioPersonal.setSexoId(1);
-//			transcarUsuarioPersonal.setPermiteVentaOtrasAgencias(chbxIngresaComprobanteOtraAgencia.isChecked()?Constantes.TRUE_VALUE:Constantes.FALSE_VALUE);
-//			transcarUsuarioPersonal.setAutorizaEntregaSinVerificarUsuario(chbxAutorizaEntregaSinVerificarUsuario.isChecked()?Constantes.TRUE_VALUE:Constantes.FALSE_VALUE);
 			//Roles seleccionados para el usuario de carga
 			String idsRolesUsuarioCarga="";
 			for(Listitem itemRolCarga: lbxRolesCarga.getSelectedItems()) {
