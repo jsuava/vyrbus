@@ -87,6 +87,14 @@
 							<label id="lbOrigen" style="font-size: 11px !important; color:#0000CF"  />
 							<label value="DESTINO :" />
 							<label id="lbDestino" style="font-size: 11px !important; color:#0000CF" />
+							<label value="USU. EMISION :" />
+							<label id="lblUsuarioEmision" style="font-size: 11px !important; color:#0000CF" />
+						</row>
+						<row>
+							<label value="" />
+							<label value="" />
+							<label value="USU. ANUL. :" />
+							<label id="lblUsuarioAnulacion" style="font-size: 11px !important; color:#0000CF" />
 							<label value="FECHA/HORA ANUL :" />
 							<label id="lbFechaHoraAnulacion" style="font-size: 11px !important; color:#0000CF" />
 						</row>

@@ -8,6 +8,7 @@ import com.cystesoft.vyrbus.model.bean.Agencia;
 import com.cystesoft.vyrbus.model.bean.EspecieValorada;
 import com.cystesoft.vyrbus.model.bean.Itinerario;
 import com.cystesoft.vyrbus.model.bean.Manifiesto;
+import com.cystesoft.vyrbus.model.bean.Usuario;
 import com.cystesoft.vyrbus.model.bean.VentaPasaje;
 
 public interface ManifiestoDAO  extends GenericDAO {
@@ -16,7 +17,7 @@ public interface ManifiestoDAO  extends GenericDAO {
 	 * Anula el manifiesto
 	 * @param id :identificador del manifiesto
 	 */
-	public void inactivar(Long id);
+	public void inactivar(Long id, Usuario usuario);
 
 	/**
 	 * consulta itinerario.

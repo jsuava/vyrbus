@@ -191,7 +191,7 @@ public class WndPrincipal extends WndBase {
 				final Window win = new Window("", "normal", false);
 				win.setHeight("210px");
 				win.setWidth("260px");
-				Caption caption = new Caption("Cambio de contraseï¿½a", "resources/mp_changePassword.png");
+				Caption caption = new Caption("Cambio de contraseña", "resources/mp_changePassword.png");
 				win.appendChild(caption);
 				Grid grid = new Grid();
 				Columns columns = new Columns();
@@ -206,7 +206,7 @@ public class WndPrincipal extends WndBase {
 				Row row = new Row();
 				Div div = new Div();
 				div.setAlign("center");
-				Label label = new Label("Es sistema ha detectado que es necesario que cambie su contraseï¿½a.");
+				Label label = new Label("Es sistema ha detectado que es necesario que cambie su contraseña.");
 				label.setStyle("font-size:12px !important; color:red; font-weight:bold");
 				div.appendChild(label);
 				row.appendChild(div);
@@ -227,7 +227,7 @@ public class WndPrincipal extends WndBase {
 				rows.appendChild(row);
 
 				row = new Row();
-				label = new Label("Contraseï¿½a actual :");
+				label = new Label("Contraseña actual :");
 				label.setStyle("font-weight:bold; font-size:10px !important;");
 				row.appendChild(label);
 				final Textbox txtPasswordActual = new Textbox();
@@ -239,7 +239,7 @@ public class WndPrincipal extends WndBase {
 				rows.appendChild(row);
 
 				row = new Row();
-				label = new Label("Nueva contraseï¿½a :");
+				label = new Label("Nueva contraseña :");
 				label.setStyle("font-weight:bold; font-size:10px !important;");
 				row.appendChild(label);
 				final Textbox txtPasswordNuevo = new Textbox();
@@ -251,7 +251,7 @@ public class WndPrincipal extends WndBase {
 				rows.appendChild(row);
 
 				row = new Row();
-				label = new Label("Confirmar contraseï¿½a :");
+				label = new Label("Confirmar contraseña :");
 				label.setStyle("font-weight:bold; font-size:10px !important;");
 				row.appendChild(label);
 				final Textbox txtConfirmPassword = new Textbox();

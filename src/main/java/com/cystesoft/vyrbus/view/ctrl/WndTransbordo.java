@@ -639,7 +639,8 @@ public class WndTransbordo extends WndBase implements Serializable{
 			onSaveTransbordo(ventaPasaje, itinerarioDesde, itinerarioHacia, ibxSeleccion.getValue(), numeroAsiento);
 			
 			//Guardar Tracking MAOE 02/03/2024
-			guardarTracking(ventaPasaje, itinerarioHacia, asientoSelectHacia.getPiso(), numeroAsiento);
+			if(!ventaPasaje.getTipoTransaccion().equals(Constantes.TIPO_OPERACION_RESERVA))
+				guardarTracking(ventaPasaje, itinerarioHacia, asientoSelectHacia.getPiso(), numeroAsiento);
 
 			/*Desbloque el asiento*/
 			ServiceLocator.getTmpOcupacionAsientosManager().desbloquearAsiento(getUsuarioHardware().getId(), lbxItinerarioH.getValue(), ibxSeleccionH.getValue().intValue());
@@ -731,7 +732,8 @@ public class WndTransbordo extends WndBase implements Serializable{
 			onSaveTransbordo(ventaPasaje, itinerarioHacia, itinerarioDesde, ibxSeleccionH.getValue(), numeroAsiento);
 			
 			//Guardar Tracking MAOE 02/03/2024
-			guardarTracking(ventaPasaje, itinerarioDesde, asientoSelectHacia.getPiso(), numeroAsiento);
+			if(!ventaPasaje.getTipoTransaccion().equals(Constantes.TIPO_OPERACION_RESERVA))
+				guardarTracking(ventaPasaje, itinerarioDesde, asientoSelectHacia.getPiso(), numeroAsiento);
 
 			/*Desbloque el asiento*/
 			ServiceLocator.getTmpOcupacionAsientosManager().desbloquearAsiento(getUsuarioHardware().getId(), lbxItinerario.getValue(), ibxSeleccion.getValue().intValue());
@@ -955,7 +957,8 @@ public class WndTransbordo extends WndBase implements Serializable{
 																		if(!(flag)){
 																			ServiceLocator.getVentaPasajesManager().transbordarPax(numeroAsiento, idVentaPasaje, itinerarioHacia);
 																			onSaveTransbordo(venta_MpIz, itinerarioDesde, itinerarioHacia, numeroAsiento, numeroAsiento);
-																			guardarTracking(venta_MpIz, itinerarioHacia, venta_MpIz.getNumeroPiso(), numeroAsiento);
+																			if(!venta_MpIz.getTipoTransaccion().equals(Constantes.TIPO_OPERACION_RESERVA))
+																				guardarTracking(venta_MpIz, itinerarioHacia, venta_MpIz.getNumeroPiso(), numeroAsiento);
 																		}
 																	}
 
@@ -981,7 +984,8 @@ public class WndTransbordo extends WndBase implements Serializable{
 														if(!(flag)){
 															ServiceLocator.getVentaPasajesManager().transbordarPax(numeroAsiento, idVentaPasaje, itinerarioHacia);
 															onSaveTransbordo(venta_MpIz, itinerarioDesde, itinerarioHacia, numeroAsiento, numeroAsiento);
-															guardarTracking(venta_MpIz, itinerarioHacia, venta_MpIz.getNumeroPiso(), numeroAsiento);
+															if(!venta_MpIz.getTipoTransaccion().equals(Constantes.TIPO_OPERACION_RESERVA))
+																guardarTracking(venta_MpIz, itinerarioHacia, venta_MpIz.getNumeroPiso(), numeroAsiento);
 														}
 													}
 													/*Desbloque asientos bloqueados al incio del proceso*/
@@ -1024,7 +1028,8 @@ public class WndTransbordo extends WndBase implements Serializable{
 																						if(!(flag)){
 																							ServiceLocator.getVentaPasajesManager().transbordarPax(numeroAsiento, idVentaPasaje, itinerarioHacia);
 																							onSaveTransbordo(venta_MpIz, itinerarioDesde, itinerarioHacia, numeroAsiento, numeroAsiento);
-																							guardarTracking(venta_MpIz, itinerarioHacia, venta_MpIz.getNumeroPiso(), numeroAsiento);
+																							if(!venta_MpIz.getTipoTransaccion().equals(Constantes.TIPO_OPERACION_RESERVA))
+																								guardarTracking(venta_MpIz, itinerarioHacia, venta_MpIz.getNumeroPiso(), numeroAsiento);
 																						}
 																					}
 																				}
@@ -1060,7 +1065,8 @@ public class WndTransbordo extends WndBase implements Serializable{
 																		if(!(flag)){
 																			ServiceLocator.getVentaPasajesManager().transbordarPax(numeroAsiento, idVentaPasaje, itinerarioHacia);
 																			onSaveTransbordo(venta_MpIz, itinerarioDesde, itinerarioHacia, numeroAsiento, numeroAsiento);
-																			guardarTracking(venta_MpIz, itinerarioHacia, venta_MpIz.getNumeroPiso(), numeroAsiento);
+																			if(!venta_MpIz.getTipoTransaccion().equals(Constantes.TIPO_OPERACION_RESERVA))
+																				guardarTracking(venta_MpIz, itinerarioHacia, venta_MpIz.getNumeroPiso(), numeroAsiento);
 																		}
 																	}
 																}
@@ -1094,7 +1100,8 @@ public class WndTransbordo extends WndBase implements Serializable{
 														if (!(numeroAsiento > capAsientosPiso1_MapaDer)){
 															ServiceLocator.getVentaPasajesManager().transbordarPax(numeroAsiento, idVentaPasaje, itinerarioHacia);
 															onSaveTransbordo(venta_MpIz, itinerarioDesde, itinerarioHacia, numeroAsiento, numeroAsiento);
-															guardarTracking(venta_MpIz, itinerarioHacia, venta_MpIz.getNumeroPiso(), numeroAsiento);
+															if(!venta_MpIz.getTipoTransaccion().equals(Constantes.TIPO_OPERACION_RESERVA))
+																guardarTracking(venta_MpIz, itinerarioHacia, venta_MpIz.getNumeroPiso(), numeroAsiento);
 														}
 													}
 													/*Desbloque asientos bloqueados al incio del proceso*/
@@ -1115,7 +1122,8 @@ public class WndTransbordo extends WndBase implements Serializable{
 											Long idVentaPasaje = venta_MpIz.getId();
 											ServiceLocator.getVentaPasajesManager().transbordarPax(numeroAsiento, idVentaPasaje, itinerarioHacia);
 											onSaveTransbordo(venta_MpIz, itinerarioDesde, itinerarioHacia, numeroAsiento, numeroAsiento);
-											guardarTracking(venta_MpIz, itinerarioHacia, venta_MpIz.getNumeroPiso(), numeroAsiento);
+											if(!venta_MpIz.getTipoTransaccion().equals(Constantes.TIPO_OPERACION_RESERVA))
+												guardarTracking(venta_MpIz, itinerarioHacia, venta_MpIz.getNumeroPiso(), numeroAsiento);
 										}
 										/*Desbloque asientos bloqueados al incio del proceso*/
 										desbloqueartos(listVentasDesde, itinerarioHacia);
@@ -1153,7 +1161,8 @@ public class WndTransbordo extends WndBase implements Serializable{
 																		if (!(numeroAsiento > capAsientosPiso1_MapaDer)){
 																			ServiceLocator.getVentaPasajesManager().transbordarPax(numeroAsiento, idVentaPasaje, itinerarioHacia);
 																			onSaveTransbordo(venta_MpIz, itinerarioDesde, itinerarioHacia, numeroAsiento, numeroAsiento);
-																			guardarTracking(venta_MpIz, itinerarioHacia, venta_MpIz.getNumeroPiso(), numeroAsiento);
+																			if(!venta_MpIz.getTipoTransaccion().equals(Constantes.TIPO_OPERACION_RESERVA))
+																				guardarTracking(venta_MpIz, itinerarioHacia, venta_MpIz.getNumeroPiso(), numeroAsiento);
 																		}
 																	}
 																}
@@ -1184,7 +1193,8 @@ public class WndTransbordo extends WndBase implements Serializable{
 														if (!(asientoOcupado)){
 															ServiceLocator.getVentaPasajesManager().transbordarPax(numeroAsiento, idVentaPasaje, itinerarioHacia);
 															onSaveTransbordo(venta_MpIz, itinerarioDesde, itinerarioHacia, numeroAsiento, numeroAsiento);
-															guardarTracking(venta_MpIz, itinerarioHacia, venta_MpIz.getNumeroPiso(), numeroAsiento);
+															if(!venta_MpIz.getTipoTransaccion().equals(Constantes.TIPO_OPERACION_RESERVA))
+																guardarTracking(venta_MpIz, itinerarioHacia, venta_MpIz.getNumeroPiso(), numeroAsiento);
 														}
 													}
 													/*Desbloque asientos bloqueados al incio del proceso*/
@@ -1270,7 +1280,8 @@ public class WndTransbordo extends WndBase implements Serializable{
 																		if(!(flag)){
 																			ServiceLocator.getVentaPasajesManager().transbordarPax(numeroAsiento, idVentaPasaje, itinerarioDesde);
 																			onSaveTransbordo(venta_MpDr, itinerarioHacia, itinerarioDesde, numeroAsiento, numeroAsiento);
-																			guardarTracking(venta_MpDr, itinerarioDesde, venta_MpDr.getNumeroPiso(), numeroAsiento);
+																			if(!venta_MpDr.getTipoTransaccion().equals(Constantes.TIPO_OPERACION_RESERVA))
+																				guardarTracking(venta_MpDr, itinerarioDesde, venta_MpDr.getNumeroPiso(), numeroAsiento);
 																		}
 																	}
 																}
@@ -1295,7 +1306,8 @@ public class WndTransbordo extends WndBase implements Serializable{
 														if(!(flag)){
 															ServiceLocator.getVentaPasajesManager().transbordarPax(numeroAsiento, idVentaPasaje, itinerarioDesde);
 															onSaveTransbordo(venta_MpDr, itinerarioHacia, itinerarioDesde, numeroAsiento, numeroAsiento);
-															guardarTracking(venta_MpDr, itinerarioDesde, venta_MpDr.getNumeroPiso(), numeroAsiento);
+															if(!venta_MpDr.getTipoTransaccion().equals(Constantes.TIPO_OPERACION_RESERVA))
+																guardarTracking(venta_MpDr, itinerarioDesde, venta_MpDr.getNumeroPiso(), numeroAsiento);
 														}
 													}
 													/*Desbloque asientos bloqueados al incio del proceso*/
@@ -1337,7 +1349,8 @@ public class WndTransbordo extends WndBase implements Serializable{
 																						if(!(flag)){
 																							ServiceLocator.getVentaPasajesManager().transbordarPax(numeroAsiento, idVentaPasaje, itinerarioDesde);
 																							onSaveTransbordo(venta_MpDr, itinerarioHacia, itinerarioDesde, numeroAsiento, numeroAsiento);
-																							guardarTracking(venta_MpDr, itinerarioDesde, venta_MpDr.getNumeroPiso(), numeroAsiento);
+																							if(!venta_MpDr.getTipoTransaccion().equals(Constantes.TIPO_OPERACION_RESERVA))
+																								guardarTracking(venta_MpDr, itinerarioDesde, venta_MpDr.getNumeroPiso(), numeroAsiento);
 																						}
 																					}
 																				}
@@ -1372,7 +1385,8 @@ public class WndTransbordo extends WndBase implements Serializable{
 																		if(!(flag)){
 																			ServiceLocator.getVentaPasajesManager().transbordarPax(numeroAsiento, idVentaPasaje, itinerarioDesde);
 																			onSaveTransbordo(venta_MpDr, itinerarioHacia, itinerarioDesde, numeroAsiento, numeroAsiento);
-																			guardarTracking(venta_MpDr, itinerarioDesde, venta_MpDr.getNumeroPiso(), numeroAsiento);
+																			if(!venta_MpDr.getTipoTransaccion().equals(Constantes.TIPO_OPERACION_RESERVA))
+																				guardarTracking(venta_MpDr, itinerarioDesde, venta_MpDr.getNumeroPiso(), numeroAsiento);
 																		}
 																	}
 																}
@@ -1406,7 +1420,8 @@ public class WndTransbordo extends WndBase implements Serializable{
 														if (!(numeroAsiento > capAsientosPiso1_MapaIzq)){
 															ServiceLocator.getVentaPasajesManager().transbordarPax(numeroAsiento, idVentaPasaje, itinerarioDesde);
 															onSaveTransbordo(venta_MpDr, itinerarioHacia, itinerarioDesde, numeroAsiento, numeroAsiento);
-															guardarTracking(venta_MpDr, itinerarioDesde, venta_MpDr.getNumeroPiso(), numeroAsiento);
+															if(!venta_MpDr.getTipoTransaccion().equals(Constantes.TIPO_OPERACION_RESERVA))
+																guardarTracking(venta_MpDr, itinerarioDesde, venta_MpDr.getNumeroPiso(), numeroAsiento);
 														}
 													}
 													/*Desbloque asientos bloqueados al incio del proceso*/
@@ -1428,7 +1443,8 @@ public class WndTransbordo extends WndBase implements Serializable{
 											Long idVentaPasaje = venta_MpDr.getId();
 											ServiceLocator.getVentaPasajesManager().transbordarPax(numeroAsiento, idVentaPasaje, itinerarioDesde);
 											onSaveTransbordo(venta_MpDr, itinerarioHacia, itinerarioDesde, numeroAsiento, numeroAsiento);
-											guardarTracking(venta_MpDr, itinerarioDesde, venta_MpDr.getNumeroPiso(), numeroAsiento);
+											if(!venta_MpDr.getTipoTransaccion().equals(Constantes.TIPO_OPERACION_RESERVA))
+												guardarTracking(venta_MpDr, itinerarioDesde, venta_MpDr.getNumeroPiso(), numeroAsiento);
 										}
 										/*Desbloque asientos bloqueados al incio del proceso*/
 										desbloqueartos(listVentasHacia, itinerarioDesde);
@@ -1468,7 +1484,8 @@ public class WndTransbordo extends WndBase implements Serializable{
 																		if (!(numeroAsiento > capAsientosPiso1_MapaIzq)){
 																			ServiceLocator.getVentaPasajesManager().transbordarPax(numeroAsiento, idVentaPasaje, itinerarioDesde);
 																			onSaveTransbordo(venta_MpDr, itinerarioHacia, itinerarioDesde, numeroAsiento, numeroAsiento);
-																			guardarTracking(venta_MpDr, itinerarioDesde, venta_MpDr.getNumeroPiso(), numeroAsiento);
+																			if(!venta_MpDr.getTipoTransaccion().equals(Constantes.TIPO_OPERACION_RESERVA))
+																				guardarTracking(venta_MpDr, itinerarioDesde, venta_MpDr.getNumeroPiso(), numeroAsiento);
 																		}
 																	}
 																}
@@ -1500,7 +1517,8 @@ public class WndTransbordo extends WndBase implements Serializable{
 														if (!(asientoOcupado)){
 															ServiceLocator.getVentaPasajesManager().transbordarPax(numeroAsiento, idVentaPasaje, itinerarioDesde);
 															onSaveTransbordo(venta_MpDr, itinerarioHacia, itinerarioDesde, numeroAsiento, numeroAsiento);
-															guardarTracking(venta_MpDr, itinerarioDesde, venta_MpDr.getNumeroPiso(), numeroAsiento);
+															if(!venta_MpDr.getTipoTransaccion().equals(Constantes.TIPO_OPERACION_RESERVA))
+																guardarTracking(venta_MpDr, itinerarioDesde, venta_MpDr.getNumeroPiso(), numeroAsiento);
 														}
 													}
 													/*Desbloque asientos bloqueados al incio del proceso*/

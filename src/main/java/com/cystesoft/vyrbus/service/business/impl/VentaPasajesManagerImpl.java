@@ -834,8 +834,8 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 
 				//Primero anula en el WSFE
 				//Comentado temporalmente por MAOE para pruebas sin Fact Electronica
-				//MAOE 19/02/2024
-				Result result=WSFE.anularComprobante(movimiento);
+				//MAOE 9/11/2024
+				Result result = WSFE.anularComprobante(movimiento);
 				if(result.isIsCorrect()) {
 					getVentaPasajesDAO().update(movimiento);
 				

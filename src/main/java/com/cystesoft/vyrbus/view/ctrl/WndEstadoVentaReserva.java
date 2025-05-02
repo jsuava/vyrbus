@@ -2,6 +2,7 @@
 package com.cystesoft.vyrbus.view.ctrl;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -11,10 +12,18 @@ import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
+import org.zkoss.zul.Button;
+import org.zkoss.zul.Caption;
 import org.zkoss.zul.Checkbox;
+import org.zkoss.zul.Column;
+import org.zkoss.zul.Columns;
 import org.zkoss.zul.Combobox;
 import org.zkoss.zul.Comboitem;
 import org.zkoss.zul.Datebox;
+import org.zkoss.zul.Grid;
+import org.zkoss.zul.Groupbox;
+import org.zkoss.zul.Hlayout;
+import org.zkoss.zul.Label;
 import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Listcell;
 import org.zkoss.zul.Listitem;
@@ -22,12 +31,16 @@ import org.zkoss.zul.Menuitem;
 import org.zkoss.zul.Menupopup;
 import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Radio;
+import org.zkoss.zul.Row;
+import org.zkoss.zul.Rows;
+import org.zkoss.zul.Separator;
 import org.zkoss.zul.Tab;
 import org.zkoss.zul.Textbox;
 import org.zkoss.zul.Toolbarbutton;
 import org.zkoss.zul.Window;
 
 import com.cystesoft.vyrbus.model.bean.Localidad;
+import com.cystesoft.vyrbus.model.bean.MovimientoPasajes;
 import com.cystesoft.vyrbus.model.bean.TipoMovimiento;
 import com.cystesoft.vyrbus.model.bean.Usuario;
 import com.cystesoft.vyrbus.model.bean.VentaPasaje;
@@ -36,8 +49,11 @@ import com.cystesoft.vyrbus.service.fe.Result;
 import com.cystesoft.vyrbus.service.locator.ServiceLocator;
 import com.cystesoft.vyrbus.service.util.Constantes;
 import com.cystesoft.vyrbus.service.util.Messages;
+import com.cystesoft.vyrbus.service.util.RESTCiva;
 import com.cystesoft.vyrbus.service.util.Util;
 import com.cystesoft.vyrbus.service.util.UtilData;
+import com.cystesoft.vyrbus.service.util.UtilFlag;
+import com.cystesoft.vyrbus.service.util.WSCruzdelsur;
 import com.cystesoft.vyrbus.service.util.WSFE;
 import com.cystesoft.vyrbus.view.ui.DlgMessage;
 import com.cystesoft.vyrbus.view.ui.WndBase;
@@ -81,6 +97,7 @@ public class WndEstadoVentaReserva extends WndBase {
 	int BUSQ_PAX_NOMBRES=1;
 
 	private Window wndEstadoVyR;
+	private Window wndAnular = null;
 	private Menupopup menupopup= new Menupopup();
 
 
@@ -189,6 +206,8 @@ public class WndEstadoVentaReserva extends WndBase {
 			String numeroBoleto=null;
 			String busqPax=null;
 			String busqCliente=null;
+			boolean isEnabledUserAnulacion;
+			isEnabledUserAnulacion=UtilFlag.isEnabledUserAnulacion(getUsuario().getId());
 
 			if(dtbxFechaInicioVenta.getValue()!=null)
 				fechaInicialVenta=Constantes.FORMAT_DATE.format(dtbxFechaInicioVenta.getValue());
@@ -288,12 +307,15 @@ public class WndEstadoVentaReserva extends WndBase {
 						}
 					});
 
+					Hlayout hlayout = new Hlayout();
 					Toolbarbutton tbverVenta= new Toolbarbutton("Ver venta");
 					tbverVenta.setStyle("text-transform:uppercase; color:blue;");
 					x++;
 					tbverVenta.setId(String.valueOf(x));
 					cell= new Listcell();
 					cell.appendChild(tbverVenta);
+					hlayout.appendChild(tbverVenta);
+					cell.appendChild(hlayout);
 					item.appendChild(cell);
 					tbverVenta.addEventListener(Events.ON_CLICK,new EventListener<Event>() {
 						@Override
@@ -307,6 +329,27 @@ public class WndEstadoVentaReserva extends WndBase {
 							win.setMode(MODAL);
 						}
 					});
+					
+					
+					Button btnAnular = new Button();
+//					btnAnular.setId(ventaPasaje.getId().toString());
+					if(!isEnabledUserAnulacion)
+						btnAnular.setVisible(false);
+					else
+						btnAnular.setVisible(true);
+					btnAnular.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+						@Override
+						public void onEvent(Event e) throws Exception{
+//							anularBoleto(e.getTarget().getId());
+							anularBoleto(ventaPasaje.getId().toString());
+						}
+					});
+					btnAnular.setImage("resources/mp_anular.png");
+					btnAnular.setClass("btnImage");
+					btnAnular.setTooltiptext("Haga click aqui si desea anular el Comprobante");
+					hlayout.appendChild(btnAnular);
+					cell.appendChild(hlayout);
+					item.appendChild(cell);
 
 					item.setValue(ventaPasaje);
 					item.setTooltiptext("Haga doble click para ver la información de la Venta ");
@@ -339,7 +382,308 @@ public class WndEstadoVentaReserva extends WndBase {
 
 	}
 
+	public void anularBoleto(String idVenta){
+		
+		try{
+			final VentaPasaje ventaOriginal = ServiceLocator.getVentaPasajesManager().buscarVentaById(Long.valueOf(idVenta));
+			final VentaPasaje ultimoMoviento = ServiceLocator.getVentaPasajesManager().buscarUltimoRegistro(ventaOriginal.getVentaOriginal());
 
+			//###BEGIN 05/05/2016 - jabanto
+			/*Valida si el boleto tiene movimientos superiores al que se esta anulando*/
+			if(ultimoMoviento.getId().longValue()!=ventaOriginal.getId().longValue()){
+				DlgMessage.information(Messages.getString("WndLiquidacionDiariaVentas.information.noAnulacion"));
+				return;
+			}
+
+			//Validacion para la anulacion de un Recibo de caja
+			if (ventaOriginal.getTipoComprobante().getId().intValue()==Constantes.ID_TIPCOM_RECIBO_CAJA){
+				VentaPasaje ultimoRegistro=ServiceLocator.getVentaPasajesManager().buscarUltimoRegistro(ventaOriginal.getVentaOriginal());
+				//Valida si RC esta reimpreso y no esta anulado para continuar con la anulaciï¿½n.
+				if (ultimoRegistro.getTipoComprobante().getId().intValue()!=Constantes.ID_TIPCOM_RECIBO_CAJA &&
+						ultimoRegistro.getTipoMovimiento().getId().intValue()!=Constantes.ID_TIPMOV_ANULACION){
+					DlgMessage.information(Messages.getString("WndLiquidacionDiariaVentas.information.RCReimpreso"));
+					return;
+				}
+			}
+			else if(ventaOriginal.getTipoMovimiento().getId().intValue()==Constantes.ID_TIPMOV_ANULACION)
+				DlgMessage.information(Messages.getString("WndLiquidacionDiariaVentas.information.boletoAnulado"));
+			else if (ventaOriginal.getTipoMovimiento().getId().intValue()==Constantes.ID_TIPMOV_DEVOLUCION)
+				DlgMessage.information(Messages.getString("WndLiquidacionDiariaVentas.information.boletoDevuelto"));
+//			else if(ServiceLocator.getDetalleManifiestoManager().validarVentaManifiesto(Long.valueOf(idVenta)) == true)
+			//Se comento estas lineas porque desde ahora las anulaciones las realiza un o unos usuarios designados
+			//por lo tanto no interesa que el manifiesto este emitido  MAOE 05/12/2024
+//			else if(ServiceLocator.getDetalleManifiestoManager().validarVentaManifiesto(ventaOriginal.getId())) {
+//				DlgMessage.information(Messages.getString("Generales.information.manifiestoImpreso"));
+//				return;
+//			}
+
+			//Se comento estas lineas porque desde ahora las anulaciones las realiza un o unos usuarios designados
+			//por lo tanto no interesa que el manifiesto este emitido  MAOE 05/12/2024
+//			if (!(ventaOriginal.getUsuario().getId().equals(getUsuario().getId())))
+//				DlgMessage.information(Messages.getString("WndLiquidacionDiariaVentas.information.otroUsuario"));
+//			else
+			//Solo validamos que las anulaciones sean en el mismo día
+			if(!(Constantes.FORMAT_DATE.format(ventaOriginal.getFechaInsercion()).equals(Constantes.FORMAT_DATE.format(new Date()))))
+				DlgMessage.information(Messages.getString("WndLiquidacionDiariaVentas.information.fechaPasada"));
+			else if(ventaOriginal.getLiquidacion()==null){
+//					if(ventaOriginal.getIdentificadorIdaRetorno()!=null){
+//						Messagebox.show("Esta a punto de anular un boleto ida y vuelta, este proceso conlleva la anulaciï¿½n de los 2 boletos, desea continuar?", DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_YESNO, Messagebox.QUESTION, new EventListener<Event>() {
+//							public void onEvent(Event e){
+//								if(e.getName().equals(Messagebox.ON_YES)){
+//									wndAnular = createVentanaAnulacion(ventaOriginal);
+//									wndLiquidacionDiariaVentas.appendChild(wndAnular);
+//									wndAnular.setMode("modal");
+//								}
+//							}
+//						});
+//					}else{
+				wndAnular = createVentanaAnulacion(ventaOriginal);
+				this.appendChild(wndAnular);
+				wndAnular.setMode("modal");
+//					}
+			}else
+				DlgMessage.information(Messages.getString("WndLiquidacionDiariaVentas.information.boletoLiquidado"));
+
+		}catch(Exception ex){
+			DlgMessage.error(this.getClass().getSimpleName()+" "+ex.getMessage());
+		}
+	}
+	
+	@SuppressWarnings("deprecation")
+	private Window createVentanaAnulacion(final VentaPasaje ventaOriginal){
+		Caption caption = null;
+		Groupbox groupbox = null;
+		Grid grid = new Grid();
+		Columns columns = new Columns();
+		Column column = null;
+		Rows rows = new Rows();
+		Row row = null;
+		Label label = null;
+		Textbox text = null;
+
+		final Window win = new Window("", "normal", true);
+		win.setWidth("500px");
+
+		caption = new Caption("ANULACION DE BOLETO", "resources/mp_anular.png");
+		win.appendChild(caption);
+		label = new Label("Se va a realizar la Anulacion del Boleto con los siguientes datos :");
+		label.setStyle("font-size:12px !important");
+		win.appendChild(label);
+
+		win.appendChild(new Separator("horizontal"));
+
+		groupbox = new Groupbox();
+		groupbox.setClosable(false);
+		caption = new Caption("Datos del Boleto");
+		groupbox.appendChild(caption);
+
+		/*	Columna 1	*/
+		column = new Column();
+		column.setAlign("right");
+		columns.appendChild(column);
+		/*	Columna 2	*/
+		column = new Column();
+		columns.appendChild(column);
+		/*	Columna 3	*/
+		column = new Column();
+		column.setAlign("right");
+		columns.appendChild(column);
+		/*	Columna 4	*/
+		column = new Column();
+		columns.appendChild(column);
+
+		grid.appendChild(columns);
+
+		row = new Row();
+		label = new Label("NUMERO BOLETO :");
+		row.appendChild(label);
+		text = new Textbox(ventaOriginal.getNumeroBoleto());
+		text.setReadonly(true);
+		text.setWidth("80px");
+		text.setStyle("font-size:11px !important");
+		row.appendChild(text);
+		label = new Label("FECHA VIAJE :");
+		row.appendChild(label);
+		text = new Textbox(ventaOriginal.getFechaPartida()==null?"":Util.DatetoString(ventaOriginal.getFechaPartida(), Constantes.DATE_FORMAT));
+		text.setReadonly(true);
+		text.setWidth("80px");
+		text.setStyle("font-size:11px !important");
+		row.appendChild(text);
+		rows.appendChild(row);
+
+		row = new Row();
+		row.setSpans("1,3");
+		label = new Label("PASAJERO :");
+		row.appendChild(label);
+		text = new Textbox(ventaOriginal.getPasajero().toString());
+		text.setReadonly(true);
+		text.setWidth("314px");
+		text.setStyle("font-size:11px !important");
+		row.appendChild(text);
+		rows.appendChild(row);
+
+		row = new Row();
+		label = new Label("RUTA :");
+		row.appendChild(label);
+		text = new Textbox(ventaOriginal.getRuta().getOrigen()+" - " + ventaOriginal.getRuta().getDestino());
+		text.setReadonly(true);
+		text.setWidth("100px");
+		row.appendChild(text);
+		label = new Label("IMPORTE :");
+		row.appendChild(label);
+		text = new Textbox(Util.toNumberFormat(ventaOriginal.getImportePagado(), 2));
+		text.setReadonly(true);
+		text.setWidth("80px");
+		text.setStyle("font-size:11px !important");
+		row.appendChild(text);
+		rows.appendChild(row);
+
+		row=new Row();
+		row.setSpans("1,4");
+		label = new Label("MOTIVO ANULACION (*) :");
+		row.appendChild(label);
+		final Textbox txtMotivoAnulacion = new Textbox();
+		txtMotivoAnulacion.setWidth("314px");
+		txtMotivoAnulacion.setMultiline(true);
+		txtMotivoAnulacion.setRows(3);
+		txtMotivoAnulacion.setMaxlength(255);
+		txtMotivoAnulacion.setStyle("font-size:11px !important");
+		row.appendChild(txtMotivoAnulacion);
+		rows.appendChild(row);
+
+
+		grid.appendChild(rows);
+		groupbox.appendChild(grid);
+		win.appendChild(groupbox);
+
+		grid = new Grid();
+		columns = new Columns();
+		column = new Column();
+		column.setAlign("center");
+		columns.appendChild(column);
+		column = new Column();
+		column.setAlign("center");
+		columns.appendChild(column);
+		grid.appendChild(columns);
+		rows = new Rows();
+		row = new Row();
+
+		Button button = new Button("Continuar", "resources/mp_anular.png");
+		button.setClass("btnCommandM");
+		button.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+			@Override
+			public void onEvent(Event e){
+				if(txtMotivoAnulacion.getText().trim().isEmpty()){
+					DlgMessage.information(Messages.getString("WndLiquidacionDiariaVentas.information.noMotivoAnulacion"),txtMotivoAnulacion);
+					return;
+				}
+				Messagebox.show(Messages.getString("WndLiquidacionDiariaVentas.information.confirmarAnulacion"), DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_YESNO, Messagebox.QUESTION, new EventListener<Event>() {
+					@Override
+					public void onEvent(Event e){
+						try{
+							if(e.getName().equals("onYes")){
+								realizarAnulacion(ventaOriginal, wndAnular,txtMotivoAnulacion.getText().trim().toUpperCase());
+							}
+						}catch(Exception ex){
+							ex.printStackTrace();
+							DlgMessage.information(this.getClass().getSimpleName()+" "+ex.getMessage());
+						}
+					}
+				});
+			}
+		});
+		button.setHeight("28px");
+		button.setWidth("100px");
+		row.appendChild(button);
+		button = new Button("Cancelar", "resources/mp_cancelarEnabled.png");
+		button.setClass("btnCommandM");
+		button.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+			@Override
+			public void onEvent(Event e){
+				win.onClose();
+			}
+		});
+		button.setHeight("28px");
+		button.setWidth("100px");
+		button.setFocus(true);
+		row.appendChild(button);
+
+		rows.appendChild(row);
+
+		grid.appendChild(rows);
+		win.appendChild(grid);
+		return win;
+	}
+	
+	private void realizarAnulacion(VentaPasaje ventaOriginal, Window wndAnular, String motivo)throws Exception{
+		int result=Constantes.FAILURE;
+
+		/*Valida si es una venta del pool - 14/11/2016 - jabanto*/
+		if(ventaOriginal.getServicio()!=null && (ventaOriginal.getServicio().getId().intValue()==Constantes.ID_SERVICIO_POOL_CRUZDELSUR ||
+											    ventaOriginal.getServicio().getId().intValue()==Constantes.ID_SERVICIO_POOL_EXCLUCIVA)){
+
+			/*Valida el operador*/
+			if(ventaOriginal.getServicio().getId().intValue()==Constantes.ID_SERVICIO_POOL_CRUZDELSUR){
+				/*Realiza la anulacion del boleto en el WS de cruz de sur*/
+				WSCruzdelsur.anularBoleto(ventaOriginal.getNumeroBoletoAnterior());
+			}else if (ventaOriginal.getServicio().getId().intValue()==Constantes.ID_SERVICIO_POOL_EXCLUCIVA){
+				/*Realiza la anulacion del boleto con la API de Excluciva*/
+				RESTCiva.anularBoleto(ventaOriginal.getNumeroBoleto());
+			}
+		}
+		
+		//Cargar información tracking 19/02/2024
+		MovimientoPasajes trackingIda = new MovimientoPasajes();
+		trackingIda.setVentaPasaje(ventaOriginal);
+		trackingIda.setOperacion("ANULACION REGULAR");
+		trackingIda.setFechaOperacion(Util.DatetoString(new Date(), "dd/MM/yyyy"));
+		trackingIda.setServicio(ventaOriginal.getServicio());
+		trackingIda.setRuta(ventaOriginal.getRuta());
+		trackingIda.setAgenciaEmbarque(ventaOriginal.getAgenciaPartida());
+		trackingIda.setFechaEmbarque(ventaOriginal.getFechaPartida()==null ? null : Util.DatetoString(ventaOriginal.getFechaPartida(), "dd/MM/yyyy"));
+		trackingIda.setHoraEmbarque(ventaOriginal.getFechaPartida()==null ? null : UtilData.obtenerHoraEmbarque( ventaOriginal.getItinerario().getId(), ventaOriginal.getAgenciaPartida().getId()));
+		trackingIda.setNumeroPiso(ventaOriginal.getFechaPartida()==null ? null : ventaOriginal.getNumeroPiso());
+		trackingIda.setNumeroAsiento(ventaOriginal.getFechaPartida()==null ? null : ventaOriginal.getNumeroAsiento());
+		trackingIda.setImportePagado(ventaOriginal.getImportePagado());
+		trackingIda.setTipoFormaPago(ventaOriginal.getTipoFormaPago());
+		trackingIda.setEstadoRegistro(Constantes.VALUE_ACTIVO);
+		UtilData.auditarRegistro(trackingIda, getUsuario(), Executions.getCurrent());
+		
+
+		ventaOriginal.setTarifa(0.0);
+		ventaOriginal.setRecargo(0.0);
+		ventaOriginal.setDescuento(0.0);
+		ventaOriginal.setImportePagado(0.0);
+		ventaOriginal.setAcuenta(0.0);
+		ventaOriginal.setImportePagado(0.0);
+		ventaOriginal.setTarifaEquibalente(ventaOriginal.getTarifaEquibalente()!=null?.00:null);
+		ventaOriginal.setDescuentoEquibalente(ventaOriginal.getDescuentoEquibalente()!=null?.00:null);
+		ventaOriginal.setImportePagadoEquibalente(ventaOriginal.getImportePagadoEquibalente()!=null?.00:null);
+		ventaOriginal.setTipoMovimiento(new TipoMovimiento(Constantes.ID_TIPMOV_ANULACION));
+		ventaOriginal.setObservaciones(motivo);
+		ventaOriginal.setFechaAnulacion(new Date());
+		ventaOriginal.setUsuarioAnulacion(getUsuario());
+		UtilData.auditarRegistro(ventaOriginal, true, getUsuario(), Executions.getCurrent());
+		VentaPasaje notaCredito= ServiceLocator.getVentaPasajesManager().anularMovimiento(ventaOriginal,false, false);
+		if(notaCredito!=null){
+			//Actualiza el correlativo - 22/01/2024 - jabanto
+//			ServiceLocator.getVentaPasajesManager().actualizarCorrelativoComprobante(notaCredito, true);
+			notaCredito = ServiceLocator.getVentaPasajesManager().updateCorrelative(notaCredito, true);
+			//Comentado por MAOE 05/02/2024
+			WSFE.sendNota(notaCredito);
+		}
+		
+		result=Constantes.CORRECT;
+		if(result==Constantes.CORRECT){
+			//Insertar el tracking de anulacion
+			ServiceLocator.getMovimientoPasajesManager().guardar(trackingIda);
+			DlgMessage.information(Messages.getString("WndLiquidacionDiariaVentas.information.exitoAnulacion"));
+			wndAnular.onClose();
+			buscar();
+		}
+	}
+	
+	
 	public void listarHistorial(List<VentaPasaje> lstHistorial){
 		String styleActivo_11px="font-size:11px !important";
 		String styleActivo_9px="font-size:9px !important";

@@ -68,10 +68,18 @@
 						<listfoot id="listFootAnulacionMasiva" visible="false">
 							<listfooter />
 							<listfooter span="5" align="left" >
-								<checkbox id="chbxActivaAnulacionMasiva" visible="true" label="Activar anulación masiva (Cuando esta opción este habilitada, no se podrán confirmar reservas)" onCheck="wndConfirmarReserva.activarAnulacionMasiva()"/>
+								<checkbox id="chbxActivaAnulacionMasiva" 
+								 visible="true" 
+								 label="Activar anulación masiva (Cuando esta opción este habilitada, no se podrán confirmar reservas)" 
+								 onCheck="wndConfirmarReserva.activarAnulacionMasiva()"/>
 							</listfooter>
 							<listfooter span="7" align="right">
-								<button autodisable="self" sclass="btnCommandXL" label="Anular Selección" image="resources/mp_anular.png" onClick="wndConfirmarReserva.anulacionMasiva()" tooltiptext="Anula todas las reservas seleccionadas." />
+								<button autodisable="self" 
+								 sclass="btnCommandXL" 
+								 label="Anular Reservas" 
+								 image="resources/mp_anular.png" 
+								 onClick="wndConfirmarReserva.anulacionMasiva()" 
+								 tooltiptext="Anula todas las reservas seleccionadas." />
 							</listfooter>
 						</listfoot>
 					</listbox>

@@ -33,6 +33,7 @@ import org.zkoss.zul.Textbox;
 
 import com.cystesoft.vyrbus.model.bean.Agencia;
 import com.cystesoft.vyrbus.model.bean.Localidad;
+import com.cystesoft.vyrbus.model.bean.Parametros;
 import com.cystesoft.vyrbus.model.bean.Rol;
 import com.cystesoft.vyrbus.model.bean.TipoMovimiento;
 import com.cystesoft.vyrbus.model.bean.VentaPasaje;
@@ -87,8 +88,12 @@ public class WndConfirmarReserva extends WndBase {
 				closeTabWindow();
 				throw new EsAgenciaTepsaException();
 			}
+			
+			//Obteniendo los parametros en tiempo real para manejar los usuarios que anulan
+			Parametros params= ServiceLocator.getParametrosManager().buscarPorEstadoRegistro("A");					
 
-			String[] buffer = Constantes.USUARIO_ANULA_RESERVA.split(",");
+//			String[] buffer = Constantes.USUARIO_ANULA_RESERVA.split(",");
+			String[] buffer = params.getUsuarioAnulaReserva().split(",");
 			for (String element : buffer) {
 				if(element.equals(getUsuario().getId().toString())){
 					cmbAgencia.setDisabled(false);
@@ -117,7 +122,7 @@ public class WndConfirmarReserva extends WndBase {
 
 			List<Rol>listRolesAcceeso=new ArrayList<>();
 			listRolesAcceeso.add(new Rol(Constantes.ID_ROL_SUPER_USUARIO));
-//			listRolesAcceeso.add(new Rol(Constantes.ID_ROL_JEFE_VENTAS));
+			listRolesAcceeso.add(new Rol(Constantes.ID_ROL_FINANZAS));
 			listRolesAcceeso.add(new Rol(Constantes.ID_ROL_ADMIN));
 //			listRolesAcceeso.add(new Rol(Constantes.ID_ROL_ADMIN_COMERCIAL));
 //			listRolesAcceeso.add(new Rol(Constantes.ID_ROL_GESTION_CORPORATIVA));
@@ -322,8 +327,8 @@ public class WndConfirmarReserva extends WndBase {
 				lbxReservas.setMultiple(true);
 				listHeaderCheck.setVisible(true);
 			}else{
-				lbxReservas.setCheckmark(false);
 				lbxReservas.setMultiple(false);
+				lbxReservas.setCheckmark(false);
 				listHeaderCheck.setVisible(false);
 			}
 

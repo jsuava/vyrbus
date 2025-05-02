@@ -283,7 +283,7 @@ public class WndPasajero extends WndOpcionesMantenimiento {
 		oWndFiltrar.addParameter("1. Apellido Paterno", String.class);
 		oWndFiltrar.addParameter("2. Apellido Materno", String.class);
 		oWndFiltrar.addParameter("3. Nombres", String.class);
-		oWndFiltrar.addParameter("4. N� de Documento", String.class);
+		oWndFiltrar.addParameter("4. Nro de Documento", String.class);
 		this.appendChild(oWndFiltrar);
 		oWndFiltrar.setMode("modal");
 		oWndFiltrar.addEventListener(com.cystesoft.vyrbus.view.ui.Events.ON_FILTER, new EventListener<Event>() {
@@ -292,7 +292,7 @@ public class WndPasajero extends WndOpcionesMantenimiento {
 			public void onEvent(Event event) throws Exception {
 				condicionBusqueda= new TreeMap<>();
 
-				String numeroIdentificacion = (String) oWndFiltrar.getParameterValue("4. N� de Documento");
+				String numeroIdentificacion = (String) oWndFiltrar.getParameterValue("4. Nro de Documento");
 				String apellidoPaterno = (String) oWndFiltrar.getParameterValue("1. Apellido Paterno");
 				String apellidoMaterno = (String) oWndFiltrar.getParameterValue("2. Apellido Materno");
 				String nombre = (String) oWndFiltrar.getParameterValue("3. Nombres");
