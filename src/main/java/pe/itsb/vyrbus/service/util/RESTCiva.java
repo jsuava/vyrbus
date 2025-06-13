@@ -145,9 +145,9 @@ public class RESTCiva implements Serializable{
 				    JSONObject jsonobject = jsonArray.getJSONObject(i);
 
 				    result.add(jsonobject.getString("dni"));
-				    result.add(jsonobject.getString("nombres"));
-				    result.add(jsonobject.getString("apellidoPaterno"));
-				    result.add(jsonobject.getString("apellidoMaterno"));
+				    result.add(jsonobject.getString("nombres").replace("'", ""));
+				    result.add(!jsonobject.getString("apellidoPaterno").equals(null) ? jsonobject.getString("apellidoPaterno").replace("'", "") : "");
+				    result.add(!jsonobject.getString("apellidoMaterno").equals(null) ? jsonobject.getString("apellidoMaterno").replace("'", "") : "");
 //				    result.add(String.valueOf(jsonobject.getInt("codVerifica")));
 
 				}
@@ -177,8 +177,8 @@ public class RESTCiva implements Serializable{
 				    JSONObject jsonobject = jsonArray.getJSONObject(i);
 
 				    result.add(jsonobject.getString("ruc"));
-				    result.add(jsonobject.getString("razonSocial"));
-				    result.add( ruc.substring(0, 1).contentEquals("2")? jsonobject.getString("direccion") : "");
+				    result.add(jsonobject.getString("razonSocial").replace("'", ""));
+				    result.add( ruc.substring(0, 1).contentEquals("2")? jsonobject.getString("direccion").replace("'", "") : "");
 				}
 
 			}

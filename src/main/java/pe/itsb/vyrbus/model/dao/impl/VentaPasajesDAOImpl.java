@@ -1607,7 +1607,7 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 					"INNER JOIN vrmagencia ag ON (ag.agencia_id=vp.agencia_id) "+
 					"INNER JOIN vrmtipcom tcp ON (tcp.tipcom_id=vp.tipcom_id) "+
 					"WHERE vp.agencia_id="+idAgencia+" AND vp.usuario_id= NVL("+idUsuario+",vp.usuario_id) AND vp.d_fecliq BETWEEN to_date('"+fechaInicial+"','dd/mm/yyyy') AND " +
-							"to_date('"+fechaFinal+"','dd/mm/yyyy') AND vp.tipmov_id="+Constantes.ID_TIPMOV_ANULACION+" AND vp.n_imppag=0 ";
+							"to_date('"+fechaFinal+"','dd/mm/yyyy') AND vp.tipmov_id="+Constantes.ID_TIPMOV_ANULACION+" AND vp.n_imppag=0 and vp.c_tiptra<>2 ";
 
 			sql = sql + " UNION ALL ";
 			//DEVOLUCIONES

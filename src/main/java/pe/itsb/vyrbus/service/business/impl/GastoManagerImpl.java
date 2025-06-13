@@ -81,6 +81,13 @@ public class GastoManagerImpl implements GastoManager {
 
 		return getGastoDAO().BuscarTotalGastos(fecha, idUsuario, idAgencia);
 	}
+	
+	@Override
+	public Double BuscarTotalOtrosIngresos(String fecha, Integer idUsuario,Integer idAgencia) throws Exception {
+		// TODO Auto-generated method stub
+
+		return getGastoDAO().BuscarTotalOtrosIngresos(fecha, idUsuario, idAgencia);
+	}
 
 	/* (non-Javadoc)
 	 * @see pe.itsb.vyrbus.service.business.GastoManager#buscarGasto(java.lang.String, java.lang.String, java.lang.Integer, java.lang.Integer, java.lang.Integer)
@@ -114,6 +121,8 @@ public class GastoManagerImpl implements GastoManager {
 		// TODO Auto-generated method stub
 		return getGastoDAO().buscarGastosIngresos(fechaInicio, fechaFin, tipoOperacion);
 	}
+	
+	
 
 
 }

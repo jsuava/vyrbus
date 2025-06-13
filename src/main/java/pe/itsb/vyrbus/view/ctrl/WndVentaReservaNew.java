@@ -3039,7 +3039,8 @@ public class WndVentaReservaNew  extends WndBase {
 				disabled_btnGuardar(btnVtaGuardar, false);
 			
 			if(!rdVtaConfirmacionFA.isChecked()) {
-				Util.seleccionarValorItemCombo(TipoDocumento.class, cmbVtaPaxTipoDocumento, Constantes.ID_TIPDOC_DNI);
+				if(txtVtaPaxNombres.getValue().isEmpty())
+					Util.seleccionarValorItemCombo(TipoDocumento.class, cmbVtaPaxTipoDocumento, Constantes.ID_TIPDOC_DNI);
 				Util.seleccionarValorItemCombo(TipoDocumento.class, cmbVtaInfTipoDocumento, Constantes.ID_TIPDOC_DNI);	
 			}			
 			focusCursorByTipoOperacion(null);

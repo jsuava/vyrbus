@@ -6242,6 +6242,12 @@ public class CreateDocument implements Serializable {
 					.map(Personal::getLicencia)
 					.orElse("");
 			
+			// Tripulante - Nombres
+			String tripulanteNombres = optBus.map(Bus::getProgramacionServicio)
+					.map(ProgramacionServicio::getTripulante)
+					.map(Personal::toString)
+					.orElse("");
+			
 			// Numero de asientos ocupados
 			String asientosOcupados = String.valueOf(listPasajeros.size());
 			
@@ -6318,6 +6324,13 @@ public class CreateDocument implements Serializable {
 			line = getLineText(xLeft_asientosOcupados, width_asientosOcupados, asientosOcupados);					
 			bw.write(line + NEWLINE);
 			
+			bw.write(NEWLINE);
+			bw.write(NEWLINE);
+			
+			//NOMBRES TRIPULANTE
+			line = getLineText(xLeft_pilotoNombres, width_pilotoNombres, tripulanteNombres);
+			bw.write(line + NEWLINE);
+			
 			/**DETALLE DEL MANIFIESTO*/
 			
 			// Parametos que determinan la longitud maxima de cada campo en el detalle
@@ -6341,7 +6354,7 @@ public class CreateDocument implements Serializable {
 			int xLeft_importePagado = xLeft_numeroComprobante-1;
 						
 			// Inicio detalle
-			xTopIni = 6;
+			xTopIni = 3;
 			for(int x = 0; x < xTopIni; x++) {
 				bw.write(NEWLINE);	
 			}

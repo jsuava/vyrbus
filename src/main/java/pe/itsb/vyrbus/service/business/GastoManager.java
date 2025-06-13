@@ -107,6 +107,17 @@ public interface GastoManager {
 	 * @param groupByObs		: Indica si la consulta debe o no agrupar por observacion.
 	 * @return
 	 */
+	
+	/**
+	 * Buscar la suma total otros ingreso en soles a la lliquidacion
+	 * @param fecha		: Fecha de la liquidación
+	 * @param idUsuario	: Identicador del usuario
+	 * @param idAgencia	: Identificador de la agencia
+	 * @return	suma total de tdos los gastos ingresados a la liquidación
+	 * @throws Exception
+	 */
+	public Double BuscarTotalOtrosIngresos(String fecha, Integer idUsuario,Integer idAgencia) throws Exception;
+	
 	public List<Gasto> obtenerGastosByLiquidacion(String fechaLiquidacion, Integer idAgencia, Integer idUsuario, Integer isIngreso, Boolean groupByObs);
 	/**
 	 * Realiza la busqueda de los gastos y/o ingresos
