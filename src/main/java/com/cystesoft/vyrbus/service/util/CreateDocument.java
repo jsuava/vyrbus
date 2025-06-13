@@ -5816,8 +5816,12 @@ public class CreateDocument implements Serializable {
 				linea += liquidacion.getUsuarioInsercion().toString().toUpperCase();
 				bw.write(linea + NEWLINE);
 				
+				linea  = tabular(3)+"FEC./HOR APERTURA : ";
+				linea += Util.DatetoString(liquidacion.getFechaInsercion(), Constantes.DATE_TIME_FORMAT);
+				bw.write(linea + NEWLINE);
+				
 				linea  = tabular(3)+"FECHA/HORA CIERRE : ";
-				linea += Util.DatetoString(liquidacion.getFechaModificacion(), Constantes.DATE_TIME_FORMAT);
+				linea += (liquidacion.getestadoLiquidacion().intValue()==Constantes.FALSE_VALUE?Util.DatetoString(liquidacion.getFechaModificacion(), Constantes.DATE_TIME_FORMAT):"");
 				bw.write(linea + NEWLINE);
 			}
 	

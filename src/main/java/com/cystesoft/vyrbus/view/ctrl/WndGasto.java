@@ -338,10 +338,13 @@ public class WndGasto extends WndOpcionesMantenimiento {
 			//Total Gastos registrados
 			Double totalGastos=ServiceLocator.getGastoManager().BuscarTotalGastos(Constantes.FORMAT_DATE.format(dbFecha.getValue()), getUsuario().getId(), getAgencia().getId());
 			
+			//Total Otros ingresos
+			Double totalOtrosIngresos=ServiceLocator.getGastoManager().BuscarTotalOtrosIngresos(Constantes.FORMAT_DATE.format(dbFecha.getValue()), getUsuario().getId(), getAgencia().getId());
 			
 			Double totalVentasEfectivo = .00;
 			totalVentasEfectivo += + totalVentasEfectivo_vyr;
 			totalVentasEfectivo += + totalVentasEfectivo_transcarweb;
+			totalVentasEfectivo += + totalOtrosIngresos;
 			
 			if(action==ACTION_NEW){
 				totalGastos += + dbMonto.getValue();
