@@ -31,12 +31,25 @@ public class MovimientoPasajes extends GenericBean implements java.io.Serializab
 	  private Integer numeroPiso;
 	  private Integer numeroAsiento;
 	  private Double importePagado;
+	  private Usuario usuarioOperacion;
 	  
 	public Long getId() {
 		return id;
 	}
 	public void setId(Long id) {
 		this.id = id;
+	}
+	/**
+	 * @return the usuarioOperacion
+	 */
+	public Usuario getUsuarioOperacion() {
+		return usuarioOperacion;
+	}
+	/**
+	 * @param usuarioOperacion the usuarioOperacion to set
+	 */
+	public void setUsuarioOperacion(Usuario usuarioOperacion) {
+		this.usuarioOperacion = usuarioOperacion;
 	}
 	public VentaPasaje getVentaPasaje() {
 		return ventaPasaje;

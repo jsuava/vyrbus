@@ -3854,7 +3854,7 @@ public class WndVentaReservaNew  extends WndBase {
 				return;
 		}
 
-		//Seate los dados del Pasajero
+		//Setea los datos del Pasajero
 		if(pasajero ==null)
 			pasajero = new Pasajero();
 		
@@ -3900,7 +3900,7 @@ public class WndVentaReservaNew  extends WndBase {
 			UtilData.auditarRegistro(pasajero, true, getUsuario(), Executions.getCurrent());
 		
 		
-		//Seata los datos del Cliente
+		//Setea los datos del Cliente
 		if(chbxVtaFactura.isChecked()) {			
 			cliente = ServiceLocator.getClienteManager().buscarPorRuc(txtVtaFacRuc.getText().trim().toUpperCase());
 			if(cliente == null)
@@ -4142,6 +4142,7 @@ public class WndVentaReservaNew  extends WndBase {
 				/************** Tracking (GPS) **********************/
 				String motivoMovimiento = "POSTERGACION F.A.";
 				MovimientoPasajes movimientoPasajes = UtilData.createTracking(postergacionFA, motivoMovimiento);
+				movimientoPasajes.setUsuarioOperacion(getUsuario());
 				postergacionFA.setMovimientoPasajes(movimientoPasajes);
 				/****************************************************/
 				
@@ -4171,6 +4172,7 @@ public class WndVentaReservaNew  extends WndBase {
 				/************** Tracking (GPS) **********************/
 				String motivoMovimiento = "CAMBIO DE NOMBRE";
 				MovimientoPasajes movimientoPasajes = UtilData.createTracking(ventaPasajeCambioNombre, motivoMovimiento);
+				movimientoPasajes.setUsuarioOperacion(getUsuario());
 				ventaPasajeCambioNombre.setMovimientoPasajes(movimientoPasajes);
 				/****************************************************/
 				
@@ -4262,6 +4264,7 @@ public class WndVentaReservaNew  extends WndBase {
 				/************** Tracking (GPS) **********************/
 				String motivoMovimiento = "CONFIRMACION F.A.";
 				MovimientoPasajes movimientoPasajes = UtilData.createTracking(confirmacionFA, motivoMovimiento);
+				movimientoPasajes.setUsuarioOperacion(getUsuario());
 				confirmacionFA.setMovimientoPasajes(movimientoPasajes);
 				/****************************************************/
 				
@@ -4309,6 +4312,7 @@ public class WndVentaReservaNew  extends WndBase {
 				/************** Tracking (GPS) **********************/
 				String motivoMovimiento = "CAMBIO DE ASIENTO ("+ asientoOrg.toString() +" -> "+ nuevoAsiento.getNumeroAsiento() +")";
 				MovimientoPasajes movimientoPasajes = UtilData.createTracking(ventaPasajeCambioAsiento, motivoMovimiento);
+				movimientoPasajes.setUsuarioOperacion(getUsuario());
 				ventaPasajeCambioAsiento.setMovimientoPasajes(movimientoPasajes);
 				/****************************************************/
 				
@@ -7030,10 +7034,11 @@ public class WndVentaReservaNew  extends WndBase {
 				}
 				
 				/************** Tracking (GPS) **********************/
-				String motivoMovimiento = "ANULACION VTA";
-				motivoMovimiento += " ("+ txtMotivoAnulacion.getText().trim().toUpperCase() +")";
-				MovimientoPasajes movimientoPasajes = UtilData.createTracking(ventaOriginal, motivoMovimiento);
-				ventaOriginal.setMovimientoPasajes(movimientoPasajes);
+				//Comentado por MAOE 26/06/2025
+//				String motivoMovimiento = "ANULACION VTA";
+//				motivoMovimiento += " ("+ txtMotivoAnulacion.getText().trim().toUpperCase() +")";
+//				MovimientoPasajes movimientoPasajes = UtilData.createTracking(ventaOriginal, motivoMovimiento);
+//				ventaOriginal.setMovimientoPasajes(movimientoPasajes);
 				/****************************************************/
 				
 				Messagebox.show(Messages.getString("WndLiquidacionDiariaVentas.information.confirmarAnulacion"), DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_YESNO, Messagebox.QUESTION, new EventListener<Event>() {
@@ -7820,6 +7825,7 @@ public class WndVentaReservaNew  extends WndBase {
 		}
 		
 		MovimientoPasajes movimientoPasajes = UtilData.createTracking(postergacion, motivoMovimiento);
+		movimientoPasajes.setUsuarioOperacion(getUsuario());
 		postergacion.setMovimientoPasajes(movimientoPasajes);
 		/****************************************************/
 		
@@ -9397,7 +9403,7 @@ public class WndVentaReservaNew  extends WndBase {
 		Manifiesto manifiestoEmitido = ServiceLocator.getManifiestoManager().consultaMinifiestImpreso(itinerario.getId());
 		if (manifiestoEmitido!=null){
 			String message = "El Bus "+ manifiestoEmitido.getCodigoBus() + " esta asociado al manifiesto ";
-			message += manifiestoEmitido.getNumeroManifiesto()+ " del dÃ­a "+ Constantes.FORMAT_DATE.format(manifiestoEmitido.getFechaInsercion());
+			message += manifiestoEmitido.getNumeroManifiesto()+ " del día "+ Constantes.FORMAT_DATE.format(manifiestoEmitido.getFechaInsercion());
 			message += " a la(s) "+ Constantes.FORMAT_TIME.format(manifiestoEmitido.getFechaInsercion())+ " horas";
 			message += " conducido por "+manifiestoEmitido.getPiloto()+ " manifestado por ";
 			message += manifiestoEmitido.getUsuarioInsercion()+"."+ " No puede imprimir otro manifiesto.";				
@@ -9442,7 +9448,31 @@ public class WndVentaReservaNew  extends WndBase {
 			detalleManifiesto.setAgencia(getAgencia());
 			detalleManifiesto.setEstadoRegistro(Constantes.VALUE_ACTIVO);
 			UtilData.auditarRegistro(detalleManifiesto, getUsuario(), Executions.getCurrent());
+			
+			//Agregar el tracking de la venta MAOE 01/03/2024
+			//Completar la informacion para el tracking
+			MovimientoPasajes trackingIda = new MovimientoPasajes();
+			
+			trackingIda.setVentaPasaje(ventaPasaje);
+			trackingIda.setOperacion("EMBARCADO");
+			trackingIda.setFechaOperacion(Util.DatetoString(new Date(), "dd/MM/yyyy"));
+			trackingIda.setServicio(itinerario.getServicio());
+			trackingIda.setRuta(ventaPasaje.getRuta());
+			trackingIda.setAgenciaEmbarque(ventaPasaje.getAgenciaPartida());
+			trackingIda.setFechaEmbarque(Util.DatetoString(itinerario.getFechaPartida(), "dd/MM/yyyy"));
+			trackingIda.setHoraEmbarque( UtilData.obtenerHoraEmbarque( itinerario.getId(), ventaPasaje.getAgenciaPartida().getId()));
+			trackingIda.setNumeroPiso(ventaPasaje.getNumeroPiso());
+			trackingIda.setNumeroAsiento(ventaPasaje.getNumeroAsiento());
+			trackingIda.setImportePagado(ventaPasaje.getImportePagado());
+			trackingIda.setTipoFormaPago(ventaPasaje.getTipoFormaPago());
+			trackingIda.setEstadoRegistro(Constantes.VALUE_ACTIVO);
+			UtilData.auditarRegistro(trackingIda, getUsuario(), Executions.getCurrent());
+			
+			detalleManifiesto.setMovimientoPasajes(trackingIda);
+			
 			listDetalleManifiesto.add(detalleManifiesto);
+			
+			
 		}
 		manifiesto.setListDetalleManifiesto(listDetalleManifiesto);
 		

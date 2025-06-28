@@ -116,6 +116,7 @@ public class ManifiestoManagerImpl implements ManifiestoManager{
 					detalleManifiesto.setDetalleManifiestoID(detalleManifiestoID);
 					
 					getDetalleManifiestoDAO().guradar(detalleManifiesto);
+					ServiceLocator.getMovimientoPasajesManager().guardar(detalleManifiesto.getMovimientoPasajes());
 				}				
 			}
 			

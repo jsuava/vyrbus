@@ -36,6 +36,8 @@ import pe.itsb.vyrbus.model.bean.Bus;
 import pe.itsb.vyrbus.model.bean.CentroCosto;
 import pe.itsb.vyrbus.model.bean.DetalleEquipaje;
 import pe.itsb.vyrbus.model.bean.DetalleFlotaHRE;
+import pe.itsb.vyrbus.model.bean.DetalleManifiesto;
+import pe.itsb.vyrbus.model.bean.DetalleManifiestoID;
 import pe.itsb.vyrbus.model.bean.DocumentoBus;
 import pe.itsb.vyrbus.model.bean.Empresa;
 import pe.itsb.vyrbus.model.bean.Equipaje;
@@ -6383,8 +6385,53 @@ public class CreateDocument implements Serializable {
 				if(asientos[0].toString().length()>0){
 					for (String element : asientos) {
 						long idVenta=Long.valueOf(element.split("-")[1]);
+						
+//						TreeMap<String, Object> criteriosBusqueda = null;
+//						List<String> criteriosOrdenar = new ArrayList<>();
 						for(VentaPasaje ventaPasaje : listPasajeros){
-							if(ventaPasaje.getId().longValue()==idVenta){								
+							if(ventaPasaje.getId().longValue()==idVenta){	
+								
+								//Buscar si el pax esta en el manifiesto MAOE 24/06/2025
+//								criteriosBusqueda = new TreeMap<>();
+//								criteriosBusqueda.put("ventaPasaje", ventaPasaje);
+//								criteriosBusqueda.put("manifiesto", manifiesto);
+//								List<DetalleManifiesto> lstDetalleManifiesto = ServiceLocator.getDetalleManifiestoManager().buscarPorX(criteriosBusqueda, null);
+								//Si no se encuentra insertar el detalle
+								//COmo resolver el execition
+//								if(lstDetalleManifiesto.size() == 0) {
+//									VentaPasaje venta=ventaPasaje;
+//									DetalleManifiesto detalleManifiesto = new DetalleManifiesto();
+//									DetalleManifiestoID detalleManifiestoID= new DetalleManifiestoID();
+//
+//									detalleManifiestoID.setIdManifiesto(manifiesto.getId());
+//									detalleManifiestoID.setIdVentaPasaje(ventaPasaje.getId());
+//									detalleManifiesto.setDetalleManifiestoID(detalleManifiestoID);
+//									detalleManifiesto.setEstadoRegistro(Constantes.VALUE_ACTIVO);
+//									detalleManifiesto.setUsuarioInsercion(usuario.getLogin());
+//									detalleManifiesto.setUsuarioModificacion(usuario.getLogin());
+//									UtilData.auditarRegistro(detalleManifiesto, usuario, Executions.getCurrent());
+//									ServiceLocator.getDetalleManifiestoManager().guradar(detalleManifiesto);
+//									
+//									//Agregar el tracking de la venta MAOE 01/03/2024
+//									//Completar la informacion para el tracking
+//									MovimientoPasajes trackingIda = new MovimientoPasajes();
+//									
+//									trackingIda.setVentaPasaje(ventaPasaje);
+//									trackingIda.setOperacion("EMBARCADO");
+//									trackingIda.setFechaOperacion(Util.DatetoString(new Date(), "dd/MM/yyyy"));
+//									trackingIda.setServicio(ventaPasaje.getServicio());
+//									trackingIda.setRuta(ventaPasaje.getRuta());
+//									trackingIda.setAgenciaEmbarque(ventaPasaje.getAgenciaPartida());
+//									trackingIda.setFechaEmbarque(Util.DatetoString(ventaPasaje.getFechaPartida(), "dd/MM/yyyy"));
+//									trackingIda.setHoraEmbarque( UtilData.obtenerHoraEmbarque( ventaPasaje.getItinerario().getId(), ventaPasaje.getAgenciaPartida().getId()));
+//									trackingIda.setNumeroPiso(ventaPasaje.getNumeroPiso());
+//									trackingIda.setNumeroAsiento(ventaPasaje.getNumeroAsiento());
+//									trackingIda.setImportePagado(ventaPasaje.getImportePagado());
+//									trackingIda.setTipoFormaPago(ventaPasaje.getTipoFormaPago());
+//									trackingIda.setEstadoRegistro(Constantes.VALUE_ACTIVO);
+//									UtilData.auditarRegistro(trackingIda, usuario, Executions.getCurrent());
+//									ServiceLocator.getMovimientoPasajesManager().guardar(trackingIda);
+//								}
 								
 								Pasajero pasajero = ventaPasaje.getPasajero();
 								

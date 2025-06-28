@@ -6,6 +6,7 @@ import java.io.OutputStream;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.TreeMap;
@@ -51,6 +52,7 @@ import pe.itsb.vyrbus.model.bean.EspecieValorada;
 import pe.itsb.vyrbus.model.bean.Itinerario;
 import pe.itsb.vyrbus.model.bean.Manifiesto;
 import pe.itsb.vyrbus.model.bean.MapaBus;
+import pe.itsb.vyrbus.model.bean.MovimientoPasajes;
 import pe.itsb.vyrbus.model.bean.ProgramacionServicio;
 import pe.itsb.vyrbus.model.bean.Usuario;
 import pe.itsb.vyrbus.model.bean.UsuarioHardware;
@@ -378,6 +380,26 @@ public class WndManifiesto extends WndBase {
 									detalleManifiesto.setEstadoRegistro(Constantes.VALUE_ACTIVO);
 									UtilData.auditarRegistro(detalleManifiesto, getUsuario(), Executions.getCurrent());
 									ServiceLocator.getDetalleManifiestoManager().guradar(detalleManifiesto);
+									
+									//Agregar el tracking de la venta MAOE 23/06/2025
+									//Completar la informacion para el tracking
+									MovimientoPasajes trackingIda = new MovimientoPasajes();
+									
+									trackingIda.setVentaPasaje(ventaPasaje);
+									trackingIda.setOperacion("EMBARCADO");
+									trackingIda.setFechaOperacion(Util.DatetoString(new Date(), "dd/MM/yyyy"));
+									trackingIda.setServicio(ventaPasaje.getServicio());
+									trackingIda.setRuta(ventaPasaje.getRuta());
+									trackingIda.setAgenciaEmbarque(ventaPasaje.getAgenciaPartida());
+									trackingIda.setFechaEmbarque(Util.DatetoString(ventaPasaje.getFechaPartida(), "dd/MM/yyyy"));
+									trackingIda.setHoraEmbarque( UtilData.obtenerHoraEmbarque( ventaPasaje.getItinerario().getId(), ventaPasaje.getAgenciaPartida().getId()));
+									trackingIda.setNumeroPiso(ventaPasaje.getNumeroPiso());
+									trackingIda.setNumeroAsiento(ventaPasaje.getNumeroAsiento());
+									trackingIda.setImportePagado(ventaPasaje.getImportePagado());
+									trackingIda.setTipoFormaPago(ventaPasaje.getTipoFormaPago());
+									trackingIda.setEstadoRegistro(Constantes.VALUE_ACTIVO);
+									UtilData.auditarRegistro(trackingIda, getUsuario(), Executions.getCurrent());
+									ServiceLocator.getMovimientoPasajesManager().guardar(trackingIda);
 								}
 								//Imrime el manifiesto
 //								cmdImprimir.setDisabled(true);
@@ -2731,6 +2753,26 @@ public class WndManifiesto extends WndBase {
 					detalleManifiesto.setEstadoRegistro(Constantes.VALUE_ACTIVO);
 					UtilData.auditarRegistro(detalleManifiesto, getUsuario(), Executions.getCurrent());
 					ServiceLocator.getDetalleManifiestoManager().guradar(detalleManifiesto);
+					
+					//Agregar el tracking de la venta MAOE 23/06/2025
+					//Completar la informacion para el tracking
+					MovimientoPasajes trackingIda = new MovimientoPasajes();
+					
+					trackingIda.setVentaPasaje(ventaPasaje);
+					trackingIda.setOperacion("EMBARCADO");
+					trackingIda.setFechaOperacion(Util.DatetoString(new Date(), "dd/MM/yyyy"));
+					trackingIda.setServicio(ventaPasaje.getServicio());
+					trackingIda.setRuta(ventaPasaje.getRuta());
+					trackingIda.setAgenciaEmbarque(ventaPasaje.getAgenciaPartida());
+					trackingIda.setFechaEmbarque(Util.DatetoString(ventaPasaje.getFechaPartida(), "dd/MM/yyyy"));
+					trackingIda.setHoraEmbarque( UtilData.obtenerHoraEmbarque( ventaPasaje.getItinerario().getId(), ventaPasaje.getAgenciaPartida().getId()));
+					trackingIda.setNumeroPiso(ventaPasaje.getNumeroPiso());
+					trackingIda.setNumeroAsiento(ventaPasaje.getNumeroAsiento());
+					trackingIda.setImportePagado(ventaPasaje.getImportePagado());
+					trackingIda.setTipoFormaPago(ventaPasaje.getTipoFormaPago());
+					trackingIda.setEstadoRegistro(Constantes.VALUE_ACTIVO);
+					UtilData.auditarRegistro(trackingIda, ventaPasaje.getUsuario(), Executions.getCurrent());
+					ServiceLocator.getMovimientoPasajesManager().guardar(trackingIda);
 				}
 			}
 			impresionesManifiesto(IMPRESION_MANIFIESTO_PASAJEROS, false, manifiesto,isPrintLaser);

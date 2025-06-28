@@ -26,6 +26,7 @@ import pe.itsb.vyrbus.model.bean.Ruta;
 import pe.itsb.vyrbus.model.bean.Servicio;
 import pe.itsb.vyrbus.model.bean.TipoComprobante;
 import pe.itsb.vyrbus.model.bean.TipoDocumento;
+import pe.itsb.vyrbus.model.bean.TipoFormaPago;
 import pe.itsb.vyrbus.model.bean.TipoItinerario;
 import pe.itsb.vyrbus.model.bean.VentaPasaje;
 import pe.itsb.vyrbus.model.dao.ManifiestoDAO;
@@ -202,12 +203,12 @@ public class ManisfiestoDAOImpl extends GenericDAOImpl implements ManifiestoDAO 
 		String sql ="SELECT  v.n_numasiento, v.c_numboleto, p.c_apepat ApePaterno, p.c_apemat ApeMat, p.c_nombre Nom, p.c_fecnac, "+ //0-5
 //	Comentado por MAOE 22/07/2022 se cambio la forma de mostrar el monto de pago jalando n_imppag directamente
 //							"p.c_numdoc numDoc, r.c_origen origen, r.c_destino destino, decode(v.tipmov_id, 1, v.n_imppag, v.n_tarifa+v.n_recargo-v.n_descuento) imppag, "+ //6-9
-							"p.c_numdoc numDoc, r.c_origen origen, r.c_destino destino, v.n_imppag imppag, "+ //6-9
-							"pa.c_denominacion preali, ap.c_denominacion PtoEmbarque , v.c_numControl, "+ //10-12
-							"td.c_Denominacion TipDocto, v.venpas_id, "+ //13-14
-							"ap.c_nomcor as NombreCorto, v.n_numpiso, tc.tipcom_id, tc.c_Denominacion," + //15-18
-							"p.pasajero_id, fp.forpag_id, fp.c_denominacion formaPago,cv.c_nomcor canalVenta, c.c_razsoc clienteCredito, av.c_nomcor agenciaVenta, "+// 19-24
-							"r.ruta_id, td.c_nomcor nomCorTipoDocumento, ad.c_denominacion agDestino, p.c_telefono "+//25-28
+							"p.c_numdoc numDoc, r.c_origen origen, r.c_destino destino, v.n_imppag imppag, pa.c_denominacion preali, "+ //6-10
+							"ap.c_denominacion PtoEmbarque , v.c_numControl, td.c_Denominacion TipDocto, v.venpas_id, "+ //11-14
+							"ap.c_nomcor as NombreCorto, v.n_numpiso, tc.tipcom_id, tc.c_Denominacion, p.pasajero_id, fp.forpag_id, "+ //15-20
+							"fp.c_denominacion formaPago, cv.c_nomcor canalVenta, c.c_razsoc clienteCredito, " + //21-23
+							"av.c_nomcor agenciaVenta, r.ruta_id, td.c_nomcor nomCorTipoDocumento, ad.c_denominacion agDestino,"+// 24-27
+							"p.c_telefono, v.agencia_idpartida, v.tipforpag_id  "+//28-30
 					"FROM vrtvenpas v "+
 						"INNER JOIN (SELECT MAX(venpas_id)venpas_id, c_numcontrol " +
 									"FROM vrtvenpas WHERE itinerario_id="+idItinerario+" GROUP BY c_numcontrol) max_venta " +
@@ -259,6 +260,7 @@ public class ManisfiestoDAOImpl extends GenericDAOImpl implements ManifiestoDAO 
 			preferenciaAlimentaria.setDenominacion(obj[10]!=null?obj[10].toString():"");
 
 			Agencia agenciaPartida = new Agencia();
+			agenciaPartida.setId(((BigDecimal)obj[29]).intValue());
 			agenciaPartida.setDenominacion(obj[11].toString());
 			agenciaPartida.setNombreCorto(obj[15].toString());
 
@@ -272,6 +274,9 @@ public class ManisfiestoDAOImpl extends GenericDAOImpl implements ManifiestoDAO 
 			FormaPago formaPago=new FormaPago();
 			formaPago.setId(((BigDecimal)obj[20]).intValue());
 			formaPago.setDenominacion(obj[21].toString());
+			
+			TipoFormaPago tipoFormaPago=new TipoFormaPago();
+			tipoFormaPago.setId(((BigDecimal)obj[30]).intValue());
 
 			CanalVenta canalVenta=new CanalVenta();
 			canalVenta.setNombreCorto(obj[22].toString());
@@ -299,6 +304,7 @@ public class ManisfiestoDAOImpl extends GenericDAOImpl implements ManifiestoDAO 
 			ventaPasaje.setNumeroPiso(((BigDecimal)obj[16]).intValue());
 			ventaPasaje.setTipoComprobante(tipoComprobante);
 			ventaPasaje.setFormaPago(formaPago);
+			ventaPasaje.setTipoFormaPago(tipoFormaPago);
 			ventaPasaje.setCanalVenta(canalVenta);
 			ventaPasaje.setCliente(clienteCredito);
 			ventaPasaje.setAgencia(agenciaVenta);

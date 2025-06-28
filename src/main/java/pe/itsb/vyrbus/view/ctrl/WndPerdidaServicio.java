@@ -8,6 +8,7 @@
  */
 package pe.itsb.vyrbus.view.ctrl;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -455,11 +456,30 @@ public class WndPerdidaServicio extends WndBase {
 						UtilData.auditarRegistro(venta, true, getUsuario(), Executions.getCurrent());
 						ServiceLocator.getVentaPasajesManager().guardarPerdidaServicio(venta);
 						
+						//Guardar el tracking de venta 19/02/2024
+						MovimientoPasajes trackingIda = new MovimientoPasajes();
+						
+						trackingIda.setVentaPasaje(venta);
+						trackingIda.setOperacion("INHABILITADO POR PERDIDA DE SERVICIO");
+						trackingIda.setFechaOperacion(Util.DatetoString(new Date(), "dd/MM/yyyy"));
+						trackingIda.setServicio(venta.getServicio());
+						trackingIda.setRuta(venta.getRuta());
+						trackingIda.setAgenciaEmbarque(venta.getAgenciaPartida());
+						trackingIda.setFechaEmbarque(venta.getFechaPartida()==null ? null : Util.DatetoString(venta.getFechaPartida(), "dd/MM/yyyy"));
+						trackingIda.setHoraEmbarque( venta.getFechaPartida()==null ? null : UtilData.obtenerHoraEmbarque( venta.getItinerario().getId(), venta.getAgenciaPartida().getId()));
+						trackingIda.setNumeroPiso(venta.getFechaPartida()==null ? null : venta.getNumeroPiso());
+						trackingIda.setNumeroAsiento(venta.getFechaPartida()==null ? null : venta.getNumeroAsiento());
+						trackingIda.setImportePagado(venta.getImportePagado());
+						trackingIda.setTipoFormaPago(venta.getTipoFormaPago());
+						trackingIda.setEstadoRegistro(Constantes.VALUE_ACTIVO);
+						UtilData.auditarRegistro(trackingIda, getUsuario(), Executions.getCurrent());
+						ServiceLocator.getMovimientoPasajesManager().guardar(trackingIda);
+						
 						/************** Tracking (GPS) **********************/
-						VentaPasaje vtaPasaje = ServiceLocator.getVentaPasajesManager().buscarVentaById(venta.getId());
-						String motivoMovimiento = "TRANSBORDO";
-						MovimientoPasajes movimientoPasajes = UtilData.createTracking(vtaPasaje, motivoMovimiento);
-						ServiceLocator.getMovimientoPasajesManager().guardar(movimientoPasajes);
+//						VentaPasaje vtaPasaje = ServiceLocator.getVentaPasajesManager().buscarVentaById(venta.getId());
+//						String motivoMovimiento = "TRANSBORDO";
+//						MovimientoPasajes movimientoPasajes = UtilData.createTracking(vtaPasaje, motivoMovimiento);
+//						ServiceLocator.getMovimientoPasajesManager().guardar(movimientoPasajes);
 						/****************************************************/
 						
 					}

@@ -20,6 +20,8 @@ public class DetalleManifiesto extends GenericBean  implements Serializable{
 	private VentaPasaje ventaPasaje;
 	private Agencia agencia;
 	private DetalleManifiestoID detalleManifiestoID;
+	
+	private MovimientoPasajes movimientoPasajes;
 
 	/**
 	 * @return the manifiesto
@@ -69,7 +71,18 @@ public class DetalleManifiesto extends GenericBean  implements Serializable{
 	public void setDetalleManifiestoID(DetalleManifiestoID detalleManifiestoID) {
 		this.detalleManifiestoID = detalleManifiestoID;
 	}
-
+	/**
+	 * @return the movimientoPasajes
+	 */
+	public MovimientoPasajes getMovimientoPasajes() {
+		return movimientoPasajes;
+	}
+	/**
+	 * @param movimientoPasajes the movimientoPasajes to set
+	 */
+	public void setMovimientoPasajes(MovimientoPasajes movimientoPasajes) {
+		this.movimientoPasajes = movimientoPasajes;
+	}
 
 
 
