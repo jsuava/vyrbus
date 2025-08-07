@@ -3665,7 +3665,13 @@ public class WndVentaReservaNew  extends WndBase {
 		boolean isConfirmacionFA = rdVtaConfirmacionFA.isChecked();
 		boolean isCambioAsiento = rdVtaCambioAsiento.isChecked();
 		
-		boolean emiteComprobantePago = (gridVtaDatosPago.isVisible() && dbxVtaTotalPagar.getValue()!=null && dbxVtaTotalPagar.getValue() > .00);
+//		boolean emiteComprobantePago = (gridVtaDatosPago.isVisible() && dbxVtaTotalPagar.getValue()!=null && dbxVtaTotalPagar.getValue() > .00);
+		
+		boolean emiteComprobantePago;
+		if(isVenta || isCambioNombre)
+			emiteComprobantePago=true;
+		else
+			emiteComprobantePago=(gridVtaDatosPago.isVisible() && dbxVtaTotalPagar.getValue()!=null && dbxVtaTotalPagar.getValue() > .00);
 		
 		//Valida Especie Valorada: Cuando es una ida y vuelta y las empresas del itinerario de ida y del retorno son diferenctes
 		if(emiteComprobantePago && isVtaIdaVuelta 
@@ -4166,8 +4172,15 @@ public class WndVentaReservaNew  extends WndBase {
 				ventaPasajeCambioNombre.setImportePagado(importePagar);
 				ventaPasajeCambioNombre.setPasajero(pasajero);
 				ventaPasajeCambioNombre.setUsuarioHardware(getUsuarioHardware());
+				ventaPasajeCambioNombre.setAgencia(getAgencia());
+				ventaPasajeCambioNombre.setUsuario(getUsuario());
+				ventaPasajeCambioNombre.setFechaLiquidacion(fechaLiquidacion);
+				if(emiteComprobantePago)
+					UtilData.auditarRegistro(ventaPasajeCambioNombre, false, getUsuario(), Executions.getCurrent());
+				else
+					UtilData.auditarRegistro(ventaPasajeCambioNombre, true, getUsuario(), Executions.getCurrent());
 //				ventaPasajeCambioNombre.setObservaciones(ventaPasajeCambioNombre.getObservaciones()!=null?ventaPasajeCambioNombre.getObservaciones()+";"+"CAMBIO DE NOMBRE":"CAMBIO DE NOMBRE");				
-				UtilData.auditarRegistro(ventaPasajeCambioNombre, true, getUsuario(), Executions.getCurrent());
+//				UtilData.auditarRegistro(ventaPasajeCambioNombre, true, getUsuario(), Executions.getCurrent());
 				
 				/************** Tracking (GPS) **********************/
 				String motivoMovimiento = "CAMBIO DE NOMBRE";
@@ -4307,7 +4320,13 @@ public class WndVentaReservaNew  extends WndBase {
 				ventaPasajeCambioAsiento.setNumeroPiso(nuevoAsiento.getPiso());
 				ventaPasajeCambioAsiento.setImportePagado(importePagar);
 				ventaPasajeCambioAsiento.setUsuarioHardware(getUsuarioHardware());
-				UtilData.auditarRegistro(ventaPasajeCambioAsiento, true, getUsuario(), Executions.getCurrent());
+				ventaPasajeCambioAsiento.setAgencia(getAgencia());
+				ventaPasajeCambioAsiento.setUsuario(getUsuario());
+				ventaPasajeCambioAsiento.setFechaLiquidacion(fechaLiquidacion);
+				if(emiteComprobantePago)
+					UtilData.auditarRegistro(ventaPasajeCambioAsiento, false, getUsuario(), Executions.getCurrent());
+				else
+					UtilData.auditarRegistro(ventaPasajeCambioAsiento, true, getUsuario(), Executions.getCurrent());
 				
 				/************** Tracking (GPS) **********************/
 				String motivoMovimiento = "CAMBIO DE ASIENTO ("+ asientoOrg.toString() +" -> "+ nuevoAsiento.getNumeroAsiento() +")";

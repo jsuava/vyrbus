@@ -82,6 +82,11 @@
 			<listheader label="CLIENTE" width="200px" style="color: #ffffff;"/>
 		</listhead>
 	</listbox>
+	<label value=""/>
+	<label id="lblMovimientoAdicional" 
+			value="" 
+			style="color:red;font-weight: bold;font:size:12px !important" 
+			visible="false" />
 	<label id="lblInfoAnulMasivo" 
 			value="*El modo Anulación Masiva solamente se puede aplicar a un máximo de 20 Comprobantes.*" 
 			style="color:red;font-weight: bold;font:size:11px !important" 

@@ -216,6 +216,14 @@ public interface VentaPasajesDAO extends GenericDAO {
 	 * @throws Exception
 	 */
 	public List<VentaPasaje> buscarBoletosDevolucion(String numeroDocumento, String numeroControl, String numeroBoleto)throws Exception;
+	
+	/**
+	 * 
+	 * @param idVenpasOriginal
+	 * @return
+	 * @throws Exception
+	 */
+	public Long buscarIdVentas(Long idVenpasOriginal)throws Exception;
 	/**
 	 * Realiza la busqueda de los comprobantes que no tienen aun boleto de viaje.
 	 * @param fechaPartida		: Fecha de partida del servicio.

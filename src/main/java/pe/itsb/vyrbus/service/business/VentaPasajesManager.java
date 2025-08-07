@@ -185,6 +185,14 @@ public interface VentaPasajesManager {
 	 * @throws Exception
 	 */
 	public List<VentaPasaje> buscarBoletosDevolucion(String numeroDocumento, String numeroControl, String numeroBoleto)throws Exception;
+	
+	/**
+	 * 
+	 * @param idVenpasOriginal
+	 * @return
+	 * @throws Exception
+	 */
+	public Long buscarIdVentas(Long idVenpasOriginal)throws Exception;
 	/**
 	 * Realiza la devoluci�n del comprobante
 	 * @param venta: venta que se desea devolver.

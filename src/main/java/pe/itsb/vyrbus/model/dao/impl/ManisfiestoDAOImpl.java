@@ -202,8 +202,10 @@ public class ManisfiestoDAOImpl extends GenericDAOImpl implements ManifiestoDAO 
 	public List<VentaPasaje> consultaPasajeros(Long idItinerario,Integer idPruntoEmbarque)throws Exception {
 		String sql ="SELECT  v.n_numasiento, v.c_numboleto, p.c_apepat ApePaterno, p.c_apemat ApeMat, p.c_nombre Nom, p.c_fecnac, "+ //0-5
 //	Comentado por MAOE 22/07/2022 se cambio la forma de mostrar el monto de pago jalando n_imppag directamente
+//  Se cambio la forma de mostrar el pago solicitan que se muestre el pago real posterior a un cambio de asiento o servicio 
+//  por lo que se muestra el campo n_tarifa  MAOE 31/07/2025
 //							"p.c_numdoc numDoc, r.c_origen origen, r.c_destino destino, decode(v.tipmov_id, 1, v.n_imppag, v.n_tarifa+v.n_recargo-v.n_descuento) imppag, "+ //6-9
-							"p.c_numdoc numDoc, r.c_origen origen, r.c_destino destino, v.n_imppag imppag, pa.c_denominacion preali, "+ //6-10
+							"p.c_numdoc numDoc, r.c_origen origen, r.c_destino destino, v.n_tarifa imppag, pa.c_denominacion preali, "+ //6-10
 							"ap.c_denominacion PtoEmbarque , v.c_numControl, td.c_Denominacion TipDocto, v.venpas_id, "+ //11-14
 							"ap.c_nomcor as NombreCorto, v.n_numpiso, tc.tipcom_id, tc.c_Denominacion, p.pasajero_id, fp.forpag_id, "+ //15-20
 							"fp.c_denominacion formaPago, cv.c_nomcor canalVenta, c.c_razsoc clienteCredito, " + //21-23

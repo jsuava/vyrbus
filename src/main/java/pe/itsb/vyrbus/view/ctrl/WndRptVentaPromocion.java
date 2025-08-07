@@ -335,6 +335,8 @@ public class WndRptVentaPromocion extends WndBase {
 					item.appendChild(cell);
 					cell=new Listcell(ventaPasaje.getAgencia().getDenominacion());
 					item.appendChild(cell);
+					cell=new Listcell(ventaPasaje.getObservaciones());
+					item.appendChild(cell);
 
 					lstVentasPromocionDeta.appendChild(item);
 				}

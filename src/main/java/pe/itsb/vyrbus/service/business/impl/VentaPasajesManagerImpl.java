@@ -1085,9 +1085,9 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 				/*Realiza solamente la anulacion de la nota de credito o debito*/
 
 				//Primero anula en el WSFE
-//				Result result = WSFE.anularComprobante(movimiento);
-				Result result = new Result();
-				result.setIsCorrect(true);
+				Result result = WSFE.anularComprobante(movimiento);
+//				Result result = new Result();
+//				result.setIsCorrect(true);
 				if(result.isIsCorrect()) {
 					
 					//Inserta el tracking de anulacion aqui
@@ -2269,6 +2269,10 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 	public List<VentaPasaje> buscarBoletosDevolucion(String numeroDocumento, String numeroControl, String numeroBoleto)throws Exception{
 		return getVentaPasajesDAO().buscarBoletosDevolucion(numeroDocumento, numeroControl, numeroBoleto);
 	}
+	@Override
+	public Long buscarIdVentas(Long idVenpasOriginal)throws Exception{
+		return getVentaPasajesDAO().buscarIdVentas(idVenpasOriginal);
+	}
 	/*
 	 * (non-Javadoc)
 	 * @see com.tepsa.sisvyr.service.business.VentaPasajesManager#devolucionBoleto(com.tepsa.sisvyr.model.bean.VentaPasaje)
@@ -3049,9 +3053,9 @@ public class VentaPasajesManagerImpl implements VentaPasajesManager {
 					long horasTrans= (new Date().getTime()-dateStartLimit.getTime())/Constantes.MILISEGUNDOS_X_HORA;
 					if(horasTrans<=horas_maximo){
 						//Primero anula en el WSFE
-//						Result result=WSFE.anularComprobante(ventaPasaje); 
-						Result result = new Result();
-						result.setIsCorrect(true);
+						Result result=WSFE.anularComprobante(ventaPasaje); 
+//						Result result = new Result();
+//						result.setIsCorrect(true);
 						if(result.isIsCorrect()){
 							VentaPasaje anulacion=buscarPorId(ventaPasaje.getId());
 							anulacion.setObservaciones(ventaPasaje.getObservaciones());

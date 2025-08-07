@@ -83,6 +83,7 @@ public class WndAnulacionDocumentos extends WndBase{
 	private Listbox ltbxAnulacionComprobantes;
 	private Button btnBuscar;
 	private Label lblInfoAnulMasivo;
+	private Label lblMovimientoAdicional;
 	private Button btnAplicar;
 
 	private Label lblAdvertencia= null;
@@ -138,6 +139,7 @@ public class WndAnulacionDocumentos extends WndBase{
 		ltbxAnulacionComprobantes=(Listbox)this.getFellow("ltbxAnulacionComprobantes");
 		btnBuscar=(Button)this.getFellow("btnBuscar");
 		lblInfoAnulMasivo=(Label)this.getFellow("lblInfoAnulMasivo");
+		lblMovimientoAdicional=(Label)this.getFellow("lblMovimientoAdicional");
 		btnAplicar=(Button)this.getFellow("btnAplicar");
 
 		cmbTipoAgencia.addEventListener(Events.ON_CHANGE, new EventListener<Event>() {
@@ -271,19 +273,39 @@ public class WndAnulacionDocumentos extends WndBase{
 	 * @throws Exception
 	 */
 	private void buscarComprobanteByNumero()throws Exception{
+		lblMovimientoAdicional.setValue("");
+		lblMovimientoAdicional.setVisible(false);
 		List<VentaPasaje> lstVentaPasaje = ServiceLocator.getVentaPasajesManager().buscarBoletosDevolucion(null, null, txtNumeroComprobante.getText().trim().toUpperCase());
 		if(lstVentaPasaje.size()>0){
 			/*Busca por el ultimo movimiento agrupado por numero de control*/
 			String nroControl = lstVentaPasaje.get(0).getNumeroControl();
 			List<VentaPasaje> lstResult= ServiceLocator.getVentaPasajesManager().buscarBoletosDevolucion(null, nroControl, null);
-			/*Busca por el identificador del ultmio movimiento, el registro a validar*/
+			/*Busca por el identificador del ultimo movimiento, el registro a validar*/
 			final VentaPasaje ventaAnular=ServiceLocator.getVentaPasajesManager().buscarVentaById(lstResult.get(0).getId());
-			if(ventaAnular.getTipoMovimiento().getId().intValue()==Constantes.ID_TIPMOV_ANULACION_SISTEMA)
+			if(ventaAnular.getTipoMovimiento().getId().intValue()==Constantes.ID_TIPMOV_ANULACION_SISTEMA) {
 				lstVentaPasaje= new ArrayList<>();
+				lstVentaPasaje.add(ServiceLocator.getVentaPasajesManager().buscarVentaById(lstResult.get(0).getVentaOriginal()));
+				
+				//Buscar si el comprobante a anular tiene un movimiento posterior y solicitar confirmacion para continuar
+				Long idVenta = ServiceLocator.getVentaPasajesManager().buscarIdVentas(lstResult.get(0).getVentaOriginal());
+				if(idVenta>0) {
+					final VentaPasaje ventaAdicional = ServiceLocator.getVentaPasajesManager().buscarVentaById(idVenta);
+					if(ventaAdicional.getTipoMovimiento().getId().intValue()!=Constantes.ID_TIPMOV_ANULACION) {
+						lblMovimientoAdicional.setValue("El comprobante encontrado tiene un movimiento adicional posterior ACTIVO si desea verificar los movimientos puede hacerlo desde el Estado de Ventas y Reservas pestaña GPS");
+						lblMovimientoAdicional.setVisible(true);
+					}else {
+						lblMovimientoAdicional.setValue("");
+						lblMovimientoAdicional.setVisible(false);
+					}
+				}
+			}
 			else if (ventaAnular.getTipoMovimiento().getId().intValue()==Constantes.ID_TIPMOV_ANULACION)
 				lstVentaPasaje= new ArrayList<>();
 			else if(ventaAnular.getTipoMovimiento().getId().intValue()==Constantes.ID_TIPMOV_DEVOLUCION)
 				lstVentaPasaje= new ArrayList<>();
+			
+			
+			
 		}
 		onLoadComprobantes(lstVentaPasaje);
 	}
@@ -413,7 +435,7 @@ public class WndAnulacionDocumentos extends WndBase{
 				DlgMessage.information("No se puede anular un comprobante marcado como Perdida de Servicio.");
 				return;
 			}
-
+			
 			VentaPasaje ventaPasaje=null;
 			if(rdRegular.isChecked() && ltbxAnulacionComprobantes.getSelectedItems().size()==1)
 				ventaPasaje=ltbxAnulacionComprobantes.getSelectedItem().getValue();

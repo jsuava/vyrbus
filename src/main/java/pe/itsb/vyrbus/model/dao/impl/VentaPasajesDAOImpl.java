@@ -966,6 +966,19 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 		return (List<VentaPasaje>)result;
 
 	}
+	
+	@Override
+	public Long buscarIdVentas(Long idVenpasOriginal)throws Exception{
+		
+		String sql = "select nvl(max(vp.venpas_id),0) ID from vrtvenpas vp where vp.venpas_idoriginal=" + idVenpasOriginal;
+				
+		log.info(sql);
+		List<?>result = getSession().createSQLQuery(sql).list();
+		Long ret = ((BigDecimal)result.get(0)).longValue();
+
+		return (ret);
+
+	}
 
 	/*
 	 * (non-Javadoc)

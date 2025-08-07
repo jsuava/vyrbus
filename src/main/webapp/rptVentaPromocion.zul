@@ -96,7 +96,7 @@
 		<listbox id="lstVentasPromocionDeta" rows="10">
 			<listhead>
 				<listheader label="NRO." width="40px" style="color: #ffffff;"/>
-				<listheader label="F.VENTA" width="80px" sort="auto" style="color: #ffffff;"/>
+				<listheader label="F.VENTA" width="75px" sort="auto" style="color: #ffffff;"/>
 				<listheader label="NRO.BOLETO" width="100px" align="center" sort="auto" style="color: #ffffff;"/>
 				<listheader label="NOMBRES DEL PASAJERO" width="280px" sort="auto" style="color: #ffffff;"/>
 				<listheader label="RUTA" width="180px" sort="auto" style="color: #ffffff;"/>
@@ -106,8 +106,9 @@
 				<listheader label="TARIFA" width="60px" align="center" sort="auto" style="color: #ffffff;"/>
 				<listheader label="DESC." width="60px" align="center" sort="auto" style="color: #ffffff;"/>
 				<listheader label="TOTAL" width="60px" align="center" sort="auto" style="color: #ffffff;"/>
-				<listheader label="USUARIO VENTA" width="280px" sort="auto" style="color: #ffffff;"/>
+				<listheader label="USUARIO VENTA" width="250px" sort="auto" style="color: #ffffff;"/>
 				<listheader label="AGENCIA VENTA" width="190px" sort="auto" style="color: #ffffff;"/>
+				<listheader label="OBSERVACIONES" width="200px" sort="auto" style="color: #ffffff;"/>
 			</listhead>
 		</listbox>
 	</groupbox>

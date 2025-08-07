@@ -1868,7 +1868,8 @@ public class ReportesDAOImpl extends GenericDAOImpl implements ReportesDAO {
 					"                ,us.c_apepat \r\n" + 
 					"                ,us.c_apemat \r\n" + 
 					"                ,us.c_nombre  \r\n" + 
-					"                ,agv.c_Denominacion as agencia \r\n" + 
+					"                ,agv.c_Denominacion as agencia \r\n" +
+					"				 ,vp.c_observaciones  \r\n" + 
 					"          FROM VRTVENPAS vp \r\n" + 
 					"               INNER JOIN (SELECT MIN(v.venpas_id)venpas_id FROM VRTVENPAS v where v.n_descuento>0 GROUP BY v.venpas_idoriginal \r\n" + 
 					"                          )mvenpas_id ON (mvenpas_id.venpas_id=vp.venpas_id) \r\n" + 
@@ -1926,6 +1927,7 @@ public class ReportesDAOImpl extends GenericDAOImpl implements ReportesDAO {
 				ventaPasaje.setServicio(servicio);
 				ventaPasaje.setUsuario(usuario);
 				ventaPasaje.setAgencia(agencia);
+				ventaPasaje.setObservaciones(obj[15]!=null ? obj[15].toString() : "");
 
 				lstVentasPromo.add(ventaPasaje);
 			}
