@@ -26,10 +26,13 @@ import javax.xml.bind.annotation.XmlType;
  *         &lt;element name="agenciaID" type="{http://www.w3.org/2001/XMLSchema}long" minOccurs="0"/>
  *         &lt;element name="centroCosto" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *         &lt;element name="cliente" type="{http://schemas.datacontract.org/2004/07/FEService.Input}Cliente" minOccurs="0"/>
+ *         &lt;element name="consignado" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+ *         &lt;element name="destino" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *         &lt;element name="direccionEmbarque" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *         &lt;element name="documentoReferencia" type="{http://schemas.datacontract.org/2004/07/FEService.Input}DocumentoReferencia" minOccurs="0"/>
  *         &lt;element name="fechaEmision" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *         &lt;element name="glosaRetencion" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+ *         &lt;element name="grr" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *         &lt;element name="horaEmision" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *         &lt;element name="igv" type="{http://www.w3.org/2001/XMLSchema}double" minOccurs="0"/>
  *         &lt;element name="informacionAdicional" type="{http://schemas.datacontract.org/2004/07/FEService.Input}InformacionAdicional" minOccurs="0"/>
@@ -39,10 +42,12 @@ import javax.xml.bind.annotation.XmlType;
  *         &lt;element name="montoSubTotal" type="{http://www.w3.org/2001/XMLSchema}double" minOccurs="0"/>
  *         &lt;element name="montoTotal" type="{http://www.w3.org/2001/XMLSchema}double" minOccurs="0"/>
  *         &lt;element name="montoTotalDescuento" type="{http://www.w3.org/2001/XMLSchema}double" minOccurs="0"/>
+ *         &lt;element name="nroComprobanteRef" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *         &lt;element name="numeroCorrelativo" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *         &lt;element name="numeroPrefactura" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *         &lt;element name="numeroSerie" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *         &lt;element name="observaciones" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+ *         &lt;element name="origen" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *         &lt;element name="producto" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *         &lt;element name="rucEmpresa" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *         &lt;element name="tipoComprobanteID" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
@@ -61,11 +66,12 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "Venta", namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", propOrder = {
-		"infoCreditList", "isCreatePdf", "agenciaID", "centroCosto", "cliente", "direccionEmbarque",
-		"documentoReferencia", "fechaEmision", "glosaRetencion", "horaEmision", "igv", "informacionAdicional",
-		"isCredito", "isSOUE", "listDetalleVenta", "montoSubTotal", "montoTotal", "montoTotalDescuento",
-		"numeroCorrelativo", "numeroPrefactura", "numeroSerie", "observaciones", "producto", "rucEmpresa",
-		"tipoComprobanteID", "tipoMonedaSoles", "tipoVenta", "usuarioID", "usuarioInsercion", "usuarioModificacion" })
+		"infoCreditList", "isCreatePdf", "agenciaID", "centroCosto", "cliente", "consignado", "destino",
+		"direccionEmbarque", "documentoReferencia", "fechaEmision", "glosaRetencion", "grr", "horaEmision", "igv",
+		"informacionAdicional", "isCredito", "isSOUE", "listDetalleVenta", "montoSubTotal", "montoTotal",
+		"montoTotalDescuento", "nroComprobanteRef", "numeroCorrelativo", "numeroPrefactura", "numeroSerie",
+		"observaciones", "origen", "producto", "rucEmpresa", "tipoComprobanteID", "tipoMonedaSoles", "tipoVenta",
+		"usuarioID", "usuarioInsercion", "usuarioModificacion" })
 public class Venta {
 
 	@XmlElementRef(name = "InfoCreditList", namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", type = JAXBElement.class)
@@ -77,6 +83,10 @@ public class Venta {
 	protected JAXBElement<String> centroCosto;
 	@XmlElementRef(name = "cliente", namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", type = JAXBElement.class)
 	protected JAXBElement<Cliente> cliente;
+	@XmlElementRef(name = "consignado", namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", type = JAXBElement.class)
+	protected JAXBElement<String> consignado;
+	@XmlElementRef(name = "destino", namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", type = JAXBElement.class)
+	protected JAXBElement<String> destino;
 	@XmlElementRef(name = "direccionEmbarque", namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", type = JAXBElement.class)
 	protected JAXBElement<String> direccionEmbarque;
 	@XmlElementRef(name = "documentoReferencia", namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", type = JAXBElement.class)
@@ -85,6 +95,8 @@ public class Venta {
 	protected JAXBElement<String> fechaEmision;
 	@XmlElementRef(name = "glosaRetencion", namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", type = JAXBElement.class)
 	protected JAXBElement<String> glosaRetencion;
+	@XmlElementRef(name = "grr", namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", type = JAXBElement.class)
+	protected JAXBElement<String> grr;
 	@XmlElementRef(name = "horaEmision", namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", type = JAXBElement.class)
 	protected JAXBElement<String> horaEmision;
 	protected Double igv;
@@ -97,6 +109,8 @@ public class Venta {
 	protected Double montoSubTotal;
 	protected Double montoTotal;
 	protected Double montoTotalDescuento;
+	@XmlElementRef(name = "nroComprobanteRef", namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", type = JAXBElement.class)
+	protected JAXBElement<String> nroComprobanteRef;
 	@XmlElementRef(name = "numeroCorrelativo", namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", type = JAXBElement.class)
 	protected JAXBElement<String> numeroCorrelativo;
 	@XmlElementRef(name = "numeroPrefactura", namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", type = JAXBElement.class)
@@ -105,6 +119,8 @@ public class Venta {
 	protected JAXBElement<String> numeroSerie;
 	@XmlElementRef(name = "observaciones", namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", type = JAXBElement.class)
 	protected JAXBElement<String> observaciones;
+	@XmlElementRef(name = "origen", namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", type = JAXBElement.class)
+	protected JAXBElement<String> origen;
 	@XmlElementRef(name = "producto", namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", type = JAXBElement.class)
 	protected JAXBElement<String> producto;
 	@XmlElementRef(name = "rucEmpresa", namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", type = JAXBElement.class)
@@ -226,6 +242,50 @@ public class Venta {
 	}
 
 	/**
+	 * Gets the value of the consignado property.
+	 * 
+	 * @return possible object is {@link JAXBElement }{@code <}{@link String
+	 *         }{@code >}
+	 * 
+	 */
+	public JAXBElement<String> getConsignado() {
+		return consignado;
+	}
+
+	/**
+	 * Sets the value of the consignado property.
+	 * 
+	 * @param value allowed object is {@link JAXBElement }{@code <}{@link String
+	 *              }{@code >}
+	 * 
+	 */
+	public void setConsignado(JAXBElement<String> value) {
+		this.consignado = ((JAXBElement<String>) value);
+	}
+
+	/**
+	 * Gets the value of the destino property.
+	 * 
+	 * @return possible object is {@link JAXBElement }{@code <}{@link String
+	 *         }{@code >}
+	 * 
+	 */
+	public JAXBElement<String> getDestino() {
+		return destino;
+	}
+
+	/**
+	 * Sets the value of the destino property.
+	 * 
+	 * @param value allowed object is {@link JAXBElement }{@code <}{@link String
+	 *              }{@code >}
+	 * 
+	 */
+	public void setDestino(JAXBElement<String> value) {
+		this.destino = ((JAXBElement<String>) value);
+	}
+
+	/**
 	 * Gets the value of the direccionEmbarque property.
 	 * 
 	 * @return possible object is {@link JAXBElement }{@code <}{@link String
@@ -311,6 +371,28 @@ public class Venta {
 	 */
 	public void setGlosaRetencion(JAXBElement<String> value) {
 		this.glosaRetencion = ((JAXBElement<String>) value);
+	}
+
+	/**
+	 * Gets the value of the grr property.
+	 * 
+	 * @return possible object is {@link JAXBElement }{@code <}{@link String
+	 *         }{@code >}
+	 * 
+	 */
+	public JAXBElement<String> getGrr() {
+		return grr;
+	}
+
+	/**
+	 * Sets the value of the grr property.
+	 * 
+	 * @param value allowed object is {@link JAXBElement }{@code <}{@link String
+	 *              }{@code >}
+	 * 
+	 */
+	public void setGrr(JAXBElement<String> value) {
+		this.grr = ((JAXBElement<String>) value);
 	}
 
 	/**
@@ -500,6 +582,28 @@ public class Venta {
 	}
 
 	/**
+	 * Gets the value of the nroComprobanteRef property.
+	 * 
+	 * @return possible object is {@link JAXBElement }{@code <}{@link String
+	 *         }{@code >}
+	 * 
+	 */
+	public JAXBElement<String> getNroComprobanteRef() {
+		return nroComprobanteRef;
+	}
+
+	/**
+	 * Sets the value of the nroComprobanteRef property.
+	 * 
+	 * @param value allowed object is {@link JAXBElement }{@code <}{@link String
+	 *              }{@code >}
+	 * 
+	 */
+	public void setNroComprobanteRef(JAXBElement<String> value) {
+		this.nroComprobanteRef = ((JAXBElement<String>) value);
+	}
+
+	/**
 	 * Gets the value of the numeroCorrelativo property.
 	 * 
 	 * @return possible object is {@link JAXBElement }{@code <}{@link String
@@ -585,6 +689,28 @@ public class Venta {
 	 */
 	public void setObservaciones(JAXBElement<String> value) {
 		this.observaciones = ((JAXBElement<String>) value);
+	}
+
+	/**
+	 * Gets the value of the origen property.
+	 * 
+	 * @return possible object is {@link JAXBElement }{@code <}{@link String
+	 *         }{@code >}
+	 * 
+	 */
+	public JAXBElement<String> getOrigen() {
+		return origen;
+	}
+
+	/**
+	 * Sets the value of the origen property.
+	 * 
+	 * @param value allowed object is {@link JAXBElement }{@code <}{@link String
+	 *              }{@code >}
+	 * 
+	 */
+	public void setOrigen(JAXBElement<String> value) {
+		this.origen = ((JAXBElement<String>) value);
 	}
 
 	/**

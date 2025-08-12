@@ -1185,6 +1185,7 @@ public class WSFE implements Serializable{
 					xmlVenta.setZ_QR(cryptoBarcodeSunat);
 					//xmlVenta.setZ_CodigoBarraSunat(cryptoBarcodeSunat);
 					xmlVenta.setZ_ticket(cryptoRptFormat);
+					
 										
 					/*Armando el detalle*/
 					Boolean isCortesia=ventaPasaje.getFormaPago().getId().intValue()==Constantes.ID_FORPAG_CORTESIA;
@@ -1320,6 +1321,7 @@ public class WSFE implements Serializable{
 			venta.setTipoComprobanteID(new JAXBElement<String>(new QName(NAMESPACE,"tipoComprobanteID"), String.class, tipoComprobanteID));
 			venta.setNumeroSerie(new JAXBElement<String>(new QName(NAMESPACE,"numeroSerie"), String.class, serie));
 			venta.setNumeroCorrelativo(new JAXBElement<String>(new QName(NAMESPACE,"numeroCorrelativo"), String.class, autoCompletCorrelativo(correlativo)));
+			
 			if(ventaPasaje.getTipoMoneda()!=null && ventaPasaje.getTipoMoneda().getId()==DOLARES)
 				venta.setTipoMonedaSoles(false);
 			else
@@ -1386,11 +1388,20 @@ public class WSFE implements Serializable{
 					direccionEmbarque="****";
 				venta.setDireccionEmbarque(new JAXBElement<String>(new QName(NAMESPACE,"direccionEmbarque"), String.class, direccionEmbarque));
 			}else{
-				if(ventaPasaje.getAgenciaPartida()!=null){
-					Agencia agenciaPartida=ventaPasaje.getAgenciaPartida();
-					if(agenciaPartida.getDireccion()==null)
-						agenciaPartida=ServiceLocator.getAgenciaManager().buscarPorId(agenciaPartida.getId().longValue());
+				if(ventaPasaje.getAgenciaPartida()!= null){
+					Agencia agenciaPartida = ventaPasaje.getAgenciaPartida();
+					if(agenciaPartida.getDireccion()==null) {
+						agenciaPartida = ServiceLocator.getAgenciaManager().buscarPorId(agenciaPartida.getId().longValue());
+						ventaPasaje.setAgenciaPartida(agenciaPartida);
+					}						
 					venta.setDireccionEmbarque(new JAXBElement<String>(new QName(NAMESPACE,"direccionEmbarque"), String.class, agenciaPartida.getDireccion()));	
+				}
+				if(ventaPasaje.getAgenciaLlegada() != null) {
+					Agencia agenciaLlegada = ventaPasaje.getAgenciaLlegada();
+					if(agenciaLlegada.getDireccion() == null) {
+						agenciaLlegada = ServiceLocator.getAgenciaManager().buscarPorId(agenciaLlegada.getId().longValue());
+						ventaPasaje.setAgenciaLlegada(agenciaLlegada);
+					}					
 				}
 			}
 			
@@ -1413,11 +1424,20 @@ public class WSFE implements Serializable{
 				venta.setIsCredito(true);
 			}
 			
+			// Origen y Destino de un Boleto - jabanto - 12-08-2025
+			String origen = (ventaPasaje.getRuta() != null? ventaPasaje.getRuta().getOrigen(): null);
+			String destino = (ventaPasaje.getRuta() != null? ventaPasaje.getRuta().getDestino() : null);
+			if(ventaPasaje.getAgenciaPartida()!= null && ventaPasaje.getAgenciaPartida().getDireccion()!= null)			
+				origen += ", EMBARQUE: "+ ventaPasaje.getAgenciaPartida().getDireccion();
+			if(ventaPasaje.getAgenciaLlegada()!= null && ventaPasaje.getAgenciaLlegada().getDireccion()!= null)
+				origen += ", DESEMBARQUE: "+ ventaPasaje.getAgenciaLlegada().getDireccion();
+			venta.setOrigen(new JAXBElement<String>(new QName(NAMESPACE,"origen"), String.class, origen));
+			venta.setDestino(new JAXBElement<String>(new QName(NAMESPACE,"destino"), String.class, destino));
 			/*=======================================================*/
 			/*DETALLE DE LA VENTA*/
 			/*=======================================================*/
 //			Double totalOpGratuitas=.00;
-			DetalleVenta detalleVenta=createDetalleVenta(ventaPasaje, isCortesia);
+			DetalleVenta detalleVenta=createDetalleVentaFE(ventaPasaje, isCortesia);
 			
 			ArrayOfDetalleVenta arrayOfDetalleVenta= new ArrayOfDetalleVenta();
 			arrayOfDetalleVenta.getDetalleVenta().add(detalleVenta);
@@ -1549,6 +1569,99 @@ public class WSFE implements Serializable{
 					 "[FECHA:"+(ventaPasaje.getFechaPartida()!=null?Constantes.FORMAT_DATE.format(ventaPasaje.getFechaPartida()):"")+"] [H. EMB:"+strHoraPartida+"]\n"+
 					 "[EMBARQUE:"+ (ventaPasaje.getAgenciaPartida()!=null?ventaPasaje.getAgenciaPartida().getDenominacion():"") +"]\n"+
 			 		 "[DESEMBARQUE:"+ (ventaPasaje.getAgenciaLlegada()!=null?ventaPasaje.getAgenciaLlegada().getDenominacion():"") +"]";
+//					 "[FECHA:"+(ventaPasaje.getFechaPartida()!=null?Constantes.FORMAT_DATE.format(ventaPasaje.getFechaPartida()):"")+"] [HORA:"+(ventaPasaje.getHoraPartida()!=null?ventaPasaje.getHoraPartida().trim():"")+"]";
+			
+		}else{
+			descripcionPrincipal= descripMovi+(ventaPasaje.getObservaciones()!=null?" - "+ventaPasaje.getObservaciones():"");
+		}
+		
+		
+		DetalleVenta detalleVenta= new DetalleVenta();
+		
+		detalleVenta.setItem(1);
+		detalleVenta.setUnidadMedida(new JAXBElement<String>(new QName(NAMESPACE,"unidadMedida"), String.class, "NIU"));
+		detalleVenta.setDescripcion(new JAXBElement<String>(new QName(NAMESPACE,"descripcion"), String.class, descripcionPrincipal));
+		detalleVenta.setCantidad(1.0);
+		detalleVenta.setTarifa(ventaPasaje.getImportePagado());		
+		if(!(isCortesia)){
+			if(ventaPasaje.getIgv()!=null && ventaPasaje.getIgv()>0.00){
+				/*Venta grabada*/
+				Double igv_x=Constantes.IGV/100; //(0.18)
+				Double igv_y=igv_x+1; //(1.18)
+				
+				detalleVenta.setValorUnitario(Double.valueOf(Util.toNumberFormatNotMiles(detalleVenta.getTarifa() / igv_y,2))); //Precio o tarifa, pero sin igv
+				detalleVenta.setIgv(Double.valueOf(Util.toNumberFormatNotMiles((detalleVenta.getTarifa() / igv_y) * igv_x,2))); //Igv del presio unitario
+				detalleVenta.setTotal(Double.valueOf(Util.toNumberFormatNotMiles((detalleVenta.getTarifa() / igv_y)*detalleVenta.getCantidad(), 2)));//total de la linea del detalle (Pero sin impuestos)
+				detalleVenta.setCodigoAfectacionIgv(new JAXBElement<String>(new QName(NAMESPACE,"codigoAfectacionIgv"), String.class, "10")); //-->Gravado - Operacion onerosa - Afectacion al igv (Cat. 7)
+				detalleVenta.setCodigoTipoPrecio(new JAXBElement<String>(new QName(NAMESPACE,"codigoTipoPrecio"), String.class, "01")); // Precio Unitario (incluye Igv) -Tipo de precio de venta unitario (Cat. 16)
+			}else{
+				/*Venta Exonerada*/
+				detalleVenta.setValorUnitario(detalleVenta.getTarifa()); //Precio o tarifa, pero sin igv
+				detalleVenta.setIgv(0.00); //No esta afento al IGV
+				detalleVenta.setTotal(detalleVenta.getTarifa()*detalleVenta.getCantidad());//total de la linea del detalle (Pero sin impuestos)
+				detalleVenta.setCodigoAfectacionIgv(new JAXBElement<String>(new QName(NAMESPACE,"codigoAfectacionIgv"), String.class, "20")); //Exonerado - Operacion Onerosa - Afectacion al igv (Cat. 7)
+				detalleVenta.setCodigoTipoPrecio(new JAXBElement<String>(new QName(NAMESPACE,"codigoTipoPrecio"), String.class, "01")); // Precio Unitario (incluye Igv) -Tipo de precio de venta unitario (Cat. 16)
+			}			
+		}else{
+			/*Si es CORTESIA*/
+			detalleVenta.setValorUnitario(0.00); //Precio o tarifa, sin igv
+			detalleVenta.setIgv(0.00); //No esta afento al IGV
+			detalleVenta.setTotal(0.00);//total de la linea del detalle (Pero sin impuestos)
+			detalleVenta.setCodigoAfectacionIgv(new JAXBElement<String>(new QName(NAMESPACE,"codigoAfectacionIgv"), String.class, "20")); //Exonerado - Operacion Onerosa - Afectacion al igv (Cat. 7)
+			detalleVenta.setCodigoTipoPrecio(new JAXBElement<String>(new QName(NAMESPACE,"codigoTipoPrecio"), String.class, "02")); // Valor referencial unitario en operaciones no onerosas - Tipo de precio de venta unitario (Cat. 16)
+		}
+		return detalleVenta;
+	}
+	
+	/**
+	 * crea el detalle de la venta, para el envio al WSFE
+	 * @param ventaPasaje
+	 * @param isCortesia
+	 * @return
+	 */
+	private static DetalleVenta createDetalleVentaFE(VentaPasaje ventaPasaje, boolean isCortesia){
+		String descripMovi = "";
+		if(!(ventaPasaje.getTipoTransaccion().equals(Constantes.TIPO_OPERACION_VENTA_ESPECIAL))) {
+			if(ventaPasaje.getTipoMovimiento().getId().intValue()==Constantes.ID_TIPMOV_EFECTIVO)		
+				descripMovi = "VTA. PASAJE:";
+			else
+				descripMovi = ventaPasaje.getTipoMovimiento().getDenominacion().trim();
+		}
+		
+		String pasajero=ventaPasaje.getPasajero().toString().trim();
+		if(pasajero.length()>30)
+			pasajero=pasajero.substring(0, 30);
+		String tipoDocumento=ventaPasaje.getPasajero().getTipoDocumento().getNombreCorto().trim();
+		if(tipoDocumento.length()>10)
+			tipoDocumento=tipoDocumento.substring(0, 10);
+		
+		/*la Descripcion del Detalle*/
+		String descripcionPrincipal="";
+		if(ventaPasaje.getTipoTransaccion().equals(Constantes.TIPO_OPERACION_VENTA_ESPECIAL)) {
+			descripcionPrincipal= descripMovi+(ventaPasaje.getObservaciones()!=null?ventaPasaje.getObservaciones():"");
+		}else if(ventaPasaje.getTipoTransaccion().equals(Constantes.TIPO_OPERACION_EXCESO)) {
+			descripcionPrincipal = ventaPasaje.getObservaciones();
+		}else if(ventaPasaje.getTipoMovimiento().getId().intValue()!=Constantes.ID_TIPMOV_GASTOS_ADMINISTRATIVOS){
+			String servicio="";
+			if(ventaPasaje.getTipoTransaccion().equals(Constantes.TIPO_OPERACION_VENTA_POOL)){
+				String[] observaciones=ventaPasaje.getObservaciones().split(";");
+				servicio=getNamePool(observaciones, "SERVICIO");
+				if(servicio==null)
+					servicio="****";
+			}else
+				servicio=ventaPasaje.getServicio().getDenominacion().trim();
+			
+			/*Obtiene la hora real del embarque*/
+			String strHoraPartida=getHoraRealEmbarque(ventaPasaje);		
+			
+			descripcionPrincipal= descripMovi+"\n"+
+					 "[PAX:"+pasajero+"] ["+tipoDocumento+":"+ventaPasaje.getPasajero().getNumeroDocumento().trim()+"]\n"+
+					 "[RUTA:"+ventaPasaje.getRuta().toString().trim()+"]\n"+
+					 "[SERV:"+servicio+"]\n"+
+					 "[ASIENTO:"+(ventaPasaje.getNumeroAsiento()!=null?ventaPasaje.getNumeroAsiento():"")+"-"+(ventaPasaje.getNumeroPiso()!=null?(ventaPasaje.getNumeroPiso().intValue()<=0?1:ventaPasaje.getNumeroPiso()):"")+"]\n"+
+					 "[FECHA:"+(ventaPasaje.getFechaPartida()!=null?Constantes.FORMAT_DATE.format(ventaPasaje.getFechaPartida()):"")+"] [H. EMB:"+strHoraPartida+"]";
+//					 "[EMBARQUE:"+ (ventaPasaje.getAgenciaPartida()!=null?ventaPasaje.getAgenciaPartida().getDenominacion():"") +"]\n"+
+//			 		 "[DESEMBARQUE:"+ (ventaPasaje.getAgenciaLlegada()!=null?ventaPasaje.getAgenciaLlegada().getDenominacion():"") +"]";
 //					 "[FECHA:"+(ventaPasaje.getFechaPartida()!=null?Constantes.FORMAT_DATE.format(ventaPasaje.getFechaPartida()):"")+"] [HORA:"+(ventaPasaje.getHoraPartida()!=null?ventaPasaje.getHoraPartida().trim():"")+"]";
 			
 		}else{

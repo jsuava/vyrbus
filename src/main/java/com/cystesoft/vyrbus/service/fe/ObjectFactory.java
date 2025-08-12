@@ -28,16 +28,23 @@ public class ObjectFactory {
 			"unsignedLong");
 	private final static QName _UnsignedByte_QNAME = new QName("http://schemas.microsoft.com/2003/10/Serialization/",
 			"unsignedByte");
+	private final static QName _GREDocumentoReferencia_QNAME = new QName(
+			"http://schemas.datacontract.org/2004/07/FEService.Input", "GREDocumentoReferencia");
 	private final static QName _UnsignedShort_QNAME = new QName("http://schemas.microsoft.com/2003/10/Serialization/",
 			"unsignedShort");
 	private final static QName _DocumentoReferencia_QNAME = new QName(
 			"http://schemas.datacontract.org/2004/07/FEService.Input", "DocumentoReferencia");
+	private final static QName _GRE_QNAME = new QName("http://schemas.datacontract.org/2004/07/FEService.Input", "GRE");
 	private final static QName _Duration_QNAME = new QName("http://schemas.microsoft.com/2003/10/Serialization/",
 			"duration");
+	private final static QName _GREPiloto_QNAME = new QName("http://schemas.datacontract.org/2004/07/FEService.Input",
+			"GREPiloto");
 	private final static QName _DetalleVenta_QNAME = new QName(
 			"http://schemas.datacontract.org/2004/07/FEService.Input", "DetalleVenta");
 	private final static QName _RetencionDetalleInp_QNAME = new QName(
 			"http://schemas.datacontract.org/2004/07/FEService.Input", "RetencionDetalleInp");
+	private final static QName _ArrayOfGRE_QNAME = new QName("http://schemas.datacontract.org/2004/07/FEService.Input",
+			"ArrayOfGRE");
 	private final static QName _Long_QNAME = new QName("http://schemas.microsoft.com/2003/10/Serialization/", "long");
 	private final static QName _Nota_QNAME = new QName("http://schemas.datacontract.org/2004/07/FEService.Input",
 			"Nota");
@@ -73,6 +80,8 @@ public class ObjectFactory {
 			"http://schemas.datacontract.org/2004/07/FEService.Input", "ArrayOfInformacionCredito");
 	private final static QName _Boolean_QNAME = new QName("http://schemas.microsoft.com/2003/10/Serialization/",
 			"boolean");
+	private final static QName _GREDetalle_QNAME = new QName("http://schemas.datacontract.org/2004/07/FEService.Input",
+			"GREDetalle");
 	private final static QName _ArrayOfRetencionDetalleInp_QNAME = new QName(
 			"http://schemas.datacontract.org/2004/07/FEService.Input", "ArrayOfRetencionDetalleInp");
 	private final static QName _ArrayOfInformacionAdicionalTotalMonedaAdicional_QNAME = new QName(
@@ -82,6 +91,8 @@ public class ObjectFactory {
 			"http://schemas.datacontract.org/2004/07/FEService.Input", "RetencionInp");
 	private final static QName _Base64Binary_QNAME = new QName("http://schemas.microsoft.com/2003/10/Serialization/",
 			"base64Binary");
+	private final static QName _ArrayOfGREDetalle_QNAME = new QName(
+			"http://schemas.datacontract.org/2004/07/FEService.Input", "ArrayOfGREDetalle");
 	private final static QName _Int_QNAME = new QName("http://schemas.microsoft.com/2003/10/Serialization/", "int");
 	private final static QName _AnyURI_QNAME = new QName("http://schemas.microsoft.com/2003/10/Serialization/",
 			"anyURI");
@@ -100,6 +111,177 @@ public class ObjectFactory {
 	private final static QName _Double_QNAME = new QName("http://schemas.microsoft.com/2003/10/Serialization/",
 			"double");
 	private final static QName _QName_QNAME = new QName("http://schemas.microsoft.com/2003/10/Serialization/", "QName");
+	private final static QName _SetGRETransportistaActualizaCDRResponseSetGRETransportistaActualizaCDRResult_QNAME = new QName(
+			"http://tempuri.org/", "setGRETransportistaActualizaCDRResult");
+	private final static QName _GetRepresentacionImpresaStrRucEmpresa_QNAME = new QName("http://tempuri.org/",
+			"strRucEmpresa");
+	private final static QName _GetRepresentacionImpresaTipoComprobante_QNAME = new QName("http://tempuri.org/",
+			"tipoComprobante");
+	private final static QName _GetRepresentacionImpresaCorrelativo_QNAME = new QName("http://tempuri.org/",
+			"correlativo");
+	private final static QName _GetRepresentacionImpresaSerie_QNAME = new QName("http://tempuri.org/", "serie");
+	private final static QName _GetRepresentacionImpresaToken_QNAME = new QName("http://tempuri.org/", "token");
+	private final static QName _InformacionAdicionalTotalMonedaAdicionalNombre_QNAME = new QName(
+			"http://schemas.datacontract.org/2004/07/FEService.Input", "nombre");
+	private final static QName _InformacionAdicionalTotalMonedaAdicionalValor_QNAME = new QName(
+			"http://schemas.datacontract.org/2004/07/FEService.Input", "valor");
+	private final static QName _InformacionAdicionalTotalMonedaAdicionalCodigo_QNAME = new QName(
+			"http://schemas.datacontract.org/2004/07/FEService.Input", "codigo");
+	private final static QName _InformacionCreditoNroCuota_QNAME = new QName(
+			"http://schemas.datacontract.org/2004/07/FEService.Input", "NroCuota");
+	private final static QName _InformacionCreditoFechaVencimiento_QNAME = new QName(
+			"http://schemas.datacontract.org/2004/07/FEService.Input", "FechaVencimiento");
+	private final static QName _DetalleVentaCodigoProducto_QNAME = new QName(
+			"http://schemas.datacontract.org/2004/07/FEService.Input", "codigoProducto");
+	private final static QName _DetalleVentaCodigoTipoPrecio_QNAME = new QName(
+			"http://schemas.datacontract.org/2004/07/FEService.Input", "codigoTipoPrecio");
+	private final static QName _DetalleVentaUnidadMedida_QNAME = new QName(
+			"http://schemas.datacontract.org/2004/07/FEService.Input", "unidadMedida");
+	private final static QName _DetalleVentaCodigoAfectacionIgv_QNAME = new QName(
+			"http://schemas.datacontract.org/2004/07/FEService.Input", "codigoAfectacionIgv");
+	private final static QName _DetalleVentaDescripcion_QNAME = new QName(
+			"http://schemas.datacontract.org/2004/07/FEService.Input", "descripcion");
+	private final static QName _GREDetalleCantidad_QNAME = new QName(
+			"http://schemas.datacontract.org/2004/07/FEService.Input", "cantidad");
+	private final static QName _GREDetalleItem_QNAME = new QName(
+			"http://schemas.datacontract.org/2004/07/FEService.Input", "item");
+	private final static QName _BuscarDetalleComprobanteRucEmpresa_QNAME = new QName("http://tempuri.org/",
+			"rucEmpresa");
+	private final static QName _VentaListDetalleVenta_QNAME = new QName(
+			"http://schemas.datacontract.org/2004/07/FEService.Input", "listDetalleVenta");
+	private final static QName _VentaNumeroPrefactura_QNAME = new QName(
+			"http://schemas.datacontract.org/2004/07/FEService.Input", "numeroPrefactura");
+	private final static QName _VentaObservaciones_QNAME = new QName(
+			"http://schemas.datacontract.org/2004/07/FEService.Input", "observaciones");
+	private final static QName _VentaDestino_QNAME = new QName(
+			"http://schemas.datacontract.org/2004/07/FEService.Input", "destino");
+	private final static QName _VentaUsuarioModificacion_QNAME = new QName(
+			"http://schemas.datacontract.org/2004/07/FEService.Input", "usuarioModificacion");
+	private final static QName _VentaNumeroCorrelativo_QNAME = new QName(
+			"http://schemas.datacontract.org/2004/07/FEService.Input", "numeroCorrelativo");
+	private final static QName _VentaRucEmpresa_QNAME = new QName(
+			"http://schemas.datacontract.org/2004/07/FEService.Input", "rucEmpresa");
+	private final static QName _VentaHoraEmision_QNAME = new QName(
+			"http://schemas.datacontract.org/2004/07/FEService.Input", "horaEmision");
+	private final static QName _VentaCliente_QNAME = new QName(
+			"http://schemas.datacontract.org/2004/07/FEService.Input", "cliente");
+	private final static QName _VentaGlosaRetencion_QNAME = new QName(
+			"http://schemas.datacontract.org/2004/07/FEService.Input", "glosaRetencion");
+	private final static QName _VentaNroComprobanteRef_QNAME = new QName(
+			"http://schemas.datacontract.org/2004/07/FEService.Input", "nroComprobanteRef");
+	private final static QName _VentaCentroCosto_QNAME = new QName(
+			"http://schemas.datacontract.org/2004/07/FEService.Input", "centroCosto");
+	private final static QName _VentaInfoCreditList_QNAME = new QName(
+			"http://schemas.datacontract.org/2004/07/FEService.Input", "InfoCreditList");
+	private final static QName _VentaDocumentoReferencia_QNAME = new QName(
+			"http://schemas.datacontract.org/2004/07/FEService.Input", "documentoReferencia");
+	private final static QName _VentaUsuarioInsercion_QNAME = new QName(
+			"http://schemas.datacontract.org/2004/07/FEService.Input", "usuarioInsercion");
+	private final static QName _VentaDireccionEmbarque_QNAME = new QName(
+			"http://schemas.datacontract.org/2004/07/FEService.Input", "direccionEmbarque");
+	private final static QName _VentaOrigen_QNAME = new QName("http://schemas.datacontract.org/2004/07/FEService.Input",
+			"origen");
+	private final static QName _VentaProducto_QNAME = new QName(
+			"http://schemas.datacontract.org/2004/07/FEService.Input", "producto");
+	private final static QName _VentaFechaEmision_QNAME = new QName(
+			"http://schemas.datacontract.org/2004/07/FEService.Input", "fechaEmision");
+	private final static QName _VentaTipoComprobanteID_QNAME = new QName(
+			"http://schemas.datacontract.org/2004/07/FEService.Input", "tipoComprobanteID");
+	private final static QName _VentaGrr_QNAME = new QName("http://schemas.datacontract.org/2004/07/FEService.Input",
+			"grr");
+	private final static QName _VentaConsignado_QNAME = new QName(
+			"http://schemas.datacontract.org/2004/07/FEService.Input", "consignado");
+	private final static QName _VentaInformacionAdicional_QNAME = new QName(
+			"http://schemas.datacontract.org/2004/07/FEService.Input", "informacionAdicional");
+	private final static QName _VentaNumeroSerie_QNAME = new QName(
+			"http://schemas.datacontract.org/2004/07/FEService.Input", "numeroSerie");
+	private final static QName _SetEnviarComprobantesSunatResponseSetEnviarComprobantesSunatResult_QNAME = new QName(
+			"http://tempuri.org/", "setEnviarComprobantesSunatResult");
+	private final static QName _GetRepresentacionImpresaResponseGetRepresentacionImpresaResult_QNAME = new QName(
+			"http://tempuri.org/", "getRepresentacionImpresaResult");
+	private final static QName _SetConsultarCDRDocumentCDR_QNAME = new QName("http://tempuri.org/", "documentCDR");
+	private final static QName _SetNotaVentaVenta_QNAME = new QName("http://tempuri.org/", "venta");
+	private final static QName _SetNotaVentaNota_QNAME = new QName("http://tempuri.org/", "nota");
+	private final static QName _SetGRETransportistaActualizaCDRListGreTransportista_QNAME = new QName(
+			"http://tempuri.org/", "listGreTransportista");
+	private final static QName _SetNotaVentaResponseSetNotaVentaResult_QNAME = new QName("http://tempuri.org/",
+			"setNotaVentaResult");
+	private final static QName _GREDocumentoReferenciaNumeroComprobante_QNAME = new QName(
+			"http://schemas.datacontract.org/2004/07/FEService.Input", "numeroComprobante");
+	private final static QName _GREDocumentoReferenciaTipoDocumentoIdRef_QNAME = new QName(
+			"http://schemas.datacontract.org/2004/07/FEService.Input", "tipoDocumentoIdRef");
+	private final static QName _GREDocumentoReferenciaTipoComprobante_QNAME = new QName(
+			"http://schemas.datacontract.org/2004/07/FEService.Input", "tipoComprobante");
+	private final static QName _GREDocumentoReferenciaTipoComprobanteId_QNAME = new QName(
+			"http://schemas.datacontract.org/2004/07/FEService.Input", "tipoComprobanteId");
+	private final static QName _GREDocumentoReferenciaNumeroDocumentoRef_QNAME = new QName(
+			"http://schemas.datacontract.org/2004/07/FEService.Input", "numeroDocumentoRef");
+	private final static QName _GREGrePilotoCopiloto2_QNAME = new QName(
+			"http://schemas.datacontract.org/2004/07/FEService.Input", "grePilotoCopiloto_2");
+	private final static QName _GREGrePilotoCopiloto1_QNAME = new QName(
+			"http://schemas.datacontract.org/2004/07/FEService.Input", "grePilotoCopiloto_1");
+	private final static QName _GREVehiculoCertificadoHabilitacion_QNAME = new QName(
+			"http://schemas.datacontract.org/2004/07/FEService.Input", "vehiculo_certificadoHabilitacion");
+	private final static QName _GREPuntoPartidaDireccion_QNAME = new QName(
+			"http://schemas.datacontract.org/2004/07/FEService.Input", "puntoPartida_direccion");
+	private final static QName _GREGrrRucEmisor_QNAME = new QName(
+			"http://schemas.datacontract.org/2004/07/FEService.Input", "grr_rucEmisor");
+	private final static QName _GREVehiculoNumeroPlacaSec1_QNAME = new QName(
+			"http://schemas.datacontract.org/2004/07/FEService.Input", "vehiculo_numeroPlaca_sec1");
+	private final static QName _GRENumeroGRE_QNAME = new QName(
+			"http://schemas.datacontract.org/2004/07/FEService.Input", "numeroGRE");
+	private final static QName _GREVehiculoNumeroPlaca_QNAME = new QName(
+			"http://schemas.datacontract.org/2004/07/FEService.Input", "vehiculo_numeroPlaca");
+	private final static QName _GREPuntoLlegadaDireccion_QNAME = new QName(
+			"http://schemas.datacontract.org/2004/07/FEService.Input", "puntoLlegada_direccion");
+	private final static QName _GRETipoDocumento_QNAME = new QName(
+			"http://schemas.datacontract.org/2004/07/FEService.Input", "tipoDocumento");
+	private final static QName _GREGreDocumentoReferencia_QNAME = new QName(
+			"http://schemas.datacontract.org/2004/07/FEService.Input", "greDocumentoReferencia");
+	private final static QName _GREPuntoLlegadaUbigeo_QNAME = new QName(
+			"http://schemas.datacontract.org/2004/07/FEService.Input", "puntoLlegada_ubigeo");
+	private final static QName _GRETotalPesoCarga_QNAME = new QName(
+			"http://schemas.datacontract.org/2004/07/FEService.Input", "totalPesoCarga");
+	private final static QName _GREDestinatarioNombres_QNAME = new QName(
+			"http://schemas.datacontract.org/2004/07/FEService.Input", "destinatario_nombres");
+	private final static QName _GRERemitenteTipoDocumento_QNAME = new QName(
+			"http://schemas.datacontract.org/2004/07/FEService.Input", "remitente_tipoDocumento");
+	private final static QName _GRENota_QNAME = new QName("http://schemas.datacontract.org/2004/07/FEService.Input",
+			"nota");
+	private final static QName _GREGrePilotoPrincipal_QNAME = new QName(
+			"http://schemas.datacontract.org/2004/07/FEService.Input", "grePilotoPrincipal");
+	private final static QName _GREPuntoPartidaUbigeo_QNAME = new QName(
+			"http://schemas.datacontract.org/2004/07/FEService.Input", "puntoPartida_ubigeo");
+	private final static QName _GREDestinatarioTipoDocumento_QNAME = new QName(
+			"http://schemas.datacontract.org/2004/07/FEService.Input", "destinatario_tipoDocumento");
+	private final static QName _GREListDetalle_QNAME = new QName(
+			"http://schemas.datacontract.org/2004/07/FEService.Input", "listDetalle");
+	private final static QName _GREFechaInicioTranslado_QNAME = new QName(
+			"http://schemas.datacontract.org/2004/07/FEService.Input", "fechaInicioTranslado");
+	private final static QName _GREVehiculoCertificadoHabilitacionSec1_QNAME = new QName(
+			"http://schemas.datacontract.org/2004/07/FEService.Input", "vehiculo_certificadoHabilitacion_sec1");
+	private final static QName _GRENumeroRegistroMTC_QNAME = new QName(
+			"http://schemas.datacontract.org/2004/07/FEService.Input", "numeroRegistroMTC");
+	private final static QName _GRERemitenteNombres_QNAME = new QName(
+			"http://schemas.datacontract.org/2004/07/FEService.Input", "remitente_nombres");
+	private final static QName _GREDestinatarioNumeroDocumento_QNAME = new QName(
+			"http://schemas.datacontract.org/2004/07/FEService.Input", "destinatario_numeroDocumento");
+	private final static QName _GRERemitenteNumeroDocumento_QNAME = new QName(
+			"http://schemas.datacontract.org/2004/07/FEService.Input", "remitente_numeroDocumento");
+	private final static QName _ClienteNombres_QNAME = new QName(
+			"http://schemas.datacontract.org/2004/07/FEService.Input", "nombres");
+	private final static QName _ClienteDireccion_QNAME = new QName(
+			"http://schemas.datacontract.org/2004/07/FEService.Input", "direccion");
+	private final static QName _ClienteNumeroDocumento_QNAME = new QName(
+			"http://schemas.datacontract.org/2004/07/FEService.Input", "numeroDocumento");
+	private final static QName _ClienteTipoDocumentoID_QNAME = new QName(
+			"http://schemas.datacontract.org/2004/07/FEService.Input", "tipoDocumentoID");
+	private final static QName _SetNotaResponseSetNotaResult_QNAME = new QName("http://tempuri.org/", "setNotaResult");
+	private final static QName _SetBajasFechaEmisionComprobantes_QNAME = new QName("http://tempuri.org/",
+			"fechaEmisionComprobantes");
+	private final static QName _SetNotaNotaCreditoDebito_QNAME = new QName("http://tempuri.org/", "notaCreditoDebito");
+	private final static QName _DocumentoBajaDescripcionMotivo_QNAME = new QName(
+			"http://schemas.datacontract.org/2004/07/FEService.Input", "descripcionMotivo");
 	private final static QName _RetencionDetalleInpFechaPago_QNAME = new QName(
 			"http://schemas.datacontract.org/2004/07/FEService.Input", "fechaPago");
 	private final static QName _RetencionDetalleInpMonedaOriginal_QNAME = new QName(
@@ -116,102 +298,6 @@ public class ObjectFactory {
 			"http://schemas.datacontract.org/2004/07/FEService.Input", "numeroPago");
 	private final static QName _RetencionDetalleInpMonedaDoctRelacionado_QNAME = new QName(
 			"http://schemas.datacontract.org/2004/07/FEService.Input", "monedaDoctRelacionado");
-	private final static QName _SetNotaVentaResponseSetNotaVentaResult_QNAME = new QName("http://tempuri.org/",
-			"setNotaVentaResult");
-	private final static QName _SetEnviarComprobantesSunatResponseSetEnviarComprobantesSunatResult_QNAME = new QName(
-			"http://tempuri.org/", "setEnviarComprobantesSunatResult");
-	private final static QName _GetRepresentacionImpresaResponseGetRepresentacionImpresaResult_QNAME = new QName(
-			"http://tempuri.org/", "getRepresentacionImpresaResult");
-	private final static QName _SetResumenesResponseSetResumenesResult_QNAME = new QName("http://tempuri.org/",
-			"setResumenesResult");
-	private final static QName _VentaListDetalleVenta_QNAME = new QName(
-			"http://schemas.datacontract.org/2004/07/FEService.Input", "listDetalleVenta");
-	private final static QName _VentaNumeroPrefactura_QNAME = new QName(
-			"http://schemas.datacontract.org/2004/07/FEService.Input", "numeroPrefactura");
-	private final static QName _VentaObservaciones_QNAME = new QName(
-			"http://schemas.datacontract.org/2004/07/FEService.Input", "observaciones");
-	private final static QName _VentaUsuarioModificacion_QNAME = new QName(
-			"http://schemas.datacontract.org/2004/07/FEService.Input", "usuarioModificacion");
-	private final static QName _VentaNumeroCorrelativo_QNAME = new QName(
-			"http://schemas.datacontract.org/2004/07/FEService.Input", "numeroCorrelativo");
-	private final static QName _VentaRucEmpresa_QNAME = new QName(
-			"http://schemas.datacontract.org/2004/07/FEService.Input", "rucEmpresa");
-	private final static QName _VentaHoraEmision_QNAME = new QName(
-			"http://schemas.datacontract.org/2004/07/FEService.Input", "horaEmision");
-	private final static QName _VentaCliente_QNAME = new QName(
-			"http://schemas.datacontract.org/2004/07/FEService.Input", "cliente");
-	private final static QName _VentaGlosaRetencion_QNAME = new QName(
-			"http://schemas.datacontract.org/2004/07/FEService.Input", "glosaRetencion");
-	private final static QName _VentaCentroCosto_QNAME = new QName(
-			"http://schemas.datacontract.org/2004/07/FEService.Input", "centroCosto");
-	private final static QName _VentaInfoCreditList_QNAME = new QName(
-			"http://schemas.datacontract.org/2004/07/FEService.Input", "InfoCreditList");
-	private final static QName _VentaDocumentoReferencia_QNAME = new QName(
-			"http://schemas.datacontract.org/2004/07/FEService.Input", "documentoReferencia");
-	private final static QName _VentaUsuarioInsercion_QNAME = new QName(
-			"http://schemas.datacontract.org/2004/07/FEService.Input", "usuarioInsercion");
-	private final static QName _VentaDireccionEmbarque_QNAME = new QName(
-			"http://schemas.datacontract.org/2004/07/FEService.Input", "direccionEmbarque");
-	private final static QName _VentaProducto_QNAME = new QName(
-			"http://schemas.datacontract.org/2004/07/FEService.Input", "producto");
-	private final static QName _VentaFechaEmision_QNAME = new QName(
-			"http://schemas.datacontract.org/2004/07/FEService.Input", "fechaEmision");
-	private final static QName _VentaTipoComprobanteID_QNAME = new QName(
-			"http://schemas.datacontract.org/2004/07/FEService.Input", "tipoComprobanteID");
-	private final static QName _VentaInformacionAdicional_QNAME = new QName(
-			"http://schemas.datacontract.org/2004/07/FEService.Input", "informacionAdicional");
-	private final static QName _VentaNumeroSerie_QNAME = new QName(
-			"http://schemas.datacontract.org/2004/07/FEService.Input", "numeroSerie");
-	private final static QName _SetEnviarComprobantesSunatRucEmpresa_QNAME = new QName("http://tempuri.org/",
-			"rucEmpresa");
-	private final static QName _SetEnviarComprobantesSunatToken_QNAME = new QName("http://tempuri.org/", "token");
-	private final static QName _BuscarDetalleComprobanteResponseBuscarDetalleComprobanteResult_QNAME = new QName(
-			"http://tempuri.org/", "buscarDetalleComprobanteResult");
-	private final static QName _SetBajasResponseSetBajasResult_QNAME = new QName("http://tempuri.org/",
-			"setBajasResult");
-	private final static QName _SetConsultarCDRDocumentCDR_QNAME = new QName("http://tempuri.org/", "documentCDR");
-	private final static QName _SetNotaNotaCreditoDebito_QNAME = new QName("http://tempuri.org/", "notaCreditoDebito");
-	private final static QName _GetRepresentacionImpresaStrRucEmpresa_QNAME = new QName("http://tempuri.org/",
-			"strRucEmpresa");
-	private final static QName _GetRepresentacionImpresaTipoComprobante_QNAME = new QName("http://tempuri.org/",
-			"tipoComprobante");
-	private final static QName _GetRepresentacionImpresaCorrelativo_QNAME = new QName("http://tempuri.org/",
-			"correlativo");
-	private final static QName _GetRepresentacionImpresaSerie_QNAME = new QName("http://tempuri.org/", "serie");
-	private final static QName _DocumentoReferenciaTipoComprobante_QNAME = new QName(
-			"http://schemas.datacontract.org/2004/07/FEService.Input", "TipoComprobante");
-	private final static QName _DocumentoReferenciaNumeroDocumento_QNAME = new QName(
-			"http://schemas.datacontract.org/2004/07/FEService.Input", "NumeroDocumento");
-	private final static QName _DocumentoReferenciaFechaDocumento_QNAME = new QName(
-			"http://schemas.datacontract.org/2004/07/FEService.Input", "FechaDocumento");
-	private final static QName _ResultMessage_QNAME = new QName(
-			"http://schemas.datacontract.org/2004/07/FEService.Util", "Message");
-	private final static QName _ResultBarcodeQR_QNAME = new QName(
-			"http://schemas.datacontract.org/2004/07/FEService.Util", "barcode_QR");
-	private final static QName _ResultPdf_QNAME = new QName("http://schemas.datacontract.org/2004/07/FEService.Util",
-			"pdf");
-	private final static QName _ResultRetencionesInp_QNAME = new QName(
-			"http://schemas.datacontract.org/2004/07/FEService.Util", "retencionesInp");
-	private final static QName _ResultListDetalleVenta_QNAME = new QName(
-			"http://schemas.datacontract.org/2004/07/FEService.Util", "listDetalleVenta");
-	private final static QName _ResultCode_QNAME = new QName("http://schemas.datacontract.org/2004/07/FEService.Util",
-			"Code");
-	private final static QName _ResultBarcode_QNAME = new QName(
-			"http://schemas.datacontract.org/2004/07/FEService.Util", "barcode");
-	private final static QName _ResultBarcodeEmbarque_QNAME = new QName(
-			"http://schemas.datacontract.org/2004/07/FEService.Util", "barcodeEmbarque");
-	private final static QName _SetConsultarCDRResponseSetConsultarCDRResult_QNAME = new QName("http://tempuri.org/",
-			"setConsultarCDRResult");
-	private final static QName _SetUpdateStatusCDRResponseSetUpdateStatusCDRResult_QNAME = new QName(
-			"http://tempuri.org/", "setUpdateStatusCDRResult");
-	private final static QName _SetBajasFechaEmisionComprobantes_QNAME = new QName("http://tempuri.org/",
-			"fechaEmisionComprobantes");
-	private final static QName _InformacionAdicionalTotalMonedaAdicionalNombre_QNAME = new QName(
-			"http://schemas.datacontract.org/2004/07/FEService.Input", "nombre");
-	private final static QName _InformacionAdicionalTotalMonedaAdicionalValor_QNAME = new QName(
-			"http://schemas.datacontract.org/2004/07/FEService.Input", "valor");
-	private final static QName _InformacionAdicionalTotalMonedaAdicionalCodigo_QNAME = new QName(
-			"http://schemas.datacontract.org/2004/07/FEService.Input", "codigo");
 	private final static QName _RetencionInpSerie_QNAME = new QName(
 			"http://schemas.datacontract.org/2004/07/FEService.Input", "Serie");
 	private final static QName _RetencionInpTasaRetencion_QNAME = new QName(
@@ -234,52 +320,69 @@ public class ObjectFactory {
 			"http://schemas.datacontract.org/2004/07/FEService.Input", "Ruc");
 	private final static QName _RetencionInpImporteTotalRetenidoEnLetras_QNAME = new QName(
 			"http://schemas.datacontract.org/2004/07/FEService.Input", "ImporteTotalRetenidoEnLetras");
-	private final static QName _SetNotaVentaVenta_QNAME = new QName("http://tempuri.org/", "venta");
-	private final static QName _SetNotaVentaNota_QNAME = new QName("http://tempuri.org/", "nota");
-	private final static QName _SetVentaResponseSetVentaResult_QNAME = new QName("http://tempuri.org/",
-			"setVentaResult");
-	private final static QName _ClienteNombres_QNAME = new QName(
-			"http://schemas.datacontract.org/2004/07/FEService.Input", "nombres");
-	private final static QName _ClienteDireccion_QNAME = new QName(
-			"http://schemas.datacontract.org/2004/07/FEService.Input", "direccion");
-	private final static QName _ClienteNumeroDocumento_QNAME = new QName(
-			"http://schemas.datacontract.org/2004/07/FEService.Input", "numeroDocumento");
-	private final static QName _ClienteTipoDocumentoID_QNAME = new QName(
-			"http://schemas.datacontract.org/2004/07/FEService.Input", "tipoDocumentoID");
-	private final static QName _DocumentoBajaDescripcionMotivo_QNAME = new QName(
-			"http://schemas.datacontract.org/2004/07/FEService.Input", "descripcionMotivo");
+	private final static QName _BuscarDetalleComprobanteResponseBuscarDetalleComprobanteResult_QNAME = new QName(
+			"http://tempuri.org/", "buscarDetalleComprobanteResult");
+	private final static QName _SetBajasResponseSetBajasResult_QNAME = new QName("http://tempuri.org/",
+			"setBajasResult");
+	private final static QName _DocumentCDRTicket_QNAME = new QName(
+			"http://schemas.datacontract.org/2004/07/FEService.Input", "ticket");
+	private final static QName _SetResumenesResponseSetResumenesResult_QNAME = new QName("http://tempuri.org/",
+			"setResumenesResult");
+	private final static QName _SetGRETransportistaListgreTransportista_QNAME = new QName("http://tempuri.org/",
+			"listgreTransportista");
+	private final static QName _SetEnviarComprobantesSunatFechaProceso_QNAME = new QName("http://tempuri.org/",
+			"fechaProceso");
+	private final static QName _SetBajaDocumentoDocumentoBaja_QNAME = new QName("http://tempuri.org/", "documentoBaja");
 	private final static QName _InformacionAdicionalPropiedadesAdicionales_QNAME = new QName(
 			"http://schemas.datacontract.org/2004/07/FEService.Input", "PropiedadesAdicionales");
 	private final static QName _InformacionAdicionalTotalesMonedaAdicional_QNAME = new QName(
 			"http://schemas.datacontract.org/2004/07/FEService.Input", "TotalesMonedaAdicional");
+	private final static QName _SetBajaDocumentoResponseSetBajaDocumentoResult_QNAME = new QName("http://tempuri.org/",
+			"setBajaDocumentoResult");
+	private final static QName _SetConsultarCDRResponseSetConsultarCDRResult_QNAME = new QName("http://tempuri.org/",
+			"setConsultarCDRResult");
+	private final static QName _DocumentoReferenciaTipoComprobante_QNAME = new QName(
+			"http://schemas.datacontract.org/2004/07/FEService.Input", "TipoComprobante");
+	private final static QName _DocumentoReferenciaNumeroDocumento_QNAME = new QName(
+			"http://schemas.datacontract.org/2004/07/FEService.Input", "NumeroDocumento");
+	private final static QName _DocumentoReferenciaFechaDocumento_QNAME = new QName(
+			"http://schemas.datacontract.org/2004/07/FEService.Input", "FechaDocumento");
+	private final static QName _ResultMessage_QNAME = new QName(
+			"http://schemas.datacontract.org/2004/07/FEService.Util", "Message");
+	private final static QName _ResultBarcodeQR_QNAME = new QName(
+			"http://schemas.datacontract.org/2004/07/FEService.Util", "barcode_QR");
+	private final static QName _ResultPdf_QNAME = new QName("http://schemas.datacontract.org/2004/07/FEService.Util",
+			"pdf");
+	private final static QName _ResultRetencionesInp_QNAME = new QName(
+			"http://schemas.datacontract.org/2004/07/FEService.Util", "retencionesInp");
+	private final static QName _ResultListDetalleVenta_QNAME = new QName(
+			"http://schemas.datacontract.org/2004/07/FEService.Util", "listDetalleVenta");
+	private final static QName _ResultCode_QNAME = new QName("http://schemas.datacontract.org/2004/07/FEService.Util",
+			"Code");
+	private final static QName _ResultBarcode_QNAME = new QName(
+			"http://schemas.datacontract.org/2004/07/FEService.Util", "barcode");
+	private final static QName _ResultBarcodeEmbarque_QNAME = new QName(
+			"http://schemas.datacontract.org/2004/07/FEService.Util", "barcodeEmbarque");
+	private final static QName _SetGRETransportistaResponseSetGRETransportistaResult_QNAME = new QName(
+			"http://tempuri.org/", "setGRETransportistaResult");
 	private final static QName _NotaDescripcionSustento_QNAME = new QName(
 			"http://schemas.datacontract.org/2004/07/FEService.Input", "descripcionSustento");
 	private final static QName _NotaCodigoTipoNota_QNAME = new QName(
 			"http://schemas.datacontract.org/2004/07/FEService.Input", "codigoTipoNota");
 	private final static QName _NotaDescripcionTipoNota_QNAME = new QName(
 			"http://schemas.datacontract.org/2004/07/FEService.Input", "descripcionTipoNota");
-	private final static QName _SetNotaResponseSetNotaResult_QNAME = new QName("http://tempuri.org/", "setNotaResult");
+	private final static QName _SetVentaResponseSetVentaResult_QNAME = new QName("http://tempuri.org/",
+			"setVentaResult");
+	private final static QName _GREPilotoNumeroLicencia_QNAME = new QName(
+			"http://schemas.datacontract.org/2004/07/FEService.Input", "numeroLicencia");
+	private final static QName _GREPilotoTitulo_QNAME = new QName(
+			"http://schemas.datacontract.org/2004/07/FEService.Input", "titulo");
+	private final static QName _GREPilotoApellidos_QNAME = new QName(
+			"http://schemas.datacontract.org/2004/07/FEService.Input", "apellidos");
+	private final static QName _SetUpdateStatusCDRResponseSetUpdateStatusCDRResult_QNAME = new QName(
+			"http://tempuri.org/", "setUpdateStatusCDRResult");
 	private final static QName _InformacionAdicionalPropiedadAdicionalValue_QNAME = new QName(
 			"http://schemas.datacontract.org/2004/07/FEService.Input", "value");
-	private final static QName _SetBajaDocumentoResponseSetBajaDocumentoResult_QNAME = new QName("http://tempuri.org/",
-			"setBajaDocumentoResult");
-	private final static QName _DetalleVentaCodigoProducto_QNAME = new QName(
-			"http://schemas.datacontract.org/2004/07/FEService.Input", "codigoProducto");
-	private final static QName _DetalleVentaCodigoTipoPrecio_QNAME = new QName(
-			"http://schemas.datacontract.org/2004/07/FEService.Input", "codigoTipoPrecio");
-	private final static QName _DetalleVentaUnidadMedida_QNAME = new QName(
-			"http://schemas.datacontract.org/2004/07/FEService.Input", "unidadMedida");
-	private final static QName _DetalleVentaCodigoAfectacionIgv_QNAME = new QName(
-			"http://schemas.datacontract.org/2004/07/FEService.Input", "codigoAfectacionIgv");
-	private final static QName _DetalleVentaDescripcion_QNAME = new QName(
-			"http://schemas.datacontract.org/2004/07/FEService.Input", "descripcion");
-	private final static QName _SetBajaDocumentoDocumentoBaja_QNAME = new QName("http://tempuri.org/", "documentoBaja");
-	private final static QName _DocumentCDRTicket_QNAME = new QName(
-			"http://schemas.datacontract.org/2004/07/FEService.Input", "ticket");
-	private final static QName _InformacionCreditoNroCuota_QNAME = new QName(
-			"http://schemas.datacontract.org/2004/07/FEService.Input", "NroCuota");
-	private final static QName _InformacionCreditoFechaVencimiento_QNAME = new QName(
-			"http://schemas.datacontract.org/2004/07/FEService.Input", "FechaVencimiento");
 
 	/**
 	 * Create a new ObjectFactory that can be used to create new instances of schema
@@ -290,19 +393,195 @@ public class ObjectFactory {
 	}
 
 	/**
-	 * Create an instance of {@link RetencionDetalleInp }
+	 * Create an instance of {@link SetGRETransportistaActualizaCDRResponse }
 	 * 
 	 */
-	public RetencionDetalleInp createRetencionDetalleInp() {
-		return new RetencionDetalleInp();
+	public SetGRETransportistaActualizaCDRResponse createSetGRETransportistaActualizaCDRResponse() {
+		return new SetGRETransportistaActualizaCDRResponse();
 	}
 
 	/**
-	 * Create an instance of {@link SetNotaVentaResponse }
+	 * Create an instance of {@link GetRepresentacionImpresa }
 	 * 
 	 */
-	public SetNotaVentaResponse createSetNotaVentaResponse() {
-		return new SetNotaVentaResponse();
+	public GetRepresentacionImpresa createGetRepresentacionImpresa() {
+		return new GetRepresentacionImpresa();
+	}
+
+	/**
+	 * Create an instance of {@link InformacionCredito }
+	 * 
+	 */
+	public InformacionCredito createInformacionCredito() {
+		return new InformacionCredito();
+	}
+
+	/**
+	 * Create an instance of {@link InformacionAdicionalTotalMonedaAdicional }
+	 * 
+	 */
+	public InformacionAdicionalTotalMonedaAdicional createInformacionAdicionalTotalMonedaAdicional() {
+		return new InformacionAdicionalTotalMonedaAdicional();
+	}
+
+	/**
+	 * Create an instance of {@link GREDetalle }
+	 * 
+	 */
+	public GREDetalle createGREDetalle() {
+		return new GREDetalle();
+	}
+
+	/**
+	 * Create an instance of {@link BuscarDetalleComprobante }
+	 * 
+	 */
+	public BuscarDetalleComprobante createBuscarDetalleComprobante() {
+		return new BuscarDetalleComprobante();
+	}
+
+	/**
+	 * Create an instance of {@link SetNotaVenta }
+	 * 
+	 */
+	public SetNotaVenta createSetNotaVenta() {
+		return new SetNotaVenta();
+	}
+
+	/**
+	 * Create an instance of {@link GRE }
+	 * 
+	 */
+	public GRE createGRE() {
+		return new GRE();
+	}
+
+	/**
+	 * Create an instance of {@link GREDocumentoReferencia }
+	 * 
+	 */
+	public GREDocumentoReferencia createGREDocumentoReferencia() {
+		return new GREDocumentoReferencia();
+	}
+
+	/**
+	 * Create an instance of {@link Cliente }
+	 * 
+	 */
+	public Cliente createCliente() {
+		return new Cliente();
+	}
+
+	/**
+	 * Create an instance of {@link SetUpdatePdfResponse }
+	 * 
+	 */
+	public SetUpdatePdfResponse createSetUpdatePdfResponse() {
+		return new SetUpdatePdfResponse();
+	}
+
+	/**
+	 * Create an instance of {@link SetNotaResponse }
+	 * 
+	 */
+	public SetNotaResponse createSetNotaResponse() {
+		return new SetNotaResponse();
+	}
+
+	/**
+	 * Create an instance of {@link SetNota }
+	 * 
+	 */
+	public SetNota createSetNota() {
+		return new SetNota();
+	}
+
+	/**
+	 * Create an instance of {@link ArrayOfGREDetalle }
+	 * 
+	 */
+	public ArrayOfGREDetalle createArrayOfGREDetalle() {
+		return new ArrayOfGREDetalle();
+	}
+
+	/**
+	 * Create an instance of {@link SetGRETransportista }
+	 * 
+	 */
+	public SetGRETransportista createSetGRETransportista() {
+		return new SetGRETransportista();
+	}
+
+	/**
+	 * Create an instance of {@link ArrayOfRetencionInp }
+	 * 
+	 */
+	public ArrayOfRetencionInp createArrayOfRetencionInp() {
+		return new ArrayOfRetencionInp();
+	}
+
+	/**
+	 * Create an instance of {@link Result }
+	 * 
+	 */
+	public Result createResult() {
+		return new Result();
+	}
+
+	/**
+	 * Create an instance of {@link SetGRETransportistaResponse }
+	 * 
+	 */
+	public SetGRETransportistaResponse createSetGRETransportistaResponse() {
+		return new SetGRETransportistaResponse();
+	}
+
+	/**
+	 * Create an instance of {@link GREPiloto }
+	 * 
+	 */
+	public GREPiloto createGREPiloto() {
+		return new GREPiloto();
+	}
+
+	/**
+	 * Create an instance of {@link ArrayOfGRE }
+	 * 
+	 */
+	public ArrayOfGRE createArrayOfGRE() {
+		return new ArrayOfGRE();
+	}
+
+	/**
+	 * Create an instance of {@link SetUpdateStatusCDRResponse }
+	 * 
+	 */
+	public SetUpdateStatusCDRResponse createSetUpdateStatusCDRResponse() {
+		return new SetUpdateStatusCDRResponse();
+	}
+
+	/**
+	 * Create an instance of {@link ArrayOfInformacionAdicionalPropiedadAdicional }
+	 * 
+	 */
+	public ArrayOfInformacionAdicionalPropiedadAdicional createArrayOfInformacionAdicionalPropiedadAdicional() {
+		return new ArrayOfInformacionAdicionalPropiedadAdicional();
+	}
+
+	/**
+	 * Create an instance of {@link DetalleVenta }
+	 * 
+	 */
+	public DetalleVenta createDetalleVenta() {
+		return new DetalleVenta();
+	}
+
+	/**
+	 * Create an instance of {@link Venta }
+	 * 
+	 */
+	public Venta createVenta() {
+		return new Venta();
 	}
 
 	/**
@@ -322,11 +601,116 @@ public class ObjectFactory {
 	}
 
 	/**
-	 * Create an instance of {@link Venta }
+	 * Create an instance of {@link SetConsultarCDR }
 	 * 
 	 */
-	public Venta createVenta() {
-		return new Venta();
+	public SetConsultarCDR createSetConsultarCDR() {
+		return new SetConsultarCDR();
+	}
+
+	/**
+	 * Create an instance of {@link SetGRETransportistaActualizaCDR }
+	 * 
+	 */
+	public SetGRETransportistaActualizaCDR createSetGRETransportistaActualizaCDR() {
+		return new SetGRETransportistaActualizaCDR();
+	}
+
+	/**
+	 * Create an instance of {@link SetNotaVentaResponse }
+	 * 
+	 */
+	public SetNotaVentaResponse createSetNotaVentaResponse() {
+		return new SetNotaVentaResponse();
+	}
+
+	/**
+	 * Create an instance of {@link SetBajas }
+	 * 
+	 */
+	public SetBajas createSetBajas() {
+		return new SetBajas();
+	}
+
+	/**
+	 * Create an instance of {@link SetResumenes }
+	 * 
+	 */
+	public SetResumenes createSetResumenes() {
+		return new SetResumenes();
+	}
+
+	/**
+	 * Create an instance of {@link ArrayOfDetalleVenta }
+	 * 
+	 */
+	public ArrayOfDetalleVenta createArrayOfDetalleVenta() {
+		return new ArrayOfDetalleVenta();
+	}
+
+	/**
+	 * Create an instance of {@link DocumentoBaja }
+	 * 
+	 */
+	public DocumentoBaja createDocumentoBaja() {
+		return new DocumentoBaja();
+	}
+
+	/**
+	 * Create an instance of {@link RetencionInp }
+	 * 
+	 */
+	public RetencionInp createRetencionInp() {
+		return new RetencionInp();
+	}
+
+	/**
+	 * Create an instance of {@link RetencionDetalleInp }
+	 * 
+	 */
+	public RetencionDetalleInp createRetencionDetalleInp() {
+		return new RetencionDetalleInp();
+	}
+
+	/**
+	 * Create an instance of {@link BuscarDetalleComprobanteResponse }
+	 * 
+	 */
+	public BuscarDetalleComprobanteResponse createBuscarDetalleComprobanteResponse() {
+		return new BuscarDetalleComprobanteResponse();
+	}
+
+	/**
+	 * Create an instance of {@link SetUpdateStatusCDR }
+	 * 
+	 */
+	public SetUpdateStatusCDR createSetUpdateStatusCDR() {
+		return new SetUpdateStatusCDR();
+	}
+
+	/**
+	 * Create an instance of {@link SetBajasResponse }
+	 * 
+	 */
+	public SetBajasResponse createSetBajasResponse() {
+		return new SetBajasResponse();
+	}
+
+	/**
+	 * Create an instance of {@link ArrayOfInformacionAdicionalTotalMonedaAdicional
+	 * }
+	 * 
+	 */
+	public ArrayOfInformacionAdicionalTotalMonedaAdicional createArrayOfInformacionAdicionalTotalMonedaAdicional() {
+		return new ArrayOfInformacionAdicionalTotalMonedaAdicional();
+	}
+
+	/**
+	 * Create an instance of {@link DocumentCDR }
+	 * 
+	 */
+	public DocumentCDR createDocumentCDR() {
+		return new DocumentCDR();
 	}
 
 	/**
@@ -346,163 +730,11 @@ public class ObjectFactory {
 	}
 
 	/**
-	 * Create an instance of {@link BuscarDetalleComprobanteResponse }
+	 * Create an instance of {@link SetBajaDocumento }
 	 * 
 	 */
-	public BuscarDetalleComprobanteResponse createBuscarDetalleComprobanteResponse() {
-		return new BuscarDetalleComprobanteResponse();
-	}
-
-	/**
-	 * Create an instance of {@link SetBajasResponse }
-	 * 
-	 */
-	public SetBajasResponse createSetBajasResponse() {
-		return new SetBajasResponse();
-	}
-
-	/**
-	 * Create an instance of {@link SetConsultarCDR }
-	 * 
-	 */
-	public SetConsultarCDR createSetConsultarCDR() {
-		return new SetConsultarCDR();
-	}
-
-	/**
-	 * Create an instance of {@link SetNota }
-	 * 
-	 */
-	public SetNota createSetNota() {
-		return new SetNota();
-	}
-
-	/**
-	 * Create an instance of {@link GetRepresentacionImpresa }
-	 * 
-	 */
-	public GetRepresentacionImpresa createGetRepresentacionImpresa() {
-		return new GetRepresentacionImpresa();
-	}
-
-	/**
-	 * Create an instance of {@link DocumentoReferencia }
-	 * 
-	 */
-	public DocumentoReferencia createDocumentoReferencia() {
-		return new DocumentoReferencia();
-	}
-
-	/**
-	 * Create an instance of {@link Result }
-	 * 
-	 */
-	public Result createResult() {
-		return new Result();
-	}
-
-	/**
-	 * Create an instance of {@link SetConsultarCDRResponse }
-	 * 
-	 */
-	public SetConsultarCDRResponse createSetConsultarCDRResponse() {
-		return new SetConsultarCDRResponse();
-	}
-
-	/**
-	 * Create an instance of {@link SetUpdateStatusCDRResponse }
-	 * 
-	 */
-	public SetUpdateStatusCDRResponse createSetUpdateStatusCDRResponse() {
-		return new SetUpdateStatusCDRResponse();
-	}
-
-	/**
-	 * Create an instance of {@link SetBajas }
-	 * 
-	 */
-	public SetBajas createSetBajas() {
-		return new SetBajas();
-	}
-
-	/**
-	 * Create an instance of {@link SetUpdatePdfResponse }
-	 * 
-	 */
-	public SetUpdatePdfResponse createSetUpdatePdfResponse() {
-		return new SetUpdatePdfResponse();
-	}
-
-	/**
-	 * Create an instance of {@link InformacionAdicionalTotalMonedaAdicional }
-	 * 
-	 */
-	public InformacionAdicionalTotalMonedaAdicional createInformacionAdicionalTotalMonedaAdicional() {
-		return new InformacionAdicionalTotalMonedaAdicional();
-	}
-
-	/**
-	 * Create an instance of {@link RetencionInp }
-	 * 
-	 */
-	public RetencionInp createRetencionInp() {
-		return new RetencionInp();
-	}
-
-	/**
-	 * Create an instance of {@link ArrayOfRetencionDetalleInp }
-	 * 
-	 */
-	public ArrayOfRetencionDetalleInp createArrayOfRetencionDetalleInp() {
-		return new ArrayOfRetencionDetalleInp();
-	}
-
-	/**
-	 * Create an instance of {@link SetNotaVenta }
-	 * 
-	 */
-	public SetNotaVenta createSetNotaVenta() {
-		return new SetNotaVenta();
-	}
-
-	/**
-	 * Create an instance of {@link SetVentaResponse }
-	 * 
-	 */
-	public SetVentaResponse createSetVentaResponse() {
-		return new SetVentaResponse();
-	}
-
-	/**
-	 * Create an instance of {@link DocumentoBaja }
-	 * 
-	 */
-	public DocumentoBaja createDocumentoBaja() {
-		return new DocumentoBaja();
-	}
-
-	/**
-	 * Create an instance of {@link ArrayOfRetencionInp }
-	 * 
-	 */
-	public ArrayOfRetencionInp createArrayOfRetencionInp() {
-		return new ArrayOfRetencionInp();
-	}
-
-	/**
-	 * Create an instance of {@link Cliente }
-	 * 
-	 */
-	public Cliente createCliente() {
-		return new Cliente();
-	}
-
-	/**
-	 * Create an instance of {@link SetResumenes }
-	 * 
-	 */
-	public SetResumenes createSetResumenes() {
-		return new SetResumenes();
+	public SetBajaDocumento createSetBajaDocumento() {
+		return new SetBajaDocumento();
 	}
 
 	/**
@@ -514,35 +746,11 @@ public class ObjectFactory {
 	}
 
 	/**
-	 * Create an instance of {@link Nota }
+	 * Create an instance of {@link SetUpdatePdf }
 	 * 
 	 */
-	public Nota createNota() {
-		return new Nota();
-	}
-
-	/**
-	 * Create an instance of {@link SetNotaResponse }
-	 * 
-	 */
-	public SetNotaResponse createSetNotaResponse() {
-		return new SetNotaResponse();
-	}
-
-	/**
-	 * Create an instance of {@link BuscarDetalleComprobante }
-	 * 
-	 */
-	public BuscarDetalleComprobante createBuscarDetalleComprobante() {
-		return new BuscarDetalleComprobante();
-	}
-
-	/**
-	 * Create an instance of {@link InformacionAdicionalPropiedadAdicional }
-	 * 
-	 */
-	public InformacionAdicionalPropiedadAdicional createInformacionAdicionalPropiedadAdicional() {
-		return new InformacionAdicionalPropiedadAdicional();
+	public SetUpdatePdf createSetUpdatePdf() {
+		return new SetUpdatePdf();
 	}
 
 	/**
@@ -554,27 +762,51 @@ public class ObjectFactory {
 	}
 
 	/**
-	 * Create an instance of {@link SetUpdatePdf }
+	 * Create an instance of {@link ArrayOfRetencionDetalleInp }
 	 * 
 	 */
-	public SetUpdatePdf createSetUpdatePdf() {
-		return new SetUpdatePdf();
+	public ArrayOfRetencionDetalleInp createArrayOfRetencionDetalleInp() {
+		return new ArrayOfRetencionDetalleInp();
 	}
 
 	/**
-	 * Create an instance of {@link ArrayOfDetalleVenta }
+	 * Create an instance of {@link SetConsultarCDRResponse }
 	 * 
 	 */
-	public ArrayOfDetalleVenta createArrayOfDetalleVenta() {
-		return new ArrayOfDetalleVenta();
+	public SetConsultarCDRResponse createSetConsultarCDRResponse() {
+		return new SetConsultarCDRResponse();
 	}
 
 	/**
-	 * Create an instance of {@link SetUpdateStatusCDR }
+	 * Create an instance of {@link DocumentoReferencia }
 	 * 
 	 */
-	public SetUpdateStatusCDR createSetUpdateStatusCDR() {
-		return new SetUpdateStatusCDR();
+	public DocumentoReferencia createDocumentoReferencia() {
+		return new DocumentoReferencia();
+	}
+
+	/**
+	 * Create an instance of {@link Nota }
+	 * 
+	 */
+	public Nota createNota() {
+		return new Nota();
+	}
+
+	/**
+	 * Create an instance of {@link SetVentaResponse }
+	 * 
+	 */
+	public SetVentaResponse createSetVentaResponse() {
+		return new SetVentaResponse();
+	}
+
+	/**
+	 * Create an instance of {@link InformacionAdicionalPropiedadAdicional }
+	 * 
+	 */
+	public InformacionAdicionalPropiedadAdicional createInformacionAdicionalPropiedadAdicional() {
+		return new InformacionAdicionalPropiedadAdicional();
 	}
 
 	/**
@@ -583,55 +815,6 @@ public class ObjectFactory {
 	 */
 	public ArrayOfInformacionCredito createArrayOfInformacionCredito() {
 		return new ArrayOfInformacionCredito();
-	}
-
-	/**
-	 * Create an instance of {@link DetalleVenta }
-	 * 
-	 */
-	public DetalleVenta createDetalleVenta() {
-		return new DetalleVenta();
-	}
-
-	/**
-	 * Create an instance of {@link ArrayOfInformacionAdicionalPropiedadAdicional }
-	 * 
-	 */
-	public ArrayOfInformacionAdicionalPropiedadAdicional createArrayOfInformacionAdicionalPropiedadAdicional() {
-		return new ArrayOfInformacionAdicionalPropiedadAdicional();
-	}
-
-	/**
-	 * Create an instance of {@link DocumentCDR }
-	 * 
-	 */
-	public DocumentCDR createDocumentCDR() {
-		return new DocumentCDR();
-	}
-
-	/**
-	 * Create an instance of {@link SetBajaDocumento }
-	 * 
-	 */
-	public SetBajaDocumento createSetBajaDocumento() {
-		return new SetBajaDocumento();
-	}
-
-	/**
-	 * Create an instance of {@link InformacionCredito }
-	 * 
-	 */
-	public InformacionCredito createInformacionCredito() {
-		return new InformacionCredito();
-	}
-
-	/**
-	 * Create an instance of {@link ArrayOfInformacionAdicionalTotalMonedaAdicional
-	 * }
-	 * 
-	 */
-	public ArrayOfInformacionAdicionalTotalMonedaAdicional createArrayOfInformacionAdicionalTotalMonedaAdicional() {
-		return new ArrayOfInformacionAdicionalTotalMonedaAdicional();
 	}
 
 	/**
@@ -662,6 +845,17 @@ public class ObjectFactory {
 	}
 
 	/**
+	 * Create an instance of {@link JAXBElement
+	 * }{@code <}{@link GREDocumentoReferencia }{@code >}}
+	 * 
+	 */
+	@XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", name = "GREDocumentoReferencia")
+	public JAXBElement<GREDocumentoReferencia> createGREDocumentoReferencia(GREDocumentoReferencia value) {
+		return new JAXBElement<GREDocumentoReferencia>(_GREDocumentoReferencia_QNAME, GREDocumentoReferencia.class,
+				null, value);
+	}
+
+	/**
 	 * Create an instance of {@link JAXBElement }{@code <}{@link Integer }{@code >}}
 	 * 
 	 */
@@ -681,6 +875,15 @@ public class ObjectFactory {
 	}
 
 	/**
+	 * Create an instance of {@link JAXBElement }{@code <}{@link GRE }{@code >}}
+	 * 
+	 */
+	@XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", name = "GRE")
+	public JAXBElement<GRE> createGRE(GRE value) {
+		return new JAXBElement<GRE>(_GRE_QNAME, GRE.class, null, value);
+	}
+
+	/**
 	 * Create an instance of {@link JAXBElement }{@code <}{@link Duration
 	 * }{@code >}}
 	 * 
@@ -688,6 +891,16 @@ public class ObjectFactory {
 	@XmlElementDecl(namespace = "http://schemas.microsoft.com/2003/10/Serialization/", name = "duration")
 	public JAXBElement<Duration> createDuration(Duration value) {
 		return new JAXBElement<Duration>(_Duration_QNAME, Duration.class, null, value);
+	}
+
+	/**
+	 * Create an instance of {@link JAXBElement }{@code <}{@link GREPiloto
+	 * }{@code >}}
+	 * 
+	 */
+	@XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", name = "GREPiloto")
+	public JAXBElement<GREPiloto> createGREPiloto(GREPiloto value) {
+		return new JAXBElement<GREPiloto>(_GREPiloto_QNAME, GREPiloto.class, null, value);
 	}
 
 	/**
@@ -708,6 +921,16 @@ public class ObjectFactory {
 	@XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", name = "RetencionDetalleInp")
 	public JAXBElement<RetencionDetalleInp> createRetencionDetalleInp(RetencionDetalleInp value) {
 		return new JAXBElement<RetencionDetalleInp>(_RetencionDetalleInp_QNAME, RetencionDetalleInp.class, null, value);
+	}
+
+	/**
+	 * Create an instance of {@link JAXBElement }{@code <}{@link ArrayOfGRE
+	 * }{@code >}}
+	 * 
+	 */
+	@XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", name = "ArrayOfGRE")
+	public JAXBElement<ArrayOfGRE> createArrayOfGRE(ArrayOfGRE value) {
+		return new JAXBElement<ArrayOfGRE>(_ArrayOfGRE_QNAME, ArrayOfGRE.class, null, value);
 	}
 
 	/**
@@ -907,6 +1130,16 @@ public class ObjectFactory {
 	}
 
 	/**
+	 * Create an instance of {@link JAXBElement }{@code <}{@link GREDetalle
+	 * }{@code >}}
+	 * 
+	 */
+	@XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", name = "GREDetalle")
+	public JAXBElement<GREDetalle> createGREDetalle(GREDetalle value) {
+		return new JAXBElement<GREDetalle>(_GREDetalle_QNAME, GREDetalle.class, null, value);
+	}
+
+	/**
 	 * Create an instance of {@link JAXBElement
 	 * }{@code <}{@link ArrayOfRetencionDetalleInp }{@code >}}
 	 * 
@@ -947,6 +1180,16 @@ public class ObjectFactory {
 	@XmlElementDecl(namespace = "http://schemas.microsoft.com/2003/10/Serialization/", name = "base64Binary")
 	public JAXBElement<byte[]> createBase64Binary(byte[] value) {
 		return new JAXBElement<byte[]>(_Base64Binary_QNAME, byte[].class, null, ((byte[]) value));
+	}
+
+	/**
+	 * Create an instance of {@link JAXBElement }{@code <}{@link ArrayOfGREDetalle
+	 * }{@code >}}
+	 * 
+	 */
+	@XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", name = "ArrayOfGREDetalle")
+	public JAXBElement<ArrayOfGREDetalle> createArrayOfGREDetalle(ArrayOfGREDetalle value) {
+		return new JAXBElement<ArrayOfGREDetalle>(_ArrayOfGREDetalle_QNAME, ArrayOfGREDetalle.class, null, value);
 	}
 
 	/**
@@ -1046,6 +1289,1098 @@ public class ObjectFactory {
 	}
 
 	/**
+	 * Create an instance of {@link JAXBElement }{@code <}{@link Result }{@code >}}
+	 * 
+	 */
+	@XmlElementDecl(namespace = "http://tempuri.org/", name = "setGRETransportistaActualizaCDRResult", scope = SetGRETransportistaActualizaCDRResponse.class)
+	public JAXBElement<Result> createSetGRETransportistaActualizaCDRResponseSetGRETransportistaActualizaCDRResult(
+			Result value) {
+		return new JAXBElement<Result>(
+				_SetGRETransportistaActualizaCDRResponseSetGRETransportistaActualizaCDRResult_QNAME, Result.class,
+				SetGRETransportistaActualizaCDRResponse.class, value);
+	}
+
+	/**
+	 * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
+	 * 
+	 */
+	@XmlElementDecl(namespace = "http://tempuri.org/", name = "strRucEmpresa", scope = GetRepresentacionImpresa.class)
+	public JAXBElement<String> createGetRepresentacionImpresaStrRucEmpresa(String value) {
+		return new JAXBElement<String>(_GetRepresentacionImpresaStrRucEmpresa_QNAME, String.class,
+				GetRepresentacionImpresa.class, value);
+	}
+
+	/**
+	 * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
+	 * 
+	 */
+	@XmlElementDecl(namespace = "http://tempuri.org/", name = "tipoComprobante", scope = GetRepresentacionImpresa.class)
+	public JAXBElement<String> createGetRepresentacionImpresaTipoComprobante(String value) {
+		return new JAXBElement<String>(_GetRepresentacionImpresaTipoComprobante_QNAME, String.class,
+				GetRepresentacionImpresa.class, value);
+	}
+
+	/**
+	 * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
+	 * 
+	 */
+	@XmlElementDecl(namespace = "http://tempuri.org/", name = "correlativo", scope = GetRepresentacionImpresa.class)
+	public JAXBElement<String> createGetRepresentacionImpresaCorrelativo(String value) {
+		return new JAXBElement<String>(_GetRepresentacionImpresaCorrelativo_QNAME, String.class,
+				GetRepresentacionImpresa.class, value);
+	}
+
+	/**
+	 * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
+	 * 
+	 */
+	@XmlElementDecl(namespace = "http://tempuri.org/", name = "serie", scope = GetRepresentacionImpresa.class)
+	public JAXBElement<String> createGetRepresentacionImpresaSerie(String value) {
+		return new JAXBElement<String>(_GetRepresentacionImpresaSerie_QNAME, String.class,
+				GetRepresentacionImpresa.class, value);
+	}
+
+	/**
+	 * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
+	 * 
+	 */
+	@XmlElementDecl(namespace = "http://tempuri.org/", name = "token", scope = GetRepresentacionImpresa.class)
+	public JAXBElement<String> createGetRepresentacionImpresaToken(String value) {
+		return new JAXBElement<String>(_GetRepresentacionImpresaToken_QNAME, String.class,
+				GetRepresentacionImpresa.class, value);
+	}
+
+	/**
+	 * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
+	 * 
+	 */
+	@XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", name = "nombre", scope = InformacionAdicionalTotalMonedaAdicional.class)
+	public JAXBElement<String> createInformacionAdicionalTotalMonedaAdicionalNombre(String value) {
+		return new JAXBElement<String>(_InformacionAdicionalTotalMonedaAdicionalNombre_QNAME, String.class,
+				InformacionAdicionalTotalMonedaAdicional.class, value);
+	}
+
+	/**
+	 * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
+	 * 
+	 */
+	@XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", name = "valor", scope = InformacionAdicionalTotalMonedaAdicional.class)
+	public JAXBElement<String> createInformacionAdicionalTotalMonedaAdicionalValor(String value) {
+		return new JAXBElement<String>(_InformacionAdicionalTotalMonedaAdicionalValor_QNAME, String.class,
+				InformacionAdicionalTotalMonedaAdicional.class, value);
+	}
+
+	/**
+	 * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
+	 * 
+	 */
+	@XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", name = "codigo", scope = InformacionAdicionalTotalMonedaAdicional.class)
+	public JAXBElement<String> createInformacionAdicionalTotalMonedaAdicionalCodigo(String value) {
+		return new JAXBElement<String>(_InformacionAdicionalTotalMonedaAdicionalCodigo_QNAME, String.class,
+				InformacionAdicionalTotalMonedaAdicional.class, value);
+	}
+
+	/**
+	 * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
+	 * 
+	 */
+	@XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", name = "NroCuota", scope = InformacionCredito.class)
+	public JAXBElement<String> createInformacionCreditoNroCuota(String value) {
+		return new JAXBElement<String>(_InformacionCreditoNroCuota_QNAME, String.class, InformacionCredito.class,
+				value);
+	}
+
+	/**
+	 * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
+	 * 
+	 */
+	@XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", name = "FechaVencimiento", scope = InformacionCredito.class)
+	public JAXBElement<String> createInformacionCreditoFechaVencimiento(String value) {
+		return new JAXBElement<String>(_InformacionCreditoFechaVencimiento_QNAME, String.class,
+				InformacionCredito.class, value);
+	}
+
+	/**
+	 * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
+	 * 
+	 */
+	@XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", name = "codigoProducto", scope = DetalleVenta.class)
+	public JAXBElement<String> createDetalleVentaCodigoProducto(String value) {
+		return new JAXBElement<String>(_DetalleVentaCodigoProducto_QNAME, String.class, DetalleVenta.class, value);
+	}
+
+	/**
+	 * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
+	 * 
+	 */
+	@XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", name = "codigoTipoPrecio", scope = DetalleVenta.class)
+	public JAXBElement<String> createDetalleVentaCodigoTipoPrecio(String value) {
+		return new JAXBElement<String>(_DetalleVentaCodigoTipoPrecio_QNAME, String.class, DetalleVenta.class, value);
+	}
+
+	/**
+	 * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
+	 * 
+	 */
+	@XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", name = "unidadMedida", scope = DetalleVenta.class)
+	public JAXBElement<String> createDetalleVentaUnidadMedida(String value) {
+		return new JAXBElement<String>(_DetalleVentaUnidadMedida_QNAME, String.class, DetalleVenta.class, value);
+	}
+
+	/**
+	 * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
+	 * 
+	 */
+	@XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", name = "codigoAfectacionIgv", scope = DetalleVenta.class)
+	public JAXBElement<String> createDetalleVentaCodigoAfectacionIgv(String value) {
+		return new JAXBElement<String>(_DetalleVentaCodigoAfectacionIgv_QNAME, String.class, DetalleVenta.class, value);
+	}
+
+	/**
+	 * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
+	 * 
+	 */
+	@XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", name = "descripcion", scope = DetalleVenta.class)
+	public JAXBElement<String> createDetalleVentaDescripcion(String value) {
+		return new JAXBElement<String>(_DetalleVentaDescripcion_QNAME, String.class, DetalleVenta.class, value);
+	}
+
+	/**
+	 * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
+	 * 
+	 */
+	@XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", name = "cantidad", scope = GREDetalle.class)
+	public JAXBElement<String> createGREDetalleCantidad(String value) {
+		return new JAXBElement<String>(_GREDetalleCantidad_QNAME, String.class, GREDetalle.class, value);
+	}
+
+	/**
+	 * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
+	 * 
+	 */
+	@XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", name = "unidadMedida", scope = GREDetalle.class)
+	public JAXBElement<String> createGREDetalleUnidadMedida(String value) {
+		return new JAXBElement<String>(_DetalleVentaUnidadMedida_QNAME, String.class, GREDetalle.class, value);
+	}
+
+	/**
+	 * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
+	 * 
+	 */
+	@XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", name = "descripcion", scope = GREDetalle.class)
+	public JAXBElement<String> createGREDetalleDescripcion(String value) {
+		return new JAXBElement<String>(_DetalleVentaDescripcion_QNAME, String.class, GREDetalle.class, value);
+	}
+
+	/**
+	 * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
+	 * 
+	 */
+	@XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", name = "item", scope = GREDetalle.class)
+	public JAXBElement<String> createGREDetalleItem(String value) {
+		return new JAXBElement<String>(_GREDetalleItem_QNAME, String.class, GREDetalle.class, value);
+	}
+
+	/**
+	 * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
+	 * 
+	 */
+	@XmlElementDecl(namespace = "http://tempuri.org/", name = "rucEmpresa", scope = BuscarDetalleComprobante.class)
+	public JAXBElement<String> createBuscarDetalleComprobanteRucEmpresa(String value) {
+		return new JAXBElement<String>(_BuscarDetalleComprobanteRucEmpresa_QNAME, String.class,
+				BuscarDetalleComprobante.class, value);
+	}
+
+	/**
+	 * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
+	 * 
+	 */
+	@XmlElementDecl(namespace = "http://tempuri.org/", name = "tipoComprobante", scope = BuscarDetalleComprobante.class)
+	public JAXBElement<String> createBuscarDetalleComprobanteTipoComprobante(String value) {
+		return new JAXBElement<String>(_GetRepresentacionImpresaTipoComprobante_QNAME, String.class,
+				BuscarDetalleComprobante.class, value);
+	}
+
+	/**
+	 * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
+	 * 
+	 */
+	@XmlElementDecl(namespace = "http://tempuri.org/", name = "correlativo", scope = BuscarDetalleComprobante.class)
+	public JAXBElement<String> createBuscarDetalleComprobanteCorrelativo(String value) {
+		return new JAXBElement<String>(_GetRepresentacionImpresaCorrelativo_QNAME, String.class,
+				BuscarDetalleComprobante.class, value);
+	}
+
+	/**
+	 * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
+	 * 
+	 */
+	@XmlElementDecl(namespace = "http://tempuri.org/", name = "serie", scope = BuscarDetalleComprobante.class)
+	public JAXBElement<String> createBuscarDetalleComprobanteSerie(String value) {
+		return new JAXBElement<String>(_GetRepresentacionImpresaSerie_QNAME, String.class,
+				BuscarDetalleComprobante.class, value);
+	}
+
+	/**
+	 * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
+	 * 
+	 */
+	@XmlElementDecl(namespace = "http://tempuri.org/", name = "token", scope = BuscarDetalleComprobante.class)
+	public JAXBElement<String> createBuscarDetalleComprobanteToken(String value) {
+		return new JAXBElement<String>(_GetRepresentacionImpresaToken_QNAME, String.class,
+				BuscarDetalleComprobante.class, value);
+	}
+
+	/**
+	 * Create an instance of {@link JAXBElement }{@code <}{@link ArrayOfDetalleVenta
+	 * }{@code >}}
+	 * 
+	 */
+	@XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", name = "listDetalleVenta", scope = Venta.class)
+	public JAXBElement<ArrayOfDetalleVenta> createVentaListDetalleVenta(ArrayOfDetalleVenta value) {
+		return new JAXBElement<ArrayOfDetalleVenta>(_VentaListDetalleVenta_QNAME, ArrayOfDetalleVenta.class,
+				Venta.class, value);
+	}
+
+	/**
+	 * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
+	 * 
+	 */
+	@XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", name = "numeroPrefactura", scope = Venta.class)
+	public JAXBElement<String> createVentaNumeroPrefactura(String value) {
+		return new JAXBElement<String>(_VentaNumeroPrefactura_QNAME, String.class, Venta.class, value);
+	}
+
+	/**
+	 * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
+	 * 
+	 */
+	@XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", name = "observaciones", scope = Venta.class)
+	public JAXBElement<String> createVentaObservaciones(String value) {
+		return new JAXBElement<String>(_VentaObservaciones_QNAME, String.class, Venta.class, value);
+	}
+
+	/**
+	 * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
+	 * 
+	 */
+	@XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", name = "destino", scope = Venta.class)
+	public JAXBElement<String> createVentaDestino(String value) {
+		return new JAXBElement<String>(_VentaDestino_QNAME, String.class, Venta.class, value);
+	}
+
+	/**
+	 * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
+	 * 
+	 */
+	@XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", name = "usuarioModificacion", scope = Venta.class)
+	public JAXBElement<String> createVentaUsuarioModificacion(String value) {
+		return new JAXBElement<String>(_VentaUsuarioModificacion_QNAME, String.class, Venta.class, value);
+	}
+
+	/**
+	 * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
+	 * 
+	 */
+	@XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", name = "numeroCorrelativo", scope = Venta.class)
+	public JAXBElement<String> createVentaNumeroCorrelativo(String value) {
+		return new JAXBElement<String>(_VentaNumeroCorrelativo_QNAME, String.class, Venta.class, value);
+	}
+
+	/**
+	 * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
+	 * 
+	 */
+	@XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", name = "rucEmpresa", scope = Venta.class)
+	public JAXBElement<String> createVentaRucEmpresa(String value) {
+		return new JAXBElement<String>(_VentaRucEmpresa_QNAME, String.class, Venta.class, value);
+	}
+
+	/**
+	 * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
+	 * 
+	 */
+	@XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", name = "horaEmision", scope = Venta.class)
+	public JAXBElement<String> createVentaHoraEmision(String value) {
+		return new JAXBElement<String>(_VentaHoraEmision_QNAME, String.class, Venta.class, value);
+	}
+
+	/**
+	 * Create an instance of {@link JAXBElement }{@code <}{@link Cliente }{@code >}}
+	 * 
+	 */
+	@XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", name = "cliente", scope = Venta.class)
+	public JAXBElement<Cliente> createVentaCliente(Cliente value) {
+		return new JAXBElement<Cliente>(_VentaCliente_QNAME, Cliente.class, Venta.class, value);
+	}
+
+	/**
+	 * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
+	 * 
+	 */
+	@XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", name = "glosaRetencion", scope = Venta.class)
+	public JAXBElement<String> createVentaGlosaRetencion(String value) {
+		return new JAXBElement<String>(_VentaGlosaRetencion_QNAME, String.class, Venta.class, value);
+	}
+
+	/**
+	 * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
+	 * 
+	 */
+	@XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", name = "nroComprobanteRef", scope = Venta.class)
+	public JAXBElement<String> createVentaNroComprobanteRef(String value) {
+		return new JAXBElement<String>(_VentaNroComprobanteRef_QNAME, String.class, Venta.class, value);
+	}
+
+	/**
+	 * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
+	 * 
+	 */
+	@XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", name = "centroCosto", scope = Venta.class)
+	public JAXBElement<String> createVentaCentroCosto(String value) {
+		return new JAXBElement<String>(_VentaCentroCosto_QNAME, String.class, Venta.class, value);
+	}
+
+	/**
+	 * Create an instance of {@link JAXBElement
+	 * }{@code <}{@link ArrayOfInformacionCredito }{@code >}}
+	 * 
+	 */
+	@XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", name = "InfoCreditList", scope = Venta.class)
+	public JAXBElement<ArrayOfInformacionCredito> createVentaInfoCreditList(ArrayOfInformacionCredito value) {
+		return new JAXBElement<ArrayOfInformacionCredito>(_VentaInfoCreditList_QNAME, ArrayOfInformacionCredito.class,
+				Venta.class, value);
+	}
+
+	/**
+	 * Create an instance of {@link JAXBElement }{@code <}{@link DocumentoReferencia
+	 * }{@code >}}
+	 * 
+	 */
+	@XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", name = "documentoReferencia", scope = Venta.class)
+	public JAXBElement<DocumentoReferencia> createVentaDocumentoReferencia(DocumentoReferencia value) {
+		return new JAXBElement<DocumentoReferencia>(_VentaDocumentoReferencia_QNAME, DocumentoReferencia.class,
+				Venta.class, value);
+	}
+
+	/**
+	 * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
+	 * 
+	 */
+	@XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", name = "usuarioInsercion", scope = Venta.class)
+	public JAXBElement<String> createVentaUsuarioInsercion(String value) {
+		return new JAXBElement<String>(_VentaUsuarioInsercion_QNAME, String.class, Venta.class, value);
+	}
+
+	/**
+	 * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
+	 * 
+	 */
+	@XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", name = "direccionEmbarque", scope = Venta.class)
+	public JAXBElement<String> createVentaDireccionEmbarque(String value) {
+		return new JAXBElement<String>(_VentaDireccionEmbarque_QNAME, String.class, Venta.class, value);
+	}
+
+	/**
+	 * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
+	 * 
+	 */
+	@XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", name = "origen", scope = Venta.class)
+	public JAXBElement<String> createVentaOrigen(String value) {
+		return new JAXBElement<String>(_VentaOrigen_QNAME, String.class, Venta.class, value);
+	}
+
+	/**
+	 * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
+	 * 
+	 */
+	@XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", name = "producto", scope = Venta.class)
+	public JAXBElement<String> createVentaProducto(String value) {
+		return new JAXBElement<String>(_VentaProducto_QNAME, String.class, Venta.class, value);
+	}
+
+	/**
+	 * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
+	 * 
+	 */
+	@XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", name = "fechaEmision", scope = Venta.class)
+	public JAXBElement<String> createVentaFechaEmision(String value) {
+		return new JAXBElement<String>(_VentaFechaEmision_QNAME, String.class, Venta.class, value);
+	}
+
+	/**
+	 * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
+	 * 
+	 */
+	@XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", name = "tipoComprobanteID", scope = Venta.class)
+	public JAXBElement<String> createVentaTipoComprobanteID(String value) {
+		return new JAXBElement<String>(_VentaTipoComprobanteID_QNAME, String.class, Venta.class, value);
+	}
+
+	/**
+	 * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
+	 * 
+	 */
+	@XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", name = "grr", scope = Venta.class)
+	public JAXBElement<String> createVentaGrr(String value) {
+		return new JAXBElement<String>(_VentaGrr_QNAME, String.class, Venta.class, value);
+	}
+
+	/**
+	 * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
+	 * 
+	 */
+	@XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", name = "consignado", scope = Venta.class)
+	public JAXBElement<String> createVentaConsignado(String value) {
+		return new JAXBElement<String>(_VentaConsignado_QNAME, String.class, Venta.class, value);
+	}
+
+	/**
+	 * Create an instance of {@link JAXBElement
+	 * }{@code <}{@link InformacionAdicional }{@code >}}
+	 * 
+	 */
+	@XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", name = "informacionAdicional", scope = Venta.class)
+	public JAXBElement<InformacionAdicional> createVentaInformacionAdicional(InformacionAdicional value) {
+		return new JAXBElement<InformacionAdicional>(_VentaInformacionAdicional_QNAME, InformacionAdicional.class,
+				Venta.class, value);
+	}
+
+	/**
+	 * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
+	 * 
+	 */
+	@XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", name = "numeroSerie", scope = Venta.class)
+	public JAXBElement<String> createVentaNumeroSerie(String value) {
+		return new JAXBElement<String>(_VentaNumeroSerie_QNAME, String.class, Venta.class, value);
+	}
+
+	/**
+	 * Create an instance of {@link JAXBElement }{@code <}{@link Result }{@code >}}
+	 * 
+	 */
+	@XmlElementDecl(namespace = "http://tempuri.org/", name = "setEnviarComprobantesSunatResult", scope = SetEnviarComprobantesSunatResponse.class)
+	public JAXBElement<Result> createSetEnviarComprobantesSunatResponseSetEnviarComprobantesSunatResult(Result value) {
+		return new JAXBElement<Result>(_SetEnviarComprobantesSunatResponseSetEnviarComprobantesSunatResult_QNAME,
+				Result.class, SetEnviarComprobantesSunatResponse.class, value);
+	}
+
+	/**
+	 * Create an instance of {@link JAXBElement }{@code <}{@link Result }{@code >}}
+	 * 
+	 */
+	@XmlElementDecl(namespace = "http://tempuri.org/", name = "getRepresentacionImpresaResult", scope = GetRepresentacionImpresaResponse.class)
+	public JAXBElement<Result> createGetRepresentacionImpresaResponseGetRepresentacionImpresaResult(Result value) {
+		return new JAXBElement<Result>(_GetRepresentacionImpresaResponseGetRepresentacionImpresaResult_QNAME,
+				Result.class, GetRepresentacionImpresaResponse.class, value);
+	}
+
+	/**
+	 * Create an instance of {@link JAXBElement }{@code <}{@link DocumentCDR
+	 * }{@code >}}
+	 * 
+	 */
+	@XmlElementDecl(namespace = "http://tempuri.org/", name = "documentCDR", scope = SetConsultarCDR.class)
+	public JAXBElement<DocumentCDR> createSetConsultarCDRDocumentCDR(DocumentCDR value) {
+		return new JAXBElement<DocumentCDR>(_SetConsultarCDRDocumentCDR_QNAME, DocumentCDR.class, SetConsultarCDR.class,
+				value);
+	}
+
+	/**
+	 * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
+	 * 
+	 */
+	@XmlElementDecl(namespace = "http://tempuri.org/", name = "token", scope = SetConsultarCDR.class)
+	public JAXBElement<String> createSetConsultarCDRToken(String value) {
+		return new JAXBElement<String>(_GetRepresentacionImpresaToken_QNAME, String.class, SetConsultarCDR.class,
+				value);
+	}
+
+	/**
+	 * Create an instance of {@link JAXBElement }{@code <}{@link Venta }{@code >}}
+	 * 
+	 */
+	@XmlElementDecl(namespace = "http://tempuri.org/", name = "venta", scope = SetNotaVenta.class)
+	public JAXBElement<Venta> createSetNotaVentaVenta(Venta value) {
+		return new JAXBElement<Venta>(_SetNotaVentaVenta_QNAME, Venta.class, SetNotaVenta.class, value);
+	}
+
+	/**
+	 * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
+	 * 
+	 */
+	@XmlElementDecl(namespace = "http://tempuri.org/", name = "token", scope = SetNotaVenta.class)
+	public JAXBElement<String> createSetNotaVentaToken(String value) {
+		return new JAXBElement<String>(_GetRepresentacionImpresaToken_QNAME, String.class, SetNotaVenta.class, value);
+	}
+
+	/**
+	 * Create an instance of {@link JAXBElement }{@code <}{@link Nota }{@code >}}
+	 * 
+	 */
+	@XmlElementDecl(namespace = "http://tempuri.org/", name = "nota", scope = SetNotaVenta.class)
+	public JAXBElement<Nota> createSetNotaVentaNota(Nota value) {
+		return new JAXBElement<Nota>(_SetNotaVentaNota_QNAME, Nota.class, SetNotaVenta.class, value);
+	}
+
+	/**
+	 * Create an instance of {@link JAXBElement }{@code <}{@link ArrayOfGRE
+	 * }{@code >}}
+	 * 
+	 */
+	@XmlElementDecl(namespace = "http://tempuri.org/", name = "listGreTransportista", scope = SetGRETransportistaActualizaCDR.class)
+	public JAXBElement<ArrayOfGRE> createSetGRETransportistaActualizaCDRListGreTransportista(ArrayOfGRE value) {
+		return new JAXBElement<ArrayOfGRE>(_SetGRETransportistaActualizaCDRListGreTransportista_QNAME, ArrayOfGRE.class,
+				SetGRETransportistaActualizaCDR.class, value);
+	}
+
+	/**
+	 * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
+	 * 
+	 */
+	@XmlElementDecl(namespace = "http://tempuri.org/", name = "token", scope = SetGRETransportistaActualizaCDR.class)
+	public JAXBElement<String> createSetGRETransportistaActualizaCDRToken(String value) {
+		return new JAXBElement<String>(_GetRepresentacionImpresaToken_QNAME, String.class,
+				SetGRETransportistaActualizaCDR.class, value);
+	}
+
+	/**
+	 * Create an instance of {@link JAXBElement }{@code <}{@link Result }{@code >}}
+	 * 
+	 */
+	@XmlElementDecl(namespace = "http://tempuri.org/", name = "setNotaVentaResult", scope = SetNotaVentaResponse.class)
+	public JAXBElement<Result> createSetNotaVentaResponseSetNotaVentaResult(Result value) {
+		return new JAXBElement<Result>(_SetNotaVentaResponseSetNotaVentaResult_QNAME, Result.class,
+				SetNotaVentaResponse.class, value);
+	}
+
+	/**
+	 * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
+	 * 
+	 */
+	@XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", name = "numeroComprobante", scope = GREDocumentoReferencia.class)
+	public JAXBElement<String> createGREDocumentoReferenciaNumeroComprobante(String value) {
+		return new JAXBElement<String>(_GREDocumentoReferenciaNumeroComprobante_QNAME, String.class,
+				GREDocumentoReferencia.class, value);
+	}
+
+	/**
+	 * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
+	 * 
+	 */
+	@XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", name = "tipoDocumentoIdRef", scope = GREDocumentoReferencia.class)
+	public JAXBElement<String> createGREDocumentoReferenciaTipoDocumentoIdRef(String value) {
+		return new JAXBElement<String>(_GREDocumentoReferenciaTipoDocumentoIdRef_QNAME, String.class,
+				GREDocumentoReferencia.class, value);
+	}
+
+	/**
+	 * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
+	 * 
+	 */
+	@XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", name = "tipoComprobante", scope = GREDocumentoReferencia.class)
+	public JAXBElement<String> createGREDocumentoReferenciaTipoComprobante(String value) {
+		return new JAXBElement<String>(_GREDocumentoReferenciaTipoComprobante_QNAME, String.class,
+				GREDocumentoReferencia.class, value);
+	}
+
+	/**
+	 * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
+	 * 
+	 */
+	@XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", name = "tipoComprobanteId", scope = GREDocumentoReferencia.class)
+	public JAXBElement<String> createGREDocumentoReferenciaTipoComprobanteId(String value) {
+		return new JAXBElement<String>(_GREDocumentoReferenciaTipoComprobanteId_QNAME, String.class,
+				GREDocumentoReferencia.class, value);
+	}
+
+	/**
+	 * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
+	 * 
+	 */
+	@XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", name = "numeroDocumentoRef", scope = GREDocumentoReferencia.class)
+	public JAXBElement<String> createGREDocumentoReferenciaNumeroDocumentoRef(String value) {
+		return new JAXBElement<String>(_GREDocumentoReferenciaNumeroDocumentoRef_QNAME, String.class,
+				GREDocumentoReferencia.class, value);
+	}
+
+	/**
+	 * Create an instance of {@link JAXBElement }{@code <}{@link GREPiloto
+	 * }{@code >}}
+	 * 
+	 */
+	@XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", name = "grePilotoCopiloto_2", scope = GRE.class)
+	public JAXBElement<GREPiloto> createGREGrePilotoCopiloto2(GREPiloto value) {
+		return new JAXBElement<GREPiloto>(_GREGrePilotoCopiloto2_QNAME, GREPiloto.class, GRE.class, value);
+	}
+
+	/**
+	 * Create an instance of {@link JAXBElement }{@code <}{@link GREPiloto
+	 * }{@code >}}
+	 * 
+	 */
+	@XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", name = "grePilotoCopiloto_1", scope = GRE.class)
+	public JAXBElement<GREPiloto> createGREGrePilotoCopiloto1(GREPiloto value) {
+		return new JAXBElement<GREPiloto>(_GREGrePilotoCopiloto1_QNAME, GREPiloto.class, GRE.class, value);
+	}
+
+	/**
+	 * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
+	 * 
+	 */
+	@XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", name = "vehiculo_certificadoHabilitacion", scope = GRE.class)
+	public JAXBElement<String> createGREVehiculoCertificadoHabilitacion(String value) {
+		return new JAXBElement<String>(_GREVehiculoCertificadoHabilitacion_QNAME, String.class, GRE.class, value);
+	}
+
+	/**
+	 * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
+	 * 
+	 */
+	@XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", name = "puntoPartida_direccion", scope = GRE.class)
+	public JAXBElement<String> createGREPuntoPartidaDireccion(String value) {
+		return new JAXBElement<String>(_GREPuntoPartidaDireccion_QNAME, String.class, GRE.class, value);
+	}
+
+	/**
+	 * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
+	 * 
+	 */
+	@XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", name = "grr_rucEmisor", scope = GRE.class)
+	public JAXBElement<String> createGREGrrRucEmisor(String value) {
+		return new JAXBElement<String>(_GREGrrRucEmisor_QNAME, String.class, GRE.class, value);
+	}
+
+	/**
+	 * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
+	 * 
+	 */
+	@XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", name = "vehiculo_numeroPlaca_sec1", scope = GRE.class)
+	public JAXBElement<String> createGREVehiculoNumeroPlacaSec1(String value) {
+		return new JAXBElement<String>(_GREVehiculoNumeroPlacaSec1_QNAME, String.class, GRE.class, value);
+	}
+
+	/**
+	 * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
+	 * 
+	 */
+	@XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", name = "numeroGRE", scope = GRE.class)
+	public JAXBElement<String> createGRENumeroGRE(String value) {
+		return new JAXBElement<String>(_GRENumeroGRE_QNAME, String.class, GRE.class, value);
+	}
+
+	/**
+	 * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
+	 * 
+	 */
+	@XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", name = "vehiculo_numeroPlaca", scope = GRE.class)
+	public JAXBElement<String> createGREVehiculoNumeroPlaca(String value) {
+		return new JAXBElement<String>(_GREVehiculoNumeroPlaca_QNAME, String.class, GRE.class, value);
+	}
+
+	/**
+	 * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
+	 * 
+	 */
+	@XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", name = "horaEmision", scope = GRE.class)
+	public JAXBElement<String> createGREHoraEmision(String value) {
+		return new JAXBElement<String>(_VentaHoraEmision_QNAME, String.class, GRE.class, value);
+	}
+
+	/**
+	 * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
+	 * 
+	 */
+	@XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", name = "puntoLlegada_direccion", scope = GRE.class)
+	public JAXBElement<String> createGREPuntoLlegadaDireccion(String value) {
+		return new JAXBElement<String>(_GREPuntoLlegadaDireccion_QNAME, String.class, GRE.class, value);
+	}
+
+	/**
+	 * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
+	 * 
+	 */
+	@XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", name = "tipoDocumento", scope = GRE.class)
+	public JAXBElement<String> createGRETipoDocumento(String value) {
+		return new JAXBElement<String>(_GRETipoDocumento_QNAME, String.class, GRE.class, value);
+	}
+
+	/**
+	 * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
+	 * 
+	 */
+	@XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", name = "usuarioInsercion", scope = GRE.class)
+	public JAXBElement<String> createGREUsuarioInsercion(String value) {
+		return new JAXBElement<String>(_VentaUsuarioInsercion_QNAME, String.class, GRE.class, value);
+	}
+
+	/**
+	 * Create an instance of {@link JAXBElement
+	 * }{@code <}{@link GREDocumentoReferencia }{@code >}}
+	 * 
+	 */
+	@XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", name = "greDocumentoReferencia", scope = GRE.class)
+	public JAXBElement<GREDocumentoReferencia> createGREGreDocumentoReferencia(GREDocumentoReferencia value) {
+		return new JAXBElement<GREDocumentoReferencia>(_GREGreDocumentoReferencia_QNAME, GREDocumentoReferencia.class,
+				GRE.class, value);
+	}
+
+	/**
+	 * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
+	 * 
+	 */
+	@XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", name = "puntoLlegada_ubigeo", scope = GRE.class)
+	public JAXBElement<String> createGREPuntoLlegadaUbigeo(String value) {
+		return new JAXBElement<String>(_GREPuntoLlegadaUbigeo_QNAME, String.class, GRE.class, value);
+	}
+
+	/**
+	 * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
+	 * 
+	 */
+	@XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", name = "fechaEmision", scope = GRE.class)
+	public JAXBElement<String> createGREFechaEmision(String value) {
+		return new JAXBElement<String>(_VentaFechaEmision_QNAME, String.class, GRE.class, value);
+	}
+
+	/**
+	 * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
+	 * 
+	 */
+	@XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", name = "grr", scope = GRE.class)
+	public JAXBElement<String> createGREGrr(String value) {
+		return new JAXBElement<String>(_VentaGrr_QNAME, String.class, GRE.class, value);
+	}
+
+	/**
+	 * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
+	 * 
+	 */
+	@XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", name = "totalPesoCarga", scope = GRE.class)
+	public JAXBElement<String> createGRETotalPesoCarga(String value) {
+		return new JAXBElement<String>(_GRETotalPesoCarga_QNAME, String.class, GRE.class, value);
+	}
+
+	/**
+	 * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
+	 * 
+	 */
+	@XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", name = "destinatario_nombres", scope = GRE.class)
+	public JAXBElement<String> createGREDestinatarioNombres(String value) {
+		return new JAXBElement<String>(_GREDestinatarioNombres_QNAME, String.class, GRE.class, value);
+	}
+
+	/**
+	 * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
+	 * 
+	 */
+	@XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", name = "remitente_tipoDocumento", scope = GRE.class)
+	public JAXBElement<String> createGRERemitenteTipoDocumento(String value) {
+		return new JAXBElement<String>(_GRERemitenteTipoDocumento_QNAME, String.class, GRE.class, value);
+	}
+
+	/**
+	 * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
+	 * 
+	 */
+	@XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", name = "nota", scope = GRE.class)
+	public JAXBElement<String> createGRENota(String value) {
+		return new JAXBElement<String>(_GRENota_QNAME, String.class, GRE.class, value);
+	}
+
+	/**
+	 * Create an instance of {@link JAXBElement }{@code <}{@link GREPiloto
+	 * }{@code >}}
+	 * 
+	 */
+	@XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", name = "grePilotoPrincipal", scope = GRE.class)
+	public JAXBElement<GREPiloto> createGREGrePilotoPrincipal(GREPiloto value) {
+		return new JAXBElement<GREPiloto>(_GREGrePilotoPrincipal_QNAME, GREPiloto.class, GRE.class, value);
+	}
+
+	/**
+	 * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
+	 * 
+	 */
+	@XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", name = "puntoPartida_ubigeo", scope = GRE.class)
+	public JAXBElement<String> createGREPuntoPartidaUbigeo(String value) {
+		return new JAXBElement<String>(_GREPuntoPartidaUbigeo_QNAME, String.class, GRE.class, value);
+	}
+
+	/**
+	 * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
+	 * 
+	 */
+	@XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", name = "rucEmpresa", scope = GRE.class)
+	public JAXBElement<String> createGRERucEmpresa(String value) {
+		return new JAXBElement<String>(_VentaRucEmpresa_QNAME, String.class, GRE.class, value);
+	}
+
+	/**
+	 * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
+	 * 
+	 */
+	@XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", name = "destinatario_tipoDocumento", scope = GRE.class)
+	public JAXBElement<String> createGREDestinatarioTipoDocumento(String value) {
+		return new JAXBElement<String>(_GREDestinatarioTipoDocumento_QNAME, String.class, GRE.class, value);
+	}
+
+	/**
+	 * Create an instance of {@link JAXBElement }{@code <}{@link ArrayOfGREDetalle
+	 * }{@code >}}
+	 * 
+	 */
+	@XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", name = "listDetalle", scope = GRE.class)
+	public JAXBElement<ArrayOfGREDetalle> createGREListDetalle(ArrayOfGREDetalle value) {
+		return new JAXBElement<ArrayOfGREDetalle>(_GREListDetalle_QNAME, ArrayOfGREDetalle.class, GRE.class, value);
+	}
+
+	/**
+	 * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
+	 * 
+	 */
+	@XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", name = "fechaInicioTranslado", scope = GRE.class)
+	public JAXBElement<String> createGREFechaInicioTranslado(String value) {
+		return new JAXBElement<String>(_GREFechaInicioTranslado_QNAME, String.class, GRE.class, value);
+	}
+
+	/**
+	 * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
+	 * 
+	 */
+	@XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", name = "vehiculo_certificadoHabilitacion_sec1", scope = GRE.class)
+	public JAXBElement<String> createGREVehiculoCertificadoHabilitacionSec1(String value) {
+		return new JAXBElement<String>(_GREVehiculoCertificadoHabilitacionSec1_QNAME, String.class, GRE.class, value);
+	}
+
+	/**
+	 * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
+	 * 
+	 */
+	@XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", name = "numeroRegistroMTC", scope = GRE.class)
+	public JAXBElement<String> createGRENumeroRegistroMTC(String value) {
+		return new JAXBElement<String>(_GRENumeroRegistroMTC_QNAME, String.class, GRE.class, value);
+	}
+
+	/**
+	 * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
+	 * 
+	 */
+	@XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", name = "remitente_nombres", scope = GRE.class)
+	public JAXBElement<String> createGRERemitenteNombres(String value) {
+		return new JAXBElement<String>(_GRERemitenteNombres_QNAME, String.class, GRE.class, value);
+	}
+
+	/**
+	 * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
+	 * 
+	 */
+	@XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", name = "destinatario_numeroDocumento", scope = GRE.class)
+	public JAXBElement<String> createGREDestinatarioNumeroDocumento(String value) {
+		return new JAXBElement<String>(_GREDestinatarioNumeroDocumento_QNAME, String.class, GRE.class, value);
+	}
+
+	/**
+	 * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
+	 * 
+	 */
+	@XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", name = "remitente_numeroDocumento", scope = GRE.class)
+	public JAXBElement<String> createGRERemitenteNumeroDocumento(String value) {
+		return new JAXBElement<String>(_GRERemitenteNumeroDocumento_QNAME, String.class, GRE.class, value);
+	}
+
+	/**
+	 * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
+	 * 
+	 */
+	@XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", name = "nombres", scope = Cliente.class)
+	public JAXBElement<String> createClienteNombres(String value) {
+		return new JAXBElement<String>(_ClienteNombres_QNAME, String.class, Cliente.class, value);
+	}
+
+	/**
+	 * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
+	 * 
+	 */
+	@XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", name = "direccion", scope = Cliente.class)
+	public JAXBElement<String> createClienteDireccion(String value) {
+		return new JAXBElement<String>(_ClienteDireccion_QNAME, String.class, Cliente.class, value);
+	}
+
+	/**
+	 * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
+	 * 
+	 */
+	@XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", name = "numeroDocumento", scope = Cliente.class)
+	public JAXBElement<String> createClienteNumeroDocumento(String value) {
+		return new JAXBElement<String>(_ClienteNumeroDocumento_QNAME, String.class, Cliente.class, value);
+	}
+
+	/**
+	 * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
+	 * 
+	 */
+	@XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", name = "tipoDocumentoID", scope = Cliente.class)
+	public JAXBElement<String> createClienteTipoDocumentoID(String value) {
+		return new JAXBElement<String>(_ClienteTipoDocumentoID_QNAME, String.class, Cliente.class, value);
+	}
+
+	/**
+	 * Create an instance of {@link JAXBElement }{@code <}{@link Result }{@code >}}
+	 * 
+	 */
+	@XmlElementDecl(namespace = "http://tempuri.org/", name = "setNotaResult", scope = SetNotaResponse.class)
+	public JAXBElement<Result> createSetNotaResponseSetNotaResult(Result value) {
+		return new JAXBElement<Result>(_SetNotaResponseSetNotaResult_QNAME, Result.class, SetNotaResponse.class, value);
+	}
+
+	/**
+	 * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
+	 * 
+	 */
+	@XmlElementDecl(namespace = "http://tempuri.org/", name = "fechaEmisionComprobantes", scope = SetBajas.class)
+	public JAXBElement<String> createSetBajasFechaEmisionComprobantes(String value) {
+		return new JAXBElement<String>(_SetBajasFechaEmisionComprobantes_QNAME, String.class, SetBajas.class, value);
+	}
+
+	/**
+	 * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
+	 * 
+	 */
+	@XmlElementDecl(namespace = "http://tempuri.org/", name = "rucEmpresa", scope = SetBajas.class)
+	public JAXBElement<String> createSetBajasRucEmpresa(String value) {
+		return new JAXBElement<String>(_BuscarDetalleComprobanteRucEmpresa_QNAME, String.class, SetBajas.class, value);
+	}
+
+	/**
+	 * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
+	 * 
+	 */
+	@XmlElementDecl(namespace = "http://tempuri.org/", name = "token", scope = SetBajas.class)
+	public JAXBElement<String> createSetBajasToken(String value) {
+		return new JAXBElement<String>(_GetRepresentacionImpresaToken_QNAME, String.class, SetBajas.class, value);
+	}
+
+	/**
+	 * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
+	 * 
+	 */
+	@XmlElementDecl(namespace = "http://tempuri.org/", name = "fechaEmisionComprobantes", scope = SetResumenes.class)
+	public JAXBElement<String> createSetResumenesFechaEmisionComprobantes(String value) {
+		return new JAXBElement<String>(_SetBajasFechaEmisionComprobantes_QNAME, String.class, SetResumenes.class,
+				value);
+	}
+
+	/**
+	 * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
+	 * 
+	 */
+	@XmlElementDecl(namespace = "http://tempuri.org/", name = "rucEmpresa", scope = SetResumenes.class)
+	public JAXBElement<String> createSetResumenesRucEmpresa(String value) {
+		return new JAXBElement<String>(_BuscarDetalleComprobanteRucEmpresa_QNAME, String.class, SetResumenes.class,
+				value);
+	}
+
+	/**
+	 * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
+	 * 
+	 */
+	@XmlElementDecl(namespace = "http://tempuri.org/", name = "token", scope = SetResumenes.class)
+	public JAXBElement<String> createSetResumenesToken(String value) {
+		return new JAXBElement<String>(_GetRepresentacionImpresaToken_QNAME, String.class, SetResumenes.class, value);
+	}
+
+	/**
+	 * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
+	 * 
+	 */
+	@XmlElementDecl(namespace = "http://tempuri.org/", name = "token", scope = SetNota.class)
+	public JAXBElement<String> createSetNotaToken(String value) {
+		return new JAXBElement<String>(_GetRepresentacionImpresaToken_QNAME, String.class, SetNota.class, value);
+	}
+
+	/**
+	 * Create an instance of {@link JAXBElement }{@code <}{@link Nota }{@code >}}
+	 * 
+	 */
+	@XmlElementDecl(namespace = "http://tempuri.org/", name = "notaCreditoDebito", scope = SetNota.class)
+	public JAXBElement<Nota> createSetNotaNotaCreditoDebito(Nota value) {
+		return new JAXBElement<Nota>(_SetNotaNotaCreditoDebito_QNAME, Nota.class, SetNota.class, value);
+	}
+
+	/**
+	 * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
+	 * 
+	 */
+	@XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", name = "descripcionMotivo", scope = DocumentoBaja.class)
+	public JAXBElement<String> createDocumentoBajaDescripcionMotivo(String value) {
+		return new JAXBElement<String>(_DocumentoBajaDescripcionMotivo_QNAME, String.class, DocumentoBaja.class, value);
+	}
+
+	/**
+	 * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
+	 * 
+	 */
+	@XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", name = "usuarioInsercion", scope = DocumentoBaja.class)
+	public JAXBElement<String> createDocumentoBajaUsuarioInsercion(String value) {
+		return new JAXBElement<String>(_VentaUsuarioInsercion_QNAME, String.class, DocumentoBaja.class, value);
+	}
+
+	/**
+	 * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
+	 * 
+	 */
+	@XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", name = "fechaEmision", scope = DocumentoBaja.class)
+	public JAXBElement<String> createDocumentoBajaFechaEmision(String value) {
+		return new JAXBElement<String>(_VentaFechaEmision_QNAME, String.class, DocumentoBaja.class, value);
+	}
+
+	/**
+	 * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
+	 * 
+	 */
+	@XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", name = "usuarioModificacion", scope = DocumentoBaja.class)
+	public JAXBElement<String> createDocumentoBajaUsuarioModificacion(String value) {
+		return new JAXBElement<String>(_VentaUsuarioModificacion_QNAME, String.class, DocumentoBaja.class, value);
+	}
+
+	/**
+	 * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
+	 * 
+	 */
+	@XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", name = "numeroCorrelativo", scope = DocumentoBaja.class)
+	public JAXBElement<String> createDocumentoBajaNumeroCorrelativo(String value) {
+		return new JAXBElement<String>(_VentaNumeroCorrelativo_QNAME, String.class, DocumentoBaja.class, value);
+	}
+
+	/**
+	 * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
+	 * 
+	 */
+	@XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", name = "rucEmpresa", scope = DocumentoBaja.class)
+	public JAXBElement<String> createDocumentoBajaRucEmpresa(String value) {
+		return new JAXBElement<String>(_VentaRucEmpresa_QNAME, String.class, DocumentoBaja.class, value);
+	}
+
+	/**
+	 * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
+	 * 
+	 */
+	@XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", name = "numeroSerie", scope = DocumentoBaja.class)
+	public JAXBElement<String> createDocumentoBajaNumeroSerie(String value) {
+		return new JAXBElement<String>(_VentaNumeroSerie_QNAME, String.class, DocumentoBaja.class, value);
+	}
+
+	/**
+	 * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
+	 * 
+	 */
+	@XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", name = "tipoDocumentoID", scope = DocumentoBaja.class)
+	public JAXBElement<String> createDocumentoBajaTipoDocumentoID(String value) {
+		return new JAXBElement<String>(_ClienteTipoDocumentoID_QNAME, String.class, DocumentoBaja.class, value);
+	}
+
+	/**
 	 * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
 	 * 
 	 */
@@ -1126,242 +2461,106 @@ public class ObjectFactory {
 	}
 
 	/**
-	 * Create an instance of {@link JAXBElement }{@code <}{@link Result }{@code >}}
+	 * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
 	 * 
 	 */
-	@XmlElementDecl(namespace = "http://tempuri.org/", name = "setNotaVentaResult", scope = SetNotaVentaResponse.class)
-	public JAXBElement<Result> createSetNotaVentaResponseSetNotaVentaResult(Result value) {
-		return new JAXBElement<Result>(_SetNotaVentaResponseSetNotaVentaResult_QNAME, Result.class,
-				SetNotaVentaResponse.class, value);
-	}
-
-	/**
-	 * Create an instance of {@link JAXBElement }{@code <}{@link Result }{@code >}}
-	 * 
-	 */
-	@XmlElementDecl(namespace = "http://tempuri.org/", name = "setEnviarComprobantesSunatResult", scope = SetEnviarComprobantesSunatResponse.class)
-	public JAXBElement<Result> createSetEnviarComprobantesSunatResponseSetEnviarComprobantesSunatResult(Result value) {
-		return new JAXBElement<Result>(_SetEnviarComprobantesSunatResponseSetEnviarComprobantesSunatResult_QNAME,
-				Result.class, SetEnviarComprobantesSunatResponse.class, value);
-	}
-
-	/**
-	 * Create an instance of {@link JAXBElement }{@code <}{@link Result }{@code >}}
-	 * 
-	 */
-	@XmlElementDecl(namespace = "http://tempuri.org/", name = "getRepresentacionImpresaResult", scope = GetRepresentacionImpresaResponse.class)
-	public JAXBElement<Result> createGetRepresentacionImpresaResponseGetRepresentacionImpresaResult(Result value) {
-		return new JAXBElement<Result>(_GetRepresentacionImpresaResponseGetRepresentacionImpresaResult_QNAME,
-				Result.class, GetRepresentacionImpresaResponse.class, value);
-	}
-
-	/**
-	 * Create an instance of {@link JAXBElement }{@code <}{@link Result }{@code >}}
-	 * 
-	 */
-	@XmlElementDecl(namespace = "http://tempuri.org/", name = "setResumenesResult", scope = SetResumenesResponse.class)
-	public JAXBElement<Result> createSetResumenesResponseSetResumenesResult(Result value) {
-		return new JAXBElement<Result>(_SetResumenesResponseSetResumenesResult_QNAME, Result.class,
-				SetResumenesResponse.class, value);
-	}
-
-	/**
-	 * Create an instance of {@link JAXBElement }{@code <}{@link ArrayOfDetalleVenta
-	 * }{@code >}}
-	 * 
-	 */
-	@XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", name = "listDetalleVenta", scope = Venta.class)
-	public JAXBElement<ArrayOfDetalleVenta> createVentaListDetalleVenta(ArrayOfDetalleVenta value) {
-		return new JAXBElement<ArrayOfDetalleVenta>(_VentaListDetalleVenta_QNAME, ArrayOfDetalleVenta.class,
-				Venta.class, value);
+	@XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", name = "Serie", scope = RetencionInp.class)
+	public JAXBElement<String> createRetencionInpSerie(String value) {
+		return new JAXBElement<String>(_RetencionInpSerie_QNAME, String.class, RetencionInp.class, value);
 	}
 
 	/**
 	 * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
 	 * 
 	 */
-	@XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", name = "numeroPrefactura", scope = Venta.class)
-	public JAXBElement<String> createVentaNumeroPrefactura(String value) {
-		return new JAXBElement<String>(_VentaNumeroPrefactura_QNAME, String.class, Venta.class, value);
+	@XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", name = "tasaRetencion", scope = RetencionInp.class)
+	public JAXBElement<String> createRetencionInpTasaRetencion(String value) {
+		return new JAXBElement<String>(_RetencionInpTasaRetencion_QNAME, String.class, RetencionInp.class, value);
 	}
 
 	/**
 	 * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
 	 * 
 	 */
-	@XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", name = "observaciones", scope = Venta.class)
-	public JAXBElement<String> createVentaObservaciones(String value) {
-		return new JAXBElement<String>(_VentaObservaciones_QNAME, String.class, Venta.class, value);
+	@XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", name = "RazonSocial", scope = RetencionInp.class)
+	public JAXBElement<String> createRetencionInpRazonSocial(String value) {
+		return new JAXBElement<String>(_RetencionInpRazonSocial_QNAME, String.class, RetencionInp.class, value);
 	}
 
 	/**
 	 * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
 	 * 
 	 */
-	@XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", name = "usuarioModificacion", scope = Venta.class)
-	public JAXBElement<String> createVentaUsuarioModificacion(String value) {
-		return new JAXBElement<String>(_VentaUsuarioModificacion_QNAME, String.class, Venta.class, value);
+	@XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", name = "NumeroCorrelativo", scope = RetencionInp.class)
+	public JAXBElement<String> createRetencionInpNumeroCorrelativo(String value) {
+		return new JAXBElement<String>(_RetencionInpNumeroCorrelativo_QNAME, String.class, RetencionInp.class, value);
 	}
 
 	/**
 	 * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
 	 * 
 	 */
-	@XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", name = "numeroCorrelativo", scope = Venta.class)
-	public JAXBElement<String> createVentaNumeroCorrelativo(String value) {
-		return new JAXBElement<String>(_VentaNumeroCorrelativo_QNAME, String.class, Venta.class, value);
-	}
-
-	/**
-	 * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
-	 * 
-	 */
-	@XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", name = "rucEmpresa", scope = Venta.class)
-	public JAXBElement<String> createVentaRucEmpresa(String value) {
-		return new JAXBElement<String>(_VentaRucEmpresa_QNAME, String.class, Venta.class, value);
-	}
-
-	/**
-	 * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
-	 * 
-	 */
-	@XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", name = "horaEmision", scope = Venta.class)
-	public JAXBElement<String> createVentaHoraEmision(String value) {
-		return new JAXBElement<String>(_VentaHoraEmision_QNAME, String.class, Venta.class, value);
-	}
-
-	/**
-	 * Create an instance of {@link JAXBElement }{@code <}{@link Cliente }{@code >}}
-	 * 
-	 */
-	@XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", name = "cliente", scope = Venta.class)
-	public JAXBElement<Cliente> createVentaCliente(Cliente value) {
-		return new JAXBElement<Cliente>(_VentaCliente_QNAME, Cliente.class, Venta.class, value);
-	}
-
-	/**
-	 * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
-	 * 
-	 */
-	@XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", name = "glosaRetencion", scope = Venta.class)
-	public JAXBElement<String> createVentaGlosaRetencion(String value) {
-		return new JAXBElement<String>(_VentaGlosaRetencion_QNAME, String.class, Venta.class, value);
-	}
-
-	/**
-	 * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
-	 * 
-	 */
-	@XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", name = "centroCosto", scope = Venta.class)
-	public JAXBElement<String> createVentaCentroCosto(String value) {
-		return new JAXBElement<String>(_VentaCentroCosto_QNAME, String.class, Venta.class, value);
+	@XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", name = "id", scope = RetencionInp.class)
+	public JAXBElement<String> createRetencionInpId(String value) {
+		return new JAXBElement<String>(_RetencionInpId_QNAME, String.class, RetencionInp.class, value);
 	}
 
 	/**
 	 * Create an instance of {@link JAXBElement
-	 * }{@code <}{@link ArrayOfInformacionCredito }{@code >}}
+	 * }{@code <}{@link ArrayOfRetencionDetalleInp }{@code >}}
 	 * 
 	 */
-	@XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", name = "InfoCreditList", scope = Venta.class)
-	public JAXBElement<ArrayOfInformacionCredito> createVentaInfoCreditList(ArrayOfInformacionCredito value) {
-		return new JAXBElement<ArrayOfInformacionCredito>(_VentaInfoCreditList_QNAME, ArrayOfInformacionCredito.class,
-				Venta.class, value);
-	}
-
-	/**
-	 * Create an instance of {@link JAXBElement }{@code <}{@link DocumentoReferencia
-	 * }{@code >}}
-	 * 
-	 */
-	@XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", name = "documentoReferencia", scope = Venta.class)
-	public JAXBElement<DocumentoReferencia> createVentaDocumentoReferencia(DocumentoReferencia value) {
-		return new JAXBElement<DocumentoReferencia>(_VentaDocumentoReferencia_QNAME, DocumentoReferencia.class,
-				Venta.class, value);
+	@XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", name = "detalleRetencion", scope = RetencionInp.class)
+	public JAXBElement<ArrayOfRetencionDetalleInp> createRetencionInpDetalleRetencion(
+			ArrayOfRetencionDetalleInp value) {
+		return new JAXBElement<ArrayOfRetencionDetalleInp>(_RetencionInpDetalleRetencion_QNAME,
+				ArrayOfRetencionDetalleInp.class, RetencionInp.class, value);
 	}
 
 	/**
 	 * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
 	 * 
 	 */
-	@XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", name = "usuarioInsercion", scope = Venta.class)
-	public JAXBElement<String> createVentaUsuarioInsercion(String value) {
-		return new JAXBElement<String>(_VentaUsuarioInsercion_QNAME, String.class, Venta.class, value);
+	@XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", name = "registroRetencion", scope = RetencionInp.class)
+	public JAXBElement<String> createRetencionInpRegistroRetencion(String value) {
+		return new JAXBElement<String>(_RetencionInpRegistroRetencion_QNAME, String.class, RetencionInp.class, value);
 	}
 
 	/**
 	 * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
 	 * 
 	 */
-	@XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", name = "direccionEmbarque", scope = Venta.class)
-	public JAXBElement<String> createVentaDireccionEmbarque(String value) {
-		return new JAXBElement<String>(_VentaDireccionEmbarque_QNAME, String.class, Venta.class, value);
+	@XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", name = "correo", scope = RetencionInp.class)
+	public JAXBElement<String> createRetencionInpCorreo(String value) {
+		return new JAXBElement<String>(_RetencionInpCorreo_QNAME, String.class, RetencionInp.class, value);
 	}
 
 	/**
 	 * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
 	 * 
 	 */
-	@XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", name = "producto", scope = Venta.class)
-	public JAXBElement<String> createVentaProducto(String value) {
-		return new JAXBElement<String>(_VentaProducto_QNAME, String.class, Venta.class, value);
+	@XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", name = "FechaEmision", scope = RetencionInp.class)
+	public JAXBElement<String> createRetencionInpFechaEmision(String value) {
+		return new JAXBElement<String>(_RetencionInpFechaEmision_QNAME, String.class, RetencionInp.class, value);
 	}
 
 	/**
 	 * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
 	 * 
 	 */
-	@XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", name = "fechaEmision", scope = Venta.class)
-	public JAXBElement<String> createVentaFechaEmision(String value) {
-		return new JAXBElement<String>(_VentaFechaEmision_QNAME, String.class, Venta.class, value);
+	@XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", name = "Ruc", scope = RetencionInp.class)
+	public JAXBElement<String> createRetencionInpRuc(String value) {
+		return new JAXBElement<String>(_RetencionInpRuc_QNAME, String.class, RetencionInp.class, value);
 	}
 
 	/**
 	 * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
 	 * 
 	 */
-	@XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", name = "tipoComprobanteID", scope = Venta.class)
-	public JAXBElement<String> createVentaTipoComprobanteID(String value) {
-		return new JAXBElement<String>(_VentaTipoComprobanteID_QNAME, String.class, Venta.class, value);
-	}
-
-	/**
-	 * Create an instance of {@link JAXBElement
-	 * }{@code <}{@link InformacionAdicional }{@code >}}
-	 * 
-	 */
-	@XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", name = "informacionAdicional", scope = Venta.class)
-	public JAXBElement<InformacionAdicional> createVentaInformacionAdicional(InformacionAdicional value) {
-		return new JAXBElement<InformacionAdicional>(_VentaInformacionAdicional_QNAME, InformacionAdicional.class,
-				Venta.class, value);
-	}
-
-	/**
-	 * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
-	 * 
-	 */
-	@XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", name = "numeroSerie", scope = Venta.class)
-	public JAXBElement<String> createVentaNumeroSerie(String value) {
-		return new JAXBElement<String>(_VentaNumeroSerie_QNAME, String.class, Venta.class, value);
-	}
-
-	/**
-	 * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
-	 * 
-	 */
-	@XmlElementDecl(namespace = "http://tempuri.org/", name = "rucEmpresa", scope = SetEnviarComprobantesSunat.class)
-	public JAXBElement<String> createSetEnviarComprobantesSunatRucEmpresa(String value) {
-		return new JAXBElement<String>(_SetEnviarComprobantesSunatRucEmpresa_QNAME, String.class,
-				SetEnviarComprobantesSunat.class, value);
-	}
-
-	/**
-	 * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
-	 * 
-	 */
-	@XmlElementDecl(namespace = "http://tempuri.org/", name = "token", scope = SetEnviarComprobantesSunat.class)
-	public JAXBElement<String> createSetEnviarComprobantesSunatToken(String value) {
-		return new JAXBElement<String>(_SetEnviarComprobantesSunatToken_QNAME, String.class,
-				SetEnviarComprobantesSunat.class, value);
+	@XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", name = "ImporteTotalRetenidoEnLetras", scope = RetencionInp.class)
+	public JAXBElement<String> createRetencionInpImporteTotalRetenidoEnLetras(String value) {
+		return new JAXBElement<String>(_RetencionInpImporteTotalRetenidoEnLetras_QNAME, String.class,
+				RetencionInp.class, value);
 	}
 
 	/**
@@ -1375,6 +2574,26 @@ public class ObjectFactory {
 	}
 
 	/**
+	 * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
+	 * 
+	 */
+	@XmlElementDecl(namespace = "http://tempuri.org/", name = "rucEmpresa", scope = SetUpdateStatusCDR.class)
+	public JAXBElement<String> createSetUpdateStatusCDRRucEmpresa(String value) {
+		return new JAXBElement<String>(_BuscarDetalleComprobanteRucEmpresa_QNAME, String.class,
+				SetUpdateStatusCDR.class, value);
+	}
+
+	/**
+	 * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
+	 * 
+	 */
+	@XmlElementDecl(namespace = "http://tempuri.org/", name = "token", scope = SetUpdateStatusCDR.class)
+	public JAXBElement<String> createSetUpdateStatusCDRToken(String value) {
+		return new JAXBElement<String>(_GetRepresentacionImpresaToken_QNAME, String.class, SetUpdateStatusCDR.class,
+				value);
+	}
+
+	/**
 	 * Create an instance of {@link JAXBElement }{@code <}{@link Result }{@code >}}
 	 * 
 	 */
@@ -1385,13 +2604,60 @@ public class ObjectFactory {
 	}
 
 	/**
-	 * Create an instance of {@link JAXBElement }{@code <}{@link DocumentCDR
+	 * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
+	 * 
+	 */
+	@XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", name = "id", scope = DocumentCDR.class)
+	public JAXBElement<String> createDocumentCDRId(String value) {
+		return new JAXBElement<String>(_RetencionInpId_QNAME, String.class, DocumentCDR.class, value);
+	}
+
+	/**
+	 * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
+	 * 
+	 */
+	@XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", name = "rucEmpresa", scope = DocumentCDR.class)
+	public JAXBElement<String> createDocumentCDRRucEmpresa(String value) {
+		return new JAXBElement<String>(_VentaRucEmpresa_QNAME, String.class, DocumentCDR.class, value);
+	}
+
+	/**
+	 * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
+	 * 
+	 */
+	@XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", name = "ticket", scope = DocumentCDR.class)
+	public JAXBElement<String> createDocumentCDRTicket(String value) {
+		return new JAXBElement<String>(_DocumentCDRTicket_QNAME, String.class, DocumentCDR.class, value);
+	}
+
+	/**
+	 * Create an instance of {@link JAXBElement }{@code <}{@link Result }{@code >}}
+	 * 
+	 */
+	@XmlElementDecl(namespace = "http://tempuri.org/", name = "setResumenesResult", scope = SetResumenesResponse.class)
+	public JAXBElement<Result> createSetResumenesResponseSetResumenesResult(Result value) {
+		return new JAXBElement<Result>(_SetResumenesResponseSetResumenesResult_QNAME, Result.class,
+				SetResumenesResponse.class, value);
+	}
+
+	/**
+	 * Create an instance of {@link JAXBElement }{@code <}{@link ArrayOfGRE
 	 * }{@code >}}
 	 * 
 	 */
-	@XmlElementDecl(namespace = "http://tempuri.org/", name = "documentCDR", scope = SetConsultarCDR.class)
-	public JAXBElement<DocumentCDR> createSetConsultarCDRDocumentCDR(DocumentCDR value) {
-		return new JAXBElement<DocumentCDR>(_SetConsultarCDRDocumentCDR_QNAME, DocumentCDR.class, SetConsultarCDR.class,
+	@XmlElementDecl(namespace = "http://tempuri.org/", name = "listgreTransportista", scope = SetGRETransportista.class)
+	public JAXBElement<ArrayOfGRE> createSetGRETransportistaListgreTransportista(ArrayOfGRE value) {
+		return new JAXBElement<ArrayOfGRE>(_SetGRETransportistaListgreTransportista_QNAME, ArrayOfGRE.class,
+				SetGRETransportista.class, value);
+	}
+
+	/**
+	 * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
+	 * 
+	 */
+	@XmlElementDecl(namespace = "http://tempuri.org/", name = "token", scope = SetGRETransportista.class)
+	public JAXBElement<String> createSetGRETransportistaToken(String value) {
+		return new JAXBElement<String>(_GetRepresentacionImpresaToken_QNAME, String.class, SetGRETransportista.class,
 				value);
 	}
 
@@ -1399,78 +2665,97 @@ public class ObjectFactory {
 	 * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
 	 * 
 	 */
-	@XmlElementDecl(namespace = "http://tempuri.org/", name = "token", scope = SetConsultarCDR.class)
-	public JAXBElement<String> createSetConsultarCDRToken(String value) {
-		return new JAXBElement<String>(_SetEnviarComprobantesSunatToken_QNAME, String.class, SetConsultarCDR.class,
+	@XmlElementDecl(namespace = "http://tempuri.org/", name = "fechaProceso", scope = SetEnviarComprobantesSunat.class)
+	public JAXBElement<String> createSetEnviarComprobantesSunatFechaProceso(String value) {
+		return new JAXBElement<String>(_SetEnviarComprobantesSunatFechaProceso_QNAME, String.class,
+				SetEnviarComprobantesSunat.class, value);
+	}
+
+	/**
+	 * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
+	 * 
+	 */
+	@XmlElementDecl(namespace = "http://tempuri.org/", name = "rucEmpresa", scope = SetEnviarComprobantesSunat.class)
+	public JAXBElement<String> createSetEnviarComprobantesSunatRucEmpresa(String value) {
+		return new JAXBElement<String>(_BuscarDetalleComprobanteRucEmpresa_QNAME, String.class,
+				SetEnviarComprobantesSunat.class, value);
+	}
+
+	/**
+	 * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
+	 * 
+	 */
+	@XmlElementDecl(namespace = "http://tempuri.org/", name = "token", scope = SetEnviarComprobantesSunat.class)
+	public JAXBElement<String> createSetEnviarComprobantesSunatToken(String value) {
+		return new JAXBElement<String>(_GetRepresentacionImpresaToken_QNAME, String.class,
+				SetEnviarComprobantesSunat.class, value);
+	}
+
+	/**
+	 * Create an instance of {@link JAXBElement }{@code <}{@link DocumentoBaja
+	 * }{@code >}}
+	 * 
+	 */
+	@XmlElementDecl(namespace = "http://tempuri.org/", name = "documentoBaja", scope = SetBajaDocumento.class)
+	public JAXBElement<DocumentoBaja> createSetBajaDocumentoDocumentoBaja(DocumentoBaja value) {
+		return new JAXBElement<DocumentoBaja>(_SetBajaDocumentoDocumentoBaja_QNAME, DocumentoBaja.class,
+				SetBajaDocumento.class, value);
+	}
+
+	/**
+	 * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
+	 * 
+	 */
+	@XmlElementDecl(namespace = "http://tempuri.org/", name = "token", scope = SetBajaDocumento.class)
+	public JAXBElement<String> createSetBajaDocumentoToken(String value) {
+		return new JAXBElement<String>(_GetRepresentacionImpresaToken_QNAME, String.class, SetBajaDocumento.class,
 				value);
 	}
 
 	/**
-	 * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
+	 * Create an instance of {@link JAXBElement
+	 * }{@code <}{@link ArrayOfInformacionAdicionalPropiedadAdicional }{@code >}}
 	 * 
 	 */
-	@XmlElementDecl(namespace = "http://tempuri.org/", name = "token", scope = SetNota.class)
-	public JAXBElement<String> createSetNotaToken(String value) {
-		return new JAXBElement<String>(_SetEnviarComprobantesSunatToken_QNAME, String.class, SetNota.class, value);
+	@XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", name = "PropiedadesAdicionales", scope = InformacionAdicional.class)
+	public JAXBElement<ArrayOfInformacionAdicionalPropiedadAdicional> createInformacionAdicionalPropiedadesAdicionales(
+			ArrayOfInformacionAdicionalPropiedadAdicional value) {
+		return new JAXBElement<ArrayOfInformacionAdicionalPropiedadAdicional>(
+				_InformacionAdicionalPropiedadesAdicionales_QNAME, ArrayOfInformacionAdicionalPropiedadAdicional.class,
+				InformacionAdicional.class, value);
 	}
 
 	/**
-	 * Create an instance of {@link JAXBElement }{@code <}{@link Nota }{@code >}}
+	 * Create an instance of {@link JAXBElement
+	 * }{@code <}{@link ArrayOfInformacionAdicionalTotalMonedaAdicional }{@code >}}
 	 * 
 	 */
-	@XmlElementDecl(namespace = "http://tempuri.org/", name = "notaCreditoDebito", scope = SetNota.class)
-	public JAXBElement<Nota> createSetNotaNotaCreditoDebito(Nota value) {
-		return new JAXBElement<Nota>(_SetNotaNotaCreditoDebito_QNAME, Nota.class, SetNota.class, value);
+	@XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", name = "TotalesMonedaAdicional", scope = InformacionAdicional.class)
+	public JAXBElement<ArrayOfInformacionAdicionalTotalMonedaAdicional> createInformacionAdicionalTotalesMonedaAdicional(
+			ArrayOfInformacionAdicionalTotalMonedaAdicional value) {
+		return new JAXBElement<ArrayOfInformacionAdicionalTotalMonedaAdicional>(
+				_InformacionAdicionalTotalesMonedaAdicional_QNAME,
+				ArrayOfInformacionAdicionalTotalMonedaAdicional.class, InformacionAdicional.class, value);
 	}
 
 	/**
-	 * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
+	 * Create an instance of {@link JAXBElement }{@code <}{@link Result }{@code >}}
 	 * 
 	 */
-	@XmlElementDecl(namespace = "http://tempuri.org/", name = "strRucEmpresa", scope = GetRepresentacionImpresa.class)
-	public JAXBElement<String> createGetRepresentacionImpresaStrRucEmpresa(String value) {
-		return new JAXBElement<String>(_GetRepresentacionImpresaStrRucEmpresa_QNAME, String.class,
-				GetRepresentacionImpresa.class, value);
+	@XmlElementDecl(namespace = "http://tempuri.org/", name = "setBajaDocumentoResult", scope = SetBajaDocumentoResponse.class)
+	public JAXBElement<Result> createSetBajaDocumentoResponseSetBajaDocumentoResult(Result value) {
+		return new JAXBElement<Result>(_SetBajaDocumentoResponseSetBajaDocumentoResult_QNAME, Result.class,
+				SetBajaDocumentoResponse.class, value);
 	}
 
 	/**
-	 * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
+	 * Create an instance of {@link JAXBElement }{@code <}{@link Result }{@code >}}
 	 * 
 	 */
-	@XmlElementDecl(namespace = "http://tempuri.org/", name = "tipoComprobante", scope = GetRepresentacionImpresa.class)
-	public JAXBElement<String> createGetRepresentacionImpresaTipoComprobante(String value) {
-		return new JAXBElement<String>(_GetRepresentacionImpresaTipoComprobante_QNAME, String.class,
-				GetRepresentacionImpresa.class, value);
-	}
-
-	/**
-	 * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
-	 * 
-	 */
-	@XmlElementDecl(namespace = "http://tempuri.org/", name = "correlativo", scope = GetRepresentacionImpresa.class)
-	public JAXBElement<String> createGetRepresentacionImpresaCorrelativo(String value) {
-		return new JAXBElement<String>(_GetRepresentacionImpresaCorrelativo_QNAME, String.class,
-				GetRepresentacionImpresa.class, value);
-	}
-
-	/**
-	 * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
-	 * 
-	 */
-	@XmlElementDecl(namespace = "http://tempuri.org/", name = "serie", scope = GetRepresentacionImpresa.class)
-	public JAXBElement<String> createGetRepresentacionImpresaSerie(String value) {
-		return new JAXBElement<String>(_GetRepresentacionImpresaSerie_QNAME, String.class,
-				GetRepresentacionImpresa.class, value);
-	}
-
-	/**
-	 * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
-	 * 
-	 */
-	@XmlElementDecl(namespace = "http://tempuri.org/", name = "token", scope = GetRepresentacionImpresa.class)
-	public JAXBElement<String> createGetRepresentacionImpresaToken(String value) {
-		return new JAXBElement<String>(_SetEnviarComprobantesSunatToken_QNAME, String.class,
-				GetRepresentacionImpresa.class, value);
+	@XmlElementDecl(namespace = "http://tempuri.org/", name = "setConsultarCDRResult", scope = SetConsultarCDRResponse.class)
+	public JAXBElement<Result> createSetConsultarCDRResponseSetConsultarCDRResult(Result value) {
+		return new JAXBElement<Result>(_SetConsultarCDRResponseSetConsultarCDRResult_QNAME, Result.class,
+				SetConsultarCDRResponse.class, value);
 	}
 
 	/**
@@ -1583,381 +2868,10 @@ public class ObjectFactory {
 	 * Create an instance of {@link JAXBElement }{@code <}{@link Result }{@code >}}
 	 * 
 	 */
-	@XmlElementDecl(namespace = "http://tempuri.org/", name = "setConsultarCDRResult", scope = SetConsultarCDRResponse.class)
-	public JAXBElement<Result> createSetConsultarCDRResponseSetConsultarCDRResult(Result value) {
-		return new JAXBElement<Result>(_SetConsultarCDRResponseSetConsultarCDRResult_QNAME, Result.class,
-				SetConsultarCDRResponse.class, value);
-	}
-
-	/**
-	 * Create an instance of {@link JAXBElement }{@code <}{@link Result }{@code >}}
-	 * 
-	 */
-	@XmlElementDecl(namespace = "http://tempuri.org/", name = "setUpdateStatusCDRResult", scope = SetUpdateStatusCDRResponse.class)
-	public JAXBElement<Result> createSetUpdateStatusCDRResponseSetUpdateStatusCDRResult(Result value) {
-		return new JAXBElement<Result>(_SetUpdateStatusCDRResponseSetUpdateStatusCDRResult_QNAME, Result.class,
-				SetUpdateStatusCDRResponse.class, value);
-	}
-
-	/**
-	 * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
-	 * 
-	 */
-	@XmlElementDecl(namespace = "http://tempuri.org/", name = "fechaEmisionComprobantes", scope = SetBajas.class)
-	public JAXBElement<String> createSetBajasFechaEmisionComprobantes(String value) {
-		return new JAXBElement<String>(_SetBajasFechaEmisionComprobantes_QNAME, String.class, SetBajas.class, value);
-	}
-
-	/**
-	 * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
-	 * 
-	 */
-	@XmlElementDecl(namespace = "http://tempuri.org/", name = "rucEmpresa", scope = SetBajas.class)
-	public JAXBElement<String> createSetBajasRucEmpresa(String value) {
-		return new JAXBElement<String>(_SetEnviarComprobantesSunatRucEmpresa_QNAME, String.class, SetBajas.class,
-				value);
-	}
-
-	/**
-	 * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
-	 * 
-	 */
-	@XmlElementDecl(namespace = "http://tempuri.org/", name = "token", scope = SetBajas.class)
-	public JAXBElement<String> createSetBajasToken(String value) {
-		return new JAXBElement<String>(_SetEnviarComprobantesSunatToken_QNAME, String.class, SetBajas.class, value);
-	}
-
-	/**
-	 * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
-	 * 
-	 */
-	@XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", name = "nombre", scope = InformacionAdicionalTotalMonedaAdicional.class)
-	public JAXBElement<String> createInformacionAdicionalTotalMonedaAdicionalNombre(String value) {
-		return new JAXBElement<String>(_InformacionAdicionalTotalMonedaAdicionalNombre_QNAME, String.class,
-				InformacionAdicionalTotalMonedaAdicional.class, value);
-	}
-
-	/**
-	 * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
-	 * 
-	 */
-	@XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", name = "valor", scope = InformacionAdicionalTotalMonedaAdicional.class)
-	public JAXBElement<String> createInformacionAdicionalTotalMonedaAdicionalValor(String value) {
-		return new JAXBElement<String>(_InformacionAdicionalTotalMonedaAdicionalValor_QNAME, String.class,
-				InformacionAdicionalTotalMonedaAdicional.class, value);
-	}
-
-	/**
-	 * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
-	 * 
-	 */
-	@XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", name = "codigo", scope = InformacionAdicionalTotalMonedaAdicional.class)
-	public JAXBElement<String> createInformacionAdicionalTotalMonedaAdicionalCodigo(String value) {
-		return new JAXBElement<String>(_InformacionAdicionalTotalMonedaAdicionalCodigo_QNAME, String.class,
-				InformacionAdicionalTotalMonedaAdicional.class, value);
-	}
-
-	/**
-	 * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
-	 * 
-	 */
-	@XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", name = "Serie", scope = RetencionInp.class)
-	public JAXBElement<String> createRetencionInpSerie(String value) {
-		return new JAXBElement<String>(_RetencionInpSerie_QNAME, String.class, RetencionInp.class, value);
-	}
-
-	/**
-	 * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
-	 * 
-	 */
-	@XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", name = "tasaRetencion", scope = RetencionInp.class)
-	public JAXBElement<String> createRetencionInpTasaRetencion(String value) {
-		return new JAXBElement<String>(_RetencionInpTasaRetencion_QNAME, String.class, RetencionInp.class, value);
-	}
-
-	/**
-	 * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
-	 * 
-	 */
-	@XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", name = "RazonSocial", scope = RetencionInp.class)
-	public JAXBElement<String> createRetencionInpRazonSocial(String value) {
-		return new JAXBElement<String>(_RetencionInpRazonSocial_QNAME, String.class, RetencionInp.class, value);
-	}
-
-	/**
-	 * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
-	 * 
-	 */
-	@XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", name = "NumeroCorrelativo", scope = RetencionInp.class)
-	public JAXBElement<String> createRetencionInpNumeroCorrelativo(String value) {
-		return new JAXBElement<String>(_RetencionInpNumeroCorrelativo_QNAME, String.class, RetencionInp.class, value);
-	}
-
-	/**
-	 * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
-	 * 
-	 */
-	@XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", name = "id", scope = RetencionInp.class)
-	public JAXBElement<String> createRetencionInpId(String value) {
-		return new JAXBElement<String>(_RetencionInpId_QNAME, String.class, RetencionInp.class, value);
-	}
-
-	/**
-	 * Create an instance of {@link JAXBElement
-	 * }{@code <}{@link ArrayOfRetencionDetalleInp }{@code >}}
-	 * 
-	 */
-	@XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", name = "detalleRetencion", scope = RetencionInp.class)
-	public JAXBElement<ArrayOfRetencionDetalleInp> createRetencionInpDetalleRetencion(
-			ArrayOfRetencionDetalleInp value) {
-		return new JAXBElement<ArrayOfRetencionDetalleInp>(_RetencionInpDetalleRetencion_QNAME,
-				ArrayOfRetencionDetalleInp.class, RetencionInp.class, value);
-	}
-
-	/**
-	 * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
-	 * 
-	 */
-	@XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", name = "registroRetencion", scope = RetencionInp.class)
-	public JAXBElement<String> createRetencionInpRegistroRetencion(String value) {
-		return new JAXBElement<String>(_RetencionInpRegistroRetencion_QNAME, String.class, RetencionInp.class, value);
-	}
-
-	/**
-	 * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
-	 * 
-	 */
-	@XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", name = "correo", scope = RetencionInp.class)
-	public JAXBElement<String> createRetencionInpCorreo(String value) {
-		return new JAXBElement<String>(_RetencionInpCorreo_QNAME, String.class, RetencionInp.class, value);
-	}
-
-	/**
-	 * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
-	 * 
-	 */
-	@XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", name = "FechaEmision", scope = RetencionInp.class)
-	public JAXBElement<String> createRetencionInpFechaEmision(String value) {
-		return new JAXBElement<String>(_RetencionInpFechaEmision_QNAME, String.class, RetencionInp.class, value);
-	}
-
-	/**
-	 * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
-	 * 
-	 */
-	@XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", name = "Ruc", scope = RetencionInp.class)
-	public JAXBElement<String> createRetencionInpRuc(String value) {
-		return new JAXBElement<String>(_RetencionInpRuc_QNAME, String.class, RetencionInp.class, value);
-	}
-
-	/**
-	 * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
-	 * 
-	 */
-	@XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", name = "ImporteTotalRetenidoEnLetras", scope = RetencionInp.class)
-	public JAXBElement<String> createRetencionInpImporteTotalRetenidoEnLetras(String value) {
-		return new JAXBElement<String>(_RetencionInpImporteTotalRetenidoEnLetras_QNAME, String.class,
-				RetencionInp.class, value);
-	}
-
-	/**
-	 * Create an instance of {@link JAXBElement }{@code <}{@link Venta }{@code >}}
-	 * 
-	 */
-	@XmlElementDecl(namespace = "http://tempuri.org/", name = "venta", scope = SetNotaVenta.class)
-	public JAXBElement<Venta> createSetNotaVentaVenta(Venta value) {
-		return new JAXBElement<Venta>(_SetNotaVentaVenta_QNAME, Venta.class, SetNotaVenta.class, value);
-	}
-
-	/**
-	 * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
-	 * 
-	 */
-	@XmlElementDecl(namespace = "http://tempuri.org/", name = "token", scope = SetNotaVenta.class)
-	public JAXBElement<String> createSetNotaVentaToken(String value) {
-		return new JAXBElement<String>(_SetEnviarComprobantesSunatToken_QNAME, String.class, SetNotaVenta.class, value);
-	}
-
-	/**
-	 * Create an instance of {@link JAXBElement }{@code <}{@link Nota }{@code >}}
-	 * 
-	 */
-	@XmlElementDecl(namespace = "http://tempuri.org/", name = "nota", scope = SetNotaVenta.class)
-	public JAXBElement<Nota> createSetNotaVentaNota(Nota value) {
-		return new JAXBElement<Nota>(_SetNotaVentaNota_QNAME, Nota.class, SetNotaVenta.class, value);
-	}
-
-	/**
-	 * Create an instance of {@link JAXBElement }{@code <}{@link Result }{@code >}}
-	 * 
-	 */
-	@XmlElementDecl(namespace = "http://tempuri.org/", name = "setVentaResult", scope = SetVentaResponse.class)
-	public JAXBElement<Result> createSetVentaResponseSetVentaResult(Result value) {
-		return new JAXBElement<Result>(_SetVentaResponseSetVentaResult_QNAME, Result.class, SetVentaResponse.class,
-				value);
-	}
-
-	/**
-	 * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
-	 * 
-	 */
-	@XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", name = "nombres", scope = Cliente.class)
-	public JAXBElement<String> createClienteNombres(String value) {
-		return new JAXBElement<String>(_ClienteNombres_QNAME, String.class, Cliente.class, value);
-	}
-
-	/**
-	 * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
-	 * 
-	 */
-	@XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", name = "direccion", scope = Cliente.class)
-	public JAXBElement<String> createClienteDireccion(String value) {
-		return new JAXBElement<String>(_ClienteDireccion_QNAME, String.class, Cliente.class, value);
-	}
-
-	/**
-	 * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
-	 * 
-	 */
-	@XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", name = "numeroDocumento", scope = Cliente.class)
-	public JAXBElement<String> createClienteNumeroDocumento(String value) {
-		return new JAXBElement<String>(_ClienteNumeroDocumento_QNAME, String.class, Cliente.class, value);
-	}
-
-	/**
-	 * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
-	 * 
-	 */
-	@XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", name = "tipoDocumentoID", scope = Cliente.class)
-	public JAXBElement<String> createClienteTipoDocumentoID(String value) {
-		return new JAXBElement<String>(_ClienteTipoDocumentoID_QNAME, String.class, Cliente.class, value);
-	}
-
-	/**
-	 * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
-	 * 
-	 */
-	@XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", name = "descripcionMotivo", scope = DocumentoBaja.class)
-	public JAXBElement<String> createDocumentoBajaDescripcionMotivo(String value) {
-		return new JAXBElement<String>(_DocumentoBajaDescripcionMotivo_QNAME, String.class, DocumentoBaja.class, value);
-	}
-
-	/**
-	 * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
-	 * 
-	 */
-	@XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", name = "usuarioInsercion", scope = DocumentoBaja.class)
-	public JAXBElement<String> createDocumentoBajaUsuarioInsercion(String value) {
-		return new JAXBElement<String>(_VentaUsuarioInsercion_QNAME, String.class, DocumentoBaja.class, value);
-	}
-
-	/**
-	 * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
-	 * 
-	 */
-	@XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", name = "fechaEmision", scope = DocumentoBaja.class)
-	public JAXBElement<String> createDocumentoBajaFechaEmision(String value) {
-		return new JAXBElement<String>(_VentaFechaEmision_QNAME, String.class, DocumentoBaja.class, value);
-	}
-
-	/**
-	 * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
-	 * 
-	 */
-	@XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", name = "usuarioModificacion", scope = DocumentoBaja.class)
-	public JAXBElement<String> createDocumentoBajaUsuarioModificacion(String value) {
-		return new JAXBElement<String>(_VentaUsuarioModificacion_QNAME, String.class, DocumentoBaja.class, value);
-	}
-
-	/**
-	 * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
-	 * 
-	 */
-	@XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", name = "numeroCorrelativo", scope = DocumentoBaja.class)
-	public JAXBElement<String> createDocumentoBajaNumeroCorrelativo(String value) {
-		return new JAXBElement<String>(_VentaNumeroCorrelativo_QNAME, String.class, DocumentoBaja.class, value);
-	}
-
-	/**
-	 * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
-	 * 
-	 */
-	@XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", name = "rucEmpresa", scope = DocumentoBaja.class)
-	public JAXBElement<String> createDocumentoBajaRucEmpresa(String value) {
-		return new JAXBElement<String>(_VentaRucEmpresa_QNAME, String.class, DocumentoBaja.class, value);
-	}
-
-	/**
-	 * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
-	 * 
-	 */
-	@XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", name = "numeroSerie", scope = DocumentoBaja.class)
-	public JAXBElement<String> createDocumentoBajaNumeroSerie(String value) {
-		return new JAXBElement<String>(_VentaNumeroSerie_QNAME, String.class, DocumentoBaja.class, value);
-	}
-
-	/**
-	 * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
-	 * 
-	 */
-	@XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", name = "tipoDocumentoID", scope = DocumentoBaja.class)
-	public JAXBElement<String> createDocumentoBajaTipoDocumentoID(String value) {
-		return new JAXBElement<String>(_ClienteTipoDocumentoID_QNAME, String.class, DocumentoBaja.class, value);
-	}
-
-	/**
-	 * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
-	 * 
-	 */
-	@XmlElementDecl(namespace = "http://tempuri.org/", name = "fechaEmisionComprobantes", scope = SetResumenes.class)
-	public JAXBElement<String> createSetResumenesFechaEmisionComprobantes(String value) {
-		return new JAXBElement<String>(_SetBajasFechaEmisionComprobantes_QNAME, String.class, SetResumenes.class,
-				value);
-	}
-
-	/**
-	 * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
-	 * 
-	 */
-	@XmlElementDecl(namespace = "http://tempuri.org/", name = "rucEmpresa", scope = SetResumenes.class)
-	public JAXBElement<String> createSetResumenesRucEmpresa(String value) {
-		return new JAXBElement<String>(_SetEnviarComprobantesSunatRucEmpresa_QNAME, String.class, SetResumenes.class,
-				value);
-	}
-
-	/**
-	 * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
-	 * 
-	 */
-	@XmlElementDecl(namespace = "http://tempuri.org/", name = "token", scope = SetResumenes.class)
-	public JAXBElement<String> createSetResumenesToken(String value) {
-		return new JAXBElement<String>(_SetEnviarComprobantesSunatToken_QNAME, String.class, SetResumenes.class, value);
-	}
-
-	/**
-	 * Create an instance of {@link JAXBElement
-	 * }{@code <}{@link ArrayOfInformacionAdicionalPropiedadAdicional }{@code >}}
-	 * 
-	 */
-	@XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", name = "PropiedadesAdicionales", scope = InformacionAdicional.class)
-	public JAXBElement<ArrayOfInformacionAdicionalPropiedadAdicional> createInformacionAdicionalPropiedadesAdicionales(
-			ArrayOfInformacionAdicionalPropiedadAdicional value) {
-		return new JAXBElement<ArrayOfInformacionAdicionalPropiedadAdicional>(
-				_InformacionAdicionalPropiedadesAdicionales_QNAME, ArrayOfInformacionAdicionalPropiedadAdicional.class,
-				InformacionAdicional.class, value);
-	}
-
-	/**
-	 * Create an instance of {@link JAXBElement
-	 * }{@code <}{@link ArrayOfInformacionAdicionalTotalMonedaAdicional }{@code >}}
-	 * 
-	 */
-	@XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", name = "TotalesMonedaAdicional", scope = InformacionAdicional.class)
-	public JAXBElement<ArrayOfInformacionAdicionalTotalMonedaAdicional> createInformacionAdicionalTotalesMonedaAdicional(
-			ArrayOfInformacionAdicionalTotalMonedaAdicional value) {
-		return new JAXBElement<ArrayOfInformacionAdicionalTotalMonedaAdicional>(
-				_InformacionAdicionalTotalesMonedaAdicional_QNAME,
-				ArrayOfInformacionAdicionalTotalMonedaAdicional.class, InformacionAdicional.class, value);
+	@XmlElementDecl(namespace = "http://tempuri.org/", name = "setGRETransportistaResult", scope = SetGRETransportistaResponse.class)
+	public JAXBElement<Result> createSetGRETransportistaResponseSetGRETransportistaResult(Result value) {
+		return new JAXBElement<Result>(_SetGRETransportistaResponseSetGRETransportistaResult_QNAME, Result.class,
+				SetGRETransportistaResponse.class, value);
 	}
 
 	/**
@@ -2094,59 +3008,74 @@ public class ObjectFactory {
 	 * Create an instance of {@link JAXBElement }{@code <}{@link Result }{@code >}}
 	 * 
 	 */
-	@XmlElementDecl(namespace = "http://tempuri.org/", name = "setNotaResult", scope = SetNotaResponse.class)
-	public JAXBElement<Result> createSetNotaResponseSetNotaResult(Result value) {
-		return new JAXBElement<Result>(_SetNotaResponseSetNotaResult_QNAME, Result.class, SetNotaResponse.class, value);
+	@XmlElementDecl(namespace = "http://tempuri.org/", name = "setVentaResult", scope = SetVentaResponse.class)
+	public JAXBElement<Result> createSetVentaResponseSetVentaResult(Result value) {
+		return new JAXBElement<Result>(_SetVentaResponseSetVentaResult_QNAME, Result.class, SetVentaResponse.class,
+				value);
 	}
 
 	/**
 	 * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
 	 * 
 	 */
-	@XmlElementDecl(namespace = "http://tempuri.org/", name = "rucEmpresa", scope = BuscarDetalleComprobante.class)
-	public JAXBElement<String> createBuscarDetalleComprobanteRucEmpresa(String value) {
-		return new JAXBElement<String>(_SetEnviarComprobantesSunatRucEmpresa_QNAME, String.class,
-				BuscarDetalleComprobante.class, value);
+	@XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", name = "nombres", scope = GREPiloto.class)
+	public JAXBElement<String> createGREPilotoNombres(String value) {
+		return new JAXBElement<String>(_ClienteNombres_QNAME, String.class, GREPiloto.class, value);
 	}
 
 	/**
 	 * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
 	 * 
 	 */
-	@XmlElementDecl(namespace = "http://tempuri.org/", name = "tipoComprobante", scope = BuscarDetalleComprobante.class)
-	public JAXBElement<String> createBuscarDetalleComprobanteTipoComprobante(String value) {
-		return new JAXBElement<String>(_GetRepresentacionImpresaTipoComprobante_QNAME, String.class,
-				BuscarDetalleComprobante.class, value);
+	@XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", name = "numeroLicencia", scope = GREPiloto.class)
+	public JAXBElement<String> createGREPilotoNumeroLicencia(String value) {
+		return new JAXBElement<String>(_GREPilotoNumeroLicencia_QNAME, String.class, GREPiloto.class, value);
 	}
 
 	/**
 	 * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
 	 * 
 	 */
-	@XmlElementDecl(namespace = "http://tempuri.org/", name = "correlativo", scope = BuscarDetalleComprobante.class)
-	public JAXBElement<String> createBuscarDetalleComprobanteCorrelativo(String value) {
-		return new JAXBElement<String>(_GetRepresentacionImpresaCorrelativo_QNAME, String.class,
-				BuscarDetalleComprobante.class, value);
+	@XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", name = "titulo", scope = GREPiloto.class)
+	public JAXBElement<String> createGREPilotoTitulo(String value) {
+		return new JAXBElement<String>(_GREPilotoTitulo_QNAME, String.class, GREPiloto.class, value);
 	}
 
 	/**
 	 * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
 	 * 
 	 */
-	@XmlElementDecl(namespace = "http://tempuri.org/", name = "serie", scope = BuscarDetalleComprobante.class)
-	public JAXBElement<String> createBuscarDetalleComprobanteSerie(String value) {
-		return new JAXBElement<String>(_GetRepresentacionImpresaSerie_QNAME, String.class,
-				BuscarDetalleComprobante.class, value);
+	@XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", name = "numeroDocumento", scope = GREPiloto.class)
+	public JAXBElement<String> createGREPilotoNumeroDocumento(String value) {
+		return new JAXBElement<String>(_ClienteNumeroDocumento_QNAME, String.class, GREPiloto.class, value);
 	}
 
 	/**
 	 * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
 	 * 
 	 */
-	@XmlElementDecl(namespace = "http://tempuri.org/", name = "token", scope = BuscarDetalleComprobante.class)
-	public JAXBElement<String> createBuscarDetalleComprobanteToken(String value) {
-		return new JAXBElement<String>(_SetEnviarComprobantesSunatToken_QNAME, String.class,
-				BuscarDetalleComprobante.class, value);
+	@XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", name = "tipoDocumento", scope = GREPiloto.class)
+	public JAXBElement<String> createGREPilotoTipoDocumento(String value) {
+		return new JAXBElement<String>(_GRETipoDocumento_QNAME, String.class, GREPiloto.class, value);
+	}
+
+	/**
+	 * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
+	 * 
+	 */
+	@XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", name = "apellidos", scope = GREPiloto.class)
+	public JAXBElement<String> createGREPilotoApellidos(String value) {
+		return new JAXBElement<String>(_GREPilotoApellidos_QNAME, String.class, GREPiloto.class, value);
+	}
+
+	/**
+	 * Create an instance of {@link JAXBElement }{@code <}{@link Result }{@code >}}
+	 * 
+	 */
+	@XmlElementDecl(namespace = "http://tempuri.org/", name = "setUpdateStatusCDRResult", scope = SetUpdateStatusCDRResponse.class)
+	public JAXBElement<Result> createSetUpdateStatusCDRResponseSetUpdateStatusCDRResult(Result value) {
+		return new JAXBElement<Result>(_SetUpdateStatusCDRResponseSetUpdateStatusCDRResult_QNAME, Result.class,
+				SetUpdateStatusCDRResponse.class, value);
 	}
 
 	/**
@@ -2180,149 +3109,6 @@ public class ObjectFactory {
 	}
 
 	/**
-	 * Create an instance of {@link JAXBElement }{@code <}{@link Result }{@code >}}
-	 * 
-	 */
-	@XmlElementDecl(namespace = "http://tempuri.org/", name = "setBajaDocumentoResult", scope = SetBajaDocumentoResponse.class)
-	public JAXBElement<Result> createSetBajaDocumentoResponseSetBajaDocumentoResult(Result value) {
-		return new JAXBElement<Result>(_SetBajaDocumentoResponseSetBajaDocumentoResult_QNAME, Result.class,
-				SetBajaDocumentoResponse.class, value);
-	}
-
-	/**
-	 * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
-	 * 
-	 */
-	@XmlElementDecl(namespace = "http://tempuri.org/", name = "rucEmpresa", scope = SetUpdateStatusCDR.class)
-	public JAXBElement<String> createSetUpdateStatusCDRRucEmpresa(String value) {
-		return new JAXBElement<String>(_SetEnviarComprobantesSunatRucEmpresa_QNAME, String.class,
-				SetUpdateStatusCDR.class, value);
-	}
-
-	/**
-	 * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
-	 * 
-	 */
-	@XmlElementDecl(namespace = "http://tempuri.org/", name = "token", scope = SetUpdateStatusCDR.class)
-	public JAXBElement<String> createSetUpdateStatusCDRToken(String value) {
-		return new JAXBElement<String>(_SetEnviarComprobantesSunatToken_QNAME, String.class, SetUpdateStatusCDR.class,
-				value);
-	}
-
-	/**
-	 * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
-	 * 
-	 */
-	@XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", name = "codigoProducto", scope = DetalleVenta.class)
-	public JAXBElement<String> createDetalleVentaCodigoProducto(String value) {
-		return new JAXBElement<String>(_DetalleVentaCodigoProducto_QNAME, String.class, DetalleVenta.class, value);
-	}
-
-	/**
-	 * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
-	 * 
-	 */
-	@XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", name = "codigoTipoPrecio", scope = DetalleVenta.class)
-	public JAXBElement<String> createDetalleVentaCodigoTipoPrecio(String value) {
-		return new JAXBElement<String>(_DetalleVentaCodigoTipoPrecio_QNAME, String.class, DetalleVenta.class, value);
-	}
-
-	/**
-	 * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
-	 * 
-	 */
-	@XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", name = "unidadMedida", scope = DetalleVenta.class)
-	public JAXBElement<String> createDetalleVentaUnidadMedida(String value) {
-		return new JAXBElement<String>(_DetalleVentaUnidadMedida_QNAME, String.class, DetalleVenta.class, value);
-	}
-
-	/**
-	 * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
-	 * 
-	 */
-	@XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", name = "codigoAfectacionIgv", scope = DetalleVenta.class)
-	public JAXBElement<String> createDetalleVentaCodigoAfectacionIgv(String value) {
-		return new JAXBElement<String>(_DetalleVentaCodigoAfectacionIgv_QNAME, String.class, DetalleVenta.class, value);
-	}
-
-	/**
-	 * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
-	 * 
-	 */
-	@XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", name = "descripcion", scope = DetalleVenta.class)
-	public JAXBElement<String> createDetalleVentaDescripcion(String value) {
-		return new JAXBElement<String>(_DetalleVentaDescripcion_QNAME, String.class, DetalleVenta.class, value);
-	}
-
-	/**
-	 * Create an instance of {@link JAXBElement }{@code <}{@link DocumentoBaja
-	 * }{@code >}}
-	 * 
-	 */
-	@XmlElementDecl(namespace = "http://tempuri.org/", name = "documentoBaja", scope = SetBajaDocumento.class)
-	public JAXBElement<DocumentoBaja> createSetBajaDocumentoDocumentoBaja(DocumentoBaja value) {
-		return new JAXBElement<DocumentoBaja>(_SetBajaDocumentoDocumentoBaja_QNAME, DocumentoBaja.class,
-				SetBajaDocumento.class, value);
-	}
-
-	/**
-	 * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
-	 * 
-	 */
-	@XmlElementDecl(namespace = "http://tempuri.org/", name = "token", scope = SetBajaDocumento.class)
-	public JAXBElement<String> createSetBajaDocumentoToken(String value) {
-		return new JAXBElement<String>(_SetEnviarComprobantesSunatToken_QNAME, String.class, SetBajaDocumento.class,
-				value);
-	}
-
-	/**
-	 * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
-	 * 
-	 */
-	@XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", name = "id", scope = DocumentCDR.class)
-	public JAXBElement<String> createDocumentCDRId(String value) {
-		return new JAXBElement<String>(_RetencionInpId_QNAME, String.class, DocumentCDR.class, value);
-	}
-
-	/**
-	 * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
-	 * 
-	 */
-	@XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", name = "rucEmpresa", scope = DocumentCDR.class)
-	public JAXBElement<String> createDocumentCDRRucEmpresa(String value) {
-		return new JAXBElement<String>(_VentaRucEmpresa_QNAME, String.class, DocumentCDR.class, value);
-	}
-
-	/**
-	 * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
-	 * 
-	 */
-	@XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", name = "ticket", scope = DocumentCDR.class)
-	public JAXBElement<String> createDocumentCDRTicket(String value) {
-		return new JAXBElement<String>(_DocumentCDRTicket_QNAME, String.class, DocumentCDR.class, value);
-	}
-
-	/**
-	 * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
-	 * 
-	 */
-	@XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", name = "NroCuota", scope = InformacionCredito.class)
-	public JAXBElement<String> createInformacionCreditoNroCuota(String value) {
-		return new JAXBElement<String>(_InformacionCreditoNroCuota_QNAME, String.class, InformacionCredito.class,
-				value);
-	}
-
-	/**
-	 * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
-	 * 
-	 */
-	@XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/FEService.Input", name = "FechaVencimiento", scope = InformacionCredito.class)
-	public JAXBElement<String> createInformacionCreditoFechaVencimiento(String value) {
-		return new JAXBElement<String>(_InformacionCreditoFechaVencimiento_QNAME, String.class,
-				InformacionCredito.class, value);
-	}
-
-	/**
 	 * Create an instance of {@link JAXBElement }{@code <}{@link Venta }{@code >}}
 	 * 
 	 */
@@ -2337,7 +3123,7 @@ public class ObjectFactory {
 	 */
 	@XmlElementDecl(namespace = "http://tempuri.org/", name = "token", scope = SetVenta.class)
 	public JAXBElement<String> createSetVentaToken(String value) {
-		return new JAXBElement<String>(_SetEnviarComprobantesSunatToken_QNAME, String.class, SetVenta.class, value);
+		return new JAXBElement<String>(_GetRepresentacionImpresaToken_QNAME, String.class, SetVenta.class, value);
 	}
 
 }

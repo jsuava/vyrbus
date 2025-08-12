@@ -22,6 +22,7 @@ import javax.xml.bind.annotation.XmlType;
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence>
  *         &lt;element name="token" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+ *         &lt;element name="isResumenBajaBoleta" type="{http://www.w3.org/2001/XMLSchema}boolean" minOccurs="0"/>
  *         &lt;element name="fechaEmisionComprobantes" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *         &lt;element name="rucEmpresa" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *       &lt;/sequence>
@@ -33,12 +34,13 @@ import javax.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "", propOrder = { "token", "fechaEmisionComprobantes", "rucEmpresa" })
+@XmlType(name = "", propOrder = { "token", "isResumenBajaBoleta", "fechaEmisionComprobantes", "rucEmpresa" })
 @XmlRootElement(name = "setResumenes")
 public class SetResumenes {
 
 	@XmlElementRef(name = "token", namespace = "http://tempuri.org/", type = JAXBElement.class)
 	protected JAXBElement<String> token;
+	protected Boolean isResumenBajaBoleta;
 	@XmlElementRef(name = "fechaEmisionComprobantes", namespace = "http://tempuri.org/", type = JAXBElement.class)
 	protected JAXBElement<String> fechaEmisionComprobantes;
 	@XmlElementRef(name = "rucEmpresa", namespace = "http://tempuri.org/", type = JAXBElement.class)
@@ -64,6 +66,26 @@ public class SetResumenes {
 	 */
 	public void setToken(JAXBElement<String> value) {
 		this.token = ((JAXBElement<String>) value);
+	}
+
+	/**
+	 * Gets the value of the isResumenBajaBoleta property.
+	 * 
+	 * @return possible object is {@link Boolean }
+	 * 
+	 */
+	public Boolean isIsResumenBajaBoleta() {
+		return isResumenBajaBoleta;
+	}
+
+	/**
+	 * Sets the value of the isResumenBajaBoleta property.
+	 * 
+	 * @param value allowed object is {@link Boolean }
+	 * 
+	 */
+	public void setIsResumenBajaBoleta(Boolean value) {
+		this.isResumenBajaBoleta = value;
 	}
 
 	/**

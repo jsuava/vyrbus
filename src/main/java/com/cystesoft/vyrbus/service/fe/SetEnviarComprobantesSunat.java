@@ -23,6 +23,7 @@ import javax.xml.bind.annotation.XmlType;
  *       &lt;sequence>
  *         &lt;element name="token" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *         &lt;element name="rucEmpresa" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+ *         &lt;element name="fechaProceso" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *       &lt;/sequence>
  *     &lt;/restriction>
  *   &lt;/complexContent>
@@ -32,7 +33,7 @@ import javax.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "", propOrder = { "token", "rucEmpresa" })
+@XmlType(name = "", propOrder = { "token", "rucEmpresa", "fechaProceso" })
 @XmlRootElement(name = "setEnviarComprobantesSunat")
 public class SetEnviarComprobantesSunat {
 
@@ -40,6 +41,8 @@ public class SetEnviarComprobantesSunat {
 	protected JAXBElement<String> token;
 	@XmlElementRef(name = "rucEmpresa", namespace = "http://tempuri.org/", type = JAXBElement.class)
 	protected JAXBElement<String> rucEmpresa;
+	@XmlElementRef(name = "fechaProceso", namespace = "http://tempuri.org/", type = JAXBElement.class)
+	protected JAXBElement<String> fechaProceso;
 
 	/**
 	 * Gets the value of the token property.
@@ -83,6 +86,28 @@ public class SetEnviarComprobantesSunat {
 	 */
 	public void setRucEmpresa(JAXBElement<String> value) {
 		this.rucEmpresa = ((JAXBElement<String>) value);
+	}
+
+	/**
+	 * Gets the value of the fechaProceso property.
+	 * 
+	 * @return possible object is {@link JAXBElement }{@code <}{@link String
+	 *         }{@code >}
+	 * 
+	 */
+	public JAXBElement<String> getFechaProceso() {
+		return fechaProceso;
+	}
+
+	/**
+	 * Sets the value of the fechaProceso property.
+	 * 
+	 * @param value allowed object is {@link JAXBElement }{@code <}{@link String
+	 *              }{@code >}
+	 * 
+	 */
+	public void setFechaProceso(JAXBElement<String> value) {
+		this.fechaProceso = ((JAXBElement<String>) value);
 	}
 
 }
