@@ -3973,14 +3973,20 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 				"SELECT \r\n" + 
 				"      vp.d_fecliq FECHA, decode(vp.tipcom_id, 8, '07') TD, \r\n" + 
 				"      substr(vp.c_numboleto, 1, 4) SERIE, substr(vp.c_numboleto, 6, 8) NUMERO, \r\n" + 
-				"      p.c_numdoc DNI, p.c_nomape RAZON_SOCIAL, vp.n_imppag EXONERADO, 0.00 V_VENTA, \r\n" + 
-				"      0.00 IGV, vp.n_imppag TOTAL, r.c_destino DESTINO, \r\n" + 
+				"      CASE substr(vp.c_numboleto,1,1) WHEN 'F' then c.c_numdoc WHEN 'B' THEN p.c_numdoc END DNI, \r\n"+
+				"	   CASE substr(vp.c_numboleto,1,1) WHEN 'F' then c.c_razsoc WHEN 'B' THEN p.c_nomape END RAZON_SOCIAL, \r\n" +
+				"	   case nvl(vp.n_igv,0) when 0 then vp.n_imppag else 0.00 end EXONERADO, \r\n" +
+				"	   CASE nvl(vp.n_igv,0) WHEN 0 THEN vp.n_imppag else vp.n_imppag-vp.n_igv END V_VENTA, \r\n" + 
+				"      CASE nvl(vp.n_igv,0) when 0 then 0.00 else vp.n_igv end IGV, \r\n" +
+				"	   vp.n_imppag TOTAL, \r\n" +
+				"	   r.c_destino DESTINO, \r\n" + 
 				"      to_char(vp.n_numpiso+1, '9')||'-'||trim(to_char(vp.n_numasiento, '99')) ASTO, \r\n" + 
 				"      vp.tipcom_id, vp.tipmov_id\r\n" + 
 				"from \r\n" + 
 				"      vrtvenpas vp \r\n" + 
 				"      INNER JOIN vrmpasajero p ON (vp.pasajero_id = p.pasajero_id)\r\n" + 
-				"      INNER JOIN vrmruta r ON (vp.ruta_id = r.ruta_id)\r\n" + 
+				"      INNER JOIN vrmruta r ON (vp.ruta_id = r.ruta_id)\r\n" +
+				"	   LEFT JOIN vrmcliente c ON (vp.cliente_id = c.cliente_id) \r\n" + 
 				"where \r\n" + 
 				"      vp.d_fecliq between to_date('"+fInicio+"', 'dd/MM/yyyy') \r\n" + 
 				"      AND to_date('"+fFin+"', 'dd/MM/yyyy')\r\n" + 
@@ -4103,7 +4109,7 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 	public List<Manifiesto> buscarLiquidacionBus(String fechaInicio,String fechaFin, String codigoBus) throws Exception {
 		String sql = "SELECT it.d_Fecpar fecha_salida, bs.c_codigo bus_codigo, bs.c_numplaca bus_placa "
 						 + ",ma.c_piloto piloto, ma.c_copiloto copiloto, SUM(vp.n_imppag) total_soles, rt.c_origen, rt.c_destino "
-						 + ",count(vp.c_numboleto) cant "
+						 + ",count(vp.c_numboleto) cant, it.c_horpar "
 				   + "FROM vrtvenpas vp "
 				     + "INNER JOIN (Select max(vp.venpas_id) venpas_id From vrtvenpas vp Group By vp.c_numcontrol ) "
 				                  + "vpx ON (vpx.venpas_id = vp.venpas_id)  "
@@ -4119,8 +4125,8 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 				     + "AND ma.c_estreg = 'A' "
 				     + "AND it.n_esanulado = 0 AND it.c_estreg = 'A' "
 				     + "AND bs.c_codigo = NVL("+(codigoBus!=null?"'"+ codigoBus + "'": "Null")+", bs.c_codigo) "
-				   + "GROUP BY it.d_Fecpar, bs.c_codigo, bs.c_numplaca, ma.c_piloto, ma.c_copiloto, rt.c_origen, rt.c_destino "
-				   + "ORDER BY it.d_Fecpar, bs.c_codigo, ma.c_piloto, ma.c_copiloto";
+				   + "GROUP BY it.d_Fecpar, it.c_horpar, bs.c_codigo, bs.c_numplaca, ma.c_piloto, ma.c_copiloto, rt.c_origen, rt.c_destino "
+				   + "ORDER BY it.d_Fecpar, it.c_horpar, bs.c_codigo, ma.c_piloto, ma.c_copiloto";
 		log.info("buscarLiquidacionBus: "+sql);
 
 		List<?> result = getSession().createSQLQuery(sql).list();
@@ -4131,6 +4137,7 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 
 			Itinerario itinerario= new Itinerario();
 			itinerario.setFechaPartida((Date)obj[0]);
+			itinerario.setHoraPartida(obj[9].toString());
 			Bus bus = new Bus();
 			bus.setCodigo(obj[1].toString());
 			bus.setNumeroPlaca(obj[2].toString());

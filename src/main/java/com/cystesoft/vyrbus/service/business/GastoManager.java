@@ -98,6 +98,17 @@ public interface GastoManager {
 	 * @throws Exception
 	 */
 	public Double BuscarTotalGastos(String fecha,Integer idUsuario, Integer idAgencia)throws Exception;
+	
+	/**
+	 * Buscar la suma total otros ingreso en soles a la lliquidacion
+	 * @param fecha		: Fecha de la liquidación
+	 * @param idUsuario	: Identicador del usuario
+	 * @param idAgencia	: Identificador de la agencia
+	 * @return	suma total de tdos los gastos ingresados a la liquidación
+	 * @throws Exception
+	 */
+	public Double BuscarTotalOtrosIngresos(String fecha, Integer idUsuario,Integer idAgencia) throws Exception;
+	
 	/**
 	 * Obtiene los gastos de la liquidacion
 	 * @param fechaLiquidacion	: Fecha de la liquidacion

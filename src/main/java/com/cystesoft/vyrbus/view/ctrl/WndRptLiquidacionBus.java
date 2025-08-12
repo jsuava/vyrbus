@@ -91,12 +91,19 @@ public class WndRptLiquidacionBus extends WndBase {
 
 			//Buscar en Carga (Transcar)
 			TreeMap<String, Manifiesto> resultCarga = ServiceLocator.getTranscarWebManager().buscarLiquidacionBus(fechaInicio, fechaFin, codigoBus);
+			
+			Double totalSolesCarga = .00;
 
 			for(Manifiesto manifiesto : resultPasajes){
 				Listitem item = new Listitem();
 				Listcell cell = new Listcell(Constantes.FORMAT_DATE.format(manifiesto.getItinerario().getFechaPartida()));
 				cell.setStyle("font-size:11px !important");
 				item.appendChild(cell);
+				
+				cell = new Listcell(manifiesto.getItinerario().getHoraPartida());
+				cell.setStyle("font-size:11px !important");
+				item.appendChild(cell);
+				
 				cell = new Listcell(manifiesto.getBus().getCodigo()+"-"+manifiesto.getBus().getNumeroPlaca());
 				cell.setStyle("font-size:11px !important");
 				item.appendChild(cell);
@@ -115,7 +122,7 @@ public class WndRptLiquidacionBus extends WndBase {
 				cell.setStyle("font-size:11px !important");
 				item.appendChild(cell);
 				
-				Double totalSolesCarga = .00;
+				totalSolesCarga = .00;
 				String key = Constantes.FORMAT_DATE.format(manifiesto.getItinerario().getFechaPartida()) + "-" +manifiesto.getBus().getCodigo();
 				Manifiesto manifiestoCarga = resultCarga.get(key);
 				if(manifiestoCarga!=null)

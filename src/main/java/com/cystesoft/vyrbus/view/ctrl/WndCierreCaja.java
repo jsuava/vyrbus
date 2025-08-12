@@ -182,7 +182,7 @@ public class WndCierreCaja extends WndBase {
 
 
 	/**
-	 * Busca Liquidaciï¿½n, segï¿½n los parametros seleccionados.
+	 * Busca Liquidación, según los parametros seleccionados.
 	 * @throws Exception
 	 */
 	public void buscarLiquidacion() throws Exception{
@@ -275,7 +275,7 @@ public class WndCierreCaja extends WndBase {
 				}
 			});
 
-			/*Impresiï¿½n*/
+			/*Impresión*/
 			toolbarbutton =new Toolbarbutton();
 			toolbarbutton.setAttribute(ATRIBUTTE_LIQUIDACION, liquidacion);
 			toolbarbutton.setImage("/resources/mp_imprimir.png");
@@ -351,7 +351,7 @@ public class WndCierreCaja extends WndBase {
 									liquidacionTurnoCarga.setFechaApertura(liquidacion.getFechaLiquidacion());
 									TranscarUsuarioPersonal usuarioPersonal = ServiceLocator.getTranscarWebManager().buscarUsuario(liquidacion.getUsuario().getLogin());
 									if(usuarioPersonal==null) {
-										DlgMessage.information("No se puede reaperturar la liqudiaciï¿½n de Carga, debido a que el usuario "+getUsuario().getLogin()+" no existe en el sistema de carga.");
+										DlgMessage.information("No se puede reaperturar la liqudiación de Carga, debido a que el usuario "+getUsuario().getLogin()+" no existe en el sistema de carga.");
 										return;
 									}
 
@@ -426,7 +426,7 @@ public class WndCierreCaja extends WndBase {
 		listhead.appendChild(listheader);
 		lbxVerificaCorrelativos.appendChild(listhead);
 		listheader= new Listheader();
-		listheader.setLabel("Nï¿½MERO FALTANTES");
+		listheader.setLabel("NUMERO FALTANTES");
 		listhead.appendChild(listheader);
 		lbxVerificaCorrelativos.appendChild(listhead);
 
@@ -450,7 +450,7 @@ public class WndCierreCaja extends WndBase {
 					String c_serie=vp.getNumeroSerie();
 //					c_inicio=vp.getNumeroBoleto();
 
-					/*Obtiene el ultimo nï¿½mero segun el rango configurador en la variable "parametro" y valida los correlativos faltantes*/
+					/*Obtiene el ultimo número segun el rango configurador en la variable "parametro" y valida los correlativos faltantes*/
 					String c_serieBack="";
 					for(int z=i; z<lstResul.size(); z++){
 //						x++;
@@ -534,7 +534,7 @@ public class WndCierreCaja extends WndBase {
 	private Window createWindowCortes(Listbox listbox, final Liquidacion liquidacion){
 		final Window window = new Window("BOLETOS FALTANTES", "none", true);
 		window.setWidth("450px");
-		Label label= new Label("Se a encontrado Boletos faltantes dentro de la liquidaciï¿½n, si desea omitirlos pulse el botï¿½n Continuar, caso contrario Cancelar.");
+		Label label= new Label("Se a encontrado Boletos faltantes dentro de la liquidación, si desea omitirlos pulse el botón Continuar, caso contrario Cancelar.");
 		label.setStyle("font-size:11px !important; font-weight: bold");
 		window.appendChild(label);
 		window.appendChild(new Separator());
@@ -593,7 +593,7 @@ public class WndCierreCaja extends WndBase {
 	@SuppressWarnings("deprecation")
 	private Window createWindowSolicitaPassword(final Liquidacion liquidacion){
 		final Window window = new Window();
-		window.setTitle("::: Identificaciï¿½n del Usuario :::");
+		window.setTitle("::: Identificación del Usuario :::");
 		window.setBorder(true);
 		window.setWidth("350px");
 
@@ -774,7 +774,7 @@ public class WndCierreCaja extends WndBase {
 	@SuppressWarnings("deprecation")
 	private Window createWindowPrintLiquidacion(final Liquidacion liquidacion){
 		final Window window = new Window();
-		window.setTitle("::: Impresiï¿½n :::");
+		window.setTitle("::: Impresión :::");
 		window.setBorder(true);
 		window.setWidth("350px");
 
@@ -796,13 +796,13 @@ public class WndCierreCaja extends WndBase {
 		grid.appendChild(columns);
 
 		final Radiogroup radiogroup= new Radiogroup();
-		Radio radioTermico = new Radio("Tï¿½rmico");
+		Radio radioTermico = new Radio("Térmico");
 		radioTermico.setChecked(true);
 		final Radio radioMatrical = new Radio("Matricial");
 		radiogroup.appendChild(radioTermico);
 		radiogroup.appendChild(radioMatrical);
 
-		Label label= new Label("Tipo de impresiï¿½n (*) :");
+		Label label= new Label("Tipo de impresión (*) :");
 		label.setSclass("label-size11");
 		row=new Row();
 		row.appendChild(label);
@@ -898,7 +898,7 @@ public class WndCierreCaja extends WndBase {
 	private  Window createWindowIngresMonto(final Liquidacion liquidacion) throws Exception {
 		final Window window = new Window();
 		window.setWidth("350px");
-		window.setTitle("::: Cierre Liquidaciï¿½n de Turno :::");
+		window.setTitle("::: Cierre Liquidación de Turno :::");
 //		window.setWidth("350px");
 		window.setBorder(true);
 
@@ -1035,7 +1035,7 @@ public class WndCierreCaja extends WndBase {
 	 * Realiza la peticion del cierre de la liquidacion
 	 * @param liquidacion		: Instancia del objeto liquidacion.
 	 * @param montoIngresado	: Monto con el cual el usuario esta cerrando la liquidacion.
-	 * @param window 			: objeto window del cual esta llamando a este mï¿½todo.
+	 * @param window 			: objeto window del cual esta llamando a este método.
 	 * @throws Exception
 	 */
 	private final void cerrarLiquidacion(final Liquidacion liquidacion, double montoIngresado, Window window, double montoIngresadoDolares) throws Exception{
@@ -1068,7 +1068,7 @@ public class WndCierreCaja extends WndBase {
 //			ServiceLocator.getVentaSeguroManager().cerrarLiquidacion(vsLiquidacion);
 //		}
 
-		/*Solicita confirmaciï¿½n del usuario para la impresion de la liquidacion*/
+		/*Solicita confirmación del usuario para la impresion de la liquidacion*/
 		Messagebox.show(Messages.getString("WndCierreCaja.Question.Impresion"),DlgMessage.NOMBREAPLICACION,DlgMessage.BTN_YESNO,Messagebox.QUESTION,DlgMessage.BTN_DEFAULT_NO,new EventListener<Event>() {
 			@Override
 			public void onEvent(Event event)throws Exception {
@@ -1100,7 +1100,7 @@ public class WndCierreCaja extends WndBase {
 //			String urlFile = Constantes.URL_FORMATOS_LIQUIDACION+Constantes.CLAVE_PAHT+liquidacion.getId()+".txt";
 //			Window win = (Window)Executions.createComponents("imprimir.zul", null, null);
 //			win.setAttribute("formato", WndImprimir.FORMAT_LIQUIDACION_TURNO);
-//			win.setAttribute("msg", "Imprimiendo la Liquidaciï¿½n de Turno... ");
+//			win.setAttribute("msg", "Imprimiendo la Liquidación de Turno... ");
 //			win.setAttribute("urlDocumento", urlFile);
 //			win.doPopup();
 //		}else{

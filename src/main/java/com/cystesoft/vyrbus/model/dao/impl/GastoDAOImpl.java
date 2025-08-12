@@ -327,6 +327,26 @@ public class GastoDAOImpl extends GenericDAOImpl implements GastoDAO {
 		else
 			return 0.00;
 	}
+	
+	@Override
+	public Double BuscarTotalOtrosIngresos(String fecha, Integer idUsuario,Integer idAgencia) throws Exception {
+		// TODO Auto-generated method stub
+
+		String sql="SELECT SUM(g.n_monto) AS totalGastos "+
+					"FROM vrtgasto g  "+
+					"INNER JOIN vrtdetliq dlq ON (dlq.gasto_id=g.gasto_id) "+
+					"INNER JOIN vrtliquidacion lq ON (lq.liquidacion_id=dlq.liquidacion_id) "+
+					"WHERE  lq.agencia_id="+idAgencia+" AND lq.usuario_id="+idUsuario+" AND to_char(lq.d_fecliq,'dd/mm/yyyy')='"+fecha+"' "+
+					"		AND g.tipgas_id in (17)";
+//					"WHERE lq.agencia_id="+idAgencia+" AND lq.usuario_id="+idUsuario+" AND to_char(lq.d_fecliq,'dd/mm/yyyy')=to_date('"+fecha+"','"+Constantes.DATE_FORMAT+"') ";
+
+		log.info(sql);
+		List<?> obj = getSession().createSQLQuery(sql).list();
+		if(obj.get(0)!=null)
+			return ((BigDecimal)obj.get(0)).doubleValue();
+		else
+			return 0.00;
+	}
 
 	/* (non-Javadoc)
 	 * @see com.cystesoft.vyrbus.model.dao.GastoDAO#obtenerGastosByLiquidacion(java.lang.String, java.lang.Integer, java.lang.Integer)

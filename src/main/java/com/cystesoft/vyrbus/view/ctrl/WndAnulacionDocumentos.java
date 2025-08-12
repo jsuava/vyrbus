@@ -1,8 +1,8 @@
 /**
  * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
- * Descripciï¿½n	:
- * Autor		: Josï¿½ Abanto
+ * Descripción	:
+ * Autor		: José Abanto
  * Fecha		: 27/01/2017
  * Hora			: 16:07:10
  */
@@ -305,7 +305,7 @@ public class WndAnulacionDocumentos extends WndBase{
 				DlgMessage.information(Messages.getString("wndAnulacionComprobantes.information.noSelectAgencia"),cmbAgencia);
 				return;
 			}else{
-				/*Valida que no se exceda los 30 dï¿½as de consulta*/
+				/*Valida que no se exceda los 30 días de consulta*/
 				Date dateFin=Constantes.FORMAT_DATE.parse(Constantes.FORMAT_DATE.format(dtbxFechaFin.getValue()));
 				Date dateIni=Constantes.FORMAT_DATE.parse(Constantes.FORMAT_DATE.format(dtbxFechaInicio.getValue()));
 				long numDias=(dateFin.getTime()-dateIni.getTime())/Constantes.MILISEGUNDOS_X_DIA;
@@ -411,7 +411,7 @@ public class WndAnulacionDocumentos extends WndBase{
 				DlgMessage.information("Debe de seleccionar el comprobante que desea Anular");
 				return;
 			}else if (ltbxAnulacionComprobantes.getSelectedItems().size()>20){
-				DlgMessage.information("El modo AnulaciÃ³n Masiva solamente se puede aplicar a un mÃ¡ximo de 20 Comprobantes");
+				DlgMessage.information("El modo Anulación Masiva solamente se puede aplicar a un máximo de 20 Comprobantes");
 				return;
 			}else if(((VentaPasaje)ltbxAnulacionComprobantes.getSelectedItem().getValue()).getTipoTransaccion().equals(Constantes.TIPO_OPERACION_PERDIDA_SERVICIO)) {
 				DlgMessage.information("No se puede anular un comprobante marcado como Perdida de Servicio.");
@@ -445,7 +445,7 @@ public class WndAnulacionDocumentos extends WndBase{
 		win.appendChild(caption);
 
 //		Groupbox groupbox= new Groupbox();
-//		caption= new Caption("Datos de la Liquidaciï¿½n a quiï¿½n se asignaran los comprobantes que se tengan que generar");
+//		caption= new Caption("Datos de la Liquidación a quien se asignaran los comprobantes que se tengan que generar");
 //		groupbox.appendChild(caption);
 
 		Grid grid= new Grid();
@@ -536,7 +536,7 @@ public class WndAnulacionDocumentos extends WndBase{
 
 		div= new Div();
 		div.setAlign("center");
-		btnProcesarAnulacion= new Button("Procesar AnulaciÃ³n","/resources/mp_anular.png");
+		btnProcesarAnulacion= new Button("Procesar Anulación","/resources/mp_anular.png");
 		btnProcesarAnulacion.setClass("btn-vyrbus");
 		btnProcesarAnulacion.setAutodisable("self");
 		div.appendChild(btnProcesarAnulacion);
@@ -582,13 +582,13 @@ public class WndAnulacionDocumentos extends WndBase{
 //						return;
 //					}else 
 					if(txtMotivoAnulacion.getText().trim().isEmpty()){
-						DlgMessage.information("Debe de ingresar el Motivo de la anulaciÃ³n.",txtMotivoAnulacion);
+						DlgMessage.information("Debe de ingresar el Motivo de la anulación.",txtMotivoAnulacion);
 						return;
 					}else if (txtMotivoAnulacion.getText().trim().length()<5){
-						DlgMessage.information("El Motivo que ha ingresado no es vÃ¡lido.",txtMotivoAnulacion);
+						DlgMessage.information("El Motivo que ha ingresado no es válido.",txtMotivoAnulacion);
 						return;
 					}
-					Messagebox.show("Â¿Realmente desea continuar con la AnulaciÃ³n?", DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_YESNO, Messagebox.QUESTION,DlgMessage.BTN_DEFAULT_NO, new EventListener<Event>() {
+					Messagebox.show("¿Realmente desea continuar con la Anulación?", DlgMessage.NOMBREAPLICACION, DlgMessage.BTN_YESNO, Messagebox.QUESTION,DlgMessage.BTN_DEFAULT_NO, new EventListener<Event>() {
 						@Override
 						public void onEvent(Event e){
 							try {
@@ -621,11 +621,11 @@ public class WndAnulacionDocumentos extends WndBase{
 			if(liquidacion!=null && liquidacion.getestadoLiquidacion().intValue()==Constantes.TRUE_VALUE){
 				Date date=Constantes.FORMAT_DATE.parse(MyTime.dateTimeServer());
 				if(date.getTime()!=liquidacion.getFechaLiquidacion().getTime()){
-					lblAdvertencia.setValue("* La fecha de su Liquidaciï¿½n no es vï¿½lida, esta debe ser del dï¿½a. *");
+					lblAdvertencia.setValue("* La fecha de su Liquidación no es válida, esta debe ser del día. *");
 				}else
 					btnProcesarAnulacion.setDisabled(false);
 			}else{
-				lblAdvertencia.setValue("El Usuario Seleccionado no tiene una LiquidaciÃ³n aperturada, esta es necesaria para continuar con el proceso de AnulaciÃ³n.");
+				lblAdvertencia.setValue("El Usuario Seleccionado no tiene una Liquidación aperturada, esta es necesaria para continuar con el proceso de Anulación.");
 				lblAdvertencia.setVisible(true);
 			}
 		}
@@ -730,7 +730,7 @@ public class WndAnulacionDocumentos extends WndBase{
 		}else
 			buscarComprobantesByFechas();
 
-		DlgMessage.information("El Proceso de anulaciï¿½n termino correctamente");
+		DlgMessage.information("El Proceso de anulación termino correctamente");
 
 		window.onClose();
 	}

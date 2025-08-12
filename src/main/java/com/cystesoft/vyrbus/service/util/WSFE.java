@@ -622,7 +622,7 @@ public class WSFE implements Serializable{
 									 +liquidacion2.getMontoGastosAdminTarjetaMastercard()+liquidacion2.getMontoGastosAdminTarjetaVisa();
 			
 			lstEgresos.add(new XmlItemEgresoLiquidacion("DEVOLUCIONES", "", "", liquidacion2.getCantidadDevolucion().toString(), String.valueOf(liquidacion2.getMontoDevolucion())));
-			lstEgresos.add(new XmlItemEgresoLiquidacion("VTA. CORTISIA", "", "", liquidacion2.getCantidadcortesia().toString(), String.valueOf(liquidacion2.getMontoCortesia())));
+			lstEgresos.add(new XmlItemEgresoLiquidacion("VTA. CORTESIA", "", "", liquidacion2.getCantidadcortesia().toString(), String.valueOf(liquidacion2.getMontoCortesia())));
 //			lstEgresos.add(new XmlItemEgresoLiquidacion("CREDITO", "", "", cantidadCredito.toString(), totalCredito.toString()));
 			lstEgresos.add(new XmlItemEgresoLiquidacion("CREDITO", "", "", "0", "0"));
 			lstEgresos.add(new XmlItemEgresoLiquidacion("VTA. TARJETA", "", "", cantidadVentaTarjeta.toString(), montoVentaTarjeta.toString()));

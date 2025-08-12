@@ -515,11 +515,15 @@ public class ItinerarioDAOImpl extends GenericDAOImpl implements ItinerarioDAO {
 	public void inactivar(Long id,Integer idUsuario) throws Exception {
 		try{
 			int ESTADO_ITINERARIO_ANULADO=1;
-			//Valida la existencia de ventas o recervas activas.
+			//Valida la existencia de ventas o reservas activas.
+			//Descartando perdidas de servicio y fechas abiertas
 			String sql="SELECT COUNT(*) "+
 					   "FROM vrtvenpas v " +
-					   "INNER JOIN (SELECT MAX(VENPAS_ID) VENPAS_ID,C_NUMCONTROL  FROM VRTVENPAS GROUP BY C_NUMCONTROL) ID_MAX ON (ID_MAX.venpas_id=v.venpas_id)  " +
-					   "WHERE v.itinerario_id="+id+" AND v.tipmov_id NOT IN ("+Constantes.ID_TIPMOV_ANULACION+","+Constantes.ID_TIPMOV_ANULACION_SISTEMA+","+Constantes.ID_TIPMOV_DEVOLUCION+") AND v.c_estreg='A' ";
+					   "INNER JOIN (SELECT MAX(VENPAS_ID) VENPAS_ID,C_NUMCONTROL FROM VRTVENPAS GROUP BY C_NUMCONTROL) ID_MAX"+ 
+					   " ON (ID_MAX.venpas_id=v.venpas_id)  " +
+					   "WHERE v.itinerario_id="+id+" AND ( v.tipmov_id NOT IN ("+
+					   Constantes.ID_TIPMOV_ANULACION+","+Constantes.ID_TIPMOV_ANULACION_SISTEMA+","+Constantes.ID_TIPMOV_DEVOLUCION+")"+ 
+					   " AND v.c_tiptra not in (7) AND v.n_esfecabi=0) AND v.c_estreg='A' ";
 			log.info(sql);
 			List<?> result = getSession().createSQLQuery(sql).list();
 			int coun=((BigDecimal)result.get(0)).intValue();
