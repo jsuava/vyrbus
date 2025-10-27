@@ -181,6 +181,8 @@ public class WndRptGeneralVentas extends WndBase implements Serializable {
 				fechaHasta = Constantes.FORMAT_DATE.format(utilDate);
 				mesFin = Integer.parseInt(fechaHasta.substring(3, 5));
 			}
+			else if(rdAnual.isChecked()) 
+				tipoConsulta=1;
 			else
 				tipoConsulta=2;
 		}else{
@@ -353,7 +355,7 @@ public class WndRptGeneralVentas extends WndBase implements Serializable {
 				//Agencia
 				if(k==0){
 					listCabeceraRecord.set(0, resumen.getAgencia().getDenominacion());
-					listCabeceraRecord.set(1, arMeses[Integer.parseInt(resumen.getMes())]);
+					listCabeceraRecord.set(1, resumen.getAnio()+"-"+arMeses[Integer.parseInt(resumen.getMes())]);
 					k++;
 				}
 
@@ -395,7 +397,7 @@ public class WndRptGeneralVentas extends WndBase implements Serializable {
 
 				}
 				//Canal Web
-				else if(resumen.getCanalVenta().getId() == 2){
+				else if(resumen.getCanalVenta().getId() >= 2){
 					if(resumen.getRubro()==1) {
 						//Comprobante Boletas PASAJES
 						if(resumen.getTipoComprobante().getId() == 7){

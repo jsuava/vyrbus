@@ -1315,7 +1315,7 @@ public class UtilData extends Window {
 				Comboitem oComboitem = new Comboitem();
 
 				oComboitem.setValue(oBus);
-				oComboitem.setLabel(oBus.getCodigo());
+				oComboitem.setLabel(oBus.getNumeroPlaca());
 
 				combobox.appendChild(oComboitem);
 			}

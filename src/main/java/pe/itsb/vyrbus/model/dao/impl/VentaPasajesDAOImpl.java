@@ -3669,26 +3669,27 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 	public List<ResumenVentas> buscarResumenVentas(String fechaDesde, String fechaHasta, Integer idAgencia, Integer nroConsulta) {
 		String sql = "";
 		String strQuerySelect="";
-		String strQueryAnd="";
+		String strQueryAnd = " 	AND v.agencia_id = NVL(" + (idAgencia==0 ? null : idAgencia) + ", v.agencia_id) ";
 		String strGroupBy="";
 		String strQueryOrder="";
 
 		if(nroConsulta == 1){
-			strQuerySelect = "		v.n_cantidad, v.n_total, to_char(v.d_fecven, 'dd/mm/yyyy') FECVEN ";
-			strQueryAnd = "";
-			strQueryOrder = "	       v.d_fecven, v.c_agencia, v.c_comprobante";
+			strQuerySelect = "		sum(v.n_cantidad) cant, sum(v.n_total) total, v.c_anio ";
+			strGroupBy = "GROUP BY "
+					+ "	v.c_anio, v.n_rubro, v.canven_id, v.c_canal, v.agencia_id, v.c_agencia, v.tipcom_id, v.c_comprobante";
+			strQueryOrder = "	v.c_anio, v.n_rubro, v.canven_id, v.c_canal, v.agencia_id, v.c_agencia, v.tipcom_id, v.c_comprobante";
 		}
 		else if(nroConsulta == 2){
 			strQuerySelect = "		v.n_cantidad, v.n_total, to_char(v.d_fecven, 'dd/mm/yyyy') FECVEN ";
-			strQueryAnd = "		AND v.agencia_id = NVL(" + (idAgencia==0 ? null : idAgencia) +  ", v.agencia_id) ";
+//			strQueryAnd = "		AND v.agencia_id = NVL(" + (idAgencia==0 ? null : idAgencia) +  ", v.agencia_id) ";
 			strQueryOrder = "	       v.d_fecven, v.c_agencia,  v.n_rubro, v.c_comprobante ";
 		}
 		else{
-			strQuerySelect = "		sum(v.n_cantidad) cant, sum(v.n_total) total, v.c_mes  ";
-			strQueryAnd = "		AND v.agencia_id = NVL(" + (idAgencia==0 ? null : idAgencia) + ", v.agencia_id) ";
+			strQuerySelect = "		sum(v.n_cantidad) cant, sum(v.n_total) total, v.c_anio, v.c_mes  ";
+//			strQueryAnd = "		AND v.agencia_id = NVL(" + (idAgencia==0 ? null : idAgencia) + ", v.agencia_id) ";
 			strGroupBy = "GROUP BY "
-					+ "	v.c_mes, v.n_rubro, v.canven_id, v.c_canal, v.agencia_id, v.c_agencia, v.tipcom_id, v.c_comprobante";
-			strQueryOrder = "	       v.c_mes, v.c_agencia, v.n_rubro, v.c_comprobante ";
+					+ "	v.c_anio, v.c_mes, v.n_rubro, v.canven_id, v.c_canal, v.agencia_id, v.c_agencia, v.tipcom_id, v.c_comprobante";
+			strQueryOrder = "	       v.c_anio, v.c_mes, v.c_agencia, v.n_rubro, v.c_comprobante ";
 		}
 
 			sql = " SELECT "
@@ -3735,8 +3736,10 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 			resumenVentas.setCantidad(((BigDecimal)obj[7]).intValue());
 			resumenVentas.setTotal(((BigDecimal)obj[8]).doubleValue());
 
-			if(nroConsulta==3)
-				resumenVentas.setMes(obj[9].toString());
+			if(nroConsulta==3) {
+				resumenVentas.setAnio(obj[9].toString());
+				resumenVentas.setMes(obj[10].toString());
+			}
 			else
 				resumenVentas.setFechaVenta(obj[9].toString());
 			lstResult.add(resumenVentas);
@@ -4201,26 +4204,58 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 	 */
 	@Override
 	public List<Manifiesto> buscarLiquidacionBus(String fechaInicio,String fechaFin, String codigoBus) throws Exception {
-		String sql = "SELECT it.d_Fecpar fecha_salida, bs.c_codigo bus_codigo, bs.c_numplaca bus_placa "
-						 + ",ma.c_piloto piloto, ma.c_copiloto copiloto, SUM(vp.n_imppag) total_soles, rt.c_origen, rt.c_destino "
-						 + ",count(vp.c_numboleto) cant "
-				   + "FROM vrtvenpas vp "
-				     + "INNER JOIN (Select max(vp.venpas_id) venpas_id From vrtvenpas vp Group By vp.c_numcontrol ) "
-				                  + "vpx ON (vpx.venpas_id = vp.venpas_id)  "
-				     + "INNER JOIN vrtmanifiesto ma ON (ma.itinerario_id=vp.itinerario_id) "
-				     + "INNER JOIN vrtitinerario it ON (it.itinerario_id=vp.itinerario_id) "
-				     + "INNER JOIN vrmbus bs ON (bs.bus_id=ma.bus_id) "
-//				     + "INNER JOIN vrmruta rt ON (rt.ruta_id=vp.ruta_id) "
-				     + "INNER JOIN vrmruta rt ON (rt.ruta_id=it.ruta_idmayor) "
-				   + "WHERE it.d_fecpar BETWEEN to_date('"+fechaInicio+"', 'dd/MM/yyyy') AND to_date('"+fechaFin+"', 'dd/MM/yyyy') "
-				     + "AND vp.tipmov_id NOT IN (5,6,13) "
-				     + "AND vp.c_tiptra = '1' "
-				     + "AND vp.tipcom_id IN (1,2,7) AND vp.c_estreg='A' "
-				     + "AND ma.c_estreg = 'A' "
-				     + "AND it.n_esanulado = 0 AND it.c_estreg = 'A' "
-				     + "AND bs.c_codigo = NVL("+(codigoBus!=null?"'"+ codigoBus + "'": "Null")+", bs.c_codigo) "
-				   + "GROUP BY it.d_Fecpar, bs.c_codigo, bs.c_numplaca, ma.c_piloto, ma.c_copiloto, rt.c_origen, rt.c_destino "
-				   + "ORDER BY it.d_Fecpar, bs.c_codigo, ma.c_piloto, ma.c_copiloto";
+		//Consulta considerando el manifiesto
+//		String sql = "SELECT it.d_Fecpar fecha_salida, bs.c_codigo bus_codigo, bs.c_numplaca bus_placa "
+//						 + ",ma.c_piloto piloto, ma.c_copiloto copiloto, SUM(vp.n_imppag) total_soles, rt.c_origen, rt.c_destino "
+//						 + ",count(vp.c_numboleto) cant "
+//				   + "FROM vrtvenpas vp "
+//				     + "INNER JOIN (Select max(vp.venpas_id) venpas_id From vrtvenpas vp Group By vp.c_numcontrol ) "
+//				                  + "vpx ON (vpx.venpas_id = vp.venpas_id)  "
+//				     + "INNER JOIN vrtmanifiesto ma ON (ma.itinerario_id=vp.itinerario_id) "
+//				     + "INNER JOIN vrtitinerario it ON (it.itinerario_id=vp.itinerario_id) "
+//				     + "INNER JOIN vrmbus bs ON (bs.bus_id=ma.bus_id) "
+//				     + "INNER JOIN vrmruta rt ON (rt.ruta_id=it.ruta_idmayor) "
+//				   + "WHERE it.d_fecpar BETWEEN to_date('"+fechaInicio+"', 'dd/MM/yyyy') AND to_date('"+fechaFin+"', 'dd/MM/yyyy') "
+//				     + "AND vp.tipmov_id NOT IN (5,6,13) "
+//				     + "AND vp.c_tiptra = '1' "
+//				     + "AND vp.tipcom_id IN (1,2,7) AND vp.c_estreg='A' "
+//				     + "AND ma.c_estreg = 'A' "
+//				     + "AND it.n_esanulado = 0 AND it.c_estreg = 'A' "
+//				     + "AND bs.c_codigo = NVL("+(codigoBus!=null?"'"+ codigoBus + "'": "Null")+", bs.c_codigo) "
+//				   + "GROUP BY it.d_Fecpar, bs.c_codigo, bs.c_numplaca, ma.c_piloto, ma.c_copiloto, rt.c_origen, rt.c_destino "
+//				   + "ORDER BY it.d_Fecpar, bs.c_codigo, ma.c_piloto, ma.c_copiloto";
+		
+		//Consulta considerando la programacion de servicios aplicado a Antezana porqueno tiene manifiesto electrónico
+		String sql = "SELECT \r\n"
+				+ "       it.d_Fecpar fecha_salida, bs.c_codigo bus_codigo, bs.c_numplaca bus_placa, \r\n"
+				+ "       pil.c_apepat||' '||pil.c_apemat||', '||pil.c_nombre piloto, \r\n"
+				+ "       cop.c_apepat||' '||cop.c_apemat||', '||cop.c_nombre copiloto, \r\n"
+				+ "       SUM(vp.n_tarifa) total_soles, rt.c_origen, rt.c_destino, count(vp.c_numboleto) cant, it.c_horpar \r\n"
+				+ "FROM \r\n"
+				+ "       vrtvenpas vp \r\n"
+				+ "       INNER JOIN (Select max(vp.venpas_id) venpas_id \r\n"
+				+ "                   From vrtvenpas vp \r\n"
+				+ "                   Group By vp.c_numcontrol ) vpx ON (vpx.venpas_id = vp.venpas_id) \r\n"
+				+ "       INNER JOIN vrtitinerario it ON (it.itinerario_id=vp.itinerario_id) \r\n"
+				+ "       INNER JOIN vrtproser ps ON (it.itinerario_id = ps.itinerario_id) \r\n"
+				+ "       INNER JOIN vrmpersonal pil ON (ps.personal_idpiloto = pil.personal_id) \r\n"
+				+ "       INNER JOIN vrmpersonal cop ON (ps.personal_idcopiloto = cop.personal_id) \r\n"
+				+ "       INNER JOIN vrmbus bs ON (bs.bus_id=ps.bus_id) \r\n"
+				+ "       INNER JOIN vrmruta rt ON (rt.ruta_id=it.ruta_idmayor) \r\n"
+				+ "WHERE \r\n"
+				+ "      it.d_fecpar BETWEEN to_date('"+fechaInicio+"', 'dd/MM/yyyy') AND to_date('"+fechaFin+"', 'dd/MM/yyyy') \r\n"
+				+ "      AND vp.tipmov_id NOT IN (5,6,13) AND vp.c_tiptra = '1' AND vp.tipcom_id IN (1,2,7) \r\n"
+				+ "      AND vp.c_estreg='A' AND ps.c_estreg = 'A' AND it.n_esanulado = 0 AND it.c_estreg = 'A' \r\n"
+				+ "      AND bs.c_codigo = NVL("+(codigoBus!=null?"'"+ codigoBus + "'": "Null")+", bs.c_codigo) \r\n"
+				+ "GROUP BY \r\n"
+				+ "      it.d_Fecpar, it.c_horpar, bs.c_codigo, bs.c_numplaca, \r\n"
+				+ "      pil.c_apepat||' '||pil.c_apemat||', '||pil.c_nombre, \r\n"
+				+ "      cop.c_apepat||' '||cop.c_apemat||', '||cop.c_nombre, \r\n"
+				+ "      rt.c_origen, rt.c_destino \r\n"
+				+ "ORDER BY \r\n"
+				+ "      it.d_Fecpar, it.c_horpar, bs.c_codigo, \r\n"
+				+ "      pil.c_apepat||' '||pil.c_apemat||', '||pil.c_nombre, \r\n"
+				+ "      cop.c_apepat||' '||cop.c_apemat||', '||cop.c_nombre ";
 		log.info("buscarLiquidacionBus: "+sql);
 
 		List<?> result = getSession().createSQLQuery(sql).list();
@@ -4231,9 +4266,12 @@ public class VentaPasajesDAOImpl extends GenericDAOImpl implements VentaPasajesD
 
 			Itinerario itinerario= new Itinerario();
 			itinerario.setFechaPartida((Date)obj[0]);
+			itinerario.setHoraPartida(obj[9].toString());
+			
 			Bus bus = new Bus();
 			bus.setCodigo(obj[1].toString());
 			bus.setNumeroPlaca(obj[2].toString());
+			
 			Ruta ruta = new Ruta();
 			ruta.setOrigen(obj[6].toString());
 			ruta.setDestino(obj[7].toString());

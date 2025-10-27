@@ -92,7 +92,7 @@ public class WndRptLiquidacionBus extends WndBase {
 
 			//Buscar en Carga (Transcar)
 			TreeMap<String, Manifiesto> resultCarga = null;
-			//Valida la conexión con transcar
+			//Valida la conexion con transcar
 			boolean isConnectionTranscar = UtilFlag.isConeccionTranscar();
 			if(isConnectionTranscar)
 				resultCarga = ServiceLocator.getTranscarWebManager().buscarLiquidacionBus(fechaInicio, fechaFin, codigoBus);
@@ -102,7 +102,13 @@ public class WndRptLiquidacionBus extends WndBase {
 				Listcell cell = new Listcell(Constantes.FORMAT_DATE.format(manifiesto.getItinerario().getFechaPartida()));
 				cell.setStyle("font-size:11px !important");
 				item.appendChild(cell);
-				cell = new Listcell(manifiesto.getBus().getCodigo()+"-"+manifiesto.getBus().getNumeroPlaca());
+				
+				cell = new Listcell(manifiesto.getItinerario().getHoraPartida());
+				cell.setStyle("font-size:11px !important");
+				item.appendChild(cell);
+				
+//				cell = new Listcell(manifiesto.getBus().getCodigo()+"-"+manifiesto.getBus().getNumeroPlaca());
+				cell = new Listcell(manifiesto.getBus().getNumeroPlaca());
 				cell.setStyle("font-size:11px !important");
 				item.appendChild(cell);
 				cell = new Listcell(manifiesto.getItinerario().getRuta().toString());

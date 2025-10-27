@@ -28,15 +28,16 @@
 	</grid>
     <listbox id="ltbxLiquidacionBus" rows="20">
     	<listhead>
-    		<listheader label="FECHA" width="100px"  style="color: #ffffff;" />
-    		<listheader label="BUS" width="120px" style="color: #ffffff;" />
-    		<listheader label="RUTA" width="120px" style="color: #ffffff;" />
+    		<listheader label="FECHA" width="80px" sort="auto" style="color: #ffffff;" />
+    		<listheader label="HORA" width="60px" sort="auto" style="color: #ffffff;" />
+    		<listheader label="BUS" width="70px" sort="auto" style="color: #ffffff;" />
+    		<listheader label="RUTA" width="120px" sort="auto" style="color: #ffffff;" />
     		<listheader label="PILOTO" width="250px" style="color: #ffffff;" />
     		<listheader label="COPILOTO" width="250px" style="color: #ffffff;" />
-    		<listheader label="CANT. PAX" width="80px" align="right" style="color: #ffffff;" />
-    		<listheader label="TOTAL PASAJES" width="100px" align="right" style="color: #ffffff;" />
-    		<listheader label="TOTAL CARGA" width="100px" align="right" style="color: #ffffff;" />
-    		<listheader label="TOTAL INGRESOS" width="100px" align="right" style="color: #ffffff;" />
+    		<listheader label="CANT. PAX" width="60px" align="right" style="color: #ffffff;" />
+    		<listheader label="TOTAL PASAJES" width="80px" align="right" style="color: #ffffff;" />
+    		<listheader label="TOTAL CARGA" width="80px" align="right" style="color: #ffffff;" />
+    		<listheader label="TOTAL INGRESOS" width="85px" align="right" style="color: #ffffff;" />
     		<listheader/>
     	</listhead>    
     </listbox>
