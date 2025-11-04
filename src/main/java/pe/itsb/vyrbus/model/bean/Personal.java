@@ -30,6 +30,7 @@ public class Personal extends GenericBean implements Serializable {
 	private TipoZona tipoZona;
 	private String nombreZona;
 	private String direccion;
+	private Empresa empresa;
 
 	private Integer tipoConductor; //No mapeado
 
@@ -218,5 +219,19 @@ public class Personal extends GenericBean implements Serializable {
 	 */
 	public void setTipoConductor(Integer tipoConductor) {
 		this.tipoConductor = tipoConductor;
+	}
+
+	/**
+	 * @return the empresa
+	 */
+	public Empresa getEmpresa() {
+		return empresa;
+	}
+
+	/**
+	 * @param empresa the empresa to set
+	 */
+	public void setEmpresa(Empresa empresa) {
+		this.empresa = empresa;
 	}
 }

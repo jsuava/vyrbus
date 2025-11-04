@@ -8425,9 +8425,9 @@ public class WndVentaReservaNew  extends WndBase {
 		win.appendChild(grid);
 		
 		loadBusesPb(cmbPbBus, itinerario.getEmpresa(), itinerario.getServicio());
-		UtilData.cargarPersonalXtipo(cmbPbPiloto, null, Constantes.ID_TIPPER_PILOTO_COPILOTO);
-		UtilData.cargarPersonalXtipo(cmbPbCopiloto, null, Constantes.ID_TIPPER_PILOTO_COPILOTO);
-		UtilData.cargarPersonalXtipo(cmbPbCopilotoAuxiliar, null, Constantes.ID_TIPPER_PILOTO_COPILOTO);
+		UtilData.cargarPersonalXtipo(cmbPbPiloto, null, Constantes.ID_TIPPER_PILOTO_COPILOTO, itinerario.getEmpresa());
+		UtilData.cargarPersonalXtipo(cmbPbCopiloto, null, Constantes.ID_TIPPER_PILOTO_COPILOTO, itinerario.getEmpresa());
+		UtilData.cargarPersonalXtipo(cmbPbCopilotoAuxiliar, null, Constantes.ID_TIPPER_PILOTO_COPILOTO, itinerario.getEmpresa());
 		UtilData.cargarPersonalXtipo(cmbPbTripulante, null, Constantes.ID_TIPPER_TRIPULANTE);
 		
 		if(programacionServicio!=null) {
@@ -9116,7 +9116,7 @@ public class WndVentaReservaNew  extends WndBase {
 			btnManPaxGuardar.setVisible(true);		
 			
 			// Solamente se habilita si la agencia esta habilitada para emitir Manifiestos electrÃ³nicos.
-			if(!rdManPaxPrintLaser.isDisabled() && !UtilFlag.isEnabledManifiestoElectronico(getAgencia().getId())) {
+			if(!rdManPaxPrintLaser.isDisabled() && !UtilFlag.isEnabledManifiestoElectronico(getAgencia().getId()) && !especieValoradaSunat.isFormatPdf()) {
 				rdManPaxPrintLaser.setChecked(false);
 				rdManPaxPrintLaser.setDisabled(true);
 			}
@@ -9422,7 +9422,7 @@ public class WndVentaReservaNew  extends WndBase {
 		Manifiesto manifiestoEmitido = ServiceLocator.getManifiestoManager().consultaMinifiestImpreso(itinerario.getId());
 		if (manifiestoEmitido!=null){
 			String message = "El Bus "+ manifiestoEmitido.getCodigoBus() + " esta asociado al manifiesto ";
-			message += manifiestoEmitido.getNumeroManifiesto()+ " del día "+ Constantes.FORMAT_DATE.format(manifiestoEmitido.getFechaInsercion());
+			message += manifiestoEmitido.getNumeroManifiesto()+ " del dï¿½a "+ Constantes.FORMAT_DATE.format(manifiestoEmitido.getFechaInsercion());
 			message += " a la(s) "+ Constantes.FORMAT_TIME.format(manifiestoEmitido.getFechaInsercion())+ " horas";
 			message += " conducido por "+manifiestoEmitido.getPiloto()+ " manifestado por ";
 			message += manifiestoEmitido.getUsuarioInsercion()+"."+ " No puede imprimir otro manifiesto.";				
@@ -9613,9 +9613,9 @@ public class WndVentaReservaNew  extends WndBase {
 			//Impresion lasser
 			XmlManifiesto xmlManifiesto_sunat = createXmlPrintLaserManPax(manifiesto, ROTULO_SUNAT);
 			XmlManifiesto xmlManifiesto_trans = createXmlPrintLaserManPax(manifiesto, ROTULO_TRANSPORTISTA);
-			XmlManifiesto xmlManifiesto_archivo= createXmlPrintLaserManPax(manifiesto, ROTULO_ARCHIVO);
+			XmlManifiesto xmlManifiesto_archivo = createXmlPrintLaserManPax(manifiesto, ROTULO_ARCHIVO);
 
-			List<XmlManifiesto> listXmlManifiesto=new ArrayList<>();
+			List<XmlManifiesto> listXmlManifiesto = new ArrayList<>();
 			listXmlManifiesto.add(xmlManifiesto_sunat);
 			listXmlManifiesto.add(xmlManifiesto_trans);
 			listXmlManifiesto.add(xmlManifiesto_archivo);

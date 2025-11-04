@@ -78,6 +78,11 @@
         <property name="direccion" type="java.lang.String">
             <column name="C_DIRECCION" length="100" />
         </property>
+         <many-to-one name="empresa" class="pe.itsb.vyrbus.model.bean.Empresa" fetch="select">
+            <column name="EMPRESA_ID" precision="5" scale="0" not-null="true">
+                <comment>Identificador unico de la entidad, tamanio de la clave primaria 7.</comment>
+            </column>
+        </many-to-one>
         <!-- 		BEGIN CAMPOS DE AUDITORIA	 	-->
         <property name="estadoRegistro" type="java.lang.String">
             <column name="C_ESTREG" length="1" not-null="true">

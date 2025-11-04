@@ -23,6 +23,7 @@ public class EspecieValorada extends GenericBean implements java.io.Serializable
 	private String nameSecuenciador;
 
 	private UsuarioHardware usuarioHardware;
+	private boolean formatPdf;
 
 	public EspecieValorada() {
 		super();
@@ -240,5 +241,19 @@ public class EspecieValorada extends GenericBean implements java.io.Serializable
 	 */
 	public void setNameSecuenciador(String nameSecuenciador) {
 		this.nameSecuenciador = nameSecuenciador;
+	}
+
+	/**
+	 * @return the formatPdf
+	 */
+	public boolean isFormatPdf() {
+		return formatPdf;
+	}
+
+	/**
+	 * @param formatPdf the formatPdf to set
+	 */
+	public void setFormatPdf(boolean formatPdf) {
+		this.formatPdf = formatPdf;
 	}
 }

@@ -424,7 +424,7 @@ public class ManisfiestoDAOImpl extends GenericDAOImpl implements ManifiestoDAO 
 
 		/*Modificado 27/11/2014 - jabanto */
 		String sql= "SELECT ev.n_serie, ev.n_coract, ev.c_autsunat, ev.espval_id, "+ //0-3
-				"ev.n_corfin, ev.n_corini "+ //4-5
+				"ev.n_corfin, ev.n_corini, ev.n_formato "+ //4-6
 				"FROM vrmespval ev "+
 				"WHERE ev.agencia_id="+ idAgencia+ " AND ev.n_coract < ev.n_corfin AND ev.tipcom_id="+Constantes.ID_TIPCOM_MANIFIESTO_PAX+"  "+
 				"  AND ev.empresa_id="+ idEmpresa + " AND ev.c_estreg='A' "+
@@ -437,6 +437,8 @@ public class ManisfiestoDAOImpl extends GenericDAOImpl implements ManifiestoDAO 
 			especieValorada = new EspecieValorada();
 			/*Prevalece el primer registro, por si recupere mas de uno*/
 			Object[] obj = (Object[]) result.get(0);
+			
+			boolean isFormatPdf = (obj[5] !=null? ((BigDecimal)obj[5]).intValue() == Constantes.TRUE_VALUE : false);
 
 			especieValorada.setSerie(((BigDecimal) obj[0]).intValue());
 			especieValorada.setCorrelativoActual(((BigDecimal) obj[1]).longValue());
@@ -444,6 +446,7 @@ public class ManisfiestoDAOImpl extends GenericDAOImpl implements ManifiestoDAO 
 			especieValorada.setId(((BigDecimal) obj[3]).intValue());
 			especieValorada.setCorrelativoFinal(((BigDecimal) obj[4]).longValue());
 			especieValorada.setCorrelativoInicial(((BigDecimal)obj[5]).longValue());
+			especieValorada.setFormatPdf(isFormatPdf);
 		}
 
 		//Calcula el porcentace utilizado de los manifiestos, solamen si recupera un registro

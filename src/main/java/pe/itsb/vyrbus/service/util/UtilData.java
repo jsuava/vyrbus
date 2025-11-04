@@ -1532,6 +1532,33 @@ public class UtilData extends Window {
 			combobox.appendChild(oComboitem);
 		}
 	}
+	
+	
+	public static void cargarPersonalXtipo (Combobox combobox, Boolean todos, Integer idTipoPersonal, Empresa empresa) throws Exception{
+		TreeMap<String, Object> criteriosBusqueda = new TreeMap<>();
+		List<String> criteriosOrdenar = new ArrayList<>();
+		TipoPersonal tipoPersonal = new TipoPersonal();
+		criteriosOrdenar.add("apellidoPaterno");
+
+		if (idTipoPersonal ==null) {
+			criteriosBusqueda.remove("tipoPersonal");
+		}else {
+			tipoPersonal.setId(idTipoPersonal);
+			criteriosBusqueda.put("tipoPersonal", tipoPersonal );
+		}
+		criteriosBusqueda.put("empresa", empresa);
+		criteriosBusqueda.put("estadoRegistro", Constantes.VALUE_ACTIVO);
+		ArrayList<Personal> lstPersonal = ServiceLocator.getPersonalManager().buscarPorX(criteriosBusqueda, criteriosOrdenar);
+
+		//cargarGenericData(combobox, todos);
+
+		for (Personal personal : lstPersonal) {
+			Comboitem oComboitem = new Comboitem();
+			oComboitem.setLabel(personal.getApellidoPaterno() +" "+  personal.getApellidoMaterno() + ", " + personal.getNombre());
+			oComboitem.setValue(personal);
+			combobox.appendChild(oComboitem);
+		}
+	}
 
 
 	private static void cargarCanalVenta(Combobox combobox, Boolean todos) {
