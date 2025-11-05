@@ -438,7 +438,7 @@ public class ManisfiestoDAOImpl extends GenericDAOImpl implements ManifiestoDAO 
 			/*Prevalece el primer registro, por si recupere mas de uno*/
 			Object[] obj = (Object[]) result.get(0);
 			
-			boolean isFormatPdf = (obj[5] !=null? ((BigDecimal)obj[5]).intValue() == Constantes.TRUE_VALUE : false);
+			boolean isFormatoElectronico = (obj[5] !=null? ((BigDecimal)obj[5]).intValue() == Constantes.TRUE_VALUE : false);
 
 			especieValorada.setSerie(((BigDecimal) obj[0]).intValue());
 			especieValorada.setCorrelativoActual(((BigDecimal) obj[1]).longValue());
@@ -446,7 +446,7 @@ public class ManisfiestoDAOImpl extends GenericDAOImpl implements ManifiestoDAO 
 			especieValorada.setId(((BigDecimal) obj[3]).intValue());
 			especieValorada.setCorrelativoFinal(((BigDecimal) obj[4]).longValue());
 			especieValorada.setCorrelativoInicial(((BigDecimal)obj[5]).longValue());
-			especieValorada.setFormatPdf(isFormatPdf);
+			especieValorada.setFormatoElectronico(isFormatoElectronico);
 		}
 
 		//Calcula el porcentace utilizado de los manifiestos, solamen si recupera un registro

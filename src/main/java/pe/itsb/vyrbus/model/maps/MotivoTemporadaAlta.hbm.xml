@@ -3,7 +3,7 @@
                                    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <!-- Generated 17/04/2013 12:00:01 AM by Hibernate Tools 3.4.0.CR1 -->
 <hibernate-mapping>
- <class name="pe.itsb.vyrbus.model.bean.MotivoTemporadaAlta" schema="VRANTEZANA" table="VRMMOTTEMALT">
+ <class name="pe.itsb.vyrbus.model.bean.MotivoTemporadaAlta" schema="VRDEMO" table="VRMMOTTEMALT">
   <comment>Entidad que sirve para almacenar los motivos de las temporadas altas</comment>
   <id name="id" type="java.lang.Integer">
    <column name="MOTTEMALT_ID" precision="5" scale="0"/>

@@ -28,6 +28,7 @@ public class Manifiesto extends GenericBean implements java.io.Serializable {
 
 	//No mapeados
 	private List<DetalleManifiesto> listDetalleManifiesto;
+	private EspecieValorada especieValorada;
 	
 	//Variables para la devolucion del ISC
 	private String ruc;
@@ -393,6 +394,20 @@ public class Manifiesto extends GenericBean implements java.io.Serializable {
 	 */
 	public void setListDetalleManifiesto(List<DetalleManifiesto> listDetalleManifiesto) {
 		this.listDetalleManifiesto = listDetalleManifiesto;
+	}
+
+	/**
+	 * @return the especieValorada
+	 */
+	public EspecieValorada getEspecieValorada() {
+		return especieValorada;
+	}
+
+	/**
+	 * @param especieValorada the especieValorada to set
+	 */
+	public void setEspecieValorada(EspecieValorada especieValorada) {
+		this.especieValorada = especieValorada;
 	}
 
 

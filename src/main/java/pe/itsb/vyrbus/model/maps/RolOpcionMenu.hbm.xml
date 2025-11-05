@@ -3,7 +3,7 @@
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <!-- Generated 24/05/2012 11:51:01 AM by Hibernate Tools 3.4.0.CR1 -->
 <hibernate-mapping>
-    <class name="pe.itsb.vyrbus.model.bean.RolOpcionMenu" table="VRTROL_OPCMEN" schema="VRANTEZANA">
+    <class name="pe.itsb.vyrbus.model.bean.RolOpcionMenu" table="VRTROL_OPCMEN" schema="VRDEMO">
         <comment>Asociacion entre la entidad Rol y OpcionMenu, puesto que un Rol puede tener uno o mas Opciones de Menu y una misma opcion de menu puede estar en varios Roles
         diferentes.</comment>
         <composite-id name="rolOpcionMenuID" class="pe.itsb.vyrbus.model.bean.RolOpcionMenuID">
