@@ -170,6 +170,8 @@ public class Constantes {
 	public static final String SERVER_PROTOCOL = Executions.getCurrent().getScheme();
 	//Para ambientes seguros con HTTPS
 //	public static final String SERVER_PROTOCOL = "https";
+//	public static final String SERVER_PROTOCOL = "http";
+
 //	public static final String SERVER_HOST = Executions.getCurrent().getHeader("host");
 //	public static final String SERVER_HOST = "ventas.tepsa.com.pe/";
 

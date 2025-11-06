@@ -438,7 +438,7 @@ public class WndVentaReservaNew  extends WndBase {
 						
 			canalVenta = (CanalVenta)this.getDesktop().getSession().getAttribute(Constantes.ATRIBUTO_CANAL_VENTA);
 			fechaLiquidacion = (Date)this.getDesktop().getSession().getAttribute(Constantes.ATRIBUTO_FECHA_LIQUIDACION);
-									
+			//fechaLiquidacion = Constantes.FORMAT_DATE.parse("05/11/2025");						
 			cleanBusquedaItienrarios();
 			enabledControlsVueltaBusqItienrario();
 			enabledControlsVueltaVenta();
@@ -9121,7 +9121,8 @@ public class WndVentaReservaNew  extends WndBase {
 			btnManPaxGuardar.setVisible(true);		
 			
 			// Solamente se habilita si la agencia esta habilitada para emitir Manifiestos electrónicos.
-			if(!rdManPaxPrintLaser.isDisabled() && !UtilFlag.isEnabledManifiestoElectronico(getAgencia().getId()) && !especieValoradaSunat.isFormatPdf()) {
+//			if((!rdManPaxPrintLaser.isDisabled() && !UtilFlag.isEnabledManifiestoElectronico(getAgencia().getId())) || 
+			if(!rdManPaxPrintLaser.isDisabled() && !especieValoradaSunat.isFormatoElectronico()) {
 				rdManPaxPrintLaser.setChecked(false);
 				rdManPaxPrintLaser.setDisabled(true);
 			}
@@ -9132,6 +9133,7 @@ public class WndVentaReservaNew  extends WndBase {
 				itinerario.setBus(bus);
 			}
 			
+			manifiesto.setEspecieValorada(especieValoradaSunat);
 			//Carga el previo del manifiesto de pasajeros
 			loadPrevioManPax(manifiesto, itinerario, especieValoradaSunat);
 		}else {
@@ -9573,9 +9575,8 @@ public class WndVentaReservaNew  extends WndBase {
 			FileInputStream inputArchivo= null;
 			
 			// Valida si la agencia esta habilitada para generar manifiestos electrónicos
-			//vALIDAMOS EL FORMATO DEL MANIFIESTO SI ES PREIMPRESO O ELECTRONICO
-			//ESTO SE ENCUENTRA EN LA TABLA VRMESPVAL CAMPO N_FORMATO=1
-			if(UtilFlag.isEnabledManifiestoElectronico(getAgencia().getId())) {
+//			if(UtilFlag.isEnabledManifiestoElectronico(getAgencia().getId())) {
+			if(manifiesto.getEspecieValorada().isFormatoElectronico()) {
 				fileSunat = CreateDocument.creaManifiesto_ListPax(manifiesto,getUsuario(),getAgencia(),true,ROTULO_SUNAT, null);
 				File fileTransp = CreateDocument.creaManifiesto_ListPax(manifiesto,getUsuario(),getAgencia(),true,ROTULO_TRANSPORTISTA, null);
 				File fileArchivo = CreateDocument.creaManifiesto_ListPax(manifiesto,getUsuario(),getAgencia(),true,ROTULO_ARCHIVO, null);
@@ -9806,6 +9807,9 @@ public class WndVentaReservaNew  extends WndBase {
 	 */
 	private XmlManifiesto createXmlPrintLaserManPax(Manifiesto manifiesto, String rotulo)throws Exception{
 		Itinerario itinerario=ServiceLocator.getItinerarioManager().buscarPorId(manifiesto.getItinerario().getId());
+		if(manifiesto.getItinerario().getBus()!=null && manifiesto.getItinerario().getBus().getProgramacionServicio()!=null) {
+			itinerario.setBus(manifiesto.getItinerario().getBus());
+		}
 		XmlManifiesto xmlManifiesto=new XmlManifiesto();
 		xmlManifiesto.setNumeroManifiesto(manifiesto.getNumeroManifiesto());
 		xmlManifiesto.setUsuario(getUsuario().toString());

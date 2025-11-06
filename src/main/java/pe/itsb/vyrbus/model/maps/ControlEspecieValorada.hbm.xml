@@ -3,7 +3,7 @@
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <!-- Generated 24/05/2012 11:51:01 AM by Hibernate Tools 3.4.0.CR1 -->
 <hibernate-mapping>
-    <class name="pe.itsb.vyrbus.model.bean.ControlEspecieValorada" table="VRTCTRLESPVAL" schema="VRANTEZANA">
+    <class name="pe.itsb.vyrbus.model.bean.ControlEspecieValorada" table="VRTCTRLESPVAL" schema="VRDEMO">
         <comment>Entidad que almacena la relacion estre las especies valoradas y las cajas por agencia.</comment>
 <!--         <composite-id name="controlEspecieValoradaID" class="pe.itsb.vyrbus.model.bean.ControlEspecieValoradaID"> -->
 <!--             <key-property name="idTipoComprobante" type="java.lang.Integer"> -->

@@ -30,7 +30,7 @@ public class UtilFlag {
 	final static int FLAG_IDTIEMPO_POSTERGACION_FA = 11;
 	final static int FLAG_IDTIEMPO_CAMBIO_NOMBRE = 12;
 	final static int FLAG_IDCONECTION_TRANSCAR = 13;
-	final static int FLAG_IDMANIFIESTO_ELECTRONICO = 17;
+//	final static int FLAG_IDMANIFIESTO_ELECTRONICO = 17;
 	final static int FLAG_IDTIEMPO_CAMBIO_ASIENTO = 18;
 
 	final static String LLAVE_ENABLED = "S";
@@ -42,11 +42,11 @@ public class UtilFlag {
 	 * @return true: Activo; false: Inactivo
 	 * @throws Exception
 	 */
-	public static boolean isEnabledManifiestoElectronico(Integer agenciaId) throws Exception {
-		boolean estado = getConfigFlagById_paramAgencia(FLAG_IDMANIFIESTO_ELECTRONICO, agenciaId);
-		
-		return estado;
-	}
+//	public static boolean isEnabledManifiestoElectronico(Integer agenciaId) throws Exception {
+//		boolean estado = getConfigFlagById_paramAgencia(FLAG_IDMANIFIESTO_ELECTRONICO, agenciaId);
+//		
+//		return estado;
+//	}
 	
 	/**
 	 * Valida si esta activo el flag para la coneción con transcar web

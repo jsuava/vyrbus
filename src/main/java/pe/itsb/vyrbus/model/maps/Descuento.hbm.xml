@@ -3,7 +3,7 @@
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <!-- Generated 24/05/2012 11:51:01 AM by Hibernate Tools 3.4.0.CR1 -->
 <hibernate-mapping>
-    <class name="pe.itsb.vyrbus.model.bean.Descuento" table="VRMDESCUENTO" schema="VRANTEZANA">
+    <class name="pe.itsb.vyrbus.model.bean.Descuento" table="VRMDESCUENTO" schema="VRDEMO">
         <comment>Entidad que almacena la configuración de los descuentos que se aplican a la venta</comment>
         <id name="id" type="java.lang.Long">
             <column name="DESCUENTO_ID" precision="10" scale="0" />
