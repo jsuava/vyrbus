@@ -35,9 +35,9 @@ public class Printapi {
 	public static byte[] getPrintPdf(byte[] xmlZip, String fileName, int formatPrint, Boolean isReturnPathPdf) {
 		byte[] pdfFile = null;
 		try {
-			String URL_API = UtilFlag.getUrlApi_printapi();
+			String URL_API ; //= UtilFlag.getUrlApi_printapi();
 //			URL_API = "http://localhost:1363/api/GenerarPdf";
-//			URL_API = "http://170.0.233.156:8051/api/GenerarPdf";
+			URL_API = "http://170.0.233.156:8051/api/GenerarPdf";
 			
 			if(URL_API !=null) {
 				String rubro = "1"; // Pasajes

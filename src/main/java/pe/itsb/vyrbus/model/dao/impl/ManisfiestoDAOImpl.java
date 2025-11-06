@@ -447,6 +447,7 @@ public class ManisfiestoDAOImpl extends GenericDAOImpl implements ManifiestoDAO 
 			especieValorada.setCorrelativoFinal(((BigDecimal) obj[4]).longValue());
 			especieValorada.setCorrelativoInicial(((BigDecimal)obj[5]).longValue());
 			especieValorada.setFormatPdf(isFormatPdf);
+			
 		}
 
 		//Calcula el porcentace utilizado de los manifiestos, solamen si recupera un registro

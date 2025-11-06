@@ -3576,8 +3576,13 @@ public class WndVentaReservaNew  extends WndBase {
 			for(DocumentoBus _documentoBus: listdoctBus) {
 				Date fechaActual = Constantes.FORMAT_DATE.parse(Constantes.FORMAT_DATE.format(new Date()));
 				Date fechaVenceDoctBus = Constantes.FORMAT_DATE.parse(_documentoBus.getFechaVencimiento());
-				if(fechaVenceDoctBus.getTime()>=fechaActual.getTime())
-					itinerario.getBus().setDocumentoBus(_documentoBus);;				
+				if(fechaVenceDoctBus.getTime()>=fechaActual.getTime()) {
+					Bus mBus = new Bus();
+					mBus = 	programacionServicio.getBus();
+					mBus.setDocumentoBus(_documentoBus);
+					itinerario.setBus(mBus);
+//					itinerario.getBus().setDocumentoBus(_documentoBus);		
+				}		
 			}			
 		}
 		
@@ -9568,6 +9573,8 @@ public class WndVentaReservaNew  extends WndBase {
 			FileInputStream inputArchivo= null;
 			
 			// Valida si la agencia esta habilitada para generar manifiestos electrónicos
+			//vALIDAMOS EL FORMATO DEL MANIFIESTO SI ES PREIMPRESO O ELECTRONICO
+			//ESTO SE ENCUENTRA EN LA TABLA VRMESPVAL CAMPO N_FORMATO=1
 			if(UtilFlag.isEnabledManifiestoElectronico(getAgencia().getId())) {
 				fileSunat = CreateDocument.creaManifiesto_ListPax(manifiesto,getUsuario(),getAgencia(),true,ROTULO_SUNAT, null);
 				File fileTransp = CreateDocument.creaManifiesto_ListPax(manifiesto,getUsuario(),getAgencia(),true,ROTULO_TRANSPORTISTA, null);
@@ -9809,7 +9816,8 @@ public class WndVentaReservaNew  extends WndBase {
 		xmlManifiesto.setOrigen(itinerario.getRuta().getOrigen());
 		xmlManifiesto.setDestino(itinerario.getRuta().getDestino());
 		xmlManifiesto.setPlaca(itinerario.getBus().getNumeroPlaca());
-		xmlManifiesto.setTarjetaHabilitacion(itinerario.getBus().getDocumentoBus().getNumeroDocumento());
+//		xmlManifiesto.setTarjetaHabilitacion(itinerario.getBus().getDocumentoBus().getNumeroDocumento());
+		xmlManifiesto.setTarjetaHabilitacion(manifiesto.getCertificadoHabilitacion());
 //		xmlManifiesto.setMarca(itinerario.getBus().getGrupoMantenimiento().getDenominacion());
 		xmlManifiesto.setPiloto(itinerario.getBus().getProgramacionServicio().getPiloto().toString());
 		xmlManifiesto.setPilotoLicencia(itinerario.getBus().getProgramacionServicio().getPiloto().getLicencia());

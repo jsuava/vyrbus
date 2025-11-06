@@ -26,7 +26,7 @@ public class Constantes {
 	 * Vension actual del Sistema
 	 */
 
-	public static final String SYSTEM_VERSION = "Versi�n 3.6.2";
+	public static final String SYSTEM_VERSION = "VersiOn 3.6.3";
 
 	/**
 	 * Constante para la Accion Nuevo
@@ -167,16 +167,16 @@ public class Constantes {
 	public static final String CLAVE_PAHT="TPSPSJS-";
 	/*	Path para la creacion de los documentos Boleto, Manifiesto	*/
 	//Para ambientes no seguros
-//	public static final String SERVER_PROTOCOL = Executions.getCurrent().getScheme();
+	public static final String SERVER_PROTOCOL = Executions.getCurrent().getScheme();
 	//Para ambientes seguros con HTTPS
-	public static final String SERVER_PROTOCOL = "https";
+//	public static final String SERVER_PROTOCOL = "https";
 //	public static final String SERVER_HOST = Executions.getCurrent().getHeader("host");
 //	public static final String SERVER_HOST = "ventas.tepsa.com.pe/";
 
-//	public static final String SERVER_HOST = "localhost:8080";
+	public static final String SERVER_HOST = "localhost:8080";
 	//Demo Wars
 //	public static final String SERVER_HOST = "170.0.233.156:8080";
-	public static final String SERVER_HOST = "pasajes.itsb.pe";
+//	public static final String SERVER_HOST = "pasajes.itsb.pe";
 
 //	public static final String SERVER_HOST = "119.8.145.122:8080";
 
