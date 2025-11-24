@@ -9133,7 +9133,9 @@ public class WndVentaReservaNew  extends WndBase {
 				itinerario.setBus(bus);
 			}
 			
-			manifiesto.setEspecieValorada(especieValoradaSunat);
+			if(manifiesto != null)
+				manifiesto.setEspecieValorada(especieValoradaSunat);
+			
 			//Carga el previo del manifiesto de pasajeros
 			loadPrevioManPax(manifiesto, itinerario, especieValoradaSunat);
 		}else {
