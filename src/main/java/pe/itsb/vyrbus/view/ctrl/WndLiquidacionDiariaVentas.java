@@ -634,8 +634,9 @@ public class WndLiquidacionDiariaVentas extends WndBase implements Serializable 
 						}
 
 						if(venta.getTipoTransaccion().equals("NOTA CREDITO")
-						   || venta.getTipoTransaccion().equals("CONF.FA.(YAP)")
-						   || venta.getTipoTransaccion().equals("FA.(YAP)")
+								//Comentado por MAOE 080126
+						   /*|| venta.getTipoTransaccion().equals("CONF.FA.(YAP)")
+						   || venta.getTipoTransaccion().equals("FA.(YAP)")*/
 						  ){
 							totalNotasCredito+= + venta.getImportePagado();
 //							total+= - venta.getImportePagado();

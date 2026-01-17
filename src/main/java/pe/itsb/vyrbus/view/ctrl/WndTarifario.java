@@ -8,6 +8,8 @@
 package pe.itsb.vyrbus.view.ctrl;
 
 import java.io.Serializable;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -212,7 +214,7 @@ public class WndTarifario extends WndBase implements Serializable {
 		UtilData.cargarDataCombo(cmbDestinoBus, Localidad.class,true);
 		UtilData.cargarDataCombo(cmbTipoItinerario, TipoItinerario.class,true);
 
-		dtbxFecInicioBus.setConstraint("after "+fecha);
+//		dtbxFecInicioBus.setConstraint("after "+fecha);
 		dtbxFecFinBus.setConstraint("after "+fecha);
 		dtbxFecInicioBus.setValue(new Date());
 		dtbxFecFinBus.setValue(new Date());
@@ -357,69 +359,78 @@ public class WndTarifario extends WndBase implements Serializable {
 			if (index >= 0){
 				Listitem itemTarifa = lsbxRutas.getItemAtIndex(index);
 				
-				//EMPRESA
-				Util.seleccionarValorItemCombo(Empresa.class, cmbEmpresa, ((TarifaRegular)itemTarifa.getValue()).getTarifa().getEmpresa().getId());
-
-				//Canal de venta
-				String strCanalVenta = ((TarifaRegular) itemTarifa.getValue()).getTarifa().getCanalVenta().getDenominacion();
-				if(strCanalVenta == null)
-					cmbCanal.setSelectedIndex(0);
-				else if(strCanalVenta != Constantes.SIN_TARIFA) {
-					Util.seleccionarValorItemCombo(CanalVenta.class, cmbCanal, ((TarifaRegular) itemTarifa.getValue()).getTarifa().getCanalVenta().getId());
-				}else if(cmbCanal.getItems().size()>0 && cmbCanal.getSelectedIndex() < 0)
-					cmbCanal.setSelectedIndex(0);
-					
-
-				//Servicio
-				Util.seleccionarValorItemCombo(Servicio.class, cmbServicio, ((TarifaRegular) itemTarifa.getValue()).getTarifa().getServicio().getId());
-
-				//Selecciona el Origen
-				Util.seleccionarValorItemCombo(Localidad.class, cmbOrigen, ((TarifaRegular) itemTarifa.getValue()).getTarifa().getRuta().getLocalidadOrigen().getId());
-				//Destino
-				Util.seleccionarValorItemCombo(Localidad.class, cmbDestino, ((TarifaRegular) itemTarifa.getValue()).getTarifa().getRuta().getLocalidadDestino().getId());
-
-				tmbxHoraPartida.setText(((TarifaRegular) itemTarifa.getValue()).getHoraPartida());
-
-				Integer indexPiso = ((TarifaRegular) itemTarifa.getValue()).getTarifa().getPisoBus();
-				if(indexPiso!=null)
-					cmbPiso.setSelectedIndex(indexPiso+1 );
-				else
-					cmbPiso.setSelectedIndex(0);
-
-				Integer indexZona = ((TarifaRegular) itemTarifa.getValue()).getTarifa().getZonaBus();
-				if(indexZona!=null)
-					cmbZona.setSelectedIndex(indexZona);
-				else
-					cmbZona.setSelectedIndex(0);
-
-				Double tarifa = ((TarifaRegular) itemTarifa.getValue()).getMonto();
-				if(tarifa!=null){
-					if(indexPiso!=null){
-						if(indexPiso==0){
-							dlbxTarifaP1.setValue(tarifa);
-							habilitarPisoUno(true);
-
-						}
-						else{
-							dlbxTarifaP1.setValue(0);
-							dlbxTarifaP2.setValue(tarifa);
+				//Validar fechas para modificación
+				LocalDate fechaHoy=LocalDate.now();
+				if( ((TarifaRegular) itemTarifa.getValue()).getFechaTarifa().compareTo(Date.from(fechaHoy.atStartOfDay(ZoneId.systemDefault()).toInstant())) < 0 )  {
+					DlgMessage.information("No puede realizar cambios en tarifas de fechas pasadas.");
+					onClick_btnCancelar();
+					return;
+				}else{
+				
+					//EMPRESA
+					Util.seleccionarValorItemCombo(Empresa.class, cmbEmpresa, ((TarifaRegular)itemTarifa.getValue()).getTarifa().getEmpresa().getId());
+	
+					//Canal de venta
+					String strCanalVenta = ((TarifaRegular) itemTarifa.getValue()).getTarifa().getCanalVenta().getDenominacion();
+					if(strCanalVenta == null)
+						cmbCanal.setSelectedIndex(0);
+					else if(strCanalVenta != Constantes.SIN_TARIFA) {
+						Util.seleccionarValorItemCombo(CanalVenta.class, cmbCanal, ((TarifaRegular) itemTarifa.getValue()).getTarifa().getCanalVenta().getId());
+					}else if(cmbCanal.getItems().size()>0 && cmbCanal.getSelectedIndex() < 0)
+						cmbCanal.setSelectedIndex(0);
+						
+	
+					//Servicio
+					Util.seleccionarValorItemCombo(Servicio.class, cmbServicio, ((TarifaRegular) itemTarifa.getValue()).getTarifa().getServicio().getId());
+	
+					//Selecciona el Origen
+					Util.seleccionarValorItemCombo(Localidad.class, cmbOrigen, ((TarifaRegular) itemTarifa.getValue()).getTarifa().getRuta().getLocalidadOrigen().getId());
+					//Destino
+					Util.seleccionarValorItemCombo(Localidad.class, cmbDestino, ((TarifaRegular) itemTarifa.getValue()).getTarifa().getRuta().getLocalidadDestino().getId());
+	
+					tmbxHoraPartida.setText(((TarifaRegular) itemTarifa.getValue()).getHoraPartida());
+	
+					Integer indexPiso = ((TarifaRegular) itemTarifa.getValue()).getTarifa().getPisoBus();
+					if(indexPiso!=null)
+						cmbPiso.setSelectedIndex(indexPiso+1 );
+					else
+						cmbPiso.setSelectedIndex(0);
+	
+					Integer indexZona = ((TarifaRegular) itemTarifa.getValue()).getTarifa().getZonaBus();
+					if(indexZona!=null)
+						cmbZona.setSelectedIndex(indexZona);
+					else
+						cmbZona.setSelectedIndex(0);
+	
+					Double tarifa = ((TarifaRegular) itemTarifa.getValue()).getMonto();
+					if(tarifa!=null){
+						if(indexPiso!=null){
+							if(indexPiso==0){
+								dlbxTarifaP1.setValue(tarifa);
+								habilitarPisoUno(true);
+	
+							}
+							else{
+								dlbxTarifaP1.setValue(0);
+								dlbxTarifaP2.setValue(tarifa);
+							}
 						}
 					}
+					else{
+						dlbxTarifaP1.setValue(0);
+						dlbxTarifaP2.setValue(0);
+					}
+	
+					//Fechas
+					dtbxFecInicio.setValue( ((TarifaRegular) itemTarifa.getValue()).getFechaTarifa() );
+					dtbxFecFinal.setValue( ((TarifaRegular) itemTarifa.getValue()).getFechaTarifa() );
+	
+					dtbxFecInicio.setDisabled(true);
+					onChangeServicio();
 				}
-				else{
-					dlbxTarifaP1.setValue(0);
-					dlbxTarifaP2.setValue(0);
-				}
-
-				//Fechas
-				dtbxFecInicio.setValue( ((TarifaRegular) itemTarifa.getValue()).getFechaTarifa() );
-				dtbxFecFinal.setValue( ((TarifaRegular) itemTarifa.getValue()).getFechaTarifa() );
-
-				dtbxFecInicio.setDisabled(true);
-				onChangeServicio();
-
 			}else{
 				DlgMessage.information(Messages.getString("WndItinerario.information.SeleccionarTramo"));
+				return;
 			}
 		}
 		//Editar tarifas en Fecha Abierta
@@ -445,6 +456,7 @@ public class WndTarifario extends WndBase implements Serializable {
 
 			}else{
 				DlgMessage.information(Messages.getString("WndItinerario.information.SeleccionarTramo"));
+				return;
 			}
 		}
 	}
@@ -656,6 +668,8 @@ public class WndTarifario extends WndBase implements Serializable {
 
 					} catch (Exception e) {}
 
+					//Validar que la fecha de la tarifa sea mayor o igual a la de hoy para modificar
+					//de lo contrario no permitir el cambio
 					//Valida el perfil del usuario para la edicion de una tarifa.
 					if(canalVenta !=null && canalVenta.getId()!=null){
 						for(Comboitem comboitemCanal: cmbCanal.getItems()) {

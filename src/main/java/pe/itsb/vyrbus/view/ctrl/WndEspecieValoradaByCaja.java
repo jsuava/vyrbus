@@ -399,6 +399,7 @@ public class WndEspecieValoradaByCaja extends WndOpcionesMantenimiento {
 			}else {
 				Util.seleccionarValorItemCombo(Agencia.class, cmbAgencia, (controlEspecieValorada.getAgencia().getId()));
 			}
+			Util.seleccionarValorItemCombo(Empresa.class, cmbEmpresa, (controlEspecieValorada.getEmpresa().getId()));
 			
 			/*carga os usuarios hardware segun la agencia seleccionada*/
 			UtilData.cargarUsuarioHasrdware(cmbUsuarioHardware, false, ((Agencia)cmbAgencia.getSelectedItem().getValue()));

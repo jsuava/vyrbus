@@ -3794,10 +3794,10 @@ public class WndVentaReservaNew  extends WndBase {
 			if(cmbVtaTipoFormaPago.getSelectedIndex()<0) {
 				DlgMessage.information(Messages.getString("WndVentaReserva.information.noMedioPago"), cmbVtaTipoFormaPago);
 				return;
-			}else if(!cmbVtaOperadorTarjeta.isDisabled() && cmbVtaOperadorTarjeta.getSelectedIndex()<0) {
+			}else if(!cmbVtaOperadorTarjeta.isDisabled() && cmbVtaOperadorTarjeta.getSelectedIndex()<=0) {
 				DlgMessage.information(Messages.getString("WndVentaReserva.information.noOperadorTarjetaCredito"), cmbVtaOperadorTarjeta);
 				return;
-			}else if(!cmbVtaTarjeta.isDisabled() && cmbVtaTarjeta.getSelectedIndex()<0) {
+			}else if(!cmbVtaTarjeta.isDisabled() && cmbVtaTarjeta.getSelectedIndex()<=0) {
 				DlgMessage.information(Messages.getString("WndVentaReserva.information.noTarjetaCredito"), cmbVtaTarjeta);
 				return;
 			}else if(!txtVtaNumeroOperacion.isDisabled() && txtVtaNumeroOperacion.getText().trim().isEmpty()) {

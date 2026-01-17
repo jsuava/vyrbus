@@ -3,7 +3,7 @@
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <!-- Generated 04/05/2012 12:43:35 PM by Hibernate Tools 3.4.0.CR1 -->
 <hibernate-mapping>
-    <class name="pe.itsb.vyrbus.model.bean.TarifaAsiento" table="VRTTARASI" schema="VRDEMO">
+    <class name="pe.itsb.vyrbus.model.bean.TarifaAsiento" table="VRTTARASI" schema="VRANTEZANA">
         <comment>Entidad que almacena la tarifa a considerar a determinados clientes.</comment>
         <id name="id" type="java.lang.Integer">
             <column name="TARASI_ID" precision="10" scale="0" />

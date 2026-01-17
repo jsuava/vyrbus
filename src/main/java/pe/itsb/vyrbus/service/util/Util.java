@@ -1,5 +1,4 @@
 /**
- * Proyecto		: SISVYR
  * Sistema		: Sistema de Ventas y Reservas
  * Descripci�n	: Clase que centraliza las funciones utilitarias que se usa en todo el sistema.
  * Autor		: Jos� Avalos
