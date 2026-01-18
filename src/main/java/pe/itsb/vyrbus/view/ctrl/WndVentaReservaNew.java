@@ -2759,7 +2759,11 @@ public class WndVentaReservaNew  extends WndBase {
 	 * @throws Exception
 	 */
 	private void onBlur_txtVtaAutorizaDescuentoCodigo()throws Exception{
-		dbxVtaIdaRecargo.setDisabled(false);		
+		dbxVtaIdaRecargo.setDisabled(false);
+		
+		if(ltbxVtaAsientosSeleccionados.getSelectedIndex() < 0)
+			return;
+		
 		VentaIdaRetorno venta = ltbxVtaAsientosSeleccionados.getSelectedItem().getValue();		
 		dbxVtaIdaTarifa.setValue(venta.getDetalleItinerarioIDA().getTarifa());
 		if(isVtaIdaVuelta) {
@@ -6216,6 +6220,8 @@ public class WndVentaReservaNew  extends WndBase {
 		disabledControlsPasajero(false);
 		cleanDatosPasajero(false);
 		disabled_btnGuardar(btnVtaGuardar, false);
+		cmbVtaAutorizaDescuento.setDisabled(true);
+		txtVtaAutorizaDescuentoCodigo.setDisabled(true);
 		txtVtaPaxBusqueda.setFocus(true);
 		
 	}
